@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "answerr"
+version = "0.1.0"
+description = "Cognitive bridge between Gemini Flash System-2 and wevv Zero-Memory System-1 decision engine."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Volkan Dağlı", email = "info@itouch.fi" }
+]
+keywords = ["answerr", "wevv", "fractal-ai", "gemini", "zero-memory", "mandelbrot"]
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn>=0.28.0",
+    "pydantic>=2.6.0",
+    "numpy>=1.24.0"
+]
+
+[project.urls]
+Homepage = "https://answerr.me"
+Repository = "https://github.com/pCwOrM/answerr"
+"wevv Base Engine" = "https://github.com/pCwOrM/wevv"
