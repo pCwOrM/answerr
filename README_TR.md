@@ -1,14 +1,16 @@
 # 🔮 answerr: Çift-Bilişsel Yapay Zeka Karar Chatbotu
 
-[![Web Sitesi: answerr.me](https://img.shields.io/badge/Canl%C4%B1-answerr.me-38bdf8.svg)](https://answerr.me)
+[![Canlı Demo: GitHub Pages](https://img.shields.io/badge/Canl%C4%B1%20Demo-GitHub%20Pages-38bdf8.svg)](https://pcworm.github.io/answerr/)
+[![Web Sitesi: answerr.me](https://img.shields.io/badge/Alan%20Ad%C4%B1-answerr.me-818cf8.svg)](https://answerr.me)
 [![wevv Çekirdek Motoru](https://img.shields.io/badge/wevv-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg)](https://github.com/pCwOrM/wevv)
-[![Gemini 2.5 Flash](https://img.shields.io/badge/Sistem--2-Gemini%20Flash-818cf8.svg)](https://deepmind.google/technologies/gemini/)
+[![Gemini 2.5 Flash](https://img.shields.io/badge/Sistem--2-Gemini%20Flash-c084fc.svg)](https://deepmind.google/technologies/gemini/)
 [![Lisans: MIT](https://img.shields.io/badge/Lisans-MIT-yellow.svg)](./LICENSE)
 
 > **Gemini düşünür; wevv sıfır-bellek fraktal geometrisiyle anında karar verir.**  
 > *"Yapılandırılmamış doğal dil sorularını, 0 bayt tensör ağırlığıyla milisaniyenin altında tipli kararlara dönüştürür."*
 
-🌐 **Canlı Web Uygulaması:** [answerr.me](https://answerr.me)
+🌐 **Canlı Demo (GitHub Pages):** [https://pcworm.github.io/answerr/](https://pcworm.github.io/answerr/)  
+🌐 **Özel Alan Adı:** [https://answerr.me](https://answerr.me)
 
 ---
 

@@ -1,14 +1,16 @@
 # 🔮 answerr: Dual-Cognition AI Decision Chatbot
 
-[![Website: answerr.me](https://img.shields.io/badge/Live-answerr.me-38bdf8.svg)](https://answerr.me)
+[![Live Demo: GitHub Pages](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-38bdf8.svg)](https://pcworm.github.io/answerr/)
+[![Website: answerr.me](https://img.shields.io/badge/Domain-answerr.me-818cf8.svg)](https://answerr.me)
 [![wevv Core Engine](https://img.shields.io/badge/wevv-Zero--Memory%20Engine-10b981.svg)](https://github.com/pCwOrM/wevv)
-[![Gemini 2.5 Flash](https://img.shields.io/badge/System--2-Gemini%20Flash-818cf8.svg)](https://deepmind.google/technologies/gemini/)
+[![Gemini 2.5 Flash](https://img.shields.io/badge/System--2-Gemini%20Flash-c084fc.svg)](https://deepmind.google/technologies/gemini/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 > **Where Gemini Reasons and wevv Decides in Zero-Memory Fractal Geometry.**  
 > *"Translating unstructured natural language triage into sub-millisecond, strongly-typed decisions with 0 Bytes tensor weights."*
 
-🌐 **Live Web Application:** [answerr.me](https://answerr.me)
+🌐 **Live Demo (GitHub Pages):** [https://pcworm.github.io/answerr/](https://pcworm.github.io/answerr/)  
+🌐 **Custom Domain:** [https://answerr.me](https://answerr.me)
 
 ---
 
