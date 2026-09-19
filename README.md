@@ -1,13 +1,13 @@
-# 🔮 answerr: Dual-Cognition AI Decision Chatbot
+# ⚡ A.N.S.W.E.R.R. — The Zero-Latency Reflex AI
 
 [![Live Demo: GitHub Pages](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-38bdf8.svg)](https://pcworm.github.io/answerr/)
 [![Website: answerr.me](https://img.shields.io/badge/Domain-answerr.me-818cf8.svg)](https://answerr.me)
 [![wevv Core Engine](https://img.shields.io/badge/wevv-Zero--Memory%20Engine-10b981.svg)](https://github.com/pCwOrM/wevv)
-[![Gemini 2.5 Flash](https://img.shields.io/badge/System--2-Gemini%20Flash-c084fc.svg)](https://deepmind.google/technologies/gemini/)
+[![Deliberative AI](https://img.shields.io/badge/System--2-Deliberative%20AI-c084fc.svg)](https://answerr.me)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-> **Where Gemini Reasons and wevv Decides in Zero-Memory Fractal Geometry.**  
-> *"Translating unstructured natural language triage into sub-millisecond, strongly-typed decisions with 0 Bytes tensor weights."*
+> **A**daptive **N**ext-gen **S**ignal **W**ave & **E**rror **R**eflex **R**easoner  
+> *"Don't just chat. Get the Answerr. Translating unstructured natural language into sub-millisecond, strongly-typed decisions with 0 Bytes tensor weights."*
 
 🌐 **Live Demo (GitHub Pages):** [https://pcworm.github.io/answerr/](https://pcworm.github.io/answerr/)  
 🌐 **Custom Domain:** [https://answerr.me](https://answerr.me)
@@ -16,9 +16,9 @@
 
 ## 🌟 Overview
 
-**answerr** is a next-generation conversational AI platform establishing the cognitive bridge between:
-1. **System-Two Deliberation (Google Gemini Flash):** Parses complex human language, extracts structured operational state, and translates outcomes into strategic commentary and actionable advice.
-2. **System-One Reflex Arc ([wevv](https://github.com/pCwOrM/wevv)):** Synthesizes instant, deterministic, strongly-typed decisions (`noul`, `choice`, `score`) in **< 1 ms** with **0 Bytes VRAM** from a 24-byte Mandelbrot boundary seed triplet $(c_x, c_y, \text{zoom})$.
+**A.N.S.W.E.R.R.** is a breakthrough dual-cognition AI platform that merges:
+1. **System-Two Deliberation (LLM / Deliberative AI):** Parses human conversation, analyzes operational context, and explains decisions with strategic clarity. Works with cloud models or lightweight local models.
+2. **System-One Reflex Arc ([wevv](https://github.com/pCwOrM/wevv)):** Synthesizes instant, deterministic, strongly-typed decisions (`noul`, `choice`, `score`) in **< 1 ms** with **0 Bytes VRAM** using dynamic Mandelbrot boundary wave perturbation.
 
 Instead of forcing heavy multi-billion-parameter neural networks to spend hundreds of tokens and milliseconds answering simple binary approvals or routing gates, **answerr** delegates execution triage to the zero-tensor mathematical fabric of the Mandelbrot set.
 

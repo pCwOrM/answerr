@@ -1,13 +1,13 @@
-# 🔮 answerr: Çift-Bilişsel Yapay Zeka Karar Chatbotu
+# ⚡ A.N.S.W.E.R.R. — Sıfır-Gecikmeli Refleks Yapay Zekası
 
 [![Canlı Demo: GitHub Pages](https://img.shields.io/badge/Canl%C4%B1%20Demo-GitHub%20Pages-38bdf8.svg)](https://pcworm.github.io/answerr/)
 [![Web Sitesi: answerr.me](https://img.shields.io/badge/Alan%20Ad%C4%B1-answerr.me-818cf8.svg)](https://answerr.me)
 [![wevv Çekirdek Motoru](https://img.shields.io/badge/wevv-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg)](https://github.com/pCwOrM/wevv)
-[![Gemini 2.5 Flash](https://img.shields.io/badge/Sistem--2-Gemini%20Flash-c084fc.svg)](https://deepmind.google/technologies/gemini/)
+[![Müzakereci Yapay Zeka](https://img.shields.io/badge/Sistem--2-M%C3%BCzakereci%20YZ-c084fc.svg)](https://answerr.me)
 [![Lisans: MIT](https://img.shields.io/badge/Lisans-MIT-yellow.svg)](./LICENSE)
 
-> **Gemini düşünür; wevv sıfır-bellek fraktal geometrisiyle anında karar verir.**  
-> *"Yapılandırılmamış doğal dil sorularını, 0 bayt tensör ağırlığıyla milisaniyenin altında tipli kararlara dönüştürür."*
+> **A**daptive **N**ext-gen **S**ignal **W**ave & **E**rror **R**eflex **R**easoner  
+> *"Don't just chat. Get the Answerr. Sadece sohbet etmeyin; milisaniyenin altında 0-byte VRAM ile kesin kararı alın."*
 
 🌐 **Canlı Demo (GitHub Pages):** [https://pcworm.github.io/answerr/](https://pcworm.github.io/answerr/)  
 🌐 **Özel Alan Adı:** [https://answerr.me](https://answerr.me)
@@ -16,9 +16,9 @@
 
 ## 🌟 Genel Bakış
 
-**answerr**, iki temel bilişsel düzeyi birleştiren yeni nesil bir yapay zeka karar arayüzüdür:
-1. **Sistem-2 Müzakeresi (Google Gemini Flash):** Kullanıcının serbest metin olarak sorduğu karmaşık senaryoyu dinler, arka plandaki operasyonel durum vektörünü (`state`) ve karar tipini çıkarır; ardından nihai matematiksel kararı anlaşılır bir dille yorumlayıp aksiyon önerir.
-2. **Sistem-1 Omurilik Refleksi ([wevv](https://github.com/pCwOrM/wevv)):** Mandelbrot fraktal sınırındaki 24 baytlık $(c_x, c_y, \text{zoom})$ koordinat tohumunu dinamik olarak modüle eder ve **0 Byte VRAM / tensör ağırlığı** ile **< 1 ms** içinde kesin tipli kararları (`noul`, `choice`, `score`) üretir.
+**A.N.S.W.E.R.R.**, iki temel bilişsel düzeyi birleştiren yeni nesil bir karar motorudur:
+1. **Sistem-2 Müzakeresi (LLM / Müzakereci Yapay Zeka):** Karmaşık insan dilini ve durum parametrelerini anlar, operasyonel bağlamı çıkarır ve kararı stratejik olarak açıklar (Bulut API'leri veya yerel açık kaynak modellerle tam uyumlu).
+2. **Sistem-1 Omurilik Refleksi ([wevv](https://github.com/pCwOrM/wevv)):** Mandelbrot fraktal sınırındaki 24 baytlık $(c_x, c_y, \text{zoom})$ koordinat tohumunu dinamik olarak modüle eder ve **0 Byte VRAM** ile **< 1 ms** içinde kesin tipli kararları (`noul`, `choice`, `score`) üretir.
 
 Böylece basit bir onay veya mikroservis yönlendirmesi için devasa modellerin gigabaytlarca VRAM tüketmesi ve yüzlerce milisaniye beklemesi gerekmez; triyaj kararı doğrudan evrensel geometriden türer.
 
