@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const I18N = {
     tr: {
       heroTitle: "Sadece Sohbet Etmeyin. Karar Verin.",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: Yazılımlar ve otomasyon için <strong>Sistem-1</strong> karar altyapısı. Operasyonel durum (state) verisini ve soru talimatlarını anında tipli kararlara (<code>noul</code>, <code>choice</code>, <code>score</code>) dönüştürür. <strong>wevv</strong> 0-Byte VRAM fraktal omurilik refleksiyle çalışır; mikrosaniyede deterministik sonuç üretir, asla halüsinasyon görmez ve çökmez.",
+      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator - Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)</em>: Yazılımlar ve otomasyon için <strong>Sistem-1</strong> karar altyapısı. Operasyonel durum (state) sinyal verisini ve soru talimatlarını anında tipli kararlara (<code>noul</code>, <code>choice</code>, <code>score</code>) dönüştürür. <strong>wevv</strong> 0-Byte VRAM fraktal omurilik refleksi ve akustik dalga rezonatörüyle çalışır; mikrosaniyede deterministik sonuç üretir, asla halüsinasyon görmez ve çökmez.",
       tagSpeed: "⚡ < 0.5 ms Sistem-1 Fraktal Hızı",
       tagZeroMem: "💾 0-Byte VRAM (Zero-Tensor Architecture)",
       tagHallucination: "🛡️ Sıfır Halüsinasyon & Tip Güvenli",
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     en: {
       heroTitle: "Don't Just Chat. Get The Answerr.",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: Machine-native <strong>System-One</strong> decision infrastructure for software and automation. Send operational program state and typed questions; get structured, calibrated decisions (<code>noul</code>, <code>choice</code>, <code>score</code>) your code can use directly. Powered by <strong>wevv</strong> zero-memory fractal reflexes.",
+      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator)</em>: Machine-native <strong>System-One</strong> decision infrastructure for software and automation. Ingests operational state signals and typed questions; delivers structured, calibrated decisions (<code>noul</code>, <code>choice</code>, <code>score</code>) your code can use directly. Powered by <strong>wevv</strong> zero-memory fractal reflexes and acoustic wave resonance.",
       tagSpeed: "⚡ < 0.5 ms System-1 Fractal Speed",
       tagZeroMem: "💾 0-Byte VRAM (Zero-Tensor Architecture)",
       tagHallucination: "🛡️ Zero Hallucination & Type-Safe",
@@ -658,7 +658,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ans = wevvResult.answers[ansKey];
 
     const content = `================================================================================
-     ANSWERR (ADAPTIVE NEXT-GEN SIGNAL WAVE & ERROR REFLEX REASONER)
+     ANSWERR (ADAPTIVE NON-TENSOR SIGNAL WAVE & ERROR REFLEX RESONATOR)
                  24-BYTE MANDELBROT SEED TELEMETRY DUMP
 ================================================================================
 Timestamp               : ${dateStr}

@@ -1,5 +1,7 @@
 """
 Answerr Reflex Decision Engine API - Production REST Server
+A.N.S.W.E.R.R. (Adaptive Non-tensor Signal Wave & Error Reflex Resonator)
+(Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)
 Powered by wevv (Universal Fractal Natural Language Decision Map)
 
 Features:
@@ -172,7 +174,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Answerr Reflex Decision Engine API",
-    description="Universal Fractal Natural Language Decision Map API (0 Bytes VRAM, < 1ms Latency)",
+    description="A.N.S.W.E.R.R. (Adaptive Non-tensor Signal Wave & Error Reflex Resonator) - 0 Bytes VRAM, < 1ms Latency",
     version="1.0.0",
     lifespan=lifespan
 )
@@ -282,7 +284,8 @@ def get_root():
     uptime = time.time() - START_TIME
     return {
         "service": "Answerr Reflex Decision Engine API",
-        "description": "Zero-Memory, Zero-Hallucination, Sub-millisecond System-One Decision Engine",
+        "full_name": "A.N.S.W.E.R.R. (Adaptive Non-tensor Signal Wave & Error Reflex Resonator)",
+        "description": "Adaptive Non-tensor Signal Wave & Error Reflex Resonator (Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü) - Zero-Memory, Zero-Hallucination, Sub-millisecond System-One Decision Engine",
         "docs_url": "/docs",
         "endpoints": {
             "decide": "/v1/decide (POST)",

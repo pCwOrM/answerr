@@ -6,11 +6,20 @@
 [![Deliberative AI](https://img.shields.io/badge/System--2-Deliberative%20AI-c084fc.svg)](https://answerr.me)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-> **A**daptive **N**ext-gen **S**ignal **W**ave & **E**rror **R**eflex **R**easoner  
-> *"Don't just chat. Get the Answerr. Translating unstructured natural language into sub-millisecond, strongly-typed decisions with 0 Bytes tensor weights."*
+> **A**daptive **N**on-tensor **S**ignal **W**ave & **E**rror **R**eflex **R**esonator  
+> *(Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)*  
+> *"Don't just chat. Get the Answerr. Sub-millisecond strongly-typed decisions with 0 Bytes tensor weights."*
 
-🌐 **Live Demo (GitHub Pages):** [https://pcworm.github.io/answerr/](https://pcworm.github.io/answerr/)  
-🌐 **Custom Domain:** [https://answerr.me](https://answerr.me)
+### 🧬 Architectural Pillars (Why It's Number 1)
+* **Adaptive:** Exponential moving average ($\alpha = 0.03$) and dynamic thresholding calibrated for runtime resilience.
+* **Non-tensor:** Groundbreaking 0-VRAM architecture with zero stored weight tensors—runs on bare metal or directly in browsers.
+* **Signal:** Ingests live telemetry, state parameters, and conversational prompts as continuous dynamic signals.
+* **Wave & Error:** Mathematical wave propagation and chaotic Mandelbrot boundary ($\partial M$) error navigation.
+* **Reflex Resonator:** Harmonizes spinal cord reflex arcs with acoustic harmonic phase resonance.
+
+🌐 **Live Web Platform:** [https://answerr.me](https://answerr.me)  
+⚡ **Production REST API:** [https://api.answerr.me:4431](https://api.answerr.me:4431)  
+🌐 **GitHub Pages Demo:** [https://pcworm.github.io/answerr/](https://pcworm.github.io/answerr/)
 
 ---
 

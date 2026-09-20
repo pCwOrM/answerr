@@ -6,11 +6,20 @@
 [![Müzakereci Yapay Zeka](https://img.shields.io/badge/Sistem--2-M%C3%BCzakereci%20YZ-c084fc.svg)](https://answerr.me)
 [![Lisans: MIT](https://img.shields.io/badge/Lisans-MIT-yellow.svg)](./LICENSE)
 
-> **A**daptive **N**ext-gen **S**ignal **W**ave & **E**rror **R**eflex **R**easoner  
+> **A**daptive **N**on-tensor **S**ignal **W**ave & **E**rror **R**eflex **R**esonator  
+> *(Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)*  
 > *"Don't just chat. Get the Answerr. Sadece sohbet etmeyin; milisaniyenin altında 0-byte VRAM ile kesin kararı alın."*
 
-🌐 **Canlı Demo (GitHub Pages):** [https://pcworm.github.io/answerr/](https://pcworm.github.io/answerr/)  
-🌐 **Özel Alan Adı:** [https://answerr.me](https://answerr.me)
+### 🧬 Neden 1 Numara? (Mimari Sütunlar)
+* **Adaptive (Uyarlanabilir):** Üstel hareketli ortalama (EMA $\alpha=0.03$) ve dinamik eşikleme yeteneği ile çalışma zamanında esnek adaptasyon.
+* **Non-tensor (Tensörsüz):** 0-VRAM devrimini doğrudan ismin kalbine çakar; GPU ağırlığı depolamadan çıplak donanımda veya tarayıcıda çalışır.
+* **Signal (Sinyal):** Gelen operasyonel durum (state) ve telemetrinin dinamik bir sinyal dalgası olduğunu vurgular.
+* **Wave & Error (Dalga ve Hata):** wevv motorunun dalga yayılımı ve Mandelbrot kaotik sınırındaki ($\partial M$) hata navigasyonunun matematiksel özünü taşır.
+* **Reflex Resonator (Refleks Rezonatörü):** Hem omurilik refleksini hem de akustik faz rezonansını (tınlamayı) tek hamlede ifade eder.
+
+🌐 **Canlı Web Platformu:** [https://answerr.me](https://answerr.me)  
+⚡ **Canlı REST API:** [https://api.answerr.me:4431](https://api.answerr.me:4431)  
+🌐 **GitHub Pages Demosu:** [https://pcworm.github.io/answerr/](https://pcworm.github.io/answerr/)
 
 ---
 
