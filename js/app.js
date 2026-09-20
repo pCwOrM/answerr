@@ -841,8 +841,8 @@ License                 : MIT License (%100 Free & Open Source)
     if (!presetGridEl || typeof SCENARIO_PRESETS === 'undefined') return;
     presetGridEl.innerHTML = '';
 
-    // Render top 4 curated scenarios in a balanced, clean 2x2 layout
-    SCENARIO_PRESETS.slice(0, 4).forEach(preset => {
+    // Render 6 curated scenarios across werr domains in a balanced, clean 2-column (3x2) layout
+    SCENARIO_PRESETS.slice(0, 6).forEach(preset => {
       const card = document.createElement('button');
       card.className = 'preset-card';
       card.setAttribute('type', 'button');
