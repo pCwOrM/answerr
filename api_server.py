@@ -16,7 +16,9 @@ Features:
 import os
 import sys
 import time
-from typing import Dict, List, Optional, Union, Any
+import threading
+from collections import defaultdict, deque
+from typing import Dict, List, Optional, Union, Any, Tuple
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response, HTTPException, status
@@ -43,6 +45,81 @@ wevv = werr
 
 # Process start time for uptime calculation
 START_TIME = time.time()
+
+# -----------------------------------------------------------------------------
+# Rate Limiting & Abuse Prevention (Zero External Dependency)
+# -----------------------------------------------------------------------------
+class InMemoryRateLimiter:
+    """
+    Thread-safe sliding-window rate limiter.
+    Limits requests per client IP within a configurable time window.
+    Automatically purges expired timestamps to maintain 0-leak in-memory footprint.
+    """
+    def __init__(self, requests_per_window: int = 60, window_seconds: int = 60, burst_per_second: int = 15):
+        self.requests_per_window = requests_per_window
+        self.window_seconds = window_seconds
+        self.burst_per_second = burst_per_second
+        self.lock = threading.Lock()
+        self.requests: Dict[str, deque] = defaultdict(deque)
+        self.last_cleanup = time.time()
+
+    def get_client_ip(self, request: Request) -> str:
+        # Check standard reverse proxy headers first
+        forwarded_for = request.headers.get("x-forwarded-for")
+        if forwarded_for:
+            return forwarded_for.split(",")[0].strip()
+        real_ip = request.headers.get("x-real-ip")
+        if real_ip:
+            return real_ip.strip()
+        if request.client and request.client.host:
+            return request.client.host
+        return "127.0.0.1"
+
+    def is_allowed(self, ip: str) -> Tuple[bool, int, int]:
+        """
+        Returns:
+            allowed (bool): True if allowed, False if exceeded.
+            remaining (int): Estimated remaining requests in the current window.
+            retry_after (int): Seconds until user can retry if blocked.
+        """
+        now = time.time()
+        with self.lock:
+            # Periodic cleanup of completely stale IPs every 5 minutes
+            if now - self.last_cleanup > 300:
+                stale_cutoff = now - self.window_seconds
+                stale_ips = [k for k, q in self.requests.items() if not q or q[-1] < stale_cutoff]
+                for k in stale_ips:
+                    del self.requests[k]
+                self.last_cleanup = now
+
+            timestamps = self.requests[ip]
+            cutoff = now - self.window_seconds
+
+            # Evict timestamps older than sliding window
+            while timestamps and timestamps[0] < cutoff:
+                timestamps.popleft()
+
+            # 1. Burst protection: max N requests within the last 1.0 second
+            one_sec_ago = now - 1.0
+            burst_count = sum(1 for t in timestamps if t >= one_sec_ago)
+            if burst_count >= self.burst_per_second:
+                return False, 0, 1
+
+            # 2. Window limit protection: max requests within window_seconds
+            if len(timestamps) >= self.requests_per_window:
+                oldest = timestamps[0]
+                retry_after = max(1, int(self.window_seconds - (now - oldest)))
+                return False, 0, retry_after
+
+            # Allow request and record timestamp
+            timestamps.append(now)
+            remaining = max(0, self.requests_per_window - len(timestamps))
+            return True, remaining, 0
+
+
+# Default rate limiter: 60 requests/minute per IP, max 15 requests/second burst
+RATE_LIMITER = InMemoryRateLimiter(requests_per_window=60, window_seconds=60, burst_per_second=15)
+MAX_REQUEST_BODY_BYTES = 65536  # 64 KB limit to protect server memory and CPU
 
 # Global engine instances
 DEFAULT_ROUTER = werr.create_smart_router()
@@ -197,6 +274,60 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Security & Rate Limiting Middleware
+@app.middleware("http")
+async def security_and_rate_limit_middleware(request: Request, call_next):
+    # Skip rate limiting for CORS preflight OPTIONS requests
+    if request.method == "OPTIONS":
+        return await call_next(request)
+
+    client_ip = RATE_LIMITER.get_client_ip(request)
+
+    # 1. Content-Length guard to prevent memory exhaustion
+    content_length = request.headers.get("content-length")
+    if content_length:
+        try:
+            if int(content_length) > MAX_REQUEST_BODY_BYTES:
+                return JSONResponse(
+                    status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                    content={
+                        "error": "Payload Too Large",
+                        "message": f"Maximum request body size is {MAX_REQUEST_BODY_BYTES // 1024} KB.",
+                        "client_ip": client_ip
+                    }
+                )
+        except ValueError:
+            pass
+
+    # 2. Check sliding-window rate limit
+    allowed, remaining, retry_after = RATE_LIMITER.is_allowed(client_ip)
+    if not allowed:
+        return JSONResponse(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            headers={
+                "Retry-After": str(retry_after),
+                "X-RateLimit-Limit": str(RATE_LIMITER.requests_per_window),
+                "X-RateLimit-Remaining": "0",
+                "X-RateLimit-Reset": str(retry_after)
+            },
+            content={
+                "error": "Too Many Requests",
+                "message": f"Rate limit exceeded (Max {RATE_LIMITER.requests_per_window} req/min). Please slow down.",
+                "retry_after_seconds": retry_after,
+                "client_ip": client_ip
+            }
+        )
+
+    response: Response = await call_next(request)
+
+    # 3. Add rate limit feedback headers and security headers
+    response.headers["X-RateLimit-Limit"] = str(RATE_LIMITER.requests_per_window)
+    response.headers["X-RateLimit-Remaining"] = str(remaining)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    return response
 
 
 # -----------------------------------------------------------------------------
