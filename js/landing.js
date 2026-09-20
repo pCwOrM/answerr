@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
       navLaunchApp: "Karar Motorunu Başlat",
       navLaunchAppMobile: "Karar Motoru",
       badgePill: "0-Byte VRAM • < 0.5 ms Fraktal Omurilik Refleksi",
-      heroHeadline: "Sadece Sohbet Etmeyin.<br>Karar Verin.",
+      heroHeadline: "Sadece Sohbet Etme.<br>Karar Werr.",
       heroSubhead: "Yazılımlar, API'lar ve otonom sistemler için dünyanın ilk <strong>Sistem-1</strong> fraktal karar motoru. Deterministik Mandelbrot sınır dinamiğiyle mikrosaniyede tip-güvenli kararlar üretin; halüsinasyon riskini sıfırlayın.",
       heroCtaPrimary: "⚡ Hemen Başla (Ücretsiz & Keyless)",
       heroCtaSecondary: "📦 pip install werr (GitHub)",
@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
       simSmartCodeTitle: "Akıllı Kod (Smart If-Statement)",
       simStatusAllowed: "İSTEK ONAYLANDI (TRUE)",
       simStatusDenied: "GÜVENLİK ENGELİ (FALSE)",
+      simConfidenceText: "• p=0.0821 (Güven: %96)",
       featuresEyebrow: "Neden answerr?",
       featuresTitle: "Geleneksel LLM'lerin Bittiği Yerde Başlayan Refleks",
       featuresDesc: "Geleneksel dil modelleri yavaş, pahalı ve olasılıksaldır. answerr & werr ikilisi, refleks hızında kesin kararlar alırken doğal diyalog gücünü korur.",
@@ -40,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ecoSideAnswerrText: "Sistem-2 müzakereci yapay zeka, Google Gemini Flash entegrasyonu, web çalışma alanı ve kurumsal API ağ geçidi.",
       ecoSideWerrTitle: "werr (Spinal Reflex Core)",
       ecoSideWerrText: "Sistem-1 deterministik omurilik çekirdeği. Sıfır tensör belleği, Mandelbrot fraktal karar motoru. Uygulamanıza gömün (pip install werr).",
+      ecoBtnWorkspace: "Çalışma Alanına Git →",
+      ecoBtnGithub: "GitHub'da İncele →",
       devEyebrow: "Entegrasyon",
       devTitle: "3 Satırda Üretime Hazır Refleks",
       devDesc: "Python veya doğrudan REST API ile sisteminize saniyeler içinde ekleyin.",
@@ -66,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
       simSmartCodeTitle: "Smart If-Statement (Production Code)",
       simStatusAllowed: "REQUEST APPROVED (TRUE)",
       simStatusDenied: "SECURITY BLOCKED (FALSE)",
+      simConfidenceText: "• p=0.0821 (Confidence: 96%)",
       featuresEyebrow: "Why answerr?",
       featuresTitle: "Reflex Decision Making Where Traditional LLMs Fall Short",
       featuresDesc: "LLMs are slow, expensive, and probabilistic. answerr & werr combine microsecond deterministic reflexes with deliberative dialogue.",
@@ -82,6 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ecoSideAnswerrText: "System-2 deliberative reasoning, Google Gemini Flash integration, interactive web workspace, and enterprise API gateway.",
       ecoSideWerrTitle: "werr (Spinal Reflex Core)",
       ecoSideWerrText: "System-1 deterministic spinal kernel. Zero tensor memory, Mandelbrot fractal decision engine. Embed directly (pip install werr).",
+      ecoBtnWorkspace: "Open Workspace →",
+      ecoBtnGithub: "Explore on GitHub →",
       devEyebrow: "Integration",
       devTitle: "Production-Ready in 3 Lines of Code",
       devDesc: "Seamlessly integrate via Python or direct REST API in seconds.",
@@ -101,6 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyLanguage(lang) {
     const t = LANDING_I18N[lang] || LANDING_I18N.tr;
     document.documentElement.lang = lang;
+    document.title = lang === 'tr' 
+      ? "answerr | Sıfır Gecikmeli Refleks Yapay Zekası (answerr.me)" 
+      : "answerr | The Zero-Latency Reflex AI (answerr.me)";
     if (currentLangTextEl) currentLangTextEl.textContent = lang.toUpperCase();
 
     // Text bindings by data-i18n attribute
