@@ -16,29 +16,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getRecaptchaToken(action = "answerr_chat") {
     return new Promise((resolve) => {
+      const timer = setTimeout(() => {
+        resolve(null);
+      }, 1500);
+
       try {
         if (typeof grecaptcha !== 'undefined' && grecaptcha.ready) {
           grecaptcha.ready(function() {
             grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: action })
-              .then(function(token) { resolve(token); })
+              .then(function(token) {
+                clearTimeout(timer);
+                resolve(token);
+              })
               .catch(function(err) {
                 console.warn("[answerr] reCAPTCHA token execution failed:", err);
+                clearTimeout(timer);
                 resolve(null);
               });
           });
         } else {
+          clearTimeout(timer);
           resolve(null);
         }
       } catch (e) {
+        clearTimeout(timer);
         console.warn("[answerr] reCAPTCHA exception:", e);
         resolve(null);
       }
     });
   }
 
-  // Telemetry Dispatcher to api.answerr.me
+  // Telemetry Dispatcher (Dual-target to mechsrv.itouch.fi & api.answerr.me)
   async function dispatchWebTelemetry(werrResult, prompt, stateData) {
     try {
+      console.log("[answerr-telemetry] Initiating telemetry dispatch for prompt:", prompt);
       const token = await getRecaptchaToken("answerr_chat");
       const ansKey = Object.keys(werrResult.answers)[0];
       const ans = werrResult.answers[ansKey];
@@ -66,17 +77,37 @@ document.addEventListener('DOMContentLoaded', () => {
         latency_ms: werrResult.latencyMs
       };
 
-      fetch("https://api.answerr.me:4431/werr/telemetry", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { "X-Recaptcha-Token": token } : {})
-        },
-        body: JSON.stringify(payload),
-        keepalive: true
-      }).catch(() => {});
+      console.log("[answerr-telemetry] Payload prepared:", payload);
+
+      const endpoints = [
+        "https://mechsrv.itouch.fi:4431/werr/telemetry",
+        "https://api.answerr.me:4431/werr/telemetry"
+      ];
+
+      for (const endpoint of endpoints) {
+        try {
+          console.log(`[answerr-telemetry] Attempting POST to ${endpoint}...`);
+          const res = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { "X-Recaptcha-Token": token } : {})
+            },
+            body: JSON.stringify(payload),
+            keepalive: true
+          });
+          if (res.ok) {
+            console.log(`[answerr-telemetry] Telemetry successfully recorded via ${endpoint} (HTTP ${res.status})`);
+            break;
+          } else {
+            console.warn(`[answerr-telemetry] ${endpoint} returned HTTP ${res.status}:`, await res.text().catch(() => ''));
+          }
+        } catch (postErr) {
+          console.warn(`[answerr-telemetry] Failed fetch to ${endpoint}:`, postErr.message || postErr);
+        }
+      }
     } catch (err) {
-      // Non-blocking telemetry
+      console.error("[answerr-telemetry] Unexpected dispatcher exception:", err);
     }
   }
 
