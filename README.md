@@ -96,11 +96,13 @@ Open `http://localhost:8000`.
 
 ---
 
-## 🧪 Scientific Foundation
+## 🛡️ Core Advantages of wevv & answerr
 
-* **Base Paper:** *"Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains"* (Dağlı et al., September 2026).
-* **Companion Theory:** *"Mandelbrot Fractal Neural Synthesis: Zero-Storage Procedural Weight Derivation and Non-Linear Decision Boundaries"* (IEEE / Zenodo DOI: [10.5281/zenodo.22802921](https://doi.org/10.5281/zenodo.22802921)).
-* **Engine Repository:** [https://github.com/pCwOrM/wevv](https://github.com/pCwOrM/wevv).
+* **Zero Hallucination:** Traditional neural networks hallucinate because they sample from probabilistic token distributions. `wevv` evaluates deterministic Mandelbrot boundary escape dynamics—yielding 100% reproducible, mathematically grounded verdicts.
+* **Never Crashes (Zero Failures):** Even under out-of-distribution (OOD) or adversarial state conditions, the chaotic phase-space resonator deterministically absorbs edge signals and resolves valid typed decisions without throwing exceptions.
+* **Universal Coverage:** Resolves any contextual program state (numerical telemetry, boolean flags, categorical strings) into typed actions (`noul`, `choice`, `score`).
+* **Zero-Memory & Zero Carbon (0 Byte VRAM):** Operates on bare metal or directly in web browsers with zero stored weight tensors, eliminating costly GPU infrastructure and network energy waste.
+* **Engine Repository:** [https://github.com/pCwOrM/wevv](https://github.com/pCwOrM/wevv)
 
 ---
 

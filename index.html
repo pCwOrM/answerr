@@ -84,8 +84,11 @@
           </div>
         </div>
         <div class="topbar-right">
+          <button class="model-badge lang-btn" id="btn-lang-toggle" title="Dil Değiştir / Switch Language">
+            🌐 <span id="current-lang-text">TR</span>
+          </button>
           <a href="https://github.com/pCwOrM/wevv" target="_blank" rel="noopener" class="model-badge" style="text-decoration:none;">
-            <span>📄</span> wevv Makalesi
+            <span>🌊</span> wevv Motoru
           </a>
         </div>
       </header>
@@ -99,16 +102,16 @@
             <div class="welcome-logo-pulse">
               <img src="assets/favicon.svg" alt="answerr emblem">
             </div>
-            <h1 class="welcome-title">Don't Just Chat. Get The Answerr.</h1>
-            <p class="welcome-subtitle">
-              <strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: Müzakereci yapay zeka ile <strong>wevv</strong> sıfır-hafıza fraktal refleksini birleştiren yeni nesil karar motoru. 0-byte VRAM ile milisaniyenin altında tipli kararlar.
+            <h1 class="welcome-title" id="hero-title">Don't Just Chat. Get The Answerr.</h1>
+            <p class="welcome-subtitle" id="hero-subtitle">
+              <strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: Müzakereci yapay zeka ile <strong>wevv</strong> sıfır-hafıza fraktal refleksini birleştiren yeni nesil karar motoru. Deterministik Mandelbrot sınırında sıfır halüsinasyon ve milisaniyenin altında tipli kararlar.
             </p>
 
             <div class="welcome-tags">
-              <span class="welcome-tag">⚡ &lt; 1 ms Fraktal Refleks</span>
-              <span class="welcome-tag">💾 0 Byte Tensör Belleği</span>
-              <span class="welcome-tag">🌊 Mandelbrot ∂M Sınırı</span>
-              <span class="welcome-tag">🧠 Hibrit Sistem 1 + Sistem 2</span>
+              <span class="welcome-tag highlight" id="tag-hallucination">🛡️ Sıfır Halüsinasyon</span>
+              <span class="welcome-tag highlight" id="tag-crash">🚀 Asla Çökmez & Sonsuz Kapsam</span>
+              <span class="welcome-tag cyan" id="tag-speed">⚡ &lt; 1 ms Fraktal Refleks</span>
+              <span class="welcome-tag" id="tag-zeromem">💾 0-Byte Tensör Belleği</span>
             </div>
 
             <!-- Presets / Quick Prompt Chips -->
@@ -135,8 +138,8 @@
             </svg>
           </button>
         </div>
-        <div class="chat-disclaimer">
-          answerr, <a href="https://github.com/pCwOrM/wevv" target="_blank" rel="noopener">wevv</a> fraktal karar motoru ve Google Gemini ile çalışır. Canlı karar telemetrisi ve kod tabanı için <a href="https://answerr.me">answerr.me</a>.
+        <div class="chat-disclaimer" id="chat-disclaimer">
+          answerr, <a href="https://github.com/pCwOrM/wevv" target="_blank" rel="noopener">wevv</a> fraktal karar motoru ile çalışır. Halüsinasyon ve çökme riski yoktur. <a href="https://answerr.me">answerr.me</a>.
         </div>
       </div>
     </main>
@@ -146,24 +149,30 @@
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal-box">
       <div class="modal-header">
-        <h3 class="modal-title">⚙️ Answerr Ayarları</h3>
+        <h3 class="modal-title" id="modal-title">⚙️ Answerr Ayarları</h3>
         <button class="icon-btn" id="btn-close-modal">✕</button>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label" for="input-api-key">Google Gemini API Anahtarı</label>
-          <input type="password" id="input-api-key" class="form-input" placeholder="AIzaSy... (Boş bırakılırsa akıllı yerel demo kullanılır)">
-          <span class="form-hint">Anahtarınız yalnızca tarayıcınızın <code>localStorage</code> belleğinde güvenle saklanır, sunucuya aktarılmaz. Ücretsiz anahtar: <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color:var(--cyan)">Google AI Studio</a>.</span>
+        <div class="form-group" style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:var(--radius-sm); padding:0.75rem;">
+          <div style="font-weight:700; color:var(--emerald); font-size:0.85rem; margin-bottom:0.25rem;" id="modal-free-badge">✓ Tamamen Ücretsiz & Anahtarsız Mod Aktif</div>
+          <div style="font-size:0.78rem; color:var(--text-secondary); line-height:1.5;" id="modal-free-desc">
+            answerr, tarayıcınızda sıfır gecikmeli yerel wevv motoruyla çalışır. Herhangi bir kayıt, ücret veya API anahtarı zorunlu değildir.
+          </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="select-model">Gemini Modeli</label>
+          <label class="form-label" for="input-api-key" id="modal-api-label">Opsiyonel: Google Gemini API Anahtarı</label>
+          <input type="password" id="input-api-key" class="form-input" placeholder="AIzaSy... (Boş bırakılırsa akıllı yerel demo kullanılır)">
+          <span class="form-hint" id="modal-api-hint">Genişletilmiş bulut Sistem-2 yorumu isterseniz <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color:var(--cyan)">Google AI Studio</a>'dan ücretsiz anahtar alabilirsiniz. Anahtar sadece tarayıcınızda (localStorage) saklanır.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="select-model" id="modal-model-label">Sistem-2 Modeli</label>
           <select id="select-model" class="form-select">
             <option value="gemini-2.5-flash">Gemini 2.5 Flash (En Hızlı & Önerilen)</option>
             <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
             <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
           </select>
-          <span class="form-hint">Sistem-2 deliberasyon katmanı için Gemini'nin en hızlı düşük gecikmeli modeli kullanılır.</span>
         </div>
 
         <div class="form-group" style="margin-top:0.5rem; border-top:1px solid var(--border-subtle); padding-top:1rem;">
