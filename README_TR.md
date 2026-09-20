@@ -59,7 +59,7 @@ uvicorn server.main:app --reload --port 8000
 ## 🌐 Canlı Üretim REST API (Sıfır-VRAM Refleks Motoru)
 
 Answerr, canlı sunucu üzerinde koşan, milisaniyenin altında kararlar üreten bir REST API servisi sunar:
-* **API Ana Adresi:** `https://api.answerr.me:4431` (Ayna: `https://mechsrv.itouch.fi:4431`)
+* **API Ana Adresi:** `https://api.answerr.me:4431`
 
 ### 1. Sağlık ve Sıfır-VRAM Durumu
 ```bash

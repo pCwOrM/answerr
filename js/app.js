@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Telemetry Dispatcher to mechsrv.itouch.fi
+  // Telemetry Dispatcher to api.answerr.me
   async function dispatchWebTelemetry(wevvResult, prompt, stateData) {
     try {
       const token = await getRecaptchaToken("answerr_chat");
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         latency_ms: wevvResult.latencyMs
       };
 
-      fetch("https://mechsrv.itouch.fi:4431/wevv/telemetry", {
+      fetch("https://api.answerr.me:4431/wevv/telemetry", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -465,7 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
         [questionObj.key || 'decision']: questionObj
       });
 
-      // Dispatch Telemetry with Google reCAPTCHA v3 asynchronously to mechsrv.itouch.fi
+      // Dispatch Telemetry with Google reCAPTCHA v3 asynchronously to api.answerr.me
       dispatchWebTelemetry(wevvResult, prompt, stateData);
 
       // Step 3: System-2 Commentary Synthesis

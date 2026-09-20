@@ -99,7 +99,7 @@ Open `http://localhost:8000`.
 ## 🌐 Live Production REST API (Zero-VRAM Reflex)
 
 Answerr provides a high-throughput, sub-millisecond REST API hosted on production infrastructure with zero-downtime dual-domain support:
-* **API Base URL:** `https://api.answerr.me:4431` (Mirror: `https://mechsrv.itouch.fi:4431`)
+* **API Base URL:** `https://api.answerr.me:4431`
 
 ### 1. Health & Telemetry Benchmark
 ```bash
