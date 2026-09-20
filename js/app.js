@@ -655,11 +655,56 @@ License                 : MIT License (%100 Free & Open Source)
 
     const modelName = commentaryResult.source === 'gemini' ? (commentaryResult.model || 'Gemini Flash') : 'wevv-native';
 
+    const stateObj = stateData?.state || {};
+    const questionObj = stateData?.question || {};
+    const qType = (questionObj.type || 'noul').toUpperCase();
+    const qKey = questionObj.key || 'decision';
+    const qInstr = questionObj.instructions || '';
+
+    // Generate state parameter chips
+    let stateChipsHtml = '';
+    for (const [k, v] of Object.entries(stateObj)) {
+      stateChipsHtml += `<span class="spec-chip"><span class="k">${escapeHtml(k)}:</span> <span class="v">${escapeHtml(String(v))}</span></span>`;
+    }
+    if (!stateChipsHtml) {
+      stateChipsHtml = `<span style="font-size:0.75rem; color:var(--text-muted);">${isTr ? 'Varsayılan durum vektörü uygulandı.' : 'Default state vector applied.'}</span>`;
+    }
+
+    const specHeaderTitle = isTr
+      ? '📐 wevv Formatına Dönüştürülen Soru & Durum Matrisi'
+      : '📐 Formatted wevv Input Specification & State Vector';
+
+    const detailsSummary = isTr
+      ? '🔍 wevv Ham JSON Yükünü İncele (Raw Payload)'
+      : '🔍 View Raw wevv JSON Payload';
+
+    const rawJsonStr = JSON.stringify({ state: stateObj, question: questionObj }, null, 2);
+
+    const specBoxHtml = `
+      <div class="wevv-spec-box">
+        <div class="spec-header">
+          <span>${specHeaderTitle}</span>
+          <span class="spec-type-tag">${qType} (${qKey})</span>
+        </div>
+        <div style="font-size:0.8rem; color:var(--text-main); margin-bottom: 0.2rem;">
+          <span style="color:var(--text-muted); font-size:0.75rem;">${isTr ? 'Soru Talimatı:' : 'Instruction:'}</span> <em>"${escapeHtml(qInstr)}"</em>
+        </div>
+        <div class="spec-state-grid">
+          ${stateChipsHtml}
+        </div>
+        <details class="spec-details">
+          <summary>${detailsSummary}</summary>
+          <pre class="spec-json-pre"><code>${escapeHtml(rawJsonStr)}</code></pre>
+        </details>
+      </div>
+    `;
+
     card.innerHTML = `
       <div class="gemini-card-header">
         <span>💬 ${sourceLabel}</span>
         <span class="gemini-model-tag">${modelName}</span>
       </div>
+      ${specBoxHtml}
       <div class="gemini-text">${formatMarkdown(commentaryResult.text)}</div>
     `;
 
