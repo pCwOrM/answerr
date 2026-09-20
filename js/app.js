@@ -88,8 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
       heroTitle: "<span class=\"brand-text-answe\">answe</span><span class=\"brand-text-r1\">r</span><span class=\"brand-text-r2\">r</span>",
       heroMotto: "\"Doğal diyalog gerektiğinde <strong>answerr</strong>, mikrosaniyelik refleks gerektiğinde <strong>werr</strong>.\"",
       heroSubtitle: "Sıfır gecikmeli, 0-Byte VRAM fraktal omurilik karar çalışma alanı. Durum verinizi girin; Mandelbrot dinamikleriyle deterministik, tipli ve anlık karar üretin.",
-      tagSpeed: "⚡ < 0.5 ms Fraktal Refleks",
-      tagZeroMem: "💾 0-Byte Tensör Belleği",
+      tagSpeed: "⚡ < 0.5 ms Refleks",
+      tagZeroMem: "💾 0-Byte VRAM",
       tagHallucination: "🛡️ Sıfır Halüsinasyon",
       tagCrash: "🚀 Asla Çökmez & %100 Deterministik",
       inputPlaceholder: "Werr is the point? Bir durum girin ve anında karar werr (örn: 'Anonim IP 180 istek/dk, izin verilsin mi?')...",
@@ -132,6 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
       ctaCore: "werr Çekirdeğini Uygulamana Göm (pip install werr)",
       sendBtnTitle: "⚡ Karar Werr (Enter)",
       topbarHomeText: "Ana Sayfa",
+      topbarHomeTitle: "Ana Sayfaya Dön",
+      githubBadgeText: "werr Çekirdeği",
+      githubBadgeTitle: "werr Geometrik Refleks Çekirdeği",
       presetSectionLabel: "Örnek Senaryolar ile Başlayın:"
     },
     en: {
@@ -182,6 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
       ctaCore: "Embed werr Kernel in App (pip install werr)",
       sendBtnTitle: "⚡ Werr It! (Enter)",
       topbarHomeText: "Home",
+      topbarHomeTitle: "Back to Home",
+      githubBadgeText: "werr Core",
+      githubBadgeTitle: "werr Geometric Reflex Engine",
       presetSectionLabel: "Start with Curated Scenarios:"
     }
   };
@@ -206,6 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const activeModelBadgeEl = document.getElementById('active-model-badge');
   const btnLangToggleEl = document.getElementById('btn-lang-toggle');
   const currentLangTextEl = document.getElementById('current-lang-text');
+  const githubBadgeTextEl = document.getElementById('github-badge-text');
+  const githubBadgeLinkEl = document.getElementById('github-badge-link');
+  const topbarHomeLinkEl = document.getElementById('topbar-home-link');
 
   // Dynamic I18N Text Elements
   const heroTitleEl = document.getElementById('hero-title');
@@ -267,12 +276,18 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyLanguage(lang) {
     const t = I18N[lang] || I18N.tr;
     document.documentElement.lang = lang;
+    document.title = lang === 'tr'
+      ? "answerr | Karar ve Diyalog Çalışma Alanı (Workspace)"
+      : "answerr | Decision & Dialogue Workspace";
     if (currentLangTextEl) currentLangTextEl.textContent = toAsciiUpper(lang);
 
     if (newDecisionTextEl) newDecisionTextEl.textContent = t.newDecisionBtn;
     if (historyLabelEl) historyLabelEl.textContent = t.historyLabel;
     if (systemStatusTextEl && t.systemStatus) systemStatusTextEl.textContent = t.systemStatus;
     if (topbarHomeTextEl && t.topbarHomeText) topbarHomeTextEl.textContent = t.topbarHomeText;
+    if (topbarHomeLinkEl && t.topbarHomeTitle) topbarHomeLinkEl.title = t.topbarHomeTitle;
+    if (githubBadgeTextEl && t.githubBadgeText) githubBadgeTextEl.textContent = t.githubBadgeText;
+    if (githubBadgeLinkEl && t.githubBadgeTitle) githubBadgeLinkEl.title = t.githubBadgeTitle;
     if (presetSectionLabelEl && t.presetSectionLabel) presetSectionLabelEl.textContent = t.presetSectionLabel;
 
     if (btnOpenSidebarEl) {
