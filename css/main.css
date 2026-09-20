@@ -198,21 +198,42 @@ body {
 }
 
 .brand-logo-img {
-  width: 36px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
   object-fit: contain;
-  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.45));
 }
 
 .brand-title {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #38bdf8 0%, #c084fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-family: var(--font-display), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  display: inline-flex;
+  align-items: baseline;
+  user-select: none;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+.brand-title .brand-text-answe {
+  color: #f8fafc !important;
+  -webkit-text-fill-color: #f8fafc !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.brand-title .brand-text-r1 {
+  color: #38bdf8 !important;
+  -webkit-text-fill-color: #38bdf8 !important;
+  text-shadow: 0 0 14px rgba(56, 189, 248, 0.7);
+}
+
+.brand-title .brand-text-r2 {
+  color: #c084fc !important;
+  -webkit-text-fill-color: #c084fc !important;
+  text-shadow: 0 0 14px rgba(192, 132, 252, 0.7);
 }
 
 .btn-new-chat {
