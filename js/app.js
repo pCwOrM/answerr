@@ -221,10 +221,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function toAsciiUpper(str) {
+    if (!str) return '';
+    return String(str).toLocaleUpperCase('en-US');
+  }
+
   function applyLanguage(lang) {
     const t = I18N[lang] || I18N.tr;
     document.documentElement.lang = lang;
-    if (currentLangTextEl) currentLangTextEl.textContent = lang.toUpperCase();
+    if (currentLangTextEl) currentLangTextEl.textContent = toAsciiUpper(lang);
 
     if (heroTitleEl) heroTitleEl.innerHTML = t.heroTitle;
     if (heroSubtitleEl) heroSubtitleEl.innerHTML = t.heroSubtitle;
@@ -500,14 +505,14 @@ document.addEventListener('DOMContentLoaded', () => {
         : `<span class="kw">if not</span> response.<span class="fn">boolean</span>(<span class="str">"${ansKey}"</span>): <span class="fn">BLOCK_OR_QUARANTINE</span>(request)`;
     } else if (ans.type === 'choice') {
       verdictClass = 'routed';
-      verdictTitle = `${t.routed}: ${ans.choice.toUpperCase()}`;
+      verdictTitle = `${t.routed}: ${toAsciiUpper(ans.choice)}`;
       verdictSub = `${t.confidence}: %${(ans.confidence * 100).toFixed(0)}`;
-      smartCodeSnippet = `<span class="kw">match</span> response.<span class="fn">choice</span>(<span class="str">"${ansKey}"</span>): <span class="kw">case</span> <span class="str">"${ans.choice}"</span>: <span class="fn">ROUTE_TO_${ans.choice.toUpperCase()}</span>(payload)`;
+      smartCodeSnippet = `<span class="kw">match</span> response.<span class="fn">choice</span>(<span class="str">"${ansKey}"</span>): <span class="kw">case</span> <span class="str">"${ans.choice}"</span>: <span class="fn">ROUTE_TO_${toAsciiUpper(ans.choice)}</span>(payload)`;
     } else if (ans.type === 'score') {
       verdictClass = 'scored';
       verdictTitle = `${t.scored}: ${ans.score} / ${ans.scaleMax} (${ans.selectedLevel})`;
       verdictSub = `${t.confidence}: %${(ans.confidence * 100).toFixed(0)}`;
-      smartCodeSnippet = `<span class="kw">if</span> response.<span class="fn">score</span>(<span class="str">"${ansKey}"</span>) &lt; 1.5: <span class="fn">NORMAL_PIPELINE</span>() <span class="kw">else</span>: <span class="fn">TRIGGER_${(ans.selectedLevel || 'ALERT').toUpperCase()}</span>()`;
+      smartCodeSnippet = `<span class="kw">if</span> response.<span class="fn">score</span>(<span class="str">"${ansKey}"</span>) &lt; 1.5: <span class="fn">NORMAL_PIPELINE</span>() <span class="kw">else</span>: <span class="fn">TRIGGER_${toAsciiUpper(ans.selectedLevel || 'ALERT')}</span>()`;
     }
 
     const cxStr = result.coordinates.cx.toFixed(6);
@@ -619,7 +624,7 @@ Extracted State Data    : ${JSON.stringify(stateData.state || {}, null, 2)}
 
 [3] SYSTEM-ONE SYNTHESIZED DECISION
 --------------------------------------------------------------------------------
-Primitive Type          : ${ans.type.toUpperCase()}
+Primitive Type          : ${toAsciiUpper(ans.type)}
 Decision Output         : ${ans.type === 'noul' ? (ans.decision ? 'TRUE (ALLOWED)' : 'FALSE (DENIED)') : (ans.type === 'choice' ? ans.choice : ans.score)}
 Confidence              : ${(ans.confidence * 100).toFixed(1)}%
 Decision Latency        : ${wevvResult.latencyMs} ms (Sub-millisecond Reflex)
@@ -653,12 +658,12 @@ License                 : MIT License (%100 Free & Open Source)
       ? (isTr ? 'Gemini Flash (Bulut Sistem-2)' : 'Gemini Flash (Cloud System-2)')
       : (isTr ? 'Answerr Refleks Derleyicisi (Sıfır Halüsinasyon)' : 'Answerr Reflex Reasoner (Zero Hallucination)');
 
-    const modelName = commentaryResult.source === 'gemini' ? (commentaryResult.model || 'Gemini Flash') : 'wevv-native';
+    const modelName = commentaryResult.source === 'gemini' ? (commentaryResult.model || 'Gemini Flash') : 'WEVV-NATIVE';
 
     const stateObj = stateData?.state || {};
     const questionObj = stateData?.question || {};
-    const qType = (questionObj.type || 'noul').toUpperCase();
-    const qKey = questionObj.key || 'decision';
+    const qType = toAsciiUpper(questionObj.type || 'noul');
+    const qKey = toAsciiUpper(questionObj.key || 'decision');
     const qInstr = questionObj.instructions || '';
 
     // Generate state parameter chips
@@ -684,7 +689,7 @@ License                 : MIT License (%100 Free & Open Source)
       <div class="wevv-spec-box">
         <div class="spec-header">
           <span>${specHeaderTitle}</span>
-          <span class="spec-type-tag">${qType} (${qKey})</span>
+          <span class="spec-type-tag" lang="en">${qType} (${qKey})</span>
         </div>
         <div style="font-size:0.8rem; color:var(--text-main); margin-bottom: 0.2rem;">
           <span style="color:var(--text-muted); font-size:0.75rem;">${isTr ? 'Soru Talimatı:' : 'Instruction:'}</span> <em>"${escapeHtml(qInstr)}"</em>
@@ -701,8 +706,11 @@ License                 : MIT License (%100 Free & Open Source)
 
     card.innerHTML = `
       <div class="gemini-card-header">
-        <span>💬 ${sourceLabel}</span>
-        <span class="gemini-model-tag">${modelName}</span>
+        <div class="gemini-header-left">
+          <span>💬</span>
+          <span>${sourceLabel}</span>
+        </div>
+        <span class="gemini-model-tag" lang="en">${toAsciiUpper(modelName)}</span>
       </div>
       ${specBoxHtml}
       <div class="gemini-text">${formatMarkdown(commentaryResult.text)}</div>
@@ -823,8 +831,20 @@ License                 : MIT License (%100 Free & Open Source)
     }
   }
 
-  function scrollToBottom() {
-    chatScrollAreaEl.scrollTop = chatScrollAreaEl.scrollHeight;
+  function scrollToBottom(smooth = true) {
+    if (!chatScrollAreaEl) return;
+    requestAnimationFrame(() => {
+      chatScrollAreaEl.scrollTo({
+        top: chatScrollAreaEl.scrollHeight,
+        behavior: smooth ? 'smooth' : 'auto'
+      });
+      setTimeout(() => {
+        chatScrollAreaEl.scrollTo({
+          top: chatScrollAreaEl.scrollHeight,
+          behavior: 'smooth'
+        });
+      }, 140);
+    });
   }
 
   function generateId() {
@@ -843,8 +863,20 @@ License                 : MIT License (%100 Free & Open Source)
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
       .replace(/`([^`]+)`/g, '<code style="background:rgba(255,255,255,0.08);padding:0.15rem 0.4rem;border-radius:4px;font-family:var(--font-mono);font-size:0.88em;color:var(--cyan);">$1</code>')
+      .replace(/\$([^\$]+)\$/g, '<span class="math-badge" lang="en"><code>$1</code></span>')
       .replace(/\n\n/g, '<br><br>')
       .replace(/\n/g, '<br>');
+
+    // Format zero hallucination guarantee callout banner
+    formatted = formatted.replace(
+      /(?:\(|&lt;|\*)\s*(?:🛡️|&#128737;)?\s*wevv\s+(?:Sıfır-Halüsinasyon Garantisi|Zero-Hallucination Guarantee):?\s*([^)*]+)(?:\)|\*)/gi,
+      (match, desc) => {
+        const isTr = currentLang === 'tr';
+        const title = isTr ? 'wevv Sıfır-Halüsinasyon Garantisi' : 'wevv Zero-Hallucination Guarantee';
+        return `<div class="zero-hallucination-banner"><span class="zh-shield">🛡️</span><span><strong>${title}:</strong> ${desc.trim()}</span></div>`;
+      }
+    );
+
     return formatted;
   }
 });
