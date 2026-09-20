@@ -201,8 +201,8 @@
 
 .welcome-hero.clean-workspace {
   padding: 0.5rem 1rem 0;
-  max-width: 620px;
-  margin: auto auto 140px auto;
+  max-width: 640px;
+  margin: auto auto 120px auto;
 }
 
 .welcome-hero.clean-workspace .welcome-title {
@@ -248,13 +248,13 @@
   text-align: center;
 }
 
-/* Preset Cards Grid (Compact Prompt Pills in 2x2 Grid) */
+/* Preset Cards Grid (Compact Prompt Pills in 2-Column 3x2 Grid) */
 .preset-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.55rem;
   width: 100%;
-  max-width: 600px;
+  max-width: 620px;
 }
 
 @media (max-width: 640px) {
@@ -267,7 +267,7 @@
   background: rgba(15, 20, 34, 0.75);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: 0.55rem 0.85rem;
+  padding: 0.5rem 0.75rem;
   text-align: left;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1067,8 +1067,8 @@
 
   /* Welcome Screen Mobile Scale */
   .welcome-hero.clean-workspace {
-    margin: 0.5rem auto 130px auto;
-    padding: 0.5rem 0.5rem 0;
+    margin: 0.4rem auto 130px auto;
+    padding: 0.4rem 0.5rem 0;
   }
   .welcome-logo-pulse {
     width: 58px;
@@ -1098,11 +1098,11 @@
   }
   .preset-grid {
     grid-template-columns: 1fr;
-    gap: 0.45rem;
+    gap: 0.4rem;
     max-width: 100%;
   }
   .preset-card {
-    padding: 0.5rem 0.75rem;
+    padding: 0.45rem 0.7rem;
   }
 
   /* Scroll Area and Messages */

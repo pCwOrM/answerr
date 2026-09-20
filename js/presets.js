@@ -184,6 +184,44 @@ const SCENARIO_PRESETS = [
         falseAction: 'Sensor readings within tolerance; no emergency action required, robot arm continues standard cycle.'
       }
     }
+  },
+  {
+    id: 'game-ai-combat',
+    category: 'Game AI',
+    categoryTr: 'Oyun Yapay Zekası',
+    icon: '🎯',
+    title: 'NPC Tactical Combat Reflex',
+    titleTr: 'NPC Taktik Savaş Refleksi',
+    prompt: 'NPC sağlık durumu %22, kalan mühimmat %14, düşman mesafesi 6 metre ve doğrudan ateş altında. Agresif taarruza devam edilsin mi, yoksa taktiksel geri çekilip siper mi alınsın?',
+    promptEn: 'NPC unit health 22%, ammo 14%, enemy distance 6m under heavy fire. Should aggressive assault continue, or execute tactical retreat to cover?',
+    state: {
+      health_pct: 22,
+      ammo_pct: 14,
+      enemy_distance_m: 6,
+      under_fire: true,
+      cover_available: true
+    },
+    question: {
+      key: 'continue_assault',
+      type: 'noul',
+      instructionsTr: 'Agresif taarruza devam edilsin mi?',
+      instructionsEn: 'Should aggressive assault continue?',
+      threshold: 0.5
+    },
+    interpretation: {
+      tr: {
+        trueVerdict: 'SALDIRIYA DEVAM ET (TRUE)',
+        falseVerdict: 'SİPERE GEÇ / GERİ ÇEKİL (FALSE)',
+        trueAction: 'Savaş parametreleri taarruz için yeterli görüldü; birim saldırı pozisyonunu koruyor.',
+        falseAction: 'Kritik düşük sağlık (%22) ve mühimmat (%14) tespit edildi! Fraktal omurilik refleksi birimi derhal en yakın korunaklı siper arkasına çekti.'
+      },
+      en: {
+        trueVerdict: 'CONTINUE ASSAULT (TRUE)',
+        falseVerdict: 'TACTICAL RETREAT TO COVER (FALSE)',
+        trueAction: 'Combat parameters deemed sufficient for offensive posture; unit maintains attack vector.',
+        falseAction: 'Critical low health (22%) and depleted ammo (14%) detected! Fractal spinal reflex executes immediate dash to nearest defensive cover.'
+      }
+    }
   }
 ];
 
