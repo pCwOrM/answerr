@@ -27,13 +27,26 @@
 
 ## 🏛️ Four-Dimensional Semantic Framework & Terminology
 
-```mermaid
-graph TD
-    WERR["werr (Decision & Reflex Core)"]
-    WERR --> DYN["1. Mathematical Dynamics<br/>Waves & Errors (W-ERR)"]
-    WERR --> TR["2. Turkish Imperative Command<br/>'Ver!' (Cevap werr, Karar werr)"]
-    WERR --> EN["3. English Spatial Search<br/>'Where' (Werr is the point?)"]
-    WERR --> DUAL["4. Dual-Core Resonance<br/>Shared 'rr' Genetics (werr & answerr)"]
+```
+                      ┌───────────────────────────────────────────────┐
+                      │         werr (Decision & Reflex Core)         │
+                      │    0-Byte VRAM • Fractal Reflex Resonator     │
+                      └───────┬──────────────┬─────────────┬──────────┘
+                              │              │             │
+        ┌─────────────────────┘              │             └─────────────────────┐
+        ▼                                    ▼                                   ▼
+┌──────────────────────────────┐ ┌──────────────────────────────┐ ┌──────────────────────────────┐
+│  1. Mathematical Dynamics    │ │  2. Turkish Imperative       │ │  3. English Spatial Search   │
+│  Waves & Errors (W-ERR)      │ │  "Ver!" (Karar / Cevap werr) │ │  "Where" (Werr is the point?)│
+└──────────────┬───────────────┘ └──────────────┬───────────────┘ └──────────────┬───────────────┘
+               │                                │                                │
+               └──────────────────────────────┐ │ ┌──────────────────────────────┘
+                                              ▼ ▼ ▼
+                               ┌──────────────────────────────────┐
+                               │   4. Dual-Core Period Resonance  │
+                               │   Shared 'rr' Genetic Bifurcation│
+                               │      (werr  &  answerr)          │
+                               └──────────────────────────────────┘
 ```
 
 ### 1. 🇬🇧 English Spatial & Phonetic Root: *"Where"* $\to$ `werr`
