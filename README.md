@@ -96,6 +96,74 @@ Open `http://localhost:8000`.
 
 ---
 
+## 🌐 Live Production REST API (Zero-VRAM Reflex)
+
+Answerr provides a high-throughput, sub-millisecond REST API hosted on production infrastructure with zero-downtime dual-domain support:
+* **API Base URL:** `https://api.answerr.me:4431` (Mirror: `https://mechsrv.itouch.fi:4431`)
+
+### 1. Health & Telemetry Benchmark
+```bash
+curl -k https://api.answerr.me:4431/v1/health
+```
+Response:
+```json
+{
+  "status": "healthy",
+  "engine": "wevv-reflex",
+  "version": "0.2.2",
+  "vram_bytes": 0,
+  "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
+  "latency_benchmark_ms": 6.72
+}
+```
+
+### 2. Instant Reflex Decision (Single Question)
+```bash
+curl -k -X POST https://api.answerr.me:4431/v1/decide \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "Allow privileged API transaction?",
+    "state": {"user_role": "admin", "failed_attempts": 0, "req_frequency": 1.2}
+  }'
+```
+Response:
+```json
+{
+  "status": "success",
+  "decision": true,
+  "label": "ALLOWED",
+  "answers": {
+    "primary_decision": {"type": "noul", "boolean": true, "noul": 0.9999, "confidence": 0.9998}
+  },
+  "telemetry": {
+    "engine_latency_ms": 11.13,
+    "vram_bytes": 0
+  }
+}
+```
+
+### 3. OpenAI-Compatible Adapter (/v1/chat/completions)
+Seamlessly drop Answerr into LangChain, LlamaIndex, or the official OpenAI Python SDK:
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.answerr.me:4431/v1",
+    api_key="none"
+)
+
+response = client.chat.completions.create(
+    model="wevv-reflex-v1",
+    messages=[
+        {"role": "user", "content": "Admin user executing safe query with 0 errors"}
+    ]
+)
+print(response.choices[0].message.content)
+```
+
+---
+
+
 ## 🛡️ Core Advantages of wevv & answerr
 
 * **Zero Hallucination:** Traditional neural networks hallucinate because they sample from probabilistic token distributions. `wevv` evaluates deterministic Mandelbrot boundary escape dynamics—yielding 100% reproducible, mathematically grounded verdicts.
