@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
       navLaunchApp: "Karar Motorunu Başlat",
       navLaunchAppMobile: "Karar Motoru",
       badgePill: "0-Byte VRAM • < 0.5 ms Fraktal Omurilik Refleksi",
-      heroHeadline: "Sadece Sohbet Etme.<br>Karar Werr!",
+      heroHeadline: "Sohbet Etme.<br>Karar Werr!",
       heroSubhead: "Yazılımlar, API'lar ve otonom sistemler için dünyanın ilk <strong>Sistem-1</strong> fraktal karar motoru. Deterministik Mandelbrot sınır dinamiğiyle mikrosaniyede tip-güvenli kararlar üretin; halüsinasyon riskini sıfırlayın.",
       heroCtaPrimary: "⚡ Hemen Başla (Ücretsiz & Keyless)",
       heroCtaSecondary: "📦 pip install werr (GitHub)",
