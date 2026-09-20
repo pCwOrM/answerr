@@ -49,6 +49,7 @@
   color: var(--cyan);
 }
 
+.werr-badge,
 .wevv-badge {
   display: flex;
   align-items: center;
@@ -354,7 +355,8 @@
   to { transform: rotate(360deg); }
 }
 
-/* wevv System-1 Telemetry HUD Card */
+/* werr & wevv System-1 Telemetry HUD Card */
+.werr-hud-card,
 .wevv-hud-card {
   background: linear-gradient(145deg, #090e1a 0%, #0d1324 100%);
   border: 1px solid rgba(56, 189, 248, 0.3);
@@ -639,7 +641,8 @@
   font-weight: 600;
 }
 
-/* wevv Input Specification Box (Converted Question & State) */
+/* werr & wevv Input Specification Box (Converted Question & State) */
+.werr-spec-box,
 .wevv-spec-box {
   background: rgba(5, 8, 14, 0.92);
   border: 1px solid rgba(56, 189, 248, 0.25);

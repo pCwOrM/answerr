@@ -1,7 +1,7 @@
 {
   "name": "answerr",
   "version": "0.1.0",
-  "description": "The Cognitive Bridge between System-Two Deliberative AI (Gemini) and System-One Zero-Memory Fractal Intuition (wevv)",
+  "description": "The Cognitive Bridge between System-Two Deliberative AI (Gemini) and System-One Zero-Memory Fractal Intuition (werr)",
   "homepage": "https://answerr.me",
   "repository": {
     "type": "git",
@@ -9,6 +9,7 @@
   },
   "keywords": [
     "answerr",
+    "werr",
     "wevv",
     "gemini",
     "gemini-flash",

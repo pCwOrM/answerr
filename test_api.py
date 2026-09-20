@@ -2,6 +2,11 @@ import urllib.request
 import json
 import ssl
 import time
+import sys
+
+# Ensure UTF-8 output on all platforms
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
@@ -63,7 +68,7 @@ if __name__ == "__main__":
         }
     )
 
-    # 4. Multi-Question Typed Decision (Jev / System-1 Specification)
+    # 4. Multi-Question Typed Decision (werr / System-1 Specification)
     test_api(
         "Multi-Question Typed Decision (Noul + Choice + Score)",
         "https://api.answerr.me:4431/v1/decide",
@@ -82,11 +87,10 @@ if __name__ == "__main__":
         "OpenAI SDK Compatible Adapter (/v1/chat/completions)",
         "https://api.answerr.me:4431/v1/chat/completions",
         payload={
-            "model": "wevv-reflex-v1",
+            "model": "werr-reflex-v1",
             "messages": [
                 {"role": "system", "content": "You are a reflex decision engine."},
                 {"role": "user", "content": "Member user attempting 1 payment with 0 errors."}
             ]
         }
     )
-

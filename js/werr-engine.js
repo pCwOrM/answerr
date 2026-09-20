@@ -1,5 +1,6 @@
 /**
- * wevv-engine.js - Machine-Native Zero-Memory System-One Decision Engine
+ * werr-engine.js - Machine-Native Zero-Memory System-One Decision Engine
+ * (Wave & Error Reflex Resonator - A.N.S.W.E.R.R.)
  * Client-Side JavaScript implementation for answerr.me
  * Derived from: "Universal Fractal Natural Language Decision Map" (Dağlı et al., 2026)
  *
@@ -7,7 +8,7 @@
  * with ZERO stored weight tensors (0 Bytes VRAM) from a 24-byte seed on dM.
  */
 
-class WevvEngine {
+class WerrEngine {
   constructor(options = {}) {
     // 24-byte coordinate triplet (cx, cy, zoom) along the chaotic boundary of the Mandelbrot set
     this.baseCx = options.cx ?? -0.743643887037158704752191506114774;
@@ -369,7 +370,7 @@ class WevvEngine {
     const elapsedMs = performance.now() - startTime;
 
     return {
-      model: 'wevv-0.1.0-fractal',
+      model: 'werr-0.3.0-fractal',
       answers,
       latencyMs: Math.round(elapsedMs * 100) / 100,
       memoryTensorBytes: 0,
@@ -444,12 +445,14 @@ class WevvEngine {
   }
 }
 
+// Backward compatibility aliases
+const WevvEngine = WerrEngine;
+
 // Export for browser and ES modules
-const WerrEngine = WevvEngine;
 if (typeof window !== 'undefined') {
-  window.WevvEngine = WevvEngine;
   window.WerrEngine = WerrEngine;
+  window.WevvEngine = WevvEngine;
 }
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { WevvEngine, WerrEngine };
+  module.exports = { WerrEngine, WevvEngine };
 }
