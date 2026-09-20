@@ -14,7 +14,7 @@
 * **Adaptive (Uyarlanabilir):** Üstel hareketli ortalama (EMA $\alpha=0.03$) ve dinamik eşikleme yeteneği ile çalışma zamanında esnek adaptasyon.
 * **Non-tensor (Tensörsüz):** 0-VRAM devrimini doğrudan ismin kalbine çakar; GPU ağırlığı depolamadan çıplak donanımda veya tarayıcıda çalışır.
 * **Signal (Sinyal):** Gelen operasyonel durum (state) ve telemetrinin dinamik bir sinyal dalgası olduğunu vurgular.
-* **Wave & Error (Dalga ve Hata):** wevv motorunun dalga yayılımı ve Mandelbrot kaotik sınırındaki ($\partial M$) hata navigasyonunun matematiksel özünü taşır.
+* **Wave & Error (Dalga ve Hata):** werr motorunun dalga yayılımı ve Mandelbrot kaotik sınırındaki ($\partial M$) hata navigasyonunun matematiksel özünü taşır.
 * **Reflex Resonator (Refleks Rezonatörü):** Hem omurilik refleksini hem de akustik faz rezonansını (tınlamayı) tek hamlede ifade eder.
 
 🌐 **Canlı Web Platformu:** [https://answerr.me](https://answerr.me)  
@@ -36,10 +36,10 @@ Böylece basit bir onay veya mikroservis yönlendirmesi için devasa modellerin 
 ## ⚡ Bilişsel Mimari ve Akış
 
 1. **Soru Girişi:** Kullanıcı sayfanın ortasındaki modern karar girdi kutusuna operasyonel senaryosunu yazar (örn: *"Anonim IP'den dakikada 180 istek geliyor, bu istek engellensin mi?"*).
-2. **Sistem-2 Derleme:** Gemini Flash, soruyu analiz ederek wevv'in anlayacağı parametrelere dönüştürür:
+2. **Sistem-2 Derleme:** Gemini Flash, soruyu analiz ederek werr'in anlayacağı parametrelere dönüştürür:
    - `state`: `{ user_role: "guest", req_frequency: 180, auth_status: false }`
    - `question`: `noul` (Boolean karar)
-3. **Sistem-1 Refleksi (wevv):** wevv motoru tohum koordinatını sarsar, 4-Kuadran ($Q_1-Q_4$) kaçış dinamiklerini hesaplar ve milisaniyenin altında sonucu döndürür:
+3. **Sistem-1 Refleksi (wevv):** werr motoru tohum koordinatını sarsar, 4-Kuadran ($Q_1-Q_4$) kaçış dinamiklerini hesaplar ve milisaniyenin altında sonucu döndürür:
    - `decision: false` (İstek reddedildi)
    - `noul: 0.08`, `güven: %84`
    - `gecikme: 0.82 ms`, `VRAM: 0 Bayt`
@@ -78,7 +78,7 @@ Yanıt:
 ```json
 {
   "status": "healthy",
-  "engine": "wevv-reflex",
+  "engine": "werr-reflex",
   "version": "0.2.2",
   "vram_bytes": 0,
   "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
@@ -122,7 +122,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="wevv-reflex-v1",
+    model="werr-reflex-v1",
     messages=[
         {"role": "user", "content": "Admin kullanici 0 hata ile istek yapti"}
     ]
@@ -133,13 +133,13 @@ print(response.choices[0].message.content)
 ---
 
 
-## 🛡️ wevv ve answerr Temel Üstünlükleri
+## 🛡️ werr ve answerr Temel Üstünlükleri
 
-* **Sıfır Halüsinasyon (Zero Hallucination):** Geleneksel dil modelleri olasılıksal belirteç (token) örneklemesi yaptığı için uydurma üretir. `wevv`, deterministik Mandelbrot kaçış matematiği ile çalıştığından %100 tekrarlanabilir, tutarlı ve halüsinasyonsuz kararlar verir.
+* **Sıfır Halüsinasyon (Zero Hallucination):** Geleneksel dil modelleri olasılıksal belirteç (token) örneklemesi yaptığı için uydurma üretir. `werr`, deterministik Mandelbrot kaçış matematiği ile çalıştığından %100 tekrarlanabilir, tutarlı ve halüsinasyonsuz kararlar verir.
 * **Asla Çökmez / Sıfır Hata (Zero Crash):** Dağılım dışı (OOD) ya da saldırı amaçlı prompt enjeksiyonlarında dahi kaotik rezonatör sinyali sönümler ve sistemi kilitlemeden geçerli tipli bir yanıt üretir.
 * **Evrensel Kapsam (Universal State Coverage):** Her türlü operasyonel durum verisini (rakamlar, metinler, boolean bayraklar) anında modüle edip kesin çıktılara (`noul`, `choice`, `score`) dönüştürür.
 * **Sıfır Bellek & Sıfır Maliyet (0 Byte VRAM):** Tensör ağırlığı taşımadığından dev GPU sunucularına ihtiyaç duymaz; doğrudan tarayıcıda veya en hafif işlemcide < 1 ms hızında çalışır.
-* **Çekirdek Motor Reposu:** [https://github.com/pCwOrM/wevv](https://github.com/pCwOrM/wevv)
+* **Çekirdek Motor Reposu:** [https://github.com/pCwOrM/werr](https://github.com/pCwOrM/werr)
 
 ---
 

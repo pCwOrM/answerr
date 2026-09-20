@@ -39,7 +39,7 @@ class GeminiBridge {
 
   /**
    * System-Two Step 1: Transforms unstructured natural language prompt into
-   * typed wevv parameters (state object, question type, instructions, criteria).
+   * typed werr parameters (state object, question type, instructions, criteria).
    */
   async transformPromptToWevv(userPrompt) {
     const apiKey = this.getApiKey();
@@ -50,10 +50,10 @@ class GeminiBridge {
     }
 
     const model = this.getModel();
-    const systemInstruction = `You are the System-Two cognitive compiler for the 'wevv' Zero-Memory Fractal Decision Engine.
-Your role: Given a natural language scenario, question, or system triage prompt, you extract the underlying program state and formulate a typed wevv decision query.
+    const systemInstruction = `You are the System-Two cognitive compiler for the 'werr' Zero-Memory Fractal Decision Engine.
+Your role: Given a natural language scenario, question, or system triage prompt, you extract the underlying program state and formulate a typed werr decision query.
 
-wevv supports three typed primitives:
+werr supports three typed primitives:
 1. 'noul': Boolean probability decision (e.g. allow/deny, safe/unsafe, valid/invalid).
 2. 'choice': Categorical routing (e.g. direct_api vs rate_limiter vs sandbox vs drop_packet).
 3. 'score': Ordinal rating / severity assessment (e.g. Low, Medium, High, Critical).
@@ -80,7 +80,7 @@ Respond ONLY with a valid JSON object with the following schema:
       contents: [
         {
           role: 'user',
-          parts: [{ text: `Translate the following user inquiry into a formal wevv System-One decision specification:\n\n"${userPrompt}"` }]
+          parts: [{ text: `Translate the following user inquiry into a formal werr System-One decision specification:\n\n"${userPrompt}"` }]
         }
       ],
       systemInstruction: {
@@ -123,7 +123,7 @@ Respond ONLY with a valid JSON object with the following schema:
   }
 
   /**
-   * System-Two Step 2: Interprets the mathematical output of wevv and produces
+   * System-Two Step 2: Interprets the mathematical output of werr and produces
    * natural language commentary and recommended actions.
    */
   async interpretDecision(userPrompt, wevvResult, stateData) {
@@ -138,7 +138,7 @@ Respond ONLY with a valid JSON object with the following schema:
 
     const promptText = `User Query: "${userPrompt}"
 Extracted State: ${JSON.stringify(stateData?.state || {})}
-wevv System-One Deterministic Result:
+werr System-One Deterministic Result:
 - Model: ${wevvResult.model}
 - Latency: ${wevvResult.latencyMs} ms
 - Tensor Memory: 0 Bytes VRAM (True Zero-Memory Fractal Dynamics)
@@ -220,7 +220,7 @@ Keep the tone concise, scientific, and professional.`;
           return {
             success: true,
             source: 'local_heuristic',
-            model: 'wevv-preset-compiler',
+            model: 'werr-preset-compiler',
             presetId: preset.id,
             data: {
               presetId: preset.id,
@@ -441,8 +441,8 @@ Keep the tone concise, scientific, and professional.`;
       }
 
       logic = isTurkish
-        ? `wevv motoru 24 baytlık $(c_x, c_y)$ tohumunu Mandelbrot sınırında modüle etti. Kaçış dinamiği (${wevvResult.latencyMs} ms) ve kuadran enerjisi hesaplanarak ${ans.decision ? 'pozitif kararlılık/aksiyon alanı doğrulandı' : 'hata/güvenlik toleransı aşılarak negatif karar üretildi'}.`
-        : `The wevv engine perturbed the 24-byte boundary seed along dM. Escape dynamics (${wevvResult.latencyMs} ms) indicated ${ans.decision ? 'positive action manifold confirmed' : 'divergence crossing safety tolerance'}.`;
+        ? `werr motoru 24 baytlık $(c_x, c_y)$ tohumunu Mandelbrot sınırında modüle etti. Kaçış dinamiği (${wevvResult.latencyMs} ms) ve kuadran enerjisi hesaplanarak ${ans.decision ? 'pozitif kararlılık/aksiyon alanı doğrulandı' : 'hata/güvenlik toleransı aşılarak negatif karar üretildi'}.`
+        : `The werr engine perturbed the 24-byte boundary seed along dM. Escape dynamics (${wevvResult.latencyMs} ms) indicated ${ans.decision ? 'positive action manifold confirmed' : 'divergence crossing safety tolerance'}.`;
 
     } else if (ans.type === 'choice') {
       verdict = isTurkish
@@ -472,8 +472,8 @@ Keep the tone concise, scientific, and professional.`;
     }
 
     const text = isTurkish
-      ? `${verdict}\n\n**Sistem-1 Fraktal Refleksi:** ${logic}\n\n**Önerilen Operasyonel Aksiyon:** ${action}\n\n*(🛡️ wevv Sıfır-Halüsinasyon Garantisi: Karar, Mandelbrot fraktal kaçış geometrisi üzerinden deterministik olarak üretilmiştir.)*`
-      : `${verdict}\n\n**System-1 Fractal Reflex:** ${logic}\n\n**Recommended Operational Action:** ${action}\n\n*(🛡️ wevv Zero-Hallucination Guarantee: Decision derived deterministically via Mandelbrot fractal escape geometry.)*`;
+      ? `${verdict}\n\n**Sistem-1 Fraktal Refleksi:** ${logic}\n\n**Önerilen Operasyonel Aksiyon:** ${action}\n\n*(🛡️ werr Sıfır-Halüsinasyon Garantisi: Karar, Mandelbrot fraktal kaçış geometrisi üzerinden deterministik olarak üretilmiştir.)*`
+      : `${verdict}\n\n**System-1 Fractal Reflex:** ${logic}\n\n**Recommended Operational Action:** ${action}\n\n*(🛡️ werr Zero-Hallucination Guarantee: Decision derived deterministically via Mandelbrot fractal escape geometry.)*`;
 
     return {
       success: true,
