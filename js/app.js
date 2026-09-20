@@ -106,7 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modalClearHistory: "🗑️ Tüm Karar Geçmişini Temizle",
       modalCancel: "İptal",
       modalSave: "Ayarları Kaydet",
-      keylessBadge: "⚡ werr Sistem-1 (Ücretsiz / Keyless)",
+      keylessBadge: "werr Sistem-1",
+      keylessBadgeTag: "(Keyless)",
       step1: "1/3 Durum matrisi ve tipli soru ayrıştırılıyor (System-2 State)...",
       step2: "2/3 werr: Mandelbrot ∂M kaçış dinamiği hesaplanıyor (< 0.5ms)...",
       step3: "3/3 Sistem-1 telemetrisi ve karar doğrulanıyor...",
@@ -155,7 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
       modalClearHistory: "🗑️ Clear All Decision Records",
       modalCancel: "Cancel",
       modalSave: "Save Settings",
-      keylessBadge: "⚡ werr System-1 (Free / Keyless)",
+      keylessBadge: "werr System-1",
+      keylessBadgeTag: "(Keyless)",
       step1: "1/3 Compiling input into state vector...",
       step2: "2/3 werr: Evaluating Mandelbrot escape dynamics (< 0.5ms)...",
       step3: "3/3 Synthesizing System-1 telemetry and actions...",
@@ -430,8 +432,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const model = gemini.getModel();
     if (activeModelBadgeEl) {
       activeModelBadgeEl.innerHTML = hasKey
-        ? `<span class="model-sparkle">✨</span> ${model}`
-        : `<span class="model-sparkle">⚡</span> ${t.keylessBadge}`;
+        ? `<span class="model-sparkle">✨</span> <span class="badge-title">${model}</span>`
+        : `<span class="model-sparkle">⚡</span> <span class="badge-title">${t.keylessBadge}</span><span class="badge-tag desktop-only"> ${t.keylessBadgeTag}</span>`;
     }
   }
 
