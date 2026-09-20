@@ -44,12 +44,12 @@ Instead of forcing heavy multi-billion-parameter neural networks to spend hundre
                         │   (Fast Flash Model)      │
                         └─────────────┬─────────────┘
                                       │
-             Transforms natural language into structured wevv format
+             Transforms natural language into structured werr format
                   (State Vector & Typed Decision Primitive)
                                       │
                                       ▼
                         ┌───────────────────────────┐
-                        │   System-One: wevv        │
+                        │   System-One: werr        │
                         │   (0 Bytes VRAM Engine)   │
                         └─────────────┬─────────────┘
                                       │
@@ -118,7 +118,7 @@ Response:
 ```json
 {
   "status": "healthy",
-  "engine": "wevv-reflex",
+  "engine": "werr-reflex",
   "version": "0.2.2",
   "vram_bytes": 0,
   "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
@@ -162,7 +162,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="wevv-reflex-v1",
+    model="werr-reflex-v1",
     messages=[
         {"role": "user", "content": "Admin user executing safe query with 0 errors"}
     ]
@@ -173,13 +173,13 @@ print(response.choices[0].message.content)
 ---
 
 
-## 🛡️ Core Advantages of wevv & answerr
+## 🛡️ Core Advantages of werr & answerr
 
-* **Zero Hallucination:** Traditional neural networks hallucinate because they sample from probabilistic token distributions. `wevv` evaluates deterministic Mandelbrot boundary escape dynamics—yielding 100% reproducible, mathematically grounded verdicts.
+* **Zero Hallucination:** Traditional neural networks hallucinate because they sample from probabilistic token distributions. `werr` evaluates deterministic Mandelbrot boundary escape dynamics—yielding 100% reproducible, mathematically grounded verdicts.
 * **Never Crashes (Zero Failures):** Even under out-of-distribution (OOD) or adversarial state conditions, the chaotic phase-space resonator deterministically absorbs edge signals and resolves valid typed decisions without throwing exceptions.
 * **Universal Coverage:** Resolves any contextual program state (numerical telemetry, boolean flags, categorical strings) into typed actions (`noul`, `choice`, `score`).
 * **Zero-Memory & Zero Carbon (0 Byte VRAM):** Operates on bare metal or directly in web browsers with zero stored weight tensors, eliminating costly GPU infrastructure and network energy waste.
-* **Engine Repository:** [https://github.com/pCwOrM/wevv](https://github.com/pCwOrM/wevv)
+* **Engine Repository:** [https://github.com/pCwOrM/werr](https://github.com/pCwOrM/werr)
 
 ---
 

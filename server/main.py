@@ -12,7 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 # Add local paths if present
-LOCAL_WERR_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "wevv"))
+LOCAL_WERR_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "werr"))
 if os.path.exists(LOCAL_WERR_PATH) and LOCAL_WERR_PATH not in sys.path:
     sys.path.insert(0, LOCAL_WERR_PATH)
 
