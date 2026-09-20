@@ -8,7 +8,7 @@
   <meta name="keywords" content="answerr, werr, reflex ai, zero latency, zero memory, non-tensor, signal wave, error reflex, resonator, decision engine, mandelbrot fractal, system 1">
   <meta name="author" content="Volkan Dağlı / answerr.me">
   <link rel="canonical" href="https://answerr.me">
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="assets/answerr_logo_portal.svg">
 
   <!-- Google reCAPTCHA v3 for Telemetry Ingestion Protection -->
   <script src="https://www.google.com/recaptcha/api.js?render=6LdP-JgqAAAAAJLdy_W8uowqstSa4XKlJTOkVAux" async defer></script>
@@ -18,12 +18,11 @@
   <meta property="og:url" content="https://answerr.me/">
   <meta property="og:title" content="answerr | Adaptive Non-tensor Signal Wave & Error Reflex Resonator">
   <meta property="og:description" content="Don't just chat. Get the Answerr. The world's first zero-memory fractal reflex AI.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://answerr.me">
+  <meta property="og:image" content="https://answerr.me/assets/rendered_answerr_werr_twin_ecosystem.png">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/main.css?v=2.5">
-  <link rel="stylesheet" href="css/chat.css?v=2.5">
+  <link rel="stylesheet" href="css/main.css?v=3.0">
+  <link rel="stylesheet" href="css/chat.css?v=3.0">
 </head>
 <body>
 
@@ -32,7 +31,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <a href="https://answerr.me" class="brand-badge">
-          <img src="assets/favicon.svg" alt="answerr logo" class="brand-logo-img">
+          <img src="assets/answerr_logo_portal.svg" alt="answerr logo" class="brand-logo-img">
           <span class="brand-title">answerr</span>
         </a>
         <button class="icon-btn" id="btn-toggle-sidebar" title="Kenar Çubuğunu Gizle/Göster">
@@ -94,16 +93,18 @@
           <div class="model-badge" id="active-model-badge">
             <span class="model-sparkle">✨</span> Gemini 2.5 Flash
           </div>
-          <div class="wevv-badge werr-badge" title="Mandelbrot Fractal Reflex">
-            <span>🌊</span> wevv 0.1.0 • 0B VRAM
+          <div class="werr-badge" title="werr Geometric Reflex Core (0-Byte VRAM, < 0.5 ms)">
+            <img src="assets/werr_logo_core.svg" alt="werr" style="width:16px; height:16px; vertical-align:middle; margin-right:4px;">
+            <span>werr 0.3.0 • 0B VRAM</span>
           </div>
         </div>
         <div class="topbar-right">
           <button class="model-badge lang-btn" id="btn-lang-toggle" title="Dil Değiştir / Switch Language">
             🌐 <span id="current-lang-text">TR</span>
           </button>
-          <a href="https://github.com/pCwOrM/wevv" target="_blank" rel="noopener" class="model-badge" style="text-decoration:none;">
-            <span>🌊</span> wevv Motoru
+          <a href="https://github.com/pCwOrM/werr" target="_blank" rel="noopener" class="model-badge" style="text-decoration:none;" title="werr Geometric Reflex Engine">
+            <img src="assets/werr_logo_core.svg" alt="werr" style="width:16px; height:16px; vertical-align:middle; margin-right:4px;">
+            <span>werr Çekirdeği</span>
           </a>
         </div>
       </header>
@@ -115,17 +116,33 @@
           <!-- Welcome Hero Screen -->
           <div class="welcome-hero" id="welcome-hero">
             <div class="welcome-logo-pulse">
-              <img src="assets/favicon.svg" alt="answerr emblem">
+              <img src="assets/answerr_logo_portal.svg" alt="answerr portal emblem">
             </div>
             <h1 class="welcome-title" id="hero-title">Don't Just Chat. Get The Answerr.</h1>
+            <div class="hero-motto-quote" id="hero-motto">
+              "When you need natural dialogue, call <strong>answerr</strong>. When you need microsecond reflexes, embed <strong>werr</strong>."
+            </div>
             <p class="welcome-subtitle" id="hero-subtitle">
-              <strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator - Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)</em>: Müzakereci yapay zeka ile <strong>wevv</strong> sıfır-hafıza fraktal refleksini birleştiren yeni nesil karar motoru. Deterministik Mandelbrot sınırında sıfır halüsinasyon ve milisaniyenin altında tipli kararlar.
+              <strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator - Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)</em>: Müzakereci yapay zeka ile <strong>werr</strong> sıfır-bellek fraktal omurilik refleksini birleştiren yeni nesil karar platformu. Deterministik Mandelbrot sınırında sıfır halüsinasyon, 0-Byte VRAM ve mikrosaniyede kesin tipli kararlar.
             </p>
+
+            <!-- Twin Ecosystem Showcase Card -->
+            <div class="twin-ecosystem-card">
+              <img src="assets/answerr_werr_twin_ecosystem.svg" alt="answerr & werr Twin Ecosystem Banner" class="twin-ecosystem-img">
+              <div class="twin-ecosystem-ctas">
+                <a href="https://answerr.me" class="twin-cta-btn cloud">
+                  <span>🌐</span> <span id="cta-cloud-text">answerr Cloud API'yi Keşfet</span>
+                </a>
+                <a href="https://github.com/pCwOrM/werr" target="_blank" rel="noopener" class="twin-cta-btn core">
+                  <span>⚡</span> <span id="cta-core-text">werr Çekirdeğini Uygulamana Göm (pip install werr)</span>
+                </a>
+              </div>
+            </div>
 
             <div class="welcome-tags">
               <span class="welcome-tag highlight" id="tag-hallucination">🛡️ Sıfır Halüsinasyon</span>
-              <span class="welcome-tag highlight" id="tag-crash">🚀 Asla Çökmez & Sonsuz Kapsam</span>
-              <span class="welcome-tag cyan" id="tag-speed">⚡ &lt; 1 ms Fraktal Refleks</span>
+              <span class="welcome-tag highlight" id="tag-crash">🚀 Asla Çökmez & %100 Deterministik</span>
+              <span class="welcome-tag cyan" id="tag-speed">⚡ &lt; 0.5 ms Fraktal Refleks</span>
               <span class="welcome-tag" id="tag-zeromem">💾 0-Byte Tensör Belleği</span>
             </div>
 
@@ -140,13 +157,33 @@
 
       <!-- Floating Centered Input Container -->
       <div class="chat-input-wrapper">
+        <!-- Dynamic Action Buttons Strip (werr & answerr primary actions) -->
+        <div class="action-buttons-strip" id="action-buttons-strip">
+          <button class="action-chip btn-action-werr" id="btn-action-werr" title="Sistem-1 Anlık Refleks Karar (0-Byte VRAM, < 0.5 ms)">
+            <img src="assets/werr_logo_core.svg" class="chip-logo" alt="werr">
+            <span class="chip-text" id="btn-action-werr-text">⚡ Karar Werr</span>
+          </button>
+          <button class="action-chip btn-action-answerr" id="btn-action-answerr" title="Sistem-2 Müzakereci Yanıt & Kod">
+            <img src="assets/answerr_logo_portal.svg" class="chip-logo" alt="answerr">
+            <span class="chip-text" id="btn-action-answerr-text">💬 Cevap Werr</span>
+          </button>
+          <button class="action-chip btn-action-gate" id="btn-action-gate" title="Güvenlik Ağ Geçidi İzni Doğrula">
+            <span class="chip-icon">🛡️</span>
+            <span class="chip-text" id="btn-action-gate-text">İzin Werr</span>
+          </button>
+          <button class="action-chip btn-action-rank" id="btn-action-rank" title="Hızlı Triage ve Öncelik Puanla">
+            <span class="chip-icon">🚀</span>
+            <span class="chip-text" id="btn-action-rank-text">Öncelik Werr</span>
+          </button>
+        </div>
+
         <div class="chat-input-box">
           <textarea 
             id="chat-input" 
             class="chat-textarea" 
-            placeholder="Bir karar senaryosu veya soru sorun (örn: 'Anonim kullanıcıdan gelen 180 istek/dk trafiğe izin verilsin mi?')..." 
+            placeholder="Werr is the point? Bir durum girin ve anında karar werr (örn: 'Anonim IP 180 istek/dk, izin verilsin mi?')..." 
             rows="1"></textarea>
-          <button id="btn-send" class="btn-send" title="Gönder (Enter)" disabled>
+          <button id="btn-send" class="btn-send" title="⚡ Karar Werr (Enter)" disabled>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -154,7 +191,7 @@
           </button>
         </div>
         <div class="chat-disclaimer" id="chat-disclaimer">
-          answerr, <a href="https://github.com/pCwOrM/wevv" target="_blank" rel="noopener">wevv</a> fraktal karar motoru ile çalışır. Halüsinasyon ve çökme riski yoktur. <a href="https://answerr.me">answerr.me</a>.
+          answerr, <a href="https://github.com/pCwOrM/werr" target="_blank" rel="noopener">werr</a> fraktal karar motoru ile çalışır. Halüsinasyon ve çökme riski yoktur. <a href="https://answerr.me">answerr.me</a>.
         </div>
       </div>
     </main>

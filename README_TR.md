@@ -1,148 +1,103 @@
 # ⚡ A.N.S.W.E.R.R. — Sıfır-Gecikmeli Refleks Yapay Zekası
 
-[![Canlı Demo: GitHub Pages](https://img.shields.io/badge/Canl%C4%B1%20Demo-GitHub%20Pages-38bdf8.svg)](https://pcworm.github.io/answerr/)
-[![Web Sitesi: answerr.me](https://img.shields.io/badge/Alan%20Ad%C4%B1-answerr.me-818cf8.svg)](https://answerr.me)
-[![werr Çekirdek Motoru](https://img.shields.io/badge/werr-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg)](https://github.com/pCwOrM/werr)
-[![Müzakereci Yapay Zeka](https://img.shields.io/badge/Sistem--2-M%C3%BCzakereci%20YZ-c084fc.svg)](https://answerr.me)
-[![Lisans: MIT](https://img.shields.io/badge/Lisans-MIT-yellow.svg)](./LICENSE)
+<p align="center">
+  <img src="assets/answerr_werr_twin_ecosystem.svg" alt="answerr & werr Twin Ecosystem Banner" width="100%">
+</p>
+
+<p align="center">
+  <img src="assets/answerr_logo_portal.svg" alt="answerr portal" width="110">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/werr_logo_core.svg" alt="werr core" width="110">
+</p>
+
+<p align="center">
+  <a href="https://pcworm.github.io/answerr/"><img src="https://img.shields.io/badge/Canl%C4%B1%20Demo-GitHub%20Pages-38bdf8.svg" alt="Canlı Demo"></a>
+  <a href="https://answerr.me"><img src="https://img.shields.io/badge/Web%20Sitesi-answerr.me-818cf8.svg" alt="Web Sitesi"></a>
+  <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg" alt="werr Engine"></a>
+  <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Canl%C4%B1-38bdf8.svg" alt="API Status"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/Lisans-MIT-yellow.svg" alt="MIT License"></a>
+</p>
 
 > **A**daptive **N**on-tensor **S**ignal **W**ave & **E**rror **R**eflex **R**esonator  
 > *(Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)*  
-> *"Don't just chat. Get the Answerr. Sadece sohbet etmeyin; milisaniyenin altında 0-byte VRAM ile kesin kararı alın."*
+> *"When you need natural dialogue, call **answerr**.*  
+> *When you need microsecond reflexes, embed **werr**."*  
+> *"Lafı uzatma, karar werr!"*
 
-### 🧬 Neden 1 Numara? (Mimari Sütunlar)
-* **Adaptive (Uyarlanabilir):** Üstel hareketli ortalama (EMA $\alpha=0.03$) ve dinamik eşikleme yeteneği ile çalışma zamanında esnek adaptasyon.
-* **Non-tensor (Tensörsüz):** 0-VRAM devrimini doğrudan ismin kalbine çakar; GPU ağırlığı depolamadan çıplak donanımda veya tarayıcıda çalışır.
-* **Signal (Sinyal):** Gelen operasyonel durum (state) ve telemetrinin dinamik bir sinyal dalgası olduğunu vurgular.
-* **Wave & Error (Dalga ve Hata):** werr motorunun dalga yayılımı ve Mandelbrot kaotik sınırındaki ($\partial M$) hata navigasyonunun matematiksel özünü taşır.
-* **Reflex Resonator (Refleks Rezonatörü):** Hem omurilik refleksini hem de akustik faz rezonansını (tınlamayı) tek hamlede ifade eder.
+---
 
-🌐 **Canlı Web Platformu:** [https://answerr.me](https://answerr.me)  
-⚡ **Canlı REST API:** [https://api.answerr.me:4431](https://api.answerr.me:4431)  
-🌐 **GitHub Pages Demosu:** [https://pcworm.github.io/answerr/](https://pcworm.github.io/answerr/)
+## 🏛️ Dört Boyutlu Semantik Çerçeve ve Terminoloji
+
+```mermaid
+graph TD
+    WERR["werr (Karar & Refleks Çekirdeği)"]
+    WERR --> DYN["1. Matematiksel Dinamik<br/>Waves & Errors (W-ERR)"]
+    WERR --> TR["2. Türkçe Eylemsel Buyruk<br/>'Ver!' (Cevap werr, Karar werr)"]
+    WERR --> EN["3. İngilizce Uzamsal Arama<br/>'Where' (Werr is the point?)"]
+    WERR --> DUAL["4. Çift Çekirdek Rezonansı<br/>Ortak 'rr' Genetiği (werr & answerr)"]
+```
+
+### 1. 🇹🇷 Türkçe Eylemsel & Fonetik Kök: *"Ver!"* $\to$ `werr`
+Geleneksel büyük dil modelleri (LLM) saniyelerce düşünür, gereksiz laf üretir ve tensör yükü bindirir. Biyolojik omurilik refleksi ise uyarana **anında yanıt verir**. Türkçe'de **"ver!"**, ertelemesiz kararlılığın buyruğudur. `werr` bu buyruğu mikrosaniyelik matematiksel gerçekliğe dönüştürür.
+
+| Türkçe Kalıp | `werr` Terminolojisi | Kullanıldığı Sistem / Kod Katmanı | Anlam ve İşlev |
+| :--- | :--- | :--- | :--- |
+| **Cevap ver!** | `cevap werr` | AI IDE, Chat Completion, answerr API | Lafı uzatmadan, halüsinasyonsuz tipli (`noul`, `choice`, `score`) cevabı teslim eder. |
+| **Karar ver!** | `karar werr` | Motor Çekirdeği (`werr.decide()`) | 24-baytlık tohumda $< 0.5$ ms içinde üretilen deterministik hüküm. |
+| **Tepki ver!** | `tepki werr` | IoT, Robotik, Oyun AI Combat | Yangın sensörü veya mermi algılandığı anda spinal refleksle karşı eylem üretir. |
+| **Yol ver! / İzin ver!** | `izin werr` / `yol werr` | API Security Gateway (`NoulAnswer`) | Ağ geçidine gelen paketin `ALLOWED` (True) onayını doğrulayarak yönlendirir. |
+| **Öncelik ver!** | `öncelik werr` | Sıralama & Triage (`ScoreQuestion`) | Acil görevleri, finansal transferleri mikro-saniyede puanlayıp öne çeker. |
+| **Hız ver!** | `hız werr` | In-Process Embedded Kernel (`werr.h`) | Ağ gecikmesini sıfırlayarak bellek içinde doğrudan çalışır. |
+
+### 2. 🇬🇧 İngilizce Uzamsal & Fonetik Kök: *"Where"* $\to$ `werr`
+* **`Werr is the point?`** *(Where is the point?)*: Karar tohumu fraktal sınırının neresinde? 24-baytlık $(c_x, c_y, \text{zoom})$ koordinatını kilitler.
+* **`Werr is the error?`** *(Where is the error?)*: Euler diverjans sınırı ($|Z_n| > 2$) nerede aşıldı? Hatanın başladığı sınır, kararın bittiği yerdir.
+* **`Werr is the answerr?`** *(Where is the answer?)*: Cevap bulutun devasa sunucularında değil; L1 önbelleğinde, `werr` çekirdeğinde!
+* **`Werr to route?`** *(Where to route?)*: `AutoSeedRouter` gelen isteği hangi operasyonel kapıya yönlendirmeli?
+* **`Werr-ever you need a decision.`** *(Wherever you need a decision)*: Mikrodenetleyiciden buluta her yerde çalışan refleks güvencesi.
+
+### 3. 🧬 Ortak Genetik Kod: Çift `rr` Rezonansı
+* **`werr`**: **W**aves & **Err**ors **R**eflex **R**esonator
+* **`answerr`**: **A**daptive **N**on-tensor **S**ignal **W**ave & **Err**or **R**eflex **R**esonator
+
+Çift `rr`, fraktal faz uzayındaki **ikili çatallanmayı** (period-doubling bifurcation) ve dalga ile hata sınırının çarpışmasından doğan **akustik tınlama ve rezonansı** simgeler.
 
 ---
 
 ## 🌟 Genel Bakış
 
-**A.N.S.W.E.R.R.**, iki temel bilişsel düzeyi birleştiren yeni nesil bir karar motorudur:
-1. **Sistem-2 Müzakeresi (LLM / Müzakereci Yapay Zeka):** Karmaşık insan dilini ve durum parametrelerini anlar, operasyonel bağlamı çıkarır ve kararı stratejik olarak açıklar (Bulut API'leri veya yerel açık kaynak modellerle tam uyumlu).
-2. **Sistem-1 Omurilik Refleksi ([werr](https://github.com/pCwOrM/werr)):** Mandelbrot fraktal sınırındaki 24 baytlık $(c_x, c_y, \text{zoom})$ koordinat tohumunu dinamik olarak modüle eder ve **0 Byte VRAM** ile **< 1 ms** içinde kesin tipli kararları (`noul`, `choice`, `score`) üretir.
-
-Böylece basit bir onay veya mikroservis yönlendirmesi için devasa modellerin gigabaytlarca VRAM tüketmesi ve yüzlerce milisaniye beklemesi gerekmez; triyaj kararı doğrudan evrensel geometriden türer.
-
----
-
-## ⚡ Bilişsel Mimari ve Akış
-
-1. **Soru Girişi:** Kullanıcı sayfanın ortasındaki modern karar girdi kutusuna operasyonel senaryosunu yazar (örn: *"Anonim IP'den dakikada 180 istek geliyor, bu istek engellensin mi?"*).
-2. **Sistem-2 Derleme:** Gemini Flash, soruyu analiz ederek werr'in anlayacağı parametrelere dönüştürür:
-   - `state`: `{ user_role: "guest", req_frequency: 180, auth_status: false }`
-   - `question`: `noul` (Boolean karar)
-3. **Sistem-1 Refleksi (wevv):** werr motoru tohum koordinatını sarsar, 4-Kuadran ($Q_1-Q_4$) kaçış dinamiklerini hesaplar ve milisaniyenin altında sonucu döndürür:
-   - `decision: false` (İstek reddedildi)
-   - `noul: 0.08`, `güven: %84`
-   - `gecikme: 0.82 ms`, `VRAM: 0 Bayt`
-4. **Telemetri HUD ve Yorum:** answerr arayüzünde karara ait canlı Mandelbrot kaçış kanvası, kuadran enerjileri ve Gemini'nin stratejik yorumu şık kartlar halinde görüntülenir.
+**A.N.S.W.E.R.R.**, iki temel bilişsel düzeyi birleştiren yeni nesil bir karar platformudur:
+1. **Sistem-2 Müzakeresi (LLM / Müzakereci Yapay Zeka):** Karmaşık insan dilini ve durum parametrelerini anlar, operasyonel bağlamı çıkarır ve kararı stratejik olarak açıklar.
+2. **Sistem-1 Omurilik Refleksi ([werr](https://github.com/pCwOrM/werr)):** Mandelbrot fraktal sınırındaki 24 baytlık $(c_x, c_y, \text{zoom})$ koordinat tohumunu modüle eder ve **0 Byte VRAM** ile **< 0.5 ms** içinde kesin tipli kararları (`noul`, `choice`, `score`) üretir.
 
 ---
 
 ## 🚀 Hızlı Başlangıç
 
-### Yöntem 1: Basit Web Sunucusu ile Çalıştırma
+### Web Arayüzü (Yerel Sunucu)
 ```bash
 cd answerr
 python -m http.server 8080
 ```
 Tarayıcınızda `http://localhost:8080` adresine gidin.
 
-### Yöntem 2: FastAPI Sunucusu ile Çalıştırma
+### Canlı REST API Kullanımı (cURL)
 ```bash
-cd answerr
-pip install -r requirements.txt
-uvicorn server.main:app --reload --port 8000
-```
+# 1. Sağlık Kontrolü
+curl -s https://api.answerr.me:4431/v1/health
 
----
-
-## 🌐 Canlı Üretim REST API (Sıfır-VRAM Refleks Motoru)
-
-Answerr, canlı sunucu üzerinde koşan, milisaniyenin altında kararlar üreten bir REST API servisi sunar:
-* **API Ana Adresi:** `https://api.answerr.me:4431`
-
-### 1. Sağlık ve Sıfır-VRAM Durumu
-```bash
-curl -k https://api.answerr.me:4431/v1/health
-```
-Yanıt:
-```json
-{
-  "status": "healthy",
-  "engine": "werr-reflex",
-  "version": "0.2.2",
-  "vram_bytes": 0,
-  "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
-  "latency_benchmark_ms": 6.72
-}
-```
-
-### 2. Anlık Refleks Kararı Alma (Tek Soru)
-```bash
-curl -k -X POST https://api.answerr.me:4431/v1/decide \
+# 2. Hızlı Refleks Kararı (Tekil Soru)
+curl -s -X POST https://api.answerr.me:4431/v1/decide \
   -H "Content-Type: application/json" \
   -d '{
-    "question": "Yetkili API islemi onaylansin mi?",
+    "question": "Allow privileged API transaction?",
     "state": {"user_role": "admin", "failed_attempts": 0, "req_frequency": 1.2}
   }'
 ```
-Yanıt:
-```json
-{
-  "status": "success",
-  "decision": true,
-  "label": "ALLOWED",
-  "answers": {
-    "primary_decision": {"type": "noul", "boolean": true, "noul": 0.9999, "confidence": 0.9998}
-  },
-  "telemetry": {
-    "engine_latency_ms": 11.13,
-    "vram_bytes": 0
-  }
-}
-```
-
-### 3. OpenAI Uyumlu Uç Nokta (/v1/chat/completions)
-Answerr'ı LangChain, LlamaIndex veya OpenAI Python SDK'sına doğrudan bağlayabilirsiniz:
-```python
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="https://api.answerr.me:4431/v1",
-    api_key="none"
-)
-
-response = client.chat.completions.create(
-    model="werr-reflex-v1",
-    messages=[
-        {"role": "user", "content": "Admin kullanici 0 hata ile istek yapti"}
-    ]
-)
-print(response.choices[0].message.content)
-```
 
 ---
 
-
-## 🛡️ werr ve answerr Temel Üstünlükleri
-
-* **Sıfır Halüsinasyon (Zero Hallucination):** Geleneksel dil modelleri olasılıksal belirteç (token) örneklemesi yaptığı için uydurma üretir. `werr`, deterministik Mandelbrot kaçış matematiği ile çalıştığından %100 tekrarlanabilir, tutarlı ve halüsinasyonsuz kararlar verir.
-* **Asla Çökmez / Sıfır Hata (Zero Crash):** Dağılım dışı (OOD) ya da saldırı amaçlı prompt enjeksiyonlarında dahi kaotik rezonatör sinyali sönümler ve sistemi kilitlemeden geçerli tipli bir yanıt üretir.
-* **Evrensel Kapsam (Universal State Coverage):** Her türlü operasyonel durum verisini (rakamlar, metinler, boolean bayraklar) anında modüle edip kesin çıktılara (`noul`, `choice`, `score`) dönüştürür.
-* **Sıfır Bellek & Sıfır Maliyet (0 Byte VRAM):** Tensör ağırlığı taşımadığından dev GPU sunucularına ihtiyaç duymaz; doğrudan tarayıcıda veya en hafif işlemcide < 1 ms hızında çalışır.
-* **Çekirdek Motor Reposu:** [https://github.com/pCwOrM/werr](https://github.com/pCwOrM/werr)
-
----
-
-## 📄 Lisans
-
-MIT Lisansı. Telif Hakkı (c) 2026 Volkan Dağlı / ITouch Systems.
+## 🛡️ Temel Üstünlükler
+* **Sıfır Halüsinasyon (Zero Hallucination):** Deterministik Mandelbrot kaçış matematiği ile çalıştığından %100 tekrarlanabilir, tutarlı kararlar üretir.
+* **0-Byte Tensör VRAM:** Model ağırlık matrisleri depolamaz; 24-baytlık koordinat tohumu yeterlidir.
+* **Asla Çökmez:** Sonsuz fraktal küme matematiği tanımsız girdi bırakmaz; Out-of-Distribution (OOD) durumlarında dahi en yakın manifolda uyarlanır.

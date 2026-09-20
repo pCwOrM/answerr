@@ -862,3 +862,195 @@
 .chat-disclaimer a:hover {
   text-decoration: underline;
 }
+
+/* =========================================================================
+   werr & answerr: Action Buttons Strip & Terminology UI
+   ========================================================================= */
+.action-buttons-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  width: 100%;
+  max-width: 860px;
+  pointer-events: auto;
+}
+
+.action-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.38rem 0.85rem;
+  background: rgba(14, 21, 37, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(12px);
+  user-select: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.action-chip .chip-logo {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.action-chip:hover {
+  transform: translateY(-2px);
+  color: var(--text-main);
+}
+
+/* ⚡ Karar Werr (werr reflex) */
+.btn-action-werr {
+  border-color: rgba(56, 189, 248, 0.4);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.12), rgba(251, 191, 36, 0.08));
+}
+
+.btn-action-werr:hover {
+  border-color: var(--cyan);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.22), rgba(251, 191, 36, 0.16));
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.35);
+  color: #ffffff;
+}
+
+/* 💬 Cevap Werr (answerr dialogue) */
+.btn-action-answerr {
+  border-color: rgba(192, 132, 252, 0.4);
+  background: linear-gradient(135deg, rgba(192, 132, 252, 0.12), rgba(129, 140, 248, 0.08));
+}
+
+.btn-action-answerr:hover {
+  border-color: #c084fc;
+  background: linear-gradient(135deg, rgba(192, 132, 252, 0.22), rgba(129, 140, 248, 0.16));
+  box-shadow: 0 6px 20px rgba(192, 132, 252, 0.35);
+  color: #ffffff;
+}
+
+/* 🛡️ İzin Werr (Gatekeeper) */
+.btn-action-gate {
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.btn-action-gate:hover {
+  border-color: var(--emerald);
+  background: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+  color: var(--emerald);
+}
+
+/* 🚀 Öncelik Werr (Rank / Score) */
+.btn-action-rank {
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+.btn-action-rank:hover {
+  border-color: #fbbf24;
+  background: rgba(251, 191, 36, 0.15);
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
+}
+
+/* =========================================================================
+   Twin Ecosystem Banner Showcase in Hero
+   ========================================================================= */
+.twin-ecosystem-card {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto 1.6rem;
+  background: linear-gradient(145deg, rgba(15, 22, 41, 0.9), rgba(8, 12, 22, 0.95));
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(56, 189, 248, 0.08);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+
+.twin-ecosystem-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #38bdf8, #c084fc, transparent);
+}
+
+.twin-ecosystem-img {
+  width: 100%;
+  height: auto;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  margin-bottom: 0.85rem;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6));
+}
+
+.twin-ecosystem-ctas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.twin-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.twin-cta-btn.cloud {
+  background: rgba(192, 132, 252, 0.12);
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  color: #e879f9;
+}
+
+.twin-cta-btn.cloud:hover {
+  background: rgba(192, 132, 252, 0.25);
+  border-color: #c084fc;
+  box-shadow: 0 0 16px rgba(192, 132, 252, 0.4);
+  color: #ffffff;
+}
+
+.twin-cta-btn.core {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+}
+
+.twin-cta-btn.core:hover {
+  background: rgba(56, 189, 248, 0.25);
+  border-color: var(--cyan);
+  box-shadow: 0 0 16px var(--cyan-glow);
+  color: #ffffff;
+}
+
+.hero-motto-quote {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--cyan);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px dashed rgba(56, 189, 248, 0.3);
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  margin: 0.5rem 0 1rem;
+  display: inline-block;
+  line-height: 1.5;
+}
+

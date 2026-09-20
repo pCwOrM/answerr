@@ -86,12 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const I18N = {
     tr: {
       heroTitle: "Sadece Sohbet Etmeyin. Karar Verin.",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator - Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)</em>: Yazılımlar ve otomasyon için <strong>Sistem-1</strong> karar altyapısı. Operasyonel durum (state) sinyal verisini ve soru talimatlarını anında tipli kararlara (<code>noul</code>, <code>choice</code>, <code>score</code>) dönüştürür. <strong>werr</strong> 0-Byte VRAM fraktal omurilik refleksi ve akustik dalga rezonatörüyle çalışır; mikrosaniyede deterministik sonuç üretir, asla halüsinasyon görmez ve çökmez.",
-      tagSpeed: "⚡ < 0.5 ms Sistem-1 Fraktal Hızı",
-      tagZeroMem: "💾 0-Byte VRAM (Zero-Tensor Architecture)",
-      tagHallucination: "🛡️ Sıfır Halüsinasyon & Tip Güvenli",
+      heroMotto: "\"Doğal diyalog gerektiğinde <strong>answerr</strong>, mikrosaniyelik refleks gerektiğinde <strong>werr</strong>.\"",
+      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator - Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)</em>: Yazılımlar ve otomasyon için <strong>Sistem-1</strong> omurilik karar altyapısı. Operasyonel durum (state) verisini ve soru talimatlarını anında tipli kararlara (<code>noul</code>, <code>choice</code>, <code>score</code>) dönüştürür. <strong>werr</strong> 0-Byte VRAM fraktal refleksiyle çalışır; mikrosaniyede deterministik sonuç üretir, asla halüsinasyon görmez ve çökmez.",
+      tagSpeed: "⚡ < 0.5 ms Fraktal Refleks",
+      tagZeroMem: "💾 0-Byte Tensör Belleği",
+      tagHallucination: "🛡️ Sıfır Halüsinasyon",
       tagCrash: "🚀 Asla Çökmez & %100 Deterministik",
-      inputPlaceholder: "Operasyonel durum (state) veya karar senaryosu girin (örn: 'Anonim IP'den 180 istek/dk geldi, yürütmeye izin verilsin mi?')...",
+      inputPlaceholder: "Werr is the point? Bir durum girin ve anında karar werr (örn: 'Anonim IP 180 istek/dk, izin verilsin mi?')...",
       newDecisionBtn: "Yeni Karar",
       historyLabel: "Karar Geçmişi",
       systemStatus: "werr 0-Byte VRAM: Aktif",
@@ -109,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
       step1: "1/3 Durum matrisi ve tipli soru ayrıştırılıyor (System-2 State)...",
       step2: "2/3 werr: Mandelbrot ∂M kaçış dinamiği hesaplanıyor (< 0.5ms)...",
       step3: "3/3 Sistem-1 telemetrisi ve karar doğrulanıyor...",
-      hudTitle: "🌊 werr Sistem-1 Karar Refleksi",
+      hudTitle: "⚡ werr Sistem-1 Omurilik Refleksi",
       hudLatency: "ms",
       hudVram: "0B Tensör VRAM",
       hudSeed: "24B Tohum",
@@ -121,16 +122,24 @@ document.addEventListener('DOMContentLoaded', () => {
       smartIf: "🚀 AKILLI KOD (Smart If-Statement):",
       downloadSeed: "💾 24B Tohum İndir (.TXT)",
       toggleSidebarOpen: "Menüyü Aç (Karar Geçmişi)",
-      toggleSidebarClose: "Menüyü Kapat"
+      toggleSidebarClose: "Menüyü Kapat",
+      actionWerr: "⚡ Karar Werr",
+      actionAnswerr: "💬 Cevap Werr",
+      actionGate: "🛡️ İzin Werr",
+      actionRank: "🚀 Öncelik Werr",
+      ctaCloud: "answerr Cloud API'yi Keşfet",
+      ctaCore: "werr Çekirdeğini Uygulamana Göm (pip install werr)",
+      sendBtnTitle: "⚡ Karar Werr (Enter)"
     },
     en: {
       heroTitle: "Don't Just Chat. Get The Answerr.",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator)</em>: Machine-native <strong>System-One</strong> decision infrastructure for software and automation. Ingests operational state signals and typed questions; delivers structured, calibrated decisions (<code>noul</code>, <code>choice</code>, <code>score</code>) your code can use directly. Powered by <strong>werr</strong> zero-memory fractal reflexes and acoustic wave resonance.",
-      tagSpeed: "⚡ < 0.5 ms System-1 Fractal Speed",
-      tagZeroMem: "💾 0-Byte VRAM (Zero-Tensor Architecture)",
-      tagHallucination: "🛡️ Zero Hallucination & Type-Safe",
+      heroMotto: "\"When you need natural dialogue, call <strong>answerr</strong>. When you need microsecond reflexes, embed <strong>werr</strong>.\"",
+      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator)</em>: Machine-native <strong>System-One</strong> decision infrastructure for software and automation. Ingests operational state signals and delivers structured, calibrated decisions (<code>noul</code>, <code>choice</code>, <code>score</code>) your code can use directly. Powered by <strong>werr</strong> zero-memory fractal reflexes and acoustic wave resonance.",
+      tagSpeed: "⚡ < 0.5 ms Fractal Reflex",
+      tagZeroMem: "💾 0-Byte Tensor Memory",
+      tagHallucination: "🛡️ Zero Hallucination",
       tagCrash: "🚀 Zero Crash & 100% Deterministic",
-      inputPlaceholder: "Enter operational state or decision query (e.g. 'Anonymous IP with 180 req/min burst, allow execution?')...",
+      inputPlaceholder: "Werr is the point? Enter an operational scenario and werr it now...",
       newDecisionBtn: "New Decision",
       historyLabel: "Decision Log",
       systemStatus: "werr 0-Byte VRAM: Active",
@@ -148,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
       step1: "1/3 Compiling input into state vector...",
       step2: "2/3 werr: Evaluating Mandelbrot escape dynamics (< 0.5ms)...",
       step3: "3/3 Synthesizing System-1 telemetry and actions...",
-      hudTitle: "🌊 werr System-1 Decision Reflex",
+      hudTitle: "⚡ werr System-1 Spinal Reflex",
       hudLatency: "ms",
       hudVram: "0B Tensor VRAM",
       hudSeed: "24B Seed",
@@ -160,7 +169,14 @@ document.addEventListener('DOMContentLoaded', () => {
       smartIf: "🚀 SMART IF-STATEMENT (Production Code):",
       downloadSeed: "💾 Download 24B Seed (.TXT)",
       toggleSidebarOpen: "Open Menu (Decision Log)",
-      toggleSidebarClose: "Close Menu"
+      toggleSidebarClose: "Close Menu",
+      actionWerr: "⚡ Werr It!",
+      actionAnswerr: "💬 Answerr It!",
+      actionGate: "🛡️ Gate It!",
+      actionRank: "🚀 Rank It!",
+      ctaCloud: "Explore answerr Cloud API",
+      ctaCore: "Embed werr Kernel in App (pip install werr)",
+      sendBtnTitle: "⚡ Werr It! (Enter)"
     }
   };
 
@@ -211,6 +227,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCloseModalEl = document.getElementById('btn-close-modal');
   const inputApiKeyEl = document.getElementById('input-api-key');
   const selectModelEl = document.getElementById('select-model');
+
+  // Dynamic Action Buttons & Hero Elements
+  const heroMottoEl = document.getElementById('hero-motto');
+  const btnActionWerrEl = document.getElementById('btn-action-werr');
+  const btnActionWerrTextEl = document.getElementById('btn-action-werr-text');
+  const btnActionAnswerrEl = document.getElementById('btn-action-answerr');
+  const btnActionAnswerrTextEl = document.getElementById('btn-action-answerr-text');
+  const btnActionGateEl = document.getElementById('btn-action-gate');
+  const btnActionGateTextEl = document.getElementById('btn-action-gate-text');
+  const btnActionRankEl = document.getElementById('btn-action-rank');
+  const btnActionRankTextEl = document.getElementById('btn-action-rank-text');
+  const ctaCloudTextEl = document.getElementById('cta-cloud-text');
+  const ctaCoreTextEl = document.getElementById('cta-core-text');
 
   // 4. Application State
   let currentSessionId = generateId();
@@ -272,6 +301,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnCancelModalEl) btnCancelModalEl.textContent = t.modalCancel;
     if (btnSaveSettingsEl) btnSaveSettingsEl.textContent = t.modalSave;
 
+    if (heroMottoEl && t.heroMotto) heroMottoEl.innerHTML = t.heroMotto;
+    if (btnActionWerrTextEl && t.actionWerr) btnActionWerrTextEl.textContent = t.actionWerr;
+    if (btnActionAnswerrTextEl && t.actionAnswerr) btnActionAnswerrTextEl.textContent = t.actionAnswerr;
+    if (btnActionGateTextEl && t.actionGate) btnActionGateTextEl.textContent = t.actionGate;
+    if (btnActionRankTextEl && t.actionRank) btnActionRankTextEl.textContent = t.actionRank;
+    if (ctaCloudTextEl && t.ctaCloud) ctaCloudTextEl.textContent = t.ctaCloud;
+    if (ctaCoreTextEl && t.ctaCore) ctaCoreTextEl.textContent = t.ctaCore;
+    if (btnSendEl && t.sendBtnTitle) btnSendEl.title = t.sendBtnTitle;
     renderPresetCards(lang);
     renderHistoryList();
     updateModelBadge();
@@ -294,6 +331,59 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnSendEl.addEventListener('click', () => handleSendMessage());
+  // Action Buttons Strip Handlers (Terminology Guide: Karar Werr / Cevap Werr / İzin Werr / Öncelik Werr)
+  if (btnActionWerrEl) {
+    btnActionWerrEl.addEventListener('click', () => {
+      let prompt = chatInputEl.value.trim();
+      if (!prompt) {
+        prompt = currentLang === 'tr'
+          ? "Kullanıcı rolü 'admin', oturum geçerli, istek sıklığı 1.2 req/s, hata denemesi 0. Karar werr!"
+          : "User role 'admin', session valid, request frequency 1.2 req/s, 0 errors. Werr it!";
+      }
+      handleSendMessage(prompt);
+    });
+  }
+
+  if (btnActionAnswerrEl) {
+    btnActionAnswerrEl.addEventListener('click', () => {
+      let prompt = chatInputEl.value.trim();
+      if (!prompt) {
+        prompt = currentLang === 'tr'
+          ? "Anonim kullanıcıdan gelen ani 180 istek/dk veri transferi güvenlik politikasına uygun mu? Detaylı cevap werr."
+          : "Is a burst of 180 req/min from an anonymous IP compliant with security policy? Answerr it in detail.";
+      }
+      handleSendMessage(prompt);
+    });
+  }
+
+  if (btnActionGateEl) {
+    btnActionGateEl.addEventListener('click', () => {
+      let prompt = chatInputEl.value.trim();
+      if (!prompt) {
+        prompt = currentLang === 'tr'
+          ? "Ağ geçidi güvenlik denetimi: İstek kaynağı doğrulanmamış misafir, veritabanı uç noktası çağrıldı. İzin werr mi engellensin mi?"
+          : "Gateway security inspection: Unverified guest calling database endpoint. Gate it: allow or block?";
+      } else if (!prompt.includes("izin") && !prompt.includes("gate")) {
+        prompt += currentLang === 'tr' ? " İzin verilsin mi?" : " Allow execution?";
+      }
+      handleSendMessage(prompt);
+    });
+  }
+
+  if (btnActionRankEl) {
+    btnActionRankEl.addEventListener('click', () => {
+      let prompt = chatInputEl.value.trim();
+      if (!prompt) {
+        prompt = currentLang === 'tr'
+          ? "Finansal risk ve öncelik derecelendirmesi: Tutar 25.000 TL, cihaz anomalisi tespit edildi, işlem hızı yüksek. Öncelik ve risk skoru werr!"
+          : "Financial risk and priority ranking: Amount $25,000, device anomaly detected, high velocity. Rank it: priority and threat score!";
+      } else if (!prompt.includes("öncelik") && !prompt.includes("rank")) {
+        prompt += currentLang === 'tr' ? " Tehlike ve öncelik derecesi nedir?" : " What is the threat and priority score?";
+      }
+      handleSendMessage(prompt);
+    });
+  }
+
 
   // New Chat
   btnNewChatEl.addEventListener('click', () => {
@@ -466,6 +556,14 @@ document.addEventListener('DOMContentLoaded', () => {
         [questionObj.key || 'decision']: questionObj
       });
 
+      const ansKey = Object.keys(wevvResult.answers)[0];
+      const primaryAns = wevvResult.answers[ansKey];
+      console.log(`[werr-core] 0-Byte tensor memory allocated. 24-byte seed locked: cx=${wevvResult.coordinates.cx.toFixed(6)}, cy=${wevvResult.coordinates.cy.toFixed(6)}, zoom=${wevvResult.coordinates.zoom.toFixed(1)}`);
+      console.log(`[werr-reflex] Karar üretildi: ${primaryAns.type === 'noul' ? (primaryAns.decision ? 'ALLOWED' : 'DENIED') : (primaryAns.choice || primaryAns.score)} (p=${(primaryAns.p || 0.5).toFixed(4)}, Güven: %${((primaryAns.confidence || 0) * 100).toFixed(1)}, Süre: ${wevvResult.latencyMs} ms)`);
+      if (stateData.category) {
+        console.log(`[werr-router] Werr to route: '${stateData.category}' alanına yönlendirildi.`);
+      }
+
       // Dispatch Telemetry with Google reCAPTCHA v3 asynchronously to api.answerr.me
       dispatchWebTelemetry(wevvResult, prompt, stateData);
 
@@ -581,6 +679,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.innerHTML = `
       <div class="hud-header">
         <div class="hud-title">
+          <img src="assets/werr_logo_core.svg" alt="werr logo" style="width:20px; height:20px; vertical-align:middle; margin-right:6px; filter:drop-shadow(0 0 6px rgba(56,189,248,0.4));">
           <span>${t.hudTitle}</span>
         </div>
         <div class="hud-badges">
