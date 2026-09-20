@@ -2,7 +2,7 @@
 
 [![Canlı Demo: GitHub Pages](https://img.shields.io/badge/Canl%C4%B1%20Demo-GitHub%20Pages-38bdf8.svg)](https://pcworm.github.io/answerr/)
 [![Web Sitesi: answerr.me](https://img.shields.io/badge/Alan%20Ad%C4%B1-answerr.me-818cf8.svg)](https://answerr.me)
-[![wevv Çekirdek Motoru](https://img.shields.io/badge/wevv-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg)](https://github.com/pCwOrM/wevv)
+[![werr Çekirdek Motoru](https://img.shields.io/badge/werr-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg)](https://github.com/pCwOrM/werr)
 [![Müzakereci Yapay Zeka](https://img.shields.io/badge/Sistem--2-M%C3%BCzakereci%20YZ-c084fc.svg)](https://answerr.me)
 [![Lisans: MIT](https://img.shields.io/badge/Lisans-MIT-yellow.svg)](./LICENSE)
 
@@ -27,7 +27,7 @@
 
 **A.N.S.W.E.R.R.**, iki temel bilişsel düzeyi birleştiren yeni nesil bir karar motorudur:
 1. **Sistem-2 Müzakeresi (LLM / Müzakereci Yapay Zeka):** Karmaşık insan dilini ve durum parametrelerini anlar, operasyonel bağlamı çıkarır ve kararı stratejik olarak açıklar (Bulut API'leri veya yerel açık kaynak modellerle tam uyumlu).
-2. **Sistem-1 Omurilik Refleksi ([wevv](https://github.com/pCwOrM/wevv)):** Mandelbrot fraktal sınırındaki 24 baytlık $(c_x, c_y, \text{zoom})$ koordinat tohumunu dinamik olarak modüle eder ve **0 Byte VRAM** ile **< 1 ms** içinde kesin tipli kararları (`noul`, `choice`, `score`) üretir.
+2. **Sistem-1 Omurilik Refleksi ([werr](https://github.com/pCwOrM/werr)):** Mandelbrot fraktal sınırındaki 24 baytlık $(c_x, c_y, \text{zoom})$ koordinat tohumunu dinamik olarak modüle eder ve **0 Byte VRAM** ile **< 1 ms** içinde kesin tipli kararları (`noul`, `choice`, `score`) üretir.
 
 Böylece basit bir onay veya mikroservis yönlendirmesi için devasa modellerin gigabaytlarca VRAM tüketmesi ve yüzlerce milisaniye beklemesi gerekmez; triyaj kararı doğrudan evrensel geometriden türer.
 

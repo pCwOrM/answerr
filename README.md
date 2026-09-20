@@ -2,7 +2,7 @@
 
 [![Live Demo: GitHub Pages](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-38bdf8.svg)](https://pcworm.github.io/answerr/)
 [![Website: answerr.me](https://img.shields.io/badge/Domain-answerr.me-818cf8.svg)](https://answerr.me)
-[![wevv Core Engine](https://img.shields.io/badge/wevv-Zero--Memory%20Engine-10b981.svg)](https://github.com/pCwOrM/wevv)
+[![werr Core Engine](https://img.shields.io/badge/werr-Zero--Memory%20Engine-10b981.svg)](https://github.com/pCwOrM/werr)
 [![Deliberative AI](https://img.shields.io/badge/System--2-Deliberative%20AI-c084fc.svg)](https://answerr.me)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
@@ -27,7 +27,7 @@
 
 **A.N.S.W.E.R.R.** is a breakthrough dual-cognition AI platform that merges:
 1. **System-Two Deliberation (LLM / Deliberative AI):** Parses human conversation, analyzes operational context, and explains decisions with strategic clarity. Works with cloud models or lightweight local models.
-2. **System-One Reflex Arc ([wevv](https://github.com/pCwOrM/wevv)):** Synthesizes instant, deterministic, strongly-typed decisions (`noul`, `choice`, `score`) in **< 1 ms** with **0 Bytes VRAM** using dynamic Mandelbrot boundary wave perturbation.
+2. **System-One Reflex Arc ([werr](https://github.com/pCwOrM/werr)):** Synthesizes instant, deterministic, strongly-typed decisions (`noul`, `choice`, `score`) in **< 1 ms** with **0 Bytes VRAM** using dynamic Mandelbrot boundary wave perturbation.
 
 Instead of forcing heavy multi-billion-parameter neural networks to spend hundreds of tokens and milliseconds answering simple binary approvals or routing gates, **answerr** delegates execution triage to the zero-tensor mathematical fabric of the Mandelbrot set.
 
