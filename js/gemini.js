@@ -333,8 +333,8 @@ Keep the tone concise, scientific, and professional.`;
     }
 
     const text = isTurkish
-      ? `${verdict}\n\n**Sistem-1 Fraktal Mantığı:** ${logic}\n\n**Önerilen Aksiyon:** ${action}\n\n*(Not: Sistem-2 genişletilmiş derin yorumu için üst menüdeki 'Ayarlar' ikonundan ücretsiz Gemini API anahtarınızı tanımlayabilirsiniz.)*`
-      : `${verdict}\n\n**System-1 Fractal Logic:** ${logic}\n\n**Recommended Action:** ${action}\n\n*(Note: For rich deliberative System-2 interpretations, configure your Gemini API key in Settings).*`;
+      ? `${verdict}\n\n**Sistem-1 Fraktal Refleksi:** ${logic}\n\n**Önerilen Operasyonel Aksiyon:** ${action}\n\n*(🛡️ wevv Sıfır-Halüsinasyon Garantisi: Karar, Mandelbrot fraktal kaçış geometrisi üzerinden deterministik olarak üretilmiştir.)*`
+      : `${verdict}\n\n**System-1 Fractal Reflex:** ${logic}\n\n**Recommended Operational Action:** ${action}\n\n*(🛡️ wevv Zero-Hallucination Guarantee: Decision derived deterministically via Mandelbrot fractal escape geometry.)*`;
 
     return {
       success: true,

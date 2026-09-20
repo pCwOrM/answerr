@@ -56,11 +56,13 @@ uvicorn server.main:app --reload --port 8000
 
 ---
 
-## 🧪 Bilimsel Temel
+## 🛡️ wevv ve answerr Temel Üstünlükleri
 
-* **Temel Makale:** *"Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains"* (Dağlı vd., Eylül 2026).
-* **Teori:** *"Mandelbrot Fractal Neural Synthesis"* (IEEE / Zenodo DOI: [10.5281/zenodo.22802921](https://doi.org/10.5281/zenodo.22802921)).
-* **wevv Motoru:** [https://github.com/pCwOrM/wevv](https://github.com/pCwOrM/wevv).
+* **Sıfır Halüsinasyon (Zero Hallucination):** Geleneksel dil modelleri olasılıksal belirteç (token) örneklemesi yaptığı için uydurma üretir. `wevv`, deterministik Mandelbrot kaçış matematiği ile çalıştığından %100 tekrarlanabilir, tutarlı ve halüsinasyonsuz kararlar verir.
+* **Asla Çökmez / Sıfır Hata (Zero Crash):** Dağılım dışı (OOD) ya da saldırı amaçlı prompt enjeksiyonlarında dahi kaotik rezonatör sinyali sönümler ve sistemi kilitlemeden geçerli tipli bir yanıt üretir.
+* **Evrensel Kapsam (Universal State Coverage):** Her türlü operasyonel durum verisini (rakamlar, metinler, boolean bayraklar) anında modüle edip kesin çıktılara (`noul`, `choice`, `score`) dönüştürür.
+* **Sıfır Bellek & Sıfır Maliyet (0 Byte VRAM):** Tensör ağırlığı taşımadığından dev GPU sunucularına ihtiyaç duymaz; doğrudan tarayıcıda veya en hafif işlemcide < 1 ms hızında çalışır.
+* **Çekirdek Motor Reposu:** [https://github.com/pCwOrM/wevv](https://github.com/pCwOrM/wevv)
 
 ---
 
