@@ -1,26 +1,40 @@
 [Unit]
-Description=Answerr Reflex Decision Engine REST API (werr 0-VRAM)
+Description=Answerr Reflex Decision Engine Production REST API (werr 0-VRAM)
+Documentation=https://answerr.me/docs
 After=network.target
 
 [Service]
 Type=simple
 User=pcworm
 Group=pcworm
-WorkingDirectory=/home/pcworm/answerr_api
-ExecStart=/home/pcworm/werr/venv/bin/uvicorn server:app --host 127.0.0.1 --port 8560 --workers 2 --log-level info
+WorkingDirectory=/opt/apps/answerr/api
+ExecStart=/opt/apps/answerr/venv/bin/uvicorn server:app --host 127.0.0.1 --port 8560 --workers 2 --log-level info
 Restart=always
 RestartSec=3
 
-# Security & Sandboxing Containment
+# --- 1. Linux Kernel Sandboxing & Privilege Containment ---
 NoNewPrivileges=true
-ProtectSystem=full
-ProtectHome=read-only
-ReadWritePaths=/home/pcworm/answerr_api
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/apps/answerr/api /opt/apps/answerr/logs
 PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+UMask=0027
 
-# Resource Ceilings (Guarantees zero impact on other host services)
+# --- 2. Linux cgroup Resource Ceilings (Guarantees 0-Impact on Host) ---
+MemoryHigh=200M
 MemoryMax=256M
 CPUQuota=25%
+TasksMax=64
+LimitNOFILE=8192
 
 [Install]
 WantedBy=multi-user.target
