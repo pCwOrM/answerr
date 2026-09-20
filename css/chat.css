@@ -620,6 +620,88 @@
   font-weight: 600;
 }
 
+/* wevv Input Specification Box (Converted Question & State) */
+.wevv-spec-box {
+  background: rgba(8, 12, 20, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.spec-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+
+.spec-type-tag {
+  background: rgba(129, 140, 248, 0.18);
+  border: 1px solid rgba(129, 140, 248, 0.4);
+  color: var(--indigo);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.spec-state-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.spec-chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.74rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+}
+
+.spec-chip span.k { color: var(--text-muted); }
+.spec-chip span.v { color: var(--text-main); font-weight: 600; }
+
+.spec-details {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.spec-details summary {
+  outline: none;
+  user-select: none;
+  color: var(--cyan);
+  transition: var(--transition);
+}
+
+.spec-details summary:hover {
+  text-decoration: underline;
+}
+
+.spec-json-pre {
+  margin-top: 0.4rem;
+  padding: 0.6rem;
+  background: #05070b;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #94a3b8;
+  overflow-x: auto;
+  max-height: 140px;
+}
+
 /* Chat Input Bar Area */
 .chat-input-wrapper {
   position: absolute;
