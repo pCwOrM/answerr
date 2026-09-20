@@ -526,6 +526,62 @@
   transition: width 0.5s ease;
 }
 
+/* Smart If-Statement Execution Snippet */
+.hud-smart-code {
+  background: rgba(7, 9, 14, 0.95);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+.smart-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.smart-code-snippet {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.smart-code-snippet span.kw { color: #f43f5e; font-weight: 600; }
+.smart-code-snippet span.fn { color: #38bdf8; }
+.smart-code-snippet span.str { color: #a7f3d0; }
+
+.btn-seed-download {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: var(--transition);
+}
+
+.btn-seed-download:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(56, 189, 248, 0.08);
+}
+
 /* System-2 Interpretation Box */
 .gemini-commentary-card {
   background: var(--bg-card);
