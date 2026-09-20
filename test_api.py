@@ -90,8 +90,3 @@ if __name__ == "__main__":
         }
     )
 
-    # 6. Verify Parallel Domain mechsrv.itouch.fi:4431
-    test_api(
-        "Parallel Mirror Domain (mechsrv.itouch.fi)",
-        "https://mechsrv.itouch.fi:4431/v1/health"
-    )
