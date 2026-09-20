@@ -73,6 +73,14 @@ class WevvEngine {
           netRisk += (v / 500.0) * 0.5;
         } else if (kl.includes('latency') || kl.includes('gecikme') || kl.includes('ping')) {
           netRisk += (v / 100.0) * 0.6;
+        } else if (kl.includes('temp') || kl.includes('sicaklik')) {
+          netRisk += (v > 75 ? (v - 75) / 10.0 * 2.2 : -0.5);
+        } else if (kl.includes('torque') || kl.includes('tork') || kl.includes('load') || kl.includes('yuk')) {
+          netRisk += (v > 85 ? (v - 85) / 10.0 * 1.8 : -0.4);
+        } else if (kl.includes('vibration') || kl.includes('titresim')) {
+          netRisk += (v > 1.8 ? (v - 1.0) * 1.8 : -0.5);
+        } else if (kl.includes('amount') || kl.includes('tutar') || kl.includes('price')) {
+          netRisk += (v > 2000 ? (v / 2000.0) * 0.8 : -0.3);
         }
       } else if (typeof v === 'boolean') {
         values.push(v ? 1.0 : -1.0);
@@ -86,7 +94,8 @@ class WevvEngine {
         let matched = false;
 
         for (const [roleKey, roleRisk] of Object.entries(this.semanticRoles)) {
-          if (vl.includes(roleKey)) {
+          // Word boundary or exact match to prevent 'robot' from matching 'bot'
+          if (vl === roleKey || new RegExp('\\b' + roleKey + '\\b').test(vl)) {
             netRisk += roleRisk;
             values.push(Math.tanh(roleRisk));
             matched = true;
@@ -229,8 +238,9 @@ class WevvEngine {
 
       if (qType === 'noul') {
         const threshold = qObj.threshold ?? 0.5;
-        const isAllowQ = /allow|permit|grant|izin|safe|valid|ok|auth|pass|gecis|onay/i.test(instr);
-        const isDenyQ = /threat|danger|attack|block|malicious|hata|tehlike|risk|red|engelle/i.test(instr);
+        const isAllowQ = /allow|permit|grant|izin|safe|valid|ok|auth|pass|gecis|onay/i.test(instr) && !/engelle|durdur|block|shutdown/i.test(instr);
+        const isDenyQ = /threat|danger|attack|block|malicious|hata|tehlike|risk|red|engelle|acil|durdur|kapat|shutdown|stop|halt/i.test(instr) ||
+          qKey.includes('block') || qKey.includes('shutdown') || qKey.includes('deny');
 
         let prob = 0.5;
         if (isAllowQ || (netRisk !== 0.0 && !isDenyQ)) {
