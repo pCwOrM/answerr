@@ -118,7 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
       scored: "SKOR",
       confidence: "Güven",
       smartIf: "🚀 AKILLI KOD (Smart If-Statement):",
-      downloadSeed: "💾 24B Tohum İndir (.TXT)"
+      downloadSeed: "💾 24B Tohum İndir (.TXT)",
+      toggleSidebarOpen: "Menüyü Aç (Karar Geçmişi)",
+      toggleSidebarClose: "Menüyü Kapat"
     },
     en: {
       heroTitle: "Don't Just Chat. Get The Answerr.",
@@ -155,7 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
       scored: "SCORE",
       confidence: "Confidence",
       smartIf: "🚀 SMART IF-STATEMENT (Production Code):",
-      downloadSeed: "💾 Download 24B Seed (.TXT)"
+      downloadSeed: "💾 Download 24B Seed (.TXT)",
+      toggleSidebarOpen: "Open Menu (Decision Log)",
+      toggleSidebarClose: "Close Menu"
     }
   };
 
@@ -172,6 +176,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Sidebar & Topbar
   const sidebarEl = document.getElementById('sidebar');
   const btnToggleSidebarEl = document.getElementById('btn-toggle-sidebar');
+  const btnOpenSidebarEl = document.getElementById('btn-open-sidebar');
+  const sidebarBackdropEl = document.getElementById('sidebar-backdrop');
   const btnThemeToggleEl = document.getElementById('btn-theme-toggle');
   const btnSettingsEl = document.getElementById('btn-settings');
   const activeModelBadgeEl = document.getElementById('active-model-badge');
@@ -237,6 +243,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (newDecisionTextEl) newDecisionTextEl.textContent = t.newDecisionBtn;
     if (historyLabelEl) historyLabelEl.textContent = t.historyLabel;
 
+    if (btnOpenSidebarEl) {
+      btnOpenSidebarEl.title = t.toggleSidebarOpen;
+      btnOpenSidebarEl.setAttribute('aria-label', t.toggleSidebarOpen);
+    }
+    if (btnToggleSidebarEl) {
+      btnToggleSidebarEl.title = t.toggleSidebarClose;
+      btnToggleSidebarEl.setAttribute('aria-label', t.toggleSidebarClose);
+    }
+
     if (heroTitleEl) heroTitleEl.innerHTML = t.heroTitle;
     if (heroSubtitleEl) heroSubtitleEl.innerHTML = t.heroSubtitle;
     if (tagHallucinationEl) tagHallucinationEl.innerHTML = t.tagHallucination;
@@ -284,11 +299,47 @@ document.addEventListener('DOMContentLoaded', () => {
     startNewChat();
   });
 
-  // Sidebar Toggle
+  // Sidebar Toggle, Collapse & Reopen Handlers
+  function setSidebarCollapsed(collapsed) {
+    if (!sidebarEl) return;
+    sidebarEl.classList.toggle('collapsed', collapsed);
+    localStorage.setItem('answerr_sidebar_collapsed', collapsed ? 'true' : 'false');
+  }
+
   if (btnToggleSidebarEl) {
     btnToggleSidebarEl.addEventListener('click', () => {
-      sidebarEl.classList.toggle('collapsed');
+      setSidebarCollapsed(true);
     });
+  }
+
+  if (btnOpenSidebarEl) {
+    btnOpenSidebarEl.addEventListener('click', () => {
+      setSidebarCollapsed(false);
+    });
+  }
+
+  if (sidebarBackdropEl) {
+    sidebarBackdropEl.addEventListener('click', () => {
+      setSidebarCollapsed(true);
+    });
+  }
+
+  // Keyboard shortcut: Ctrl+B or Cmd+B to toggle sidebar
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+      e.preventDefault();
+      const isCurrentlyCollapsed = sidebarEl.classList.contains('collapsed');
+      setSidebarCollapsed(!isCurrentlyCollapsed);
+    }
+    if (e.key === 'Escape' && sidebarEl && !sidebarEl.classList.contains('collapsed') && window.innerWidth < 768) {
+      setSidebarCollapsed(true);
+    }
+  });
+
+  // Restore saved sidebar preference
+  const savedSidebarCollapsed = localStorage.getItem('answerr_sidebar_collapsed');
+  if (savedSidebarCollapsed === 'true') {
+    sidebarEl.classList.add('collapsed');
   }
 
   // Theme Toggle
