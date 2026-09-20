@@ -112,9 +112,9 @@
 }
 
 .welcome-logo-pulse {
-  width: 74px;
-  height: 62px;
-  border-radius: 14px;
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
   background: transparent;
   display: flex;
   align-items: center;
@@ -131,7 +131,7 @@
 .welcome-logo-pulse img {
   width: 100%;
   height: 100%;
-  border-radius: 14px;
+  border-radius: 16px;
   object-fit: contain;
 }
 
