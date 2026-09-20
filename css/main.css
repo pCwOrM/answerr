@@ -198,10 +198,11 @@ body {
 }
 
 .brand-logo-img {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 30px;
   border-radius: 8px;
-  filter: drop-shadow(0 0 8px var(--cyan-glow));
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
 }
 
 .brand-title {
