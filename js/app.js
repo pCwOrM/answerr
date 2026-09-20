@@ -85,9 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const I18N = {
     tr: {
-      heroTitle: "Sadece Sohbet Etmeyin. Karar Verin.",
+      heroTitle: "<span class=\"brand-text-answe\">answe</span><span class=\"brand-text-r1\">r</span><span class=\"brand-text-r2\">r</span>",
       heroMotto: "\"Doğal diyalog gerektiğinde <strong>answerr</strong>, mikrosaniyelik refleks gerektiğinde <strong>werr</strong>.\"",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator - Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)</em>: Yazılımlar ve otomasyon için <strong>Sistem-1</strong> omurilik karar altyapısı. Operasyonel durum (state) verisini ve soru talimatlarını anında tipli kararlara (<code>noul</code>, <code>choice</code>, <code>score</code>) dönüştürür. <strong>werr</strong> 0-Byte VRAM fraktal refleksiyle çalışır; mikrosaniyede deterministik sonuç üretir, asla halüsinasyon görmez ve çökmez.",
+      heroSubtitle: "Sıfır gecikmeli, 0-Byte VRAM fraktal omurilik karar çalışma alanı. Durum verinizi girin; Mandelbrot dinamikleriyle deterministik, tipli ve anlık karar üretin.",
       tagSpeed: "⚡ < 0.5 ms Fraktal Refleks",
       tagZeroMem: "💾 0-Byte Tensör Belleği",
       tagHallucination: "🛡️ Sıfır Halüsinasyon",
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       newDecisionBtn: "Yeni Karar",
       historyLabel: "Karar Geçmişi",
       systemStatus: "werr 0-Byte VRAM: Aktif",
-      disclaimer: "answerr, <a href=\"https://github.com/pCwOrM/werr\" target=\"_blank\" rel=\"noopener\">werr</a> fraktal Sistem-1 karar motoru ile çalışır. Tip güvenli, deterministik ve sıfır halüsinasyonludur. <a href=\"https://answerr.me\">answerr.me</a>.",
+      disclaimer: "answerr, <a href=\"https://github.com/pCwOrM/werr\" target=\"_blank\" rel=\"noopener\">werr</a> fraktal Sistem-1 karar motoru ile çalışır. Tip güvenli, deterministik ve sıfır halüsinasyonludur. <a href=\"index.html\">answerr.me</a>.",
       modalTitle: "⚙️ Answerr Karar Motoru Ayarları",
       modalFreeBadge: "✓ Tamamen Ücretsiz & Anahtarsız Sistem-1 Aktif",
       modalFreeDesc: "answerr, tarayıcınızda sıfır gecikmeli yerel werr Sistem-1 fraktal motoruyla çalışır. Herhangi bir kayıt, ücret veya API anahtarı zorunlu değildir.",
@@ -129,12 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
       actionRank: "🚀 Öncelik Werr",
       ctaCloud: "answerr Cloud API'yi Keşfet",
       ctaCore: "werr Çekirdeğini Uygulamana Göm (pip install werr)",
-      sendBtnTitle: "⚡ Karar Werr (Enter)"
+      sendBtnTitle: "⚡ Karar Werr (Enter)",
+      topbarHomeText: "Ana Sayfa",
+      presetSectionLabel: "Örnek Senaryolar ile Başlayın:"
     },
     en: {
-      heroTitle: "Don't Just Chat. Get The Answerr.",
+      heroTitle: "<span class=\"brand-text-answe\">answe</span><span class=\"brand-text-r1\">r</span><span class=\"brand-text-r2\">r</span>",
       heroMotto: "\"When you need natural dialogue, call <strong>answerr</strong>. When you need microsecond reflexes, embed <strong>werr</strong>.\"",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator)</em>: Machine-native <strong>System-One</strong> decision infrastructure for software and automation. Ingests operational state signals and delivers structured, calibrated decisions (<code>noul</code>, <code>choice</code>, <code>score</code>) your code can use directly. Powered by <strong>werr</strong> zero-memory fractal reflexes and acoustic wave resonance.",
+      heroSubtitle: "Zero-latency, 0-Byte VRAM fractal spinal reflex workspace. Ingest operational state vectors and generate deterministic, typed System-1 decisions instantly.",
       tagSpeed: "⚡ < 0.5 ms Fractal Reflex",
       tagZeroMem: "💾 0-Byte Tensor Memory",
       tagHallucination: "🛡️ Zero Hallucination",
@@ -143,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
       newDecisionBtn: "New Decision",
       historyLabel: "Decision Log",
       systemStatus: "werr 0-Byte VRAM: Active",
-      disclaimer: "answerr is powered by the <a href=\"https://github.com/pCwOrM/werr\" target=\"_blank\" rel=\"noopener\">werr</a> fractal System-One engine. Type-safe, calibrated, zero-hallucination. <a href=\"https://answerr.me\">answerr.me</a>.",
+      disclaimer: "answerr is powered by the <a href=\"https://github.com/pCwOrM/werr\" target=\"_blank\" rel=\"noopener\">werr</a> fractal System-One engine. Type-safe, calibrated, zero-hallucination. <a href=\"index.html\">answerr.me</a>.",
       modalTitle: "⚙️ Answerr Decision Engine Settings",
       modalFreeBadge: "✓ 100% Free & Keyless System-1 Active",
       modalFreeDesc: "answerr operates with zero latency directly inside your browser with the werr engine. No sign-up, credit card, or API key required.",
@@ -176,7 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
       actionRank: "🚀 Rank It!",
       ctaCloud: "Explore answerr Cloud API",
       ctaCore: "Embed werr Kernel in App (pip install werr)",
-      sendBtnTitle: "⚡ Werr It! (Enter)"
+      sendBtnTitle: "⚡ Werr It! (Enter)",
+      topbarHomeText: "Home",
+      presetSectionLabel: "Start with Curated Scenarios:"
     }
   };
 
@@ -240,6 +244,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnActionRankTextEl = document.getElementById('btn-action-rank-text');
   const ctaCloudTextEl = document.getElementById('cta-cloud-text');
   const ctaCoreTextEl = document.getElementById('cta-core-text');
+  const topbarHomeTextEl = document.getElementById('topbar-home-text');
+  const presetSectionLabelEl = document.getElementById('preset-section-label');
+  const systemStatusTextEl = document.getElementById('system-status-text');
 
   // 4. Application State
   let currentSessionId = generateId();
@@ -272,6 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (newDecisionTextEl) newDecisionTextEl.textContent = t.newDecisionBtn;
     if (historyLabelEl) historyLabelEl.textContent = t.historyLabel;
+    if (systemStatusTextEl && t.systemStatus) systemStatusTextEl.textContent = t.systemStatus;
+    if (topbarHomeTextEl && t.topbarHomeText) topbarHomeTextEl.textContent = t.topbarHomeText;
+    if (presetSectionLabelEl && t.presetSectionLabel) presetSectionLabelEl.textContent = t.presetSectionLabel;
 
     if (btnOpenSidebarEl) {
       btnOpenSidebarEl.title = t.toggleSidebarOpen;
