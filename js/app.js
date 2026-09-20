@@ -232,18 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputApiKeyEl = document.getElementById('input-api-key');
   const selectModelEl = document.getElementById('select-model');
 
-  // Dynamic Action Buttons & Hero Elements
+  // Dynamic Elements
   const heroMottoEl = document.getElementById('hero-motto');
-  const btnActionWerrEl = document.getElementById('btn-action-werr');
-  const btnActionWerrTextEl = document.getElementById('btn-action-werr-text');
-  const btnActionAnswerrEl = document.getElementById('btn-action-answerr');
-  const btnActionAnswerrTextEl = document.getElementById('btn-action-answerr-text');
-  const btnActionGateEl = document.getElementById('btn-action-gate');
-  const btnActionGateTextEl = document.getElementById('btn-action-gate-text');
-  const btnActionRankEl = document.getElementById('btn-action-rank');
-  const btnActionRankTextEl = document.getElementById('btn-action-rank-text');
-  const ctaCloudTextEl = document.getElementById('cta-cloud-text');
-  const ctaCoreTextEl = document.getElementById('cta-core-text');
   const topbarHomeTextEl = document.getElementById('topbar-home-text');
   const presetSectionLabelEl = document.getElementById('preset-section-label');
   const systemStatusTextEl = document.getElementById('system-status-text');
@@ -312,12 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnSaveSettingsEl) btnSaveSettingsEl.textContent = t.modalSave;
 
     if (heroMottoEl && t.heroMotto) heroMottoEl.innerHTML = t.heroMotto;
-    if (btnActionWerrTextEl && t.actionWerr) btnActionWerrTextEl.textContent = t.actionWerr;
-    if (btnActionAnswerrTextEl && t.actionAnswerr) btnActionAnswerrTextEl.textContent = t.actionAnswerr;
-    if (btnActionGateTextEl && t.actionGate) btnActionGateTextEl.textContent = t.actionGate;
-    if (btnActionRankTextEl && t.actionRank) btnActionRankTextEl.textContent = t.actionRank;
-    if (ctaCloudTextEl && t.ctaCloud) ctaCloudTextEl.textContent = t.ctaCloud;
-    if (ctaCoreTextEl && t.ctaCore) ctaCoreTextEl.textContent = t.ctaCore;
     if (btnSendEl && t.sendBtnTitle) btnSendEl.title = t.sendBtnTitle;
     renderPresetCards(lang);
     renderHistoryList();
@@ -341,58 +325,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnSendEl.addEventListener('click', () => handleSendMessage());
-  // Action Buttons Strip Handlers (Terminology Guide: Karar Werr / Cevap Werr / İzin Werr / Öncelik Werr)
-  if (btnActionWerrEl) {
-    btnActionWerrEl.addEventListener('click', () => {
-      let prompt = chatInputEl.value.trim();
-      if (!prompt) {
-        prompt = currentLang === 'tr'
-          ? "Kullanıcı rolü 'admin', oturum geçerli, istek sıklığı 1.2 req/s, hata denemesi 0. Karar werr!"
-          : "User role 'admin', session valid, request frequency 1.2 req/s, 0 errors. Werr it!";
-      }
-      handleSendMessage(prompt);
-    });
-  }
-
-  if (btnActionAnswerrEl) {
-    btnActionAnswerrEl.addEventListener('click', () => {
-      let prompt = chatInputEl.value.trim();
-      if (!prompt) {
-        prompt = currentLang === 'tr'
-          ? "Anonim kullanıcıdan gelen ani 180 istek/dk veri transferi güvenlik politikasına uygun mu? Detaylı cevap werr."
-          : "Is a burst of 180 req/min from an anonymous IP compliant with security policy? Answerr it in detail.";
-      }
-      handleSendMessage(prompt);
-    });
-  }
-
-  if (btnActionGateEl) {
-    btnActionGateEl.addEventListener('click', () => {
-      let prompt = chatInputEl.value.trim();
-      if (!prompt) {
-        prompt = currentLang === 'tr'
-          ? "Ağ geçidi güvenlik denetimi: İstek kaynağı doğrulanmamış misafir, veritabanı uç noktası çağrıldı. İzin werr mi engellensin mi?"
-          : "Gateway security inspection: Unverified guest calling database endpoint. Gate it: allow or block?";
-      } else if (!prompt.includes("izin") && !prompt.includes("gate")) {
-        prompt += currentLang === 'tr' ? " İzin verilsin mi?" : " Allow execution?";
-      }
-      handleSendMessage(prompt);
-    });
-  }
-
-  if (btnActionRankEl) {
-    btnActionRankEl.addEventListener('click', () => {
-      let prompt = chatInputEl.value.trim();
-      if (!prompt) {
-        prompt = currentLang === 'tr'
-          ? "Finansal risk ve öncelik derecelendirmesi: Tutar 25.000 TL, cihaz anomalisi tespit edildi, işlem hızı yüksek. Öncelik ve risk skoru werr!"
-          : "Financial risk and priority ranking: Amount $25,000, device anomaly detected, high velocity. Rank it: priority and threat score!";
-      } else if (!prompt.includes("öncelik") && !prompt.includes("rank")) {
-        prompt += currentLang === 'tr' ? " Tehlike ve öncelik derecesi nedir?" : " What is the threat and priority score?";
-      }
-      handleSendMessage(prompt);
-    });
-  }
 
 
   // New Chat
@@ -887,14 +819,16 @@ License                 : MIT License (%100 Free & Open Source)
     return card;
   }
 
-  // 8. Presets Grid Rendering with Language Awareness
+  // 8. Presets Grid Rendering with Language Awareness (Sleek Compact Prompt Pills)
   function renderPresetCards(lang = currentLang) {
     if (!presetGridEl || typeof SCENARIO_PRESETS === 'undefined') return;
     presetGridEl.innerHTML = '';
 
-    SCENARIO_PRESETS.forEach(preset => {
-      const card = document.createElement('div');
+    // Render top 4 curated scenarios in a balanced, clean 2x2 layout
+    SCENARIO_PRESETS.slice(0, 4).forEach(preset => {
+      const card = document.createElement('button');
       card.className = 'preset-card';
+      card.setAttribute('type', 'button');
 
       const isTr = lang === 'tr';
       const cat = isTr ? (preset.categoryTr || preset.category) : preset.category;
@@ -902,14 +836,17 @@ License                 : MIT License (%100 Free & Open Source)
       const prompt = isTr ? preset.prompt : (preset.promptEn || preset.prompt);
 
       card.innerHTML = `
-        <div class="preset-header">
+        <div class="preset-pill-left">
           <span class="preset-icon">${preset.icon}</span>
-          <span class="preset-category">${escapeHtml(cat)}</span>
+          <div class="preset-info">
+            <span class="preset-title">${escapeHtml(title)}</span>
+            <span class="preset-category">${escapeHtml(cat)}</span>
+          </div>
         </div>
-        <div class="preset-title">${escapeHtml(title)}</div>
-        <div class="preset-prompt-snippet">${escapeHtml(prompt)}</div>
+        <span class="preset-arrow">→</span>
       `;
 
+      card.title = prompt;
       card.addEventListener('click', () => {
         handleSendMessage(prompt);
       });
