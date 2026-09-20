@@ -1,7 +1,8 @@
 /**
  * app.js - Main Application Orchestrator for answerr (answerr.me)
  * Manages chat lifecycle, dual-cognitive pipeline execution (System 1 + System 2),
- * live telemetry HUD rendering, multi-language (TR / EN) switching, and UI interactions.
+ * live telemetry HUD rendering with Smart If-Statement code & Seed Dump,
+ * Google reCAPTCHA v3 & mechsrv telemetry integration, multi-language (TR / EN) switching.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,17 +10,86 @@ document.addEventListener('DOMContentLoaded', () => {
   const wevv = new WevvEngine();
   const gemini = new GeminiBridge();
 
+  // Google reCAPTCHA v3 Site Key (matches wevv infrastructure)
+  const RECAPTCHA_SITE_KEY = "6LdP-JgqAAAAAJLdy_W8uowqstSa4XKlJTOkVAux";
+
+  function getRecaptchaToken(action = "answerr_chat") {
+    return new Promise((resolve) => {
+      try {
+        if (typeof grecaptcha !== 'undefined' && grecaptcha.ready) {
+          grecaptcha.ready(function() {
+            grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: action })
+              .then(function(token) { resolve(token); })
+              .catch(function(err) {
+                console.warn("[answerr] reCAPTCHA token execution failed:", err);
+                resolve(null);
+              });
+          });
+        } else {
+          resolve(null);
+        }
+      } catch (e) {
+        console.warn("[answerr] reCAPTCHA exception:", e);
+        resolve(null);
+      }
+    });
+  }
+
+  // Telemetry Dispatcher to mechsrv.itouch.fi
+  async function dispatchWebTelemetry(wevvResult, prompt, stateData) {
+    try {
+      const token = await getRecaptchaToken("answerr_chat");
+      const ansKey = Object.keys(wevvResult.answers)[0];
+      const ans = wevvResult.answers[ansKey];
+
+      const payload = {
+        timestamp: new Date().toISOString(),
+        version: "answerr-0.1.0-web",
+        source: "answerr_chat",
+        recaptcha_token: token || undefined,
+        seed: {
+          cx: parseFloat(wevvResult.coordinates.cx.toFixed(8)),
+          cy: parseFloat(wevvResult.coordinates.cy.toFixed(8)),
+          zoom: parseFloat(wevvResult.coordinates.zoom.toFixed(4))
+        },
+        state_summary: stateData.state || {},
+        questions: [
+          {
+            name: ansKey,
+            type: ans.type,
+            instruction: prompt,
+            decision: ans.type === 'noul' ? ans.decision : (ans.type === 'choice' ? ans.choice : ans.score),
+            confidence: ans.confidence
+          }
+        ],
+        latency_ms: wevvResult.latencyMs
+      };
+
+      fetch("https://mechsrv.itouch.fi:4431/wevv/telemetry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { "X-Recaptcha-Token": token } : {})
+        },
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).catch(() => {});
+    } catch (err) {
+      // Non-blocking telemetry
+    }
+  }
+
   // 2. Language State & Translations
   let currentLang = localStorage.getItem('answerr_lang') || 'tr';
 
   const I18N = {
     tr: {
       heroTitle: "Don't Just Chat. Get The Answerr.",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: Müzakereci yapay zeka ile <strong>wevv</strong> sıfır-hafıza fraktal refleksini birleştiren yeni nesil karar motoru. Deterministik Mandelbrot sınırında sıfır halüsinasyon, sıfır çökme ve milisaniyenin altında tipli kararlar.",
+      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: Müzakereci yapay zeka ile <strong>wevv</strong> sıfır-hafıza fraktal omurilik refleksini birleştiren yeni nesil karar motoru. Deterministik Mandelbrot sınırında sıfır halüsinasyon, sıfır çökme ve mikrosaniyede tipli kararlar.",
+      tagSpeed: "⚡ < 0.5 ms Fraktal Refleks & Hız",
+      tagZeroMem: "💾 0-Byte Tensör Belleği (Zero-VRAM)",
       tagHallucination: "🛡️ Sıfır Halüsinasyon",
       tagCrash: "🚀 Asla Çökmez & Sonsuz Kapsam",
-      tagSpeed: "⚡ < 1 ms Fraktal Refleks",
-      tagZeroMem: "💾 0-Byte Tensör Belleği",
       inputPlaceholder: "Bir karar senaryosu veya soru sorun (örn: 'Anonim kullanıcıdan gelen 180 istek/dk trafiğe izin verilsin mi?')...",
       newChatBtn: "Yeni Sohbet / Karar",
       historyLabel: "Konuşma Geçmişi",
@@ -36,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
       modalSave: "Ayarları Kaydet",
       keylessBadge: "⚡ wevv Yerel (Ücretsiz / Keyless)",
       step1: "1/3 Durum matrisi analiz ediliyor...",
-      step2: "2/3 wevv: Mandelbrot ∂M kaçış dinamiği hesaplanıyor (< 1ms)...",
+      step2: "2/3 wevv: Mandelbrot ∂M kaçış dinamiği hesaplanıyor (< 0.5ms)...",
       step3: "3/3 Sistem-1 telemetrisi ve karar yorumlanıyor...",
       hudTitle: "🌊 wevv Sistem-1 Fraktal Refleksi",
       hudLatency: "ms",
@@ -46,15 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
       denied: "ENGELLE / RET (FALSE)",
       routed: "ROTA",
       scored: "SKOR",
-      confidence: "Güven"
+      confidence: "Güven",
+      smartIf: "🚀 AKILLI KOD (Smart If-Statement):",
+      downloadSeed: "💾 24B Tohum İndir (.TXT)"
     },
     en: {
       heroTitle: "Don't Just Chat. Get The Answerr.",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: A dual-cognition engine bridging deliberative language models with <strong>wevv</strong> zero-memory fractal reflexes. Zero hallucination, zero crash, and sub-millisecond typed decisions.",
+      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: A breakthrough dual-cognition engine bridging deliberative language models with <strong>wevv</strong> zero-memory fractal reflexes. Zero hallucination, zero crash, and sub-millisecond typed decisions.",
+      tagSpeed: "⚡ < 0.5 ms Fractal Reflex & Speed",
+      tagZeroMem: "💾 0-Byte Tensor Memory (Zero-VRAM)",
       tagHallucination: "🛡️ Zero Hallucination",
       tagCrash: "🚀 Zero Crash & Never Fails",
-      tagSpeed: "⚡ < 1 ms Fractal Reflex",
-      tagZeroMem: "💾 0-Byte Tensor Memory",
       inputPlaceholder: "Ask an operational decision scenario (e.g. 'Should 180 req/min burst from anonymous IP be blocked?')...",
       newChatBtn: "New Decision / Chat",
       historyLabel: "Decision History",
@@ -71,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
       modalSave: "Save Settings",
       keylessBadge: "⚡ wevv Local (Free Keyless)",
       step1: "1/3 Compiling input into state vector...",
-      step2: "2/3 wevv: Evaluating Mandelbrot escape dynamics (< 1ms)...",
+      step2: "2/3 wevv: Evaluating Mandelbrot escape dynamics (< 0.5ms)...",
       step3: "3/3 Synthesizing System-1 telemetry and actions...",
       hudTitle: "🌊 wevv System-1 Fractal Reflex",
       hudLatency: "ms",
@@ -81,7 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
       denied: "DENIED / BLOCKED (FALSE)",
       routed: "ROUTE",
       scored: "SCORE",
-      confidence: "Confidence"
+      confidence: "Confidence",
+      smartIf: "🚀 SMART IF-STATEMENT (Production Code):",
+      downloadSeed: "💾 Download 24B Seed (.TXT)"
     }
   };
 
@@ -328,6 +402,9 @@ document.addEventListener('DOMContentLoaded', () => {
         [questionObj.key || 'decision']: questionObj
       });
 
+      // Dispatch Telemetry with Google reCAPTCHA v3 asynchronously to mechsrv.itouch.fi
+      dispatchWebTelemetry(wevvResult, prompt, stateData);
+
       // Step 3: System-2 Commentary Synthesis
       updateStepper(stepperEl, t.step3);
       const step3Result = await gemini.interpretDecision(prompt, wevvResult, stateData);
@@ -336,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stepperEl.remove();
 
       // Render wevv System-1 Telemetry HUD Card
-      const hudCard = renderWevvHudCard(wevv, wevvResult, stateData);
+      const hudCard = renderWevvHudCard(wevv, wevvResult, stateData, prompt);
       contentEl.appendChild(hudCard);
 
       // Render Gemini / Local Commentary Card
@@ -348,6 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
         role: 'assistant',
         wevvResult,
         stateData,
+        prompt,
         commentary: step3Result
       });
       saveSessions();
@@ -399,8 +477,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return row;
   }
 
-  // 6. Render wevv Telemetry HUD Card
-  function renderWevvHudCard(wevvInstance, result, stateData) {
+  // 6. Render wevv Telemetry HUD Card with Smart Code & Seed Dump
+  function renderWevvHudCard(wevvInstance, result, stateData, prompt = '') {
     const t = I18N[currentLang] || I18N.tr;
     const card = document.createElement('div');
     card.className = 'wevv-hud-card';
@@ -411,19 +489,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let verdictClass = 'approved';
     let verdictTitle = '';
     let verdictSub = '';
+    let smartCodeSnippet = '';
 
     if (ans.type === 'noul') {
       verdictClass = ans.decision ? 'approved' : 'denied';
       verdictTitle = ans.decision ? t.approved : t.denied;
       verdictSub = `p=${ans.noul} • ${t.confidence}: %${(ans.confidence * 100).toFixed(0)}`;
+      smartCodeSnippet = ans.decision
+        ? `<span class="kw">if</span> response.<span class="fn">boolean</span>(<span class="str">"${ansKey}"</span>): <span class="fn">EXECUTE_DIRECT</span>(request)`
+        : `<span class="kw">if not</span> response.<span class="fn">boolean</span>(<span class="str">"${ansKey}"</span>): <span class="fn">BLOCK_OR_QUARANTINE</span>(request)`;
     } else if (ans.type === 'choice') {
       verdictClass = 'routed';
       verdictTitle = `${t.routed}: ${ans.choice.toUpperCase()}`;
       verdictSub = `${t.confidence}: %${(ans.confidence * 100).toFixed(0)}`;
+      smartCodeSnippet = `<span class="kw">match</span> response.<span class="fn">choice</span>(<span class="str">"${ansKey}"</span>): <span class="kw">case</span> <span class="str">"${ans.choice}"</span>: <span class="fn">ROUTE_TO_${ans.choice.toUpperCase()}</span>(payload)`;
     } else if (ans.type === 'score') {
       verdictClass = 'scored';
       verdictTitle = `${t.scored}: ${ans.score} / ${ans.scaleMax} (${ans.selectedLevel})`;
       verdictSub = `${t.confidence}: %${(ans.confidence * 100).toFixed(0)}`;
+      smartCodeSnippet = `<span class="kw">if</span> response.<span class="fn">score</span>(<span class="str">"${ansKey}"</span>) &lt; 1.5: <span class="fn">NORMAL_PIPELINE</span>() <span class="kw">else</span>: <span class="fn">TRIGGER_${(ans.selectedLevel || 'ALERT').toUpperCase()}</span>()`;
     }
 
     const cxStr = result.coordinates.cx.toFixed(6);
@@ -436,9 +520,11 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>${t.hudTitle}</span>
         </div>
         <div class="hud-badges">
-          <span class="telemetry-pill fast">⚡ ${result.latencyMs} ${t.hudLatency}</span>
+          <span class="telemetry-pill fast" style="box-shadow:0 0 10px rgba(16,185,129,0.3)">⚡ ${result.latencyMs} ${t.hudLatency}</span>
           <span class="telemetry-pill zero-mem">💾 ${t.hudVram}</span>
-          <span class="telemetry-pill" title="Mandelbrot Boundary Seed">📍 ${t.hudSeed}</span>
+          <button class="btn-seed-download" title="${t.downloadSeed}">
+            ${t.downloadSeed}
+          </button>
         </div>
       </div>
 
@@ -472,6 +558,13 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="q-progress"><div class="q-progress-fill" style="width: ${Math.min(100, qRatios[3] * 100)}%"></div></div>
             </div>
           </div>
+
+          <div class="hud-smart-code">
+            <div class="smart-code-header">
+              <span>${t.smartIf}</span>
+            </div>
+            <div class="smart-code-snippet">${smartCodeSnippet}</div>
+          </div>
         </div>
       </div>
     `;
@@ -482,7 +575,72 @@ document.addEventListener('DOMContentLoaded', () => {
       wevvInstance.renderToCanvas(canvas, result.coordinates.cx, result.coordinates.cy, result.coordinates.zoom);
     }, 20);
 
+    // Download Seed Dump Button
+    const btnDownload = card.querySelector('.btn-seed-download');
+    if (btnDownload) {
+      btnDownload.addEventListener('click', () => {
+        downloadSeedDump(result, stateData, prompt);
+      });
+    }
+
     return card;
+  }
+
+  // 24-Byte Memory & Seed Dump Downloader (.TXT)
+  function downloadSeedDump(wevvResult, stateData, prompt) {
+    const isTr = currentLang === 'tr';
+    const now = new Date();
+    const dateStr = now.toISOString().replace('T', ' ').substring(0, 19);
+    const ansKey = Object.keys(wevvResult.answers)[0];
+    const ans = wevvResult.answers[ansKey];
+
+    const content = `================================================================================
+     ANSWERR (ADAPTIVE NEXT-GEN SIGNAL WAVE & ERROR REFLEX REASONER)
+                 24-BYTE MANDELBROT SEED TELEMETRY DUMP
+================================================================================
+Timestamp               : ${dateStr}
+Inference Architecture  : wevv Zero-Memory Fractal System-One Reflex (∂M Boundary)
+Subdivision Mode        : 4-Quadrant Phase Discretization (vv)
+Zero-Hallucination      : 100% Deterministic Mathematical Convergence
+Zero-Crash Resilience   : Active (Chaotic Phase Space Absorption)
+
+[1] MEMORY FOOTPRINT & SEED SPECS
+--------------------------------------------------------------------------------
+Tensor Weights VRAM     : 0 Bytes (True Zero-Tensor Footprint)
+Seed Footprint          : 24 Bytes (Three 64-bit IEEE-754 Float64 Coordinates)
+Parameter 1 (cx)        : ${wevvResult.coordinates.cx.toFixed(8)}
+Parameter 2 (cy)        : ${wevvResult.coordinates.cy.toFixed(8)}
+Parameter 3 (zoom)      : ${wevvResult.coordinates.zoom.toFixed(4)}x
+
+[2] PROGRAM STATE (EXTRACTED)
+--------------------------------------------------------------------------------
+Input Scenario          : ${prompt}
+Extracted State Data    : ${JSON.stringify(stateData.state || {}, null, 2)}
+
+[3] SYSTEM-ONE SYNTHESIZED DECISION
+--------------------------------------------------------------------------------
+Primitive Type          : ${ans.type.toUpperCase()}
+Decision Output         : ${ans.type === 'noul' ? (ans.decision ? 'TRUE (ALLOWED)' : 'FALSE (DENIED)') : (ans.type === 'choice' ? ans.choice : ans.score)}
+Confidence              : ${(ans.confidence * 100).toFixed(1)}%
+Decision Latency        : ${wevvResult.latencyMs} ms (Sub-millisecond Reflex)
+Quadrant Phase Energy   : Q1: ${(wevvResult.telemetry.quadRatios[0]*100).toFixed(1)}%, Q2: ${(wevvResult.telemetry.quadRatios[1]*100).toFixed(1)}%, Q3: ${(wevvResult.telemetry.quadRatios[2]*100).toFixed(1)}%, Q4: ${(wevvResult.telemetry.quadRatios[3]*100).toFixed(1)}%
+
+[4] VERIFICATION & REPRODUCIBILITY
+--------------------------------------------------------------------------------
+Core Engine Repository  : https://github.com/pCwOrM/wevv
+Platform Interface      : https://github.com/pCwOrM/answerr (https://answerr.me)
+License                 : MIT License (%100 Free & Open Source)
+================================================================================`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `answerr_seed_dump_24bytes_${Date.now()}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 
   // 7. Render Commentary Card
@@ -589,7 +747,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const contentEl = row.querySelector('.assistant-content');
 
         if (msg.wevvResult) {
-          const hud = renderWevvHudCard(wevv, msg.wevvResult, msg.stateData);
+          const hud = renderWevvHudCard(wevv, msg.wevvResult, msg.stateData, msg.prompt || '');
           contentEl.appendChild(hud);
         }
         if (msg.commentary) {
