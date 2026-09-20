@@ -1,33 +1,110 @@
-# ⚡ A.N.S.W.E.R.R. — Zero-Latency Reflex AI Decision Platform
-
 <p align="center">
-  <img src="assets/answerr_werr_twin_ecosystem.svg" alt="answerr & werr Twin Ecosystem Banner" width="100%">
+  <img src="assets/answerr_werr_twin_ecosystem.svg" alt="answerr & werr Twin Cognitive Ecosystem Banner" width="100%" />
 </p>
 
 <p align="center">
-  <img src="assets/answerr_logo_portal.svg" alt="answerr portal" width="110">
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/werr_logo_core.svg" alt="werr core" width="110">
+  <img src="assets/answerr_logo_portal_fav_trans.svg" alt="answerr Portal Emblem" width="140" height="140" />
 </p>
 
+# ⚡ answerr — Zero-Latency Reflex AI & Decision Workspace
+
 <p align="center">
-  <a href="https://pcworm.github.io/answerr/"><img src="https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-38bdf8.svg" alt="Live Demo"></a>
-  <a href="https://answerr.me"><img src="https://img.shields.io/badge/Website-answerr.me-818cf8.svg" alt="Website"></a>
-  <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-Zero--Memory%20Engine-10b981.svg" alt="werr Engine"></a>
-  <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Live-38bdf8.svg" alt="API Status"></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"></a>
+  <a href="https://answerr.me"><img src="https://img.shields.io/badge/Production-answerr.me-38bdf8.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Website: answerr.me"></a>
+  <a href="https://pcworm.github.io/answerr/"><img src="https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-818cf8.svg?style=for-the-badge&logo=github&logoColor=white" alt="Live Demo"></a>
+  <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-Zero--Memory%20Engine-10b981.svg?style=for-the-badge" alt="werr Engine"></a>
+  <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Live%20Production-c084fc.svg?style=for-the-badge" alt="REST API"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT"></a>
 </p>
 
 > **A**daptive **N**on-tensor **S**ignal **W**ave & **E**rror **R**eflex **R**esonator  
 > *"When you need natural dialogue, call **answerr**.*  
 > *When you need microsecond reflexes, embed **werr**."*  
-> *"Don't just chat. Get the Answerr."*
+> *"Don't just chat. Get the Answerr!"*
+
+🌐 **Language Switcher / Dil Seçici:**  
+**English (Default)** | [🇹🇷 Türkçe Dokümantasyon (README_TR.md)](README_TR.md)
+
+---
+
+## 🌟 Overview
+
+**answerr** is a next-generation **Dual-Cognition AI platform** that bridges the divide between human conversational reasoning and deterministic, zero-latency software execution:
+
+1. **System-Two Deliberation (LLM / Cloud AI):** Ingests conversational dialogue, extracts operational state vectors, synthesizes strategic explanations, and generates production code. Integrates seamlessly with Google Gemini 2.5 Flash and OpenAI-compatible pipelines.
+2. **System-One Reflex Arc ([werr](https://github.com/pCwOrM/werr)):** Derives instant, strongly-typed decisions (`noul`, `choice`, `score`) in **$< 0.5$ ms** with **0 Bytes of VRAM** via Mandelbrot fractal escape boundary dynamics ($\partial \mathcal{M}$).
+
+Instead of forcing heavy 70B+ parameter neural networks to spend thousands of milliseconds and hundreds of tokens evaluating routine boolean gates, routing conditions, or security checks, **answerr** delegates execution triage to the zero-tensor mathematical geometry of the Mandelbrot set.
+
+---
+
+## ⚡ The Dual-Cognition Architecture
+
+```text
+                           [ Operational Signal / User Prompt ]
+                                            │
+                                            ▼
+                       ┌──────────────────────────────────────────┐
+                       │     System-Two: Deliberative Parsing     │
+                       │         (Natural Dialogue & Context)     │
+                       └────────────────────┬─────────────────────┘
+                                            │
+               Extracts Structured State Vector & Typed Question Template
+                          (client_role, req_rate, auth, target)
+                                            │
+                                            ▼
+                       ┌──────────────────────────────────────────┐
+                       │    System-One: werr Geometric Reflex     │
+                       │    0-Byte VRAM • < 0.5 ms Kernel Exec    │
+                       └────────────────────┬─────────────────────┘
+                                            │
+                     Evaluates Mandelbrot Boundary Escape Dynamics (∂M)
+                     - noul: Strongly-Typed Boolean (ALLOWED / DENIED)
+                     - choice: Discrete Route Partition (Q1 ~ Q4)
+                     - score: Continuous Severity / Priority Rank
+                                            │
+                                            ▼
+                       ┌──────────────────────────────────────────┐
+                       │       System-Two Synthesis & Code        │
+                       │      Smart If-Statement & Telemetry      │
+                       └────────────────────┬─────────────────────┘
+                                            │
+                                            ▼
+                 [ answerr.me Live Workspace & Real-Time Telemetry HUD ]
+```
+
+---
+
+## 🚀 Key Features
+
+* **Centered Glassmorphic Workspace (`chat.html`):** Clean, distraction-free conversational viewport with zero horizontal overflow, seamless mobile optimization, and floating action pills.
+* **Live Mandelbrot Telemetry HUD:** Assistant responses feature interactive telemetry cards displaying execution latency ($< 0.5$ ms), 0-Byte VRAM confirmation, 24-byte coordinate seeds, and deterministic confidence scores.
+* **Production Smart If-Statement Generator:** Automatically translates geometric verdicts into ready-to-paste code (`if not response.boolean("allow"): ...`) for Python, Node.js, and Go.
+* **Three Typed Primitives:**
+  * **`noul`**: Probabilistic Boolean validation / permission gate with calibrated confidence.
+  * **`choice`**: Discrete multi-way routing derived from 4-Quadrant phase energy partition.
+  * **`score`**: Continuous ordinal ranking and severity indexing.
+* **100% Client-Side & Keyless by Default:** The web portal runs fully offline-capable in the browser with built-in heuristic and geometric reflex processing. No sign-up, credit card, or API key is required.
+* **Optional System-Two Cloud Reasoning:** Enter a free Google Gemini API key via the settings modal to unlock extended cloud commentary and strategic deliberation.
+
+---
+
+## 🎨 Official Vector Logos & Design Assets
+
+All vector brand assets are crafted in pure SVG with tailored gradient palettes:
+
+| Asset Type | Graphic Preview | File Link | Specifications |
+| :--- | :---: | :--- | :--- |
+| **Twin Ecosystem Banner** | `answerr` &harr; `werr` | [`assets/answerr_werr_twin_ecosystem.svg`](assets/answerr_werr_twin_ecosystem.svg) | 1200×650 SVG &bull; Complete Dual Cognitive Architecture |
+| **answerr Portal (Transparent)** | Neon Aperture | [`assets/answerr_logo_portal_fav_trans.svg`](assets/answerr_logo_portal_fav_trans.svg) | 514×452 SVG &bull; Transparent Cyan-Purple Gradient Ring |
+| **answerr Portal (Dark Base)** | Cosmic Void Base | [`assets/answerr_logo_portal_fav_black.svg`](assets/answerr_logo_portal_fav_black.svg) | 514×452 SVG &bull; High-Contrast Dark Slate App Icon / Favicon |
+| **answerr Badge with Brand** | Full Horizontal Logo | [`assets/answerr_logo_portal.svg`](assets/answerr_logo_portal.svg) | 800×240 SVG &bull; Aperture Icon with `answe` + cyan `r` + purple `r` |
+| **werr Reflex Core Symbol** | 3D Crystal "W" | [`assets/werr_logo_core.svg`](assets/werr_logo_core.svg) | 800×800 SVG &bull; Official Reflex Kernel Symbol |
 
 ---
 
 ## 🏛️ Four-Dimensional Semantic Framework & Terminology
 
-```
+```text
                       ┌───────────────────────────────────────────────┐
                       │         werr (Decision & Reflex Core)         │
                       │    0-Byte VRAM • Fractal Reflex Resonator     │
@@ -49,79 +126,180 @@
                                └──────────────────────────────────┘
 ```
 
-### 1. 🇬🇧 English Spatial & Phonetic Root: *"Where"* $\to$ `werr`
-In traditional deep learning, decisions are searched through matrix multiplications across billions of parameters. In `werr`, decision-making is a **spatial resonance problem**: where along the infinite Mandelbrot boundary ($\partial \mathcal{M}$) does this state live?
-
+### 1. 🇬🇧 English Spatial & Phonetic Root: *"Where"* &rarr; `werr`
 * **`Werr is the point?`**: "Where is the coordinate seed?" Locks in the 24-byte $(c_x, c_y, \text{zoom})$ boundary triplet.
 * **`Werr is the error?`**: Where was the Euler divergence threshold ($|Z_n| > 2$) crossed? The error boundary is where the verdict crystallizes.
-* **`Werr is the answerr?`**: The answer isn't in a multi-gigabyte GPU datacenter; it's in your L1 CPU cache inside the `werr` kernel.
-* **`Werr to route?`**: Which operational domain gate (`api_security`, `financial_risk`, `iot_safety`, etc.) handles the payload?
-* **`Werr-ever you need a decision.`**: Universal embedded reflex guarantee from microcontrollers to bare-metal servers.
+* **`Werr is the answerr?`**: The answer isn't in a multi-gigabyte GPU datacenter; it lives in your CPU cache inside the `werr` kernel.
+* **`Werr to route?`**: Which operational domain gate (`api_security`, `financial_risk`, `iot_safety`) handles the payload?
 
-### 2. 🇹🇷 Turkish Action Root: *"Ver!"* $\to$ `werr`
-Biological spinal reflex arcs don't procrastinate; they **give** an immediate answer. In Turkish, **"ver!"** means "give/hand over unconditionally":
-* `Karar werr!` *(Make the decision!)* $\to$ Deterministic verdict in $< 0.5$ ms.
-* `Cevap werr!` *(Give the answer!)* $\to$ Direct type-safe answer (`noul`, `choice`, `score`).
-* `İzin werr!` *(Allow / Gate it!)* $\to$ Security gateway clearance (`ALLOWED` / `DENIED`).
-* `Öncelik werr!` *(Rank it!)* $\to$ Instant severity and priority triage.
+### 2. 🇹🇷 Turkish Action Imperative: *"Ver!"* &rarr; `werr`
+Biological spinal reflexes act unconditionally without debate. In Turkish, **"ver!"** means "give / hand over":
+* **`Karar werr!`** *(Make the decision!)* &rarr; Deterministic verdict in $< 0.5$ ms.
+* **`Cevap werr!`** *(Give the answer!)* &rarr; Direct type-safe response (`noul`, `choice`, `score`).
+* **`İzin werr!`** *(Allow / Gate it!)* &rarr; Security clearance (`ALLOWED` / `DENIED`).
+* **`Öncelik werr!`** *(Rank it!)* &rarr; Instant severity and priority triage.
 
 ### 3. 🧬 Shared Genetic Code: Double `rr` Resonance
 * **`werr`**: **W**aves & **Err**ors **R**eflex **R**esonator
 * **`answerr`**: **A**daptive **N**on-tensor **S**ignal **W**ave & **Err**or **R**eflex **R**esonator
 
-The twin **`rr`** represents **period-doubling bifurcation** in chaotic phase space and acoustic phase resonance.
+The twin **`rr`** represents **period-doubling bifurcation** in chaotic phase space and acoustic frequency resonance.
 
 ---
 
-## ⚡ Cognitive Architecture
+## 📊 Comparison: Traditional LLMs vs. answerr & werr
 
-```
-User Query / Operational State Signal
-                 │
-                 ▼
-     ┌───────────────────────┐
-     │   System-Two: LLM     │  (Google Gemini / Local Deliberation)
-     │   Natural Language    │  Extracts typed state vector & criteria
-     └───────────┬───────────┘
-                 │
-                 ▼
-     ┌───────────────────────┐
-     │   System-One: werr    │  (0-Byte VRAM Fractal Core)
-     │   Spinal Reflex Arc   │  < 0.5 ms deterministic decision
-     └───────────┬───────────┘
-                 │
-                 ▼
-     Typed Decision Verdict + Mathematical Telemetry HUD
-```
+| Metric / Dimension | Traditional LLM (GPT-4 / Claude) | Local SLM (4B-8B Tensors) | **answerr & werr Dual-Cognition** |
+| :--- | :--- | :--- | :--- |
+| **System-1 Decision Latency** | 800 – 2,500 ms (Cloud) | 30 – 120 ms (GPU/NPU) | **< 0.5 ms (Microsecond CPU / WASM)** |
+| **Tensor Memory Footprint** | Multi-GB / Server Clusters | 4 – 16 GB VRAM | **0 Bytes Tensor VRAM** |
+| **State Coordinate Footprint** | Massive Model Weights | Gigabyte Checkpoints | **24 Bytes $(c_x, c_y, \text{zoom})$** |
+| **Determinism & Stability** | Probabilistic (Halüsinasyon Riski) | Stochastic / Sampling | **100% Deterministic (Fractal Boundary)** |
+| **Crashing Under OOD / Chaos** | Common (Hallucinated schema) | Frequent Out-of-Bounds | **Zero Crash (Chaotic Phase Absorber)** |
+| **Hardware Barrier** | High-end GPU Clusters / Internet | Discrete CUDA/Metal GPU | **Any standard CPU, Edge Node, or Browser** |
 
 ---
 
-## 🚀 Quick Start
+## 🌐 Live Production REST API (Zero-VRAM Reflex)
 
-### Web Application
+answerr provides a high-throughput, sub-millisecond REST API hosted on production infrastructure:
+* **API Base URL:** `https://api.answerr.me:4431`
+
+### 1. Health & Telemetry Benchmark
 ```bash
-cd answerr
-python -m http.server 8080
+curl -k https://api.answerr.me:4431/v1/health
 ```
-Open `http://localhost:8080` in your browser.
+Response:
+```json
+{
+  "status": "healthy",
+  "engine": "werr-reflex",
+  "version": "0.3.0",
+  "vram_bytes": 0,
+  "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
+  "latency_benchmark_ms": 0.42
+}
+```
 
-### Live Production REST API
+### 2. Instant Reflex Decision (`/v1/decide`)
 ```bash
-# Health Check
-curl -s https://api.answerr.me:4431/v1/health
-
-# Multi-Question Typed Decision
-curl -s -X POST https://api.answerr.me:4431/v1/decide \
+curl -k -X POST https://api.answerr.me:4431/v1/decide \
   -H "Content-Type: application/json" \
   -d '{
-    "domain": "api_security",
-    "state": {"user_role": "attacker", "failed_attempts": 15, "req_frequency": 120.0}
+    "question": "Allow privileged admin operation?",
+    "state": {"user_role": "admin", "failed_attempts": 0, "req_frequency": 1.5}
   }'
+```
+Response:
+```json
+{
+  "status": "success",
+  "decision": true,
+  "label": "ALLOWED",
+  "answers": {
+    "primary_decision": {
+      "type": "noul",
+      "boolean": true,
+      "noul": 0.9998,
+      "confidence": 0.9995
+    }
+  },
+  "telemetry": {
+    "engine_latency_ms": 0.38,
+    "vram_bytes": 0,
+    "seed_bytes": 24
+  }
+}
+```
+
+### 3. OpenAI-Compatible Adapter (`/v1/chat/completions`)
+Drop answerr directly into LangChain, LlamaIndex, or the official OpenAI Python SDK without refactoring:
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.answerr.me:4431/v1",
+    api_key="none"  # Keyless production mode
+)
+
+response = client.chat.completions.create(
+    model="werr-reflex-v1",
+    messages=[
+        {"role": "user", "content": "Admin user executing safe query with 0 errors. Should access be permitted?"}
+    ]
+)
+print(response.choices[0].message.content)
 ```
 
 ---
 
-## 🛡️ Core Advantages
-* **Zero Hallucination:** 100% deterministic, mathematically proven boundary dynamics.
-* **0-Byte Tensor VRAM:** True zero-memory execution without storing neural weight matrices.
-* **Zero Crash:** Complete topological coverage across all possible input states.
+## 🛠️ Quickstart
+
+### Option 1: Run Locally via Static HTTP Server
+```bash
+cd answerr
+python -m http.server 8089
+```
+Open [http://localhost:8089](http://localhost:8089) in your web browser.
+
+### Option 2: Run Fullstack FastAPI Microservice
+```bash
+cd answerr
+pip install -r requirements.txt
+uvicorn server.main:app --reload --port 8000
+```
+Open [http://localhost:8000](http://localhost:8000).
+
+---
+
+## 📁 Repository Structure
+
+```text
+answerr/
+├── assets/                          # Vector SVG Brand & Architecture Assets
+│   ├── answerr_werr_twin_ecosystem.svg
+│   ├── answerr_logo_portal_fav_trans.svg
+│   ├── answerr_logo_portal_fav_black.svg
+│   ├── answerr_logo_portal.svg
+│   └── werr_logo_core.svg
+├── css/
+│   ├── main.css                    # Design Tokens, Glassmorphism, Color Palettes
+│   ├── landing.css                 # Landing Page Styles & Mobile Breakpoints
+│   └── chat.css                    # Workspace, Telemetry HUD, Mobile Layout
+├── js/
+│   ├── landing.js                  # Landing Page Controller & i18n
+│   ├── app.js                      # Workspace Lifecycle, State, Telemetry Renderer
+│   ├── presets.js                  # Curated Operational Scenarios (Bilingual)
+│   ├── werr-engine.js              # Pure JavaScript 0-Byte Mandelbrot Engine
+│   └── gemini.js                   # System-2 Google Gemini Flash Client
+├── index.html                      # Official High-Conversion Landing Page
+├── chat.html                       # Decision Workspace (Chat & Telemetry Interface)
+├── README.md                       # Comprehensive Global Documentation (English)
+├── README_TR.md                    # Türkçe Kapsamlı Dokümantasyon
+└── LICENSE                         # MIT License
+```
+
+---
+
+## 📄 Citation & Academic References
+
+The mathematical foundations of the 0-Byte VRAM Mandelbrot spinal reflex engine are documented in the companion scientific research repository:
+
+```bibtex
+@software{dagli2026mandelbrot,
+  author    = {Volkan Dağlı and Zerrin Dağlı and Dağhan Dağlı},
+  title     = {Mandelbrot Fractal Neural Synthesis: Zero-Storage Procedural Weight Derivation and Non-Linear Decision Boundaries},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22802921},
+  url       = {https://doi.org/10.5281/zenodo.22802921}
+}
+```
+
+---
+
+## ⚖️ License
+
+Released under the **MIT License**.  
+Copyright &copy; 2026 **Volkan Dağlı** &bull; [answerr.me](https://answerr.me) &bull; [pCwOrM](https://github.com/pCwOrM). All rights reserved.
