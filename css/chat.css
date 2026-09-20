@@ -112,26 +112,27 @@
 }
 
 .welcome-logo-pulse {
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
-  background: radial-gradient(circle at 30% 30%, #38bdf8, #818cf8 60%, #c084fc);
+  width: 74px;
+  height: 62px;
+  border-radius: 14px;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 25px var(--cyan-glow);
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   animation: pulse-wave 4s infinite ease-in-out;
 }
 
 @keyframes pulse-wave {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 12px var(--cyan-glow)); }
-  50% { transform: scale(1.04); filter: drop-shadow(0 0 22px rgba(129, 140, 248, 0.45)); }
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.45)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 28px rgba(192, 132, 252, 0.6)); }
 }
 
 .welcome-logo-pulse img {
-  width: 38px;
-  height: 38px;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  object-fit: contain;
 }
 
 .welcome-title {
