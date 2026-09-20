@@ -18,8 +18,8 @@
   <meta property="og:url" content="https://answerr.me">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/main.css?v=2.2">
-  <link rel="stylesheet" href="css/chat.css?v=2.2">
+  <link rel="stylesheet" href="css/main.css?v=2.3">
+  <link rel="stylesheet" href="css/chat.css?v=2.3">
 </head>
 <body>
 
@@ -39,15 +39,15 @@
         </button>
       </div>
 
-      <button class="btn-new-chat" id="btn-new-chat">
+      <button class="btn-new-chat" id="btn-new-chat" title="Yeni Karar">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
-        <span>Yeni Sohbet / Karar</span>
+        <span id="new-decision-text">Yeni Karar</span>
       </button>
 
-      <div class="history-label">Konuşma Geçmişi</div>
+      <div class="history-label" id="history-label">Karar Geçmişi</div>
       <div class="sidebar-history" id="history-list">
         <!-- Dynamically rendered by app.js -->
       </div>
@@ -180,7 +180,7 @@
 
         <div class="form-group" style="margin-top:0.5rem; border-top:1px solid var(--border-subtle); padding-top:1rem;">
           <button class="btn-secondary" id="btn-clear-history" style="color:var(--rose); border-color:rgba(244,63,94,0.3);">
-            🗑️ Tüm Konuşma Geçmişini Temizle
+            🗑️ Tüm Karar Geçmişini Temizle
           </button>
         </div>
       </div>
@@ -192,9 +192,9 @@
   </div>
 
   <!-- Scripts -->
-  <script src="js/presets.js?v=2.2"></script>
-  <script src="js/wevv-engine.js?v=2.2"></script>
-  <script src="js/gemini.js?v=2.2"></script>
-  <script src="js/app.js?v=2.2"></script>
+  <script src="js/presets.js?v=2.3"></script>
+  <script src="js/wevv-engine.js?v=2.3"></script>
+  <script src="js/gemini.js?v=2.3"></script>
+  <script src="js/app.js?v=2.3"></script>
 </body>
 </html>

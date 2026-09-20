@@ -26,7 +26,7 @@ Böylece basit bir onay veya mikroservis yönlendirmesi için devasa modellerin 
 
 ## ⚡ Bilişsel Mimari ve Akış
 
-1. **Soru Girişi:** Kullanıcı sayfanın ortasındaki ChatGPT / Gemini benzeri modern sohbet kutusuna senaryosunu yazar (örn: *"Anonim IP'den dakikada 180 istek geliyor, bu istek engellensin mi?"*).
+1. **Soru Girişi:** Kullanıcı sayfanın ortasındaki modern karar girdi kutusuna operasyonel senaryosunu yazar (örn: *"Anonim IP'den dakikada 180 istek geliyor, bu istek engellensin mi?"*).
 2. **Sistem-2 Derleme:** Gemini Flash, soruyu analiz ederek wevv'in anlayacağı parametrelere dönüştürür:
    - `state`: `{ user_role: "guest", req_frequency: 180, auth_status: false }`
    - `question`: `noul` (Boolean karar)

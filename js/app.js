@@ -84,31 +84,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const I18N = {
     tr: {
-      heroTitle: "Don't Just Chat. Get The Answerr.",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: Müzakereci yapay zeka ile <strong>wevv</strong> sıfır-hafıza fraktal omurilik refleksini birleştiren yeni nesil karar motoru. Deterministik Mandelbrot sınırında sıfır halüsinasyon, sıfır çökme ve mikrosaniyede tipli kararlar.",
-      tagSpeed: "⚡ < 0.5 ms Fraktal Refleks & Hız",
-      tagZeroMem: "💾 0-Byte Tensör Belleği (Zero-VRAM)",
-      tagHallucination: "🛡️ Sıfır Halüsinasyon",
-      tagCrash: "🚀 Asla Çökmez & Sonsuz Kapsam",
-      inputPlaceholder: "Bir karar senaryosu veya soru sorun (örn: 'Anonim kullanıcıdan gelen 180 istek/dk trafiğe izin verilsin mi?')...",
-      newChatBtn: "Yeni Sohbet / Karar",
-      historyLabel: "Konuşma Geçmişi",
+      heroTitle: "Sadece Sohbet Etmeyin. Karar Verin.",
+      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: Yazılımlar ve otomasyon için <strong>Sistem-1</strong> karar altyapısı. Operasyonel durum (state) verisini ve soru talimatlarını anında tipli kararlara (<code>noul</code>, <code>choice</code>, <code>score</code>) dönüştürür. <strong>wevv</strong> 0-Byte VRAM fraktal omurilik refleksiyle çalışır; mikrosaniyede deterministik sonuç üretir, asla halüsinasyon görmez ve çökmez.",
+      tagSpeed: "⚡ < 0.5 ms Sistem-1 Fraktal Hızı",
+      tagZeroMem: "💾 0-Byte VRAM (Zero-Tensor Architecture)",
+      tagHallucination: "🛡️ Sıfır Halüsinasyon & Tip Güvenli",
+      tagCrash: "🚀 Asla Çökmez & %100 Deterministik",
+      inputPlaceholder: "Operasyonel durum (state) veya karar senaryosu girin (örn: 'Anonim IP'den 180 istek/dk geldi, yürütmeye izin verilsin mi?')...",
+      newDecisionBtn: "Yeni Karar",
+      historyLabel: "Karar Geçmişi",
       systemStatus: "wevv 0-Byte VRAM: Aktif",
-      disclaimer: "answerr, <a href=\"https://github.com/pCwOrM/wevv\" target=\"_blank\" rel=\"noopener\">wevv</a> fraktal karar motoru ile çalışır. Halüsinasyon ve çökme riski yoktur. <a href=\"https://answerr.me\">answerr.me</a>.",
-      modalTitle: "⚙️ Answerr Ayarları",
-      modalFreeBadge: "✓ Tamamen Ücretsiz & Anahtarsız Mod Aktif",
-      modalFreeDesc: "answerr, tarayıcınızda sıfır gecikmeli yerel wevv motoruyla çalışır. Herhangi bir kayıt, ücret veya API anahtarı zorunlu değildir.",
+      disclaimer: "answerr, <a href=\"https://github.com/pCwOrM/wevv\" target=\"_blank\" rel=\"noopener\">wevv</a> fraktal Sistem-1 karar motoru ile çalışır. Tip güvenli, deterministik ve sıfır halüsinasyonludur. <a href=\"https://answerr.me\">answerr.me</a>.",
+      modalTitle: "⚙️ Answerr Karar Motoru Ayarları",
+      modalFreeBadge: "✓ Tamamen Ücretsiz & Anahtarsız Sistem-1 Aktif",
+      modalFreeDesc: "answerr, tarayıcınızda sıfır gecikmeli yerel wevv Sistem-1 fraktal motoruyla çalışır. Herhangi bir kayıt, ücret veya API anahtarı zorunlu değildir.",
       modalApiLabel: "Opsiyonel: Google Gemini API Anahtarı",
-      modalApiHint: "Genişletilmiş bulut Sistem-2 yorumu isterseniz Google AI Studio'dan ücretsiz anahtar alabilirsiniz. Anahtar sadece tarayıcınızda (localStorage) saklanır.",
-      modalModelLabel: "Sistem-2 Modeli",
-      modalClearHistory: "🗑️ Tüm Konuşma Geçmişini Temizle",
+      modalApiHint: "Genişletilmiş bulut Sistem-2 müzakeresi isterseniz Google AI Studio'dan ücretsiz anahtar alabilirsiniz. Anahtar sadece tarayıcınızda (localStorage) saklanır.",
+      modalModelLabel: "Sistem-2 Müzakere Modeli",
+      modalClearHistory: "🗑️ Tüm Karar Geçmişini Temizle",
       modalCancel: "İptal",
       modalSave: "Ayarları Kaydet",
-      keylessBadge: "⚡ wevv Yerel (Ücretsiz / Keyless)",
-      step1: "1/3 Durum matrisi analiz ediliyor...",
+      keylessBadge: "⚡ wevv Sistem-1 (Ücretsiz / Keyless)",
+      step1: "1/3 Durum matrisi ve tipli soru ayrıştırılıyor (System-2 State)...",
       step2: "2/3 wevv: Mandelbrot ∂M kaçış dinamiği hesaplanıyor (< 0.5ms)...",
-      step3: "3/3 Sistem-1 telemetrisi ve karar yorumlanıyor...",
-      hudTitle: "🌊 wevv Sistem-1 Fraktal Refleksi",
+      step3: "3/3 Sistem-1 telemetrisi ve karar doğrulanıyor...",
+      hudTitle: "🌊 wevv Sistem-1 Karar Refleksi",
       hudLatency: "ms",
       hudVram: "0B Tensör VRAM",
       hudSeed: "24B Tohum",
@@ -122,30 +122,30 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     en: {
       heroTitle: "Don't Just Chat. Get The Answerr.",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: A breakthrough dual-cognition engine bridging deliberative language models with <strong>wevv</strong> zero-memory fractal reflexes. Zero hallucination, zero crash, and sub-millisecond typed decisions.",
-      tagSpeed: "⚡ < 0.5 ms Fractal Reflex & Speed",
-      tagZeroMem: "💾 0-Byte Tensor Memory (Zero-VRAM)",
-      tagHallucination: "🛡️ Zero Hallucination",
-      tagCrash: "🚀 Zero Crash & Never Fails",
-      inputPlaceholder: "Ask an operational decision scenario (e.g. 'Should 180 req/min burst from anonymous IP be blocked?')...",
-      newChatBtn: "New Decision / Chat",
-      historyLabel: "Decision History",
+      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Next-gen Signal Wave & Error Reflex Reasoner)</em>: Machine-native <strong>System-One</strong> decision infrastructure for software and automation. Send operational program state and typed questions; get structured, calibrated decisions (<code>noul</code>, <code>choice</code>, <code>score</code>) your code can use directly. Powered by <strong>wevv</strong> zero-memory fractal reflexes.",
+      tagSpeed: "⚡ < 0.5 ms System-1 Fractal Speed",
+      tagZeroMem: "💾 0-Byte VRAM (Zero-Tensor Architecture)",
+      tagHallucination: "🛡️ Zero Hallucination & Type-Safe",
+      tagCrash: "🚀 Zero Crash & 100% Deterministic",
+      inputPlaceholder: "Enter operational state or decision query (e.g. 'Anonymous IP with 180 req/min burst, allow execution?')...",
+      newDecisionBtn: "New Decision",
+      historyLabel: "Decision Log",
       systemStatus: "wevv 0-Byte VRAM: Active",
-      disclaimer: "answerr is powered by the <a href=\"https://github.com/pCwOrM/wevv\" target=\"_blank\" rel=\"noopener\">wevv</a> fractal engine. 100% deterministic, zero hallucination. <a href=\"https://answerr.me\">answerr.me</a>.",
-      modalTitle: "⚙️ Answerr Settings",
-      modalFreeBadge: "✓ 100% Free & Keyless Engine Active",
+      disclaimer: "answerr is powered by the <a href=\"https://github.com/pCwOrM/wevv\" target=\"_blank\" rel=\"noopener\">wevv</a> fractal System-One engine. Type-safe, calibrated, zero-hallucination. <a href=\"https://answerr.me\">answerr.me</a>.",
+      modalTitle: "⚙️ Answerr Decision Engine Settings",
+      modalFreeBadge: "✓ 100% Free & Keyless System-1 Active",
       modalFreeDesc: "answerr operates with zero latency directly inside your browser. No sign-up, credit card, or API key required.",
       modalApiLabel: "Optional: Google Gemini API Key",
       modalApiHint: "To unlock cloud System-2 deliberation, you can optionally provide a free key from Google AI Studio. Stored strictly in your browser (localStorage).",
       modalModelLabel: "System-2 Model",
-      modalClearHistory: "🗑️ Clear All Conversation History",
+      modalClearHistory: "🗑️ Clear All Decision Records",
       modalCancel: "Cancel",
       modalSave: "Save Settings",
-      keylessBadge: "⚡ wevv Local (Free Keyless)",
+      keylessBadge: "⚡ wevv System-1 (Free / Keyless)",
       step1: "1/3 Compiling input into state vector...",
       step2: "2/3 wevv: Evaluating Mandelbrot escape dynamics (< 0.5ms)...",
       step3: "3/3 Synthesizing System-1 telemetry and actions...",
-      hudTitle: "🌊 wevv System-1 Fractal Reflex",
+      hudTitle: "🌊 wevv System-1 Decision Reflex",
       hudLatency: "ms",
       hudVram: "0B Tensor VRAM",
       hudSeed: "24B Seed",
@@ -196,6 +196,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCancelModalEl = document.getElementById('btn-cancel-modal');
   const btnSaveSettingsEl = document.getElementById('btn-save-settings');
 
+  const newDecisionTextEl = document.getElementById('new-decision-text');
+  const historyLabelEl = document.getElementById('history-label');
+
   // Settings Modal
   const settingsModalEl = document.getElementById('settings-modal');
   const btnCloseModalEl = document.getElementById('btn-close-modal');
@@ -231,6 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.lang = lang;
     if (currentLangTextEl) currentLangTextEl.textContent = toAsciiUpper(lang);
 
+    if (newDecisionTextEl) newDecisionTextEl.textContent = t.newDecisionBtn;
+    if (historyLabelEl) historyLabelEl.textContent = t.historyLabel;
+
     if (heroTitleEl) heroTitleEl.innerHTML = t.heroTitle;
     if (heroSubtitleEl) heroSubtitleEl.innerHTML = t.heroSubtitle;
     if (tagHallucinationEl) tagHallucinationEl.innerHTML = t.tagHallucination;
@@ -251,6 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnSaveSettingsEl) btnSaveSettingsEl.textContent = t.modalSave;
 
     renderPresetCards(lang);
+    renderHistoryList();
     updateModelBadge();
   }
 
@@ -322,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnClearHistoryEl) {
     btnClearHistoryEl.addEventListener('click', () => {
-      const msg = currentLang === 'tr' ? 'Tüm konuşma geçmişi silinsin mi?' : 'Clear all decision history?';
+      const msg = currentLang === 'tr' ? 'Tüm kayıtlı kararlar silinsin mi?' : 'Clear all recorded decisions?';
       if (confirm(msg)) {
         conversationSessions = {};
         saveSessions();
@@ -655,8 +662,8 @@ License                 : MIT License (%100 Free & Open Source)
 
     const isTr = currentLang === 'tr';
     const sourceLabel = commentaryResult.source === 'gemini'
-      ? (isTr ? 'Gemini Flash (Bulut Sistem-2)' : 'Gemini Flash (Cloud System-2)')
-      : (isTr ? 'Answerr Refleks Derleyicisi (Sıfır Halüsinasyon)' : 'Answerr Reflex Reasoner (Zero Hallucination)');
+      ? (isTr ? 'Gemini Flash (Bulut Sistem-2 Müzakeresi)' : 'Gemini Flash (Cloud System-2 Deliberation)')
+      : (isTr ? 'Answerr Sistem-1 Karar Derleyicisi (Sıfır Halüsinasyon)' : 'Answerr System-1 Decision Compiler (Zero Hallucination)');
 
     const modelName = commentaryResult.source === 'gemini' ? (commentaryResult.model || 'Gemini Flash') : 'WEVV-NATIVE';
 
@@ -672,16 +679,16 @@ License                 : MIT License (%100 Free & Open Source)
       stateChipsHtml += `<span class="spec-chip"><span class="k">${escapeHtml(k)}:</span> <span class="v">${escapeHtml(String(v))}</span></span>`;
     }
     if (!stateChipsHtml) {
-      stateChipsHtml = `<span style="font-size:0.75rem; color:var(--text-muted);">${isTr ? 'Varsayılan durum vektörü uygulandı.' : 'Default state vector applied.'}</span>`;
+      stateChipsHtml = `<span style="font-size:0.75rem; color:var(--text-muted);">${isTr ? 'Varsayılan program durumu (state) uygulandı.' : 'Default state vector applied.'}</span>`;
     }
 
     const specHeaderTitle = isTr
-      ? '📐 wevv Formatına Dönüştürülen Soru & Durum Matrisi'
-      : '📐 Formatted wevv Input Specification & State Vector';
+      ? '📐 wevv Formatına Dönüştürülen Program Durumu (State) & Tipli Soru'
+      : '📐 wevv Formatted Program State & Typed Question Matrix';
 
     const detailsSummary = isTr
-      ? '🔍 wevv Ham JSON Yükünü İncele (Raw Payload)'
-      : '🔍 View Raw wevv JSON Payload';
+      ? '🔍 wevv Ham Durum & Soru Yükünü İncele (Raw State & Question JSON)'
+      : '🔍 Inspect Raw State & Question Payload (JSON)';
 
     const rawJsonStr = JSON.stringify({ state: stateObj, question: questionObj }, null, 2);
 
@@ -769,7 +776,7 @@ License                 : MIT License (%100 Free & Open Source)
     const sessions = Object.values(conversationSessions).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     if (sessions.length === 0) {
-      const noHist = currentLang === 'tr' ? 'Geçmiş bulunmuyor.' : 'No decision history.';
+      const noHist = currentLang === 'tr' ? 'Kayıtlı karar bulunmuyor.' : 'No decision records yet.';
       historyListEl.innerHTML = `<div style="font-size:0.75rem; color:var(--text-muted); padding:0.5rem 0.75rem;">${noHist}</div>`;
       return;
     }
@@ -777,7 +784,7 @@ License                 : MIT License (%100 Free & Open Source)
     sessions.forEach(sess => {
       const item = document.createElement('div');
       item.className = `history-item ${sess.id === currentSessionId ? 'active' : ''}`;
-      item.innerHTML = `<span>💬</span><span style="overflow:hidden;text-overflow:ellipsis;">${escapeHtml(sess.title)}</span>`;
+      item.innerHTML = `<span>⚡</span><span style="overflow:hidden;text-overflow:ellipsis;">${escapeHtml(sess.title)}</span>`;
       item.addEventListener('click', () => loadSession(sess.id));
       historyListEl.appendChild(item);
     });
