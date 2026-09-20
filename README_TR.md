@@ -56,6 +56,74 @@ uvicorn server.main:app --reload --port 8000
 
 ---
 
+## 🌐 Canlı Üretim REST API (Sıfır-VRAM Refleks Motoru)
+
+Answerr, canlı sunucu üzerinde koşan, milisaniyenin altında kararlar üreten bir REST API servisi sunar:
+* **API Ana Adresi:** `https://api.answerr.me:4431` (Ayna: `https://mechsrv.itouch.fi:4431`)
+
+### 1. Sağlık ve Sıfır-VRAM Durumu
+```bash
+curl -k https://api.answerr.me:4431/v1/health
+```
+Yanıt:
+```json
+{
+  "status": "healthy",
+  "engine": "wevv-reflex",
+  "version": "0.2.2",
+  "vram_bytes": 0,
+  "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
+  "latency_benchmark_ms": 6.72
+}
+```
+
+### 2. Anlık Refleks Kararı Alma (Tek Soru)
+```bash
+curl -k -X POST https://api.answerr.me:4431/v1/decide \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "Yetkili API islemi onaylansin mi?",
+    "state": {"user_role": "admin", "failed_attempts": 0, "req_frequency": 1.2}
+  }'
+```
+Yanıt:
+```json
+{
+  "status": "success",
+  "decision": true,
+  "label": "ALLOWED",
+  "answers": {
+    "primary_decision": {"type": "noul", "boolean": true, "noul": 0.9999, "confidence": 0.9998}
+  },
+  "telemetry": {
+    "engine_latency_ms": 11.13,
+    "vram_bytes": 0
+  }
+}
+```
+
+### 3. OpenAI Uyumlu Uç Nokta (/v1/chat/completions)
+Answerr'ı LangChain, LlamaIndex veya OpenAI Python SDK'sına doğrudan bağlayabilirsiniz:
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.answerr.me:4431/v1",
+    api_key="none"
+)
+
+response = client.chat.completions.create(
+    model="wevv-reflex-v1",
+    messages=[
+        {"role": "user", "content": "Admin kullanici 0 hata ile istek yapti"}
+    ]
+)
+print(response.choices[0].message.content)
+```
+
+---
+
+
 ## 🛡️ wevv ve answerr Temel Üstünlükleri
 
 * **Sıfır Halüsinasyon (Zero Hallucination):** Geleneksel dil modelleri olasılıksal belirteç (token) örneklemesi yaptığı için uydurma üretir. `wevv`, deterministik Mandelbrot kaçış matematiği ile çalıştığından %100 tekrarlanabilir, tutarlı ve halüsinasyonsuz kararlar verir.

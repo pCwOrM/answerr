@@ -1,0 +1,26 @@
+[Unit]
+Description=Answerr Reflex Decision Engine REST API (wevv 0-VRAM)
+After=network.target
+
+[Service]
+Type=simple
+User=pcworm
+Group=pcworm
+WorkingDirectory=/home/pcworm/answerr_api
+ExecStart=/home/pcworm/myenv/bin/uvicorn server:app --host 127.0.0.1 --port 8560 --workers 2 --log-level info
+Restart=always
+RestartSec=3
+
+# Security & Sandboxing Containment
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/home/pcworm/answerr_api
+PrivateTmp=true
+
+# Resource Ceilings (Guarantees zero impact on other host services)
+MemoryMax=256M
+CPUQuota=25%
+
+[Install]
+WantedBy=multi-user.target
