@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>answerr | REST API & Geliştirici Dokümantasyonu (API Docs)</title>
+  <meta name="description"
+    content="A.N.S.W.E.R.R. REST API & Telemetry Dokümantasyonu. 0-Byte VRAM fraktal karar motoru entegrasyonu, OpenAI uyumlu adaptör ve cURL/Python/JS örnekleri.">
+  <meta name="keywords"
+    content="answerr api, werr api, reflex api, rest api, zero vram, decision engine api, developer docs, openai compatible">
+  <meta name="author" content="Volkan Dağlı / answerr.me">
+  <link rel="canonical" href="https://answerr.me/docs.html">
+  <link rel="icon" type="image/svg+xml" href="assets/answerr_logo_portal_fav_black.svg">
+
+  <!-- Open Graph / Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://answerr.me/docs.html">
+  <meta property="og:title" content="answerr | REST API & Developer Reference">
+  <meta property="og:description" content="Official developer documentation for the Answerr Zero-VRAM Fractal Decision Engine API.">
+  <meta property="og:image" content="https://answerr.me/assets/rendered_answerr_werr_twin_ecosystem.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css?v=3.6">
+  <link rel="stylesheet" href="css/landing.css?v=3.6">
+  <link rel="stylesheet" href="css/docs.css?v=1.0">
+</head>
+
+<body class="landing-body docs-body">
+
+  <!-- Top Navigation Bar -->
+  <header class="landing-header" role="banner">
+    <div class="landing-container landing-nav-wrapper">
+      <a href="index.html" class="landing-brand" aria-label="answerr ana sayfa">
+        <img src="assets/answerr_logo_portal_fav_trans.svg" alt="answerr logo" class="landing-brand-logo">
+        <span class="brand-title"><span class="brand-text-answe">answe</span><span class="brand-text-r1">r</span><span
+            class="brand-text-r2">r</span></span>
+      </a>
+
+      <nav aria-label="Ana Menü">
+        <ul class="landing-nav-links">
+          <li><a href="index.html#features" class="landing-nav-link" data-i18n="navFeatures">Özellikler</a></li>
+          <li><a href="index.html#ecosystem" class="landing-nav-link" data-i18n="navEcosystem">İkiz Ekosistem</a></li>
+          <li><a href="docs.html" class="landing-nav-link active" data-i18n="navDocs">API Docs</a></li>
+          <li><a href="https://github.com/pCwOrM/answerr" target="_blank" rel="noopener" class="landing-nav-link">GitHub (answerr)</a></li>
+          <li><a href="https://github.com/pCwOrM/werr" target="_blank" rel="noopener" class="landing-nav-link">GitHub (werr)</a></li>
+        </ul>
+      </nav>
+
+      <div class="landing-nav-actions">
+        <button class="btn-nav-ghost" id="btn-docs-lang" title="Dili Değiştir / Switch Language" aria-label="Dil Değiştir">
+          🌐 <span id="docs-lang-text">TR</span>
+        </button>
+        <a href="chat.html" class="btn-launch-app" id="nav-launch-btn">
+          <span class="launch-text-desktop" data-i18n="navLaunchApp">Karar Motorunu Başlat</span>
+          <span class="launch-text-mobile" data-i18n="navLaunchAppMobile">Karar Motoru</span>
+          <span class="launch-bolt">⚡</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Docs Layout: Sidebar Navigation + Content Area -->
+  <div class="landing-container docs-container">
+    <aside class="docs-sidebar" aria-label="API Dokümantasyon Menüsü">
+      <div class="docs-nav-group">
+        <div class="docs-nav-title" data-i18n="dnavOverview">GENEL BAKIŞ</div>
+        <ul class="docs-nav-items">
+          <li><a href="#introduction" class="docs-nav-item active">Giriş & Mimari</a></li>
+          <li><a href="#quickstart" class="docs-nav-item">Hızlı Başlangıç (Quickstart)</a></li>
+          <li><a href="#base-url" class="docs-nav-item">Sunucu Adresi & Port</a></li>
+          <li><a href="#security" class="docs-nav-item">Güvenlik & Hız Sınırları</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title" data-i18n="dnavEndpoints">API UÇ NOKTALARI</div>
+        <ul class="docs-nav-items">
+          <li><a href="#endpoint-health" class="docs-nav-item"><span class="badge-get">GET</span> /v1/health</a></li>
+          <li><a href="#endpoint-decide" class="docs-nav-item"><span class="badge-post">POST</span> /v1/decide</a></li>
+          <li><a href="#endpoint-presets" class="docs-nav-item"><span class="badge-get">GET</span> /v1/presets</a></li>
+          <li><a href="#endpoint-domains" class="docs-nav-item"><span class="badge-get">GET</span> /v1/domains</a></li>
+          <li><a href="#endpoint-chat" class="docs-nav-item"><span class="badge-post">POST</span> /v1/chat/completions</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title" data-i18n="dnavSdks">SDK & ENTEGRASYON</div>
+        <ul class="docs-nav-items">
+          <li><a href="#sdk-python" class="docs-nav-item">Python (werr SDK)</a></li>
+          <li><a href="#sdk-curl" class="docs-nav-item">cURL & REST İstemcileri</a></li>
+          <li><a href="#sdk-openai" class="docs-nav-item">OpenAI SDK Uyumluluğu</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="docs-content" role="main">
+      <!-- Section 1: Intro -->
+      <section id="introduction" class="docs-section">
+        <div class="docs-eyebrow">API REFERENCE v1.0.0</div>
+        <h1 class="docs-main-title">A.N.S.W.E.R.R. Reflex REST API</h1>
+        <p class="docs-lead">
+          Dünyanın ilk <strong>0-Byte VRAM</strong> ve <strong>Sistem-1</strong> omurilik karar motoru için yüksek hızlı, deterministik REST arayüzü.
+          Ağır LLM parametreleri ve devasa tensör matris çarpmaları yerine Mandelbrot sınır geometrisini kullanarak mikrosaniyeler içinde tip-güvenli refleks kararlar üretir.
+        </p>
+
+        <div class="docs-stats-grid">
+          <div class="stat-card">
+            <span class="stat-val">&lt; 0.5 ms</span>
+            <span class="stat-lbl">Tipik Karar Gecikmesi</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val">0 Bytes</span>
+            <span class="stat-lbl">Kalıcı VRAM / Tensör Belleği</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val">24 Bytes</span>
+            <span class="stat-lbl">dM Sınır Koordinat Tohumu</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val">100%</span>
+            <span class="stat-lbl">Deterministik / Sıfır Halüsinasyon</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Quickstart -->
+      <section id="quickstart" class="docs-section">
+        <h2>Hızlı Başlangıç (Quickstart)</h2>
+        <p>API tamamen açık ve anahtarsız (keyless) modda hizmet vermektedir. Herhangi bir kayıt gerekmeden doğrudan terminalinizden çağırabilirsiniz:</p>
+
+        <div class="code-box">
+          <div class="code-header">
+            <span>BASH / CURL</span>
+            <button class="btn-copy-code" data-target="quickstart-curl">Kopyala</button>
+          </div>
+          <pre><code id="quickstart-curl">curl -s -X POST https://api.answerr.me:4431/v1/decide \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "Yetkili yönetici API işlemine izin verilsin mi?",
+    "state": {
+      "user_role": "admin",
+      "failed_attempts": 0,
+      "req_frequency": 1.2
+    }
+  }'</code></pre>
+        </div>
+      </section>
+
+      <!-- Section 3: Base URL & Connectivity -->
+      <section id="base-url" class="docs-section">
+        <h2>Sunucu Adresi & Port Yapılandırması</h2>
+        <div class="url-badge-box">
+          <span class="badge-env">PROD</span>
+          <code>https://api.answerr.me:4431</code>
+        </div>
+        <p class="mt-2">
+          Answerr üretim API kümesi, Apache SSL Reverse Proxy arkasında <strong>Port 4431</strong> üzerinden güvenli HTTPS protokolü ile yayınlanmaktadır.
+          Yazılımlarınızda istek atarken port numarasını (<code>:4431</code>) belirtmeyi unutmayınız.
+        </p>
+      </section>
+
+      <!-- Section 4: Security & Limits -->
+      <section id="security" class="docs-section">
+        <h2>Güvenlik & Hız Sınırları (Rate Limiting)</h2>
+        <p>API'nin sürdürülebilirliği ve servis kalitesini garanti etmek amacıyla çok katmanlı koruma aktiftir:</p>
+        <ul class="docs-list">
+          <li><strong>IP Hız Sınırı (Rate Limit):</strong> İstemci IP adresi başına <strong>dakikada 60 istek</strong> (ortalama 1 req/s).</li>
+          <li><strong>Patlama (Burst) Sınırı:</strong> 1 saniye içinde azami <strong>15 istek</strong>. Bu eşiği aşan istekler anında <code>429 Too Many Requests</code> ile yanıtlanır.</li>
+          <li><strong>Gövde Boyutu Sınırı (Payload Size):</strong> Azami istek gövdesi <strong>64 KB</strong> ile sınırlandırılmıştır. Daha büyük istekler <code>413 Payload Too Large</code> ile reddedilir.</li>
+          <li><strong>Dönen Hız Başlıkları:</strong> Her yanıtta kota durumu şeffaf olarak iletilir:
+            <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, <code>Retry-After</code>.</li>
+        </ul>
+      </section>
+
+      <hr class="docs-divider">
+
+      <!-- Endpoint 1: Health -->
+      <section id="endpoint-health" class="docs-section">
+        <div class="endpoint-header">
+          <span class="badge-method get">GET</span>
+          <span class="endpoint-path">/v1/health</span>
+        </div>
+        <p class="endpoint-desc">Servisin operasyonel durumunu, çalışma süresini ve mikrosaniyelik refleks hız karşılaştırmasını döndürür.</p>
+
+        <h3>Örnek İstek (Request)</h3>
+        <div class="code-box">
+          <div class="code-header">
+            <span>CURL</span>
+            <button class="btn-copy-code" data-target="curl-health">Kopyala</button>
+          </div>
+          <pre><code id="curl-health">curl -s https://api.answerr.me:4431/v1/health</code></pre>
+        </div>
+
+        <h3>Örnek Yanıt (Response 200 OK)</h3>
+        <div class="code-box">
+          <div class="code-header">
+            <span>JSON</span>
+          </div>
+          <pre><code>{
+  "status": "healthy",
+  "engine": "werr-reflex",
+  "version": "0.3.0",
+  "core_architecture": "werr (Adaptive Non-tensor Signal Wave & Error Reflex Resonator)",
+  "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
+  "vram_bytes": 0,
+  "latency_benchmark_ms": 0.089,
+  "uptime_seconds": 121010.51,
+  "timestamp": 1789932867.756
+}</code></pre>
+        </div>
+      </section>
+
+      <!-- Endpoint 2: Decide -->
+      <section id="endpoint-decide" class="docs-section">
+        <div class="endpoint-header">
+          <span class="badge-method post">POST</span>
+          <span class="endpoint-path">/v1/decide</span>
+        </div>
+        <p class="endpoint-desc">
+          Çekirdek Sistem-1 refleks karar motoru. Verilen sistem durumu (state vector) ve soruları deterministik Mandelbrot sınır dinamiğiyle değerlendirir.
+        </p>
+
+        <h3>İstek Parametreleri (Request Body)</h3>
+        <div class="table-wrap">
+          <table class="docs-table">
+            <thead>
+              <tr>
+                <th>Parametre</th>
+                <th>Tip</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>state</code></td>
+                <td>object</td>
+                <td>Sistem operasyonel durum anahtarları (örn: <code>user_role</code>, <code>failed_attempts</code>, <code>motor_temp</code>).</td>
+              </tr>
+              <tr>
+                <td><code>question</code></td>
+                <td>string (opsiyonel)</td>
+                <td>Hızlı tekil soru dizesi.</td>
+              </tr>
+              <tr>
+                <td><code>domain</code></td>
+                <td>string (opsiyonel)</td>
+                <td>Tanımlı hazır domain: <code>api_security</code>, <code>ddos_mitigation</code>, <code>financial_risk</code>, <code>robotics_industrial</code>, <code>ecommerce_fraud</code>.</td>
+              </tr>
+              <tr>
+                <td><code>questions</code></td>
+                <td>object (opsiyonel)</td>
+                <td>Özel çoklu soru sözlüğü (<code>noul</code>, <code>choice</code>, <code>score</code> tiplerinde).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Örnek İstek (Domain Preset ile)</h3>
+        <div class="code-box">
+          <div class="code-header">
+            <span>CURL</span>
+            <button class="btn-copy-code" data-target="curl-decide-domain">Kopyala</button>
+          </div>
+          <pre><code id="curl-decide-domain">curl -s -X POST https://api.answerr.me:4431/v1/decide \
+  -H "Content-Type: application/json" \
+  -d '{
+    "domain": "api_security",
+    "state": {
+      "user_role": "attacker",
+      "failed_attempts": 15,
+      "req_frequency": 120.0
+    }
+  }'</code></pre>
+        </div>
+
+        <h3>Örnek Yanıt (Response 200 OK)</h3>
+        <div class="code-box">
+          <div class="code-header">
+            <span>JSON</span>
+          </div>
+          <pre><code>{
+  "status": "success",
+  "decision": false,
+  "label": "DENIED",
+  "answers": {
+    "allow_request": {
+      "type": "noul",
+      "boolean": false,
+      "decision": false,
+      "noul": 0.0001,
+      "confidence": 0.9998,
+      "label": "DENIED"
+    },
+    "route_destination": {
+      "type": "choice",
+      "choice": "drop_packet",
+      "confidence": 0.8177
+    },
+    "threat_score": {
+      "type": "score",
+      "score": 3.0,
+      "confidence": 0.7732
+    }
+  },
+  "telemetry": {
+    "engine_latency_ms": 0.177,
+    "vram_bytes": 0,
+    "memory_seed_bytes": 24,
+    "engine": "werr-reflex-0.3.0"
+  }
+}</code></pre>
+        </div>
+      </section>
+
+      <!-- Endpoint 3: Presets & Domains -->
+      <section id="endpoint-presets" class="docs-section">
+        <div class="endpoint-header">
+          <span class="badge-method get">GET</span>
+          <span class="endpoint-path">/v1/presets</span>
+        </div>
+        <p class="endpoint-desc">Tüm hazır sektör ve kullanım senaryolarını, varsayılan durum vektörlerini ve soru şablonlarını listeler.</p>
+        
+        <div class="code-box">
+          <div class="code-header">
+            <span>CURL</span>
+            <button class="btn-copy-code" data-target="curl-presets">Kopyala</button>
+          </div>
+          <pre><code id="curl-presets">curl -s https://api.answerr.me:4431/v1/presets</code></pre>
+        </div>
+      </section>
+
+      <section id="endpoint-domains" class="docs-section">
+        <div class="endpoint-header">
+          <span class="badge-method get">GET</span>
+          <span class="endpoint-path">/v1/domains</span>
+        </div>
+        <p class="endpoint-desc">Motorun desteklediği tüm domain anahtarlarını listeler.</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>CURL</span>
+            <button class="btn-copy-code" data-target="curl-domains">Kopyala</button>
+          </div>
+          <pre><code id="curl-domains">curl -s https://api.answerr.me:4431/v1/domains</code></pre>
+        </div>
+      </section>
+
+      <!-- Endpoint 4: OpenAI Compatible -->
+      <section id="endpoint-chat" class="docs-section">
+        <div class="endpoint-header">
+          <span class="badge-method post">POST</span>
+          <span class="endpoint-path">/v1/chat/completions</span>
+        </div>
+        <p class="endpoint-desc">
+          Standart <strong>OpenAI Python SDK</strong> veya <strong>LangChain / LlamaIndex</strong> ile tak-çalıştır entegrasyon sağlayan adaptör uç noktasıdır.
+          Hiçbir API anahtarı gerektirmeden mevcut projelerinizdeki OpenAI istemcisinin <code>base_url</code> adresini değiştirerek bağlayabilirsiniz.
+        </p>
+
+        <h3>Python OpenAI SDK Örneği</h3>
+        <div class="code-box">
+          <div class="code-header">
+            <span>PYTHON</span>
+            <button class="btn-copy-code" data-target="py-openai-code">Kopyala</button>
+          </div>
+          <pre><code id="py-openai-code">from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.answerr.me:4431/v1",
+    api_key="werr-keyless-mode" # Anahtarsız modda dilediğiniz string geçerlidir
+)
+
+response = client.chat.completions.create(
+    model="werr-reflex-v1",
+    messages=[
+        {"role": "system", "content": "Sen 0-Byte VRAM mikrosaniyelik karar motorusun."},
+        {"role": "user", "content": "Kullanıcı admin rolünde, 0 başarısız deneme var. İstek onaylansın mı?"}
+    ]
+)
+
+print(response.choices[0].message.content)</code></pre>
+        </div>
+      </section>
+
+      <!-- Section: Python werr Library -->
+      <section id="sdk-python" class="docs-section">
+        <h2>Doğrudan Yerel Python Entegrasyonu (pip install werr)</h2>
+        <p>Ağ gecikmesi olmadan sıfır gecikmeli yerel çalıştırma için motoru doğrudan projenize gömebilirsiniz:</p>
+
+        <div class="code-box">
+          <div class="code-header">
+            <span>PYTHON (LOCAL EMBEDDED)</span>
+            <button class="btn-copy-code" data-target="py-local-code">Kopyala</button>
+          </div>
+          <pre><code id="py-local-code">from werr import WerrEngine, NoulQuestion, ChoiceQuestion
+
+# 1. Sıfır VRAM / 24-byte tohum koordinatı ile motoru başlatın
+engine = WerrEngine()
+
+# 2. Durum ve soruları tanımlayın
+state = {"user_role": "guest", "failed_attempts": 4, "req_frequency": 25.0}
+questions = {
+    "permit": NoulQuestion("İstek geçirilsin mi?"),
+    "action": ChoiceQuestion("Aksiyon", {"pass": "Geçir", "captcha": "Captcha Göster", "block": "Engelle"})
+}
+
+# 3. Mikrosaniyede deterministik karar alın
+verdict = engine.decide(state=state, questions=questions)
+print("Sonuç:", verdict.answers["permit"].boolean)
+print("Aksiyon:", verdict.answers["action"].choice)</code></pre>
+        </div>
+      </section>
+
+      <!-- Bottom Navigation Footer -->
+      <div class="docs-footer-cta">
+        <h3>Hazır mısınız? Canlı Çalışma Alanında Test Edin</h3>
+        <p>Görsel Mandelbrot telemetrisi ve interaktif karar simülasyonu için web stüdyosunu açın.</p>
+        <div class="hero-cta-group">
+          <a href="chat.html" class="btn-hero-primary">Karar Çalışma Alanını Aç ⚡</a>
+          <a href="https://github.com/pCwOrM/answerr" target="_blank" rel="noopener" class="btn-hero-secondary">GitHub Deposu</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="landing-footer" role="contentinfo">
+    <div class="landing-container footer-content">
+      <div class="footer-credits">
+        © 2026 answerr.me • Volkan Dağlı tarafından geliştirildi. Tüm hakları saklıdır.
+      </div>
+      <div class="footer-links">
+        <a href="index.html" class="footer-link">Ana Sayfa</a>
+        <a href="chat.html" class="footer-link">Karar Çalışma Alanı</a>
+        <a href="docs.html" class="footer-link active">API Docs</a>
+        <a href="https://github.com/pCwOrM/answerr" target="_blank" rel="noopener" class="footer-link">GitHub answerr</a>
+        <a href="https://github.com/pCwOrM/werr" target="_blank" rel="noopener" class="footer-link">GitHub werr</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/docs.js?v=1.0"></script>
+</body>
+
+</html>
