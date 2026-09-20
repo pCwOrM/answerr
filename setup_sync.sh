@@ -7,14 +7,14 @@ chmod 440 /tmp/pcworm-answerr
 echo "Jesmaat19" | sudo -S cp /tmp/pcworm-answerr /etc/sudoers.d/pcworm-answerr
 rm -f /tmp/pcworm-answerr
 
-# 2. Add post-merge hook to wevv_repo
-HOOK_PATH="/home/pcworm/wevv_repo/.git/hooks/post-merge"
+# 2. Add post-merge hook to werr repo
+HOOK_PATH="/home/pcworm/werr/.git/hooks/post-merge"
 cat > "$HOOK_PATH" << 'EOF'
 #!/bin/bash
-echo "[*] wevv repository updated via git. Syncing Answerr API..."
+echo "[*] werr repository updated via git. Syncing Answerr API..."
 sudo /usr/bin/systemctl restart answerr-api.service 2>/dev/null || true
-echo "[*] Answerr API successfully restarted with updated wevv engine!"
+echo "[*] Answerr API successfully restarted with updated werr engine!"
 EOF
 chmod +x "$HOOK_PATH"
 
-echo "[OK] wevv live synchronization hook and NOPASSWD reload configured successfully!"
+echo "[OK] werr live synchronization hook and NOPASSWD reload configured successfully!"

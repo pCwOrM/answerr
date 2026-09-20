@@ -7,7 +7,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize Core Engines
-  const wevv = new WevvEngine();
+  const werr = new WerrEngine();
+  const wevv = werr; // Backward compatibility alias
   const gemini = new GeminiBridge();
 
   // Google reCAPTCHA v3 Site Key (matches wevv infrastructure)
@@ -36,11 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Telemetry Dispatcher to api.answerr.me
-  async function dispatchWebTelemetry(wevvResult, prompt, stateData) {
+  async function dispatchWebTelemetry(werrResult, prompt, stateData) {
     try {
       const token = await getRecaptchaToken("answerr_chat");
-      const ansKey = Object.keys(wevvResult.answers)[0];
-      const ans = wevvResult.answers[ansKey];
+      const ansKey = Object.keys(werrResult.answers)[0];
+      const ans = werrResult.answers[ansKey];
 
       const payload = {
         timestamp: new Date().toISOString(),
@@ -48,9 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
         source: "answerr_chat",
         recaptcha_token: token || undefined,
         seed: {
-          cx: parseFloat(wevvResult.coordinates.cx.toFixed(8)),
-          cy: parseFloat(wevvResult.coordinates.cy.toFixed(8)),
-          zoom: parseFloat(wevvResult.coordinates.zoom.toFixed(4))
+          cx: parseFloat(werrResult.coordinates.cx.toFixed(8)),
+          cy: parseFloat(werrResult.coordinates.cy.toFixed(8)),
+          zoom: parseFloat(werrResult.coordinates.zoom.toFixed(4))
         },
         state_summary: stateData.state || {},
         questions: [
@@ -62,10 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
             confidence: ans.confidence
           }
         ],
-        latency_ms: wevvResult.latencyMs
+        latency_ms: werrResult.latencyMs
       };
 
-      fetch("https://api.answerr.me:4431/wevv/telemetry", {
+      fetch("https://api.answerr.me:4431/werr/telemetry", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const I18N = {
     tr: {
       heroTitle: "Sadece Sohbet Etmeyin. Karar Verin.",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator - Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)</em>: Yazılımlar ve otomasyon için <strong>Sistem-1</strong> karar altyapısı. Operasyonel durum (state) sinyal verisini ve soru talimatlarını anında tipli kararlara (<code>noul</code>, <code>choice</code>, <code>score</code>) dönüştürür. <strong>wevv</strong> 0-Byte VRAM fraktal omurilik refleksi ve akustik dalga rezonatörüyle çalışır; mikrosaniyede deterministik sonuç üretir, asla halüsinasyon görmez ve çökmez.",
+      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator - Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)</em>: Yazılımlar ve otomasyon için <strong>Sistem-1</strong> karar altyapısı. Operasyonel durum (state) sinyal verisini ve soru talimatlarını anında tipli kararlara (<code>noul</code>, <code>choice</code>, <code>score</code>) dönüştürür. <strong>werr</strong> 0-Byte VRAM fraktal omurilik refleksi ve akustik dalga rezonatörüyle çalışır; mikrosaniyede deterministik sonuç üretir, asla halüsinasyon görmez ve çökmez.",
       tagSpeed: "⚡ < 0.5 ms Sistem-1 Fraktal Hızı",
       tagZeroMem: "💾 0-Byte VRAM (Zero-Tensor Architecture)",
       tagHallucination: "🛡️ Sıfır Halüsinasyon & Tip Güvenli",
@@ -93,22 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
       inputPlaceholder: "Operasyonel durum (state) veya karar senaryosu girin (örn: 'Anonim IP'den 180 istek/dk geldi, yürütmeye izin verilsin mi?')...",
       newDecisionBtn: "Yeni Karar",
       historyLabel: "Karar Geçmişi",
-      systemStatus: "wevv 0-Byte VRAM: Aktif",
-      disclaimer: "answerr, <a href=\"https://github.com/pCwOrM/wevv\" target=\"_blank\" rel=\"noopener\">wevv</a> fraktal Sistem-1 karar motoru ile çalışır. Tip güvenli, deterministik ve sıfır halüsinasyonludur. <a href=\"https://answerr.me\">answerr.me</a>.",
+      systemStatus: "werr 0-Byte VRAM: Aktif",
+      disclaimer: "answerr, <a href=\"https://github.com/pCwOrM/werr\" target=\"_blank\" rel=\"noopener\">werr</a> fraktal Sistem-1 karar motoru ile çalışır. Tip güvenli, deterministik ve sıfır halüsinasyonludur. <a href=\"https://answerr.me\">answerr.me</a>.",
       modalTitle: "⚙️ Answerr Karar Motoru Ayarları",
       modalFreeBadge: "✓ Tamamen Ücretsiz & Anahtarsız Sistem-1 Aktif",
-      modalFreeDesc: "answerr, tarayıcınızda sıfır gecikmeli yerel wevv Sistem-1 fraktal motoruyla çalışır. Herhangi bir kayıt, ücret veya API anahtarı zorunlu değildir.",
+      modalFreeDesc: "answerr, tarayıcınızda sıfır gecikmeli yerel werr Sistem-1 fraktal motoruyla çalışır. Herhangi bir kayıt, ücret veya API anahtarı zorunlu değildir.",
       modalApiLabel: "Opsiyonel: Google Gemini API Anahtarı",
       modalApiHint: "Genişletilmiş bulut Sistem-2 müzakeresi isterseniz Google AI Studio'dan ücretsiz anahtar alabilirsiniz. Anahtar sadece tarayıcınızda (localStorage) saklanır.",
       modalModelLabel: "Sistem-2 Müzakere Modeli",
       modalClearHistory: "🗑️ Tüm Karar Geçmişini Temizle",
       modalCancel: "İptal",
       modalSave: "Ayarları Kaydet",
-      keylessBadge: "⚡ wevv Sistem-1 (Ücretsiz / Keyless)",
+      keylessBadge: "⚡ werr Sistem-1 (Ücretsiz / Keyless)",
       step1: "1/3 Durum matrisi ve tipli soru ayrıştırılıyor (System-2 State)...",
-      step2: "2/3 wevv: Mandelbrot ∂M kaçış dinamiği hesaplanıyor (< 0.5ms)...",
+      step2: "2/3 werr: Mandelbrot ∂M kaçış dinamiği hesaplanıyor (< 0.5ms)...",
       step3: "3/3 Sistem-1 telemetrisi ve karar doğrulanıyor...",
-      hudTitle: "🌊 wevv Sistem-1 Karar Refleksi",
+      hudTitle: "🌊 werr Sistem-1 Karar Refleksi",
       hudLatency: "ms",
       hudVram: "0B Tensör VRAM",
       hudSeed: "24B Tohum",
@@ -124,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     en: {
       heroTitle: "Don't Just Chat. Get The Answerr.",
-      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator)</em>: Machine-native <strong>System-One</strong> decision infrastructure for software and automation. Ingests operational state signals and typed questions; delivers structured, calibrated decisions (<code>noul</code>, <code>choice</code>, <code>score</code>) your code can use directly. Powered by <strong>wevv</strong> zero-memory fractal reflexes and acoustic wave resonance.",
+      heroSubtitle: "<strong>A.N.S.W.E.R.R.</strong> <em>(Adaptive Non-tensor Signal Wave & Error Reflex Resonator)</em>: Machine-native <strong>System-One</strong> decision infrastructure for software and automation. Ingests operational state signals and typed questions; delivers structured, calibrated decisions (<code>noul</code>, <code>choice</code>, <code>score</code>) your code can use directly. Powered by <strong>werr</strong> zero-memory fractal reflexes and acoustic wave resonance.",
       tagSpeed: "⚡ < 0.5 ms System-1 Fractal Speed",
       tagZeroMem: "💾 0-Byte VRAM (Zero-Tensor Architecture)",
       tagHallucination: "🛡️ Zero Hallucination & Type-Safe",
@@ -132,22 +133,22 @@ document.addEventListener('DOMContentLoaded', () => {
       inputPlaceholder: "Enter operational state or decision query (e.g. 'Anonymous IP with 180 req/min burst, allow execution?')...",
       newDecisionBtn: "New Decision",
       historyLabel: "Decision Log",
-      systemStatus: "wevv 0-Byte VRAM: Active",
-      disclaimer: "answerr is powered by the <a href=\"https://github.com/pCwOrM/wevv\" target=\"_blank\" rel=\"noopener\">wevv</a> fractal System-One engine. Type-safe, calibrated, zero-hallucination. <a href=\"https://answerr.me\">answerr.me</a>.",
+      systemStatus: "werr 0-Byte VRAM: Active",
+      disclaimer: "answerr is powered by the <a href=\"https://github.com/pCwOrM/werr\" target=\"_blank\" rel=\"noopener\">werr</a> fractal System-One engine. Type-safe, calibrated, zero-hallucination. <a href=\"https://answerr.me\">answerr.me</a>.",
       modalTitle: "⚙️ Answerr Decision Engine Settings",
       modalFreeBadge: "✓ 100% Free & Keyless System-1 Active",
-      modalFreeDesc: "answerr operates with zero latency directly inside your browser. No sign-up, credit card, or API key required.",
+      modalFreeDesc: "answerr operates with zero latency directly inside your browser with the werr engine. No sign-up, credit card, or API key required.",
       modalApiLabel: "Optional: Google Gemini API Key",
       modalApiHint: "To unlock cloud System-2 deliberation, you can optionally provide a free key from Google AI Studio. Stored strictly in your browser (localStorage).",
       modalModelLabel: "System-2 Model",
       modalClearHistory: "🗑️ Clear All Decision Records",
       modalCancel: "Cancel",
       modalSave: "Save Settings",
-      keylessBadge: "⚡ wevv System-1 (Free / Keyless)",
+      keylessBadge: "⚡ werr System-1 (Free / Keyless)",
       step1: "1/3 Compiling input into state vector...",
-      step2: "2/3 wevv: Evaluating Mandelbrot escape dynamics (< 0.5ms)...",
+      step2: "2/3 werr: Evaluating Mandelbrot escape dynamics (< 0.5ms)...",
       step3: "3/3 Synthesizing System-1 telemetry and actions...",
-      hudTitle: "🌊 wevv System-1 Decision Reflex",
+      hudTitle: "🌊 werr System-1 Decision Reflex",
       hudLatency: "ms",
       hudVram: "0B Tensor VRAM",
       hudSeed: "24B Seed",
@@ -662,8 +663,8 @@ document.addEventListener('DOMContentLoaded', () => {
                  24-BYTE MANDELBROT SEED TELEMETRY DUMP
 ================================================================================
 Timestamp               : ${dateStr}
-Inference Architecture  : wevv Zero-Memory Fractal System-One Reflex (∂M Boundary)
-Subdivision Mode        : 4-Quadrant Phase Discretization (vv)
+Inference Architecture  : werr Zero-Memory Fractal System-One Reflex (∂M Boundary)
+Subdivision Mode        : 4-Quadrant Phase Discretization (rr)
 Zero-Hallucination      : 100% Deterministic Mathematical Convergence
 Zero-Crash Resilience   : Active (Chaotic Phase Space Absorption)
 
@@ -690,7 +691,7 @@ Quadrant Phase Energy   : Q1: ${(wevvResult.telemetry.quadRatios[0]*100).toFixed
 
 [4] VERIFICATION & REPRODUCIBILITY
 --------------------------------------------------------------------------------
-Core Engine Repository  : https://github.com/pCwOrM/wevv
+Core Engine Repository  : https://github.com/pCwOrM/werr
 Platform Interface      : https://github.com/pCwOrM/answerr (https://answerr.me)
 License                 : MIT License (%100 Free & Open Source)
 ================================================================================`;
@@ -716,7 +717,7 @@ License                 : MIT License (%100 Free & Open Source)
       ? (isTr ? 'Gemini Flash (Bulut Sistem-2 Müzakeresi)' : 'Gemini Flash (Cloud System-2 Deliberation)')
       : (isTr ? 'Answerr Sistem-1 Karar Derleyicisi (Sıfır Halüsinasyon)' : 'Answerr System-1 Decision Compiler (Zero Hallucination)');
 
-    const modelName = commentaryResult.source === 'gemini' ? (commentaryResult.model || 'Gemini Flash') : 'WEVV-NATIVE';
+    const modelName = commentaryResult.source === 'gemini' ? (commentaryResult.model || 'Gemini Flash') : 'WERR-NATIVE';
 
     const stateObj = stateData?.state || {};
     const questionObj = stateData?.question || {};
@@ -734,17 +735,17 @@ License                 : MIT License (%100 Free & Open Source)
     }
 
     const specHeaderTitle = isTr
-      ? '📐 wevv Formatına Dönüştürülen Program Durumu (State) & Tipli Soru'
-      : '📐 wevv Formatted Program State & Typed Question Matrix';
+      ? '📐 werr Formatına Dönüştürülen Program Durumu (State) & Tipli Soru'
+      : '📐 werr Formatted Program State & Typed Question Matrix';
 
     const detailsSummary = isTr
-      ? '🔍 wevv Ham Durum & Soru Yükünü İncele (Raw State & Question JSON)'
+      ? '🔍 werr Ham Durum & Soru Yükünü İncele (Raw State & Question JSON)'
       : '🔍 Inspect Raw State & Question Payload (JSON)';
 
     const rawJsonStr = JSON.stringify({ state: stateObj, question: questionObj }, null, 2);
 
     const specBoxHtml = `
-      <div class="wevv-spec-box">
+      <div class="werr-spec-box wevv-spec-box">
         <div class="spec-header">
           <span>${specHeaderTitle}</span>
           <span class="spec-type-tag" lang="en">${qType} (${qKey})</span>
@@ -927,10 +928,10 @@ License                 : MIT License (%100 Free & Open Source)
 
     // Format zero hallucination guarantee callout banner
     formatted = formatted.replace(
-      /(?:\(|&lt;|\*)\s*(?:🛡️|&#128737;)?\s*wevv\s+(?:Sıfır-Halüsinasyon Garantisi|Zero-Hallucination Guarantee):?\s*([^)*]+)(?:\)|\*)/gi,
+      /(?:\(|&lt;|\*)\s*(?:🛡️|&#128737;)?\s*(?:wevv|werr)\s+(?:Sıfır-Halüsinasyon Garantisi|Zero-Hallucination Guarantee):?\s*([^)*]+)(?:\)|\*)/gi,
       (match, desc) => {
         const isTr = currentLang === 'tr';
-        const title = isTr ? 'wevv Sıfır-Halüsinasyon Garantisi' : 'wevv Zero-Hallucination Guarantee';
+        const title = isTr ? 'werr Sıfır-Halüsinasyon Garantisi' : 'werr Zero-Hallucination Guarantee';
         return `<div class="zero-hallucination-banner"><span class="zh-shield">🛡️</span><span><strong>${title}:</strong> ${desc.trim()}</span></div>`;
       }
     );

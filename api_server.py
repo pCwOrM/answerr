@@ -2,7 +2,7 @@
 Answerr Reflex Decision Engine API - Production REST Server
 A.N.S.W.E.R.R. (Adaptive Non-tensor Signal Wave & Error Reflex Resonator)
 (Uyarlanabilir Tensörsüz Sinyal Dalgası ve Hata Refleksi Rezonatörü)
-Powered by wevv (Universal Fractal Natural Language Decision Map)
+Powered by werr (Universal Fractal Natural Language Decision Map)
 
 Features:
 - Sub-millisecond deterministic typed decisions (noul, choice, score)
@@ -24,19 +24,29 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-# Ensure wevv is loaded
+# Ensure werr (with fallback to wevv) is loaded
 try:
-    import wevv
+    import werr
 except ImportError:
-    sys.path.insert(0, '/home/pcworm/wevv_repo')
-    import wevv
+    try:
+        import wevv as werr
+    except ImportError:
+        sys.path.insert(0, '/home/pcworm/werr')
+        sys.path.insert(0, '/home/pcworm/wevv_repo')
+        try:
+            import werr
+        except ImportError:
+            import wevv as werr
+
+# Backward compatibility alias
+wevv = werr
 
 # Process start time for uptime calculation
 START_TIME = time.time()
 
 # Global engine instances
-DEFAULT_ROUTER = wevv.create_smart_router()
-DOMAIN_GATES = wevv.DOMAIN_GATES
+DEFAULT_ROUTER = werr.create_smart_router()
+DOMAIN_GATES = werr.DOMAIN_GATES
 
 # Predefined domain presets matching answerr.me web client
 PRESETS = {
@@ -165,10 +175,10 @@ async def lifespan(app: FastAPI):
     warmup_start = time.perf_counter()
     DEFAULT_ROUTER.decide(
         state={"warmup": True},
-        questions={"ready": wevv.NoulQuestion("System ready?")}
+        questions={"ready": werr.NoulQuestion("System ready?")}
     )
     warmup_ms = (time.perf_counter() - warmup_start) * 1000.0
-    print(f"[*] Answerr wevv Decision Engine warmed up in {warmup_ms:.2f} ms (0 Byte VRAM)")
+    print(f"[*] Answerr werr Decision Engine warmed up in {warmup_ms:.2f} ms (0 Byte VRAM)")
     yield
 
 
@@ -179,7 +189,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Enable CORS for web clients, answerr.me, and external applications
+# CORS Policy
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -190,32 +200,33 @@ app.add_middleware(
 
 
 # -----------------------------------------------------------------------------
-# Data Models
+# Request / Response Schemas
 # -----------------------------------------------------------------------------
 class QuestionSpec(BaseModel):
-    type: str = Field(..., description="Question type: 'noul', 'choice', or 'score'")
-    text: str = Field(..., description="The query or condition to evaluate")
+    type: str = Field(..., description="'noul', 'choice', or 'score'")
+    text: str = Field(..., description="Semantic instructions / question text")
     criteria: Optional[Union[Dict[str, str], List[str]]] = Field(
-        None, description="Criteria map for choice, or scale labels for score"
+        None,
+        description="Dictionary of options for choice, or list of levels for score"
     )
 
 
-class DecideRequest(BaseModel):
+class DecisionRequest(BaseModel):
     state: Optional[Dict[str, Any]] = Field(
         default_factory=dict,
-        description="Key-value dictionary describing the current system state, context or parameters"
-    )
-    question: Optional[str] = Field(
-        None,
-        description="Optional single question string for instant reflex query"
-    )
-    questions: Optional[Dict[str, QuestionSpec]] = Field(
-        None,
-        description="Typed multi-question specification (noul, choice, score)"
+        description="Key-value operational state of the system"
     )
     domain: Optional[str] = Field(
         None,
-        description="Optional pre-calibrated domain: 'api_security', 'financial_risk', 'iot_safety', 'ecommerce_fraud', 'game_combat', 'ddos_mitigation', 'robotics_industrial'"
+        description="Optional domain preset key: 'api_security', 'ddos_mitigation', 'financial_risk', 'robotics_industrial', 'ecommerce_fraud'"
+    )
+    questions: Optional[Dict[str, QuestionSpec]] = Field(
+        None,
+        description="Dictionary of questions to evaluate against state"
+    )
+    question: Optional[str] = Field(
+        None,
+        description="Simplified single question string for quick reflex evaluation"
     )
     prompt: Optional[str] = Field(
         None,
@@ -232,7 +243,7 @@ class ChatMessage(BaseModel):
 
 
 class ChatCompletionRequest(BaseModel):
-    model: Optional[str] = "wevv-reflex-v1"
+    model: Optional[str] = "werr-reflex-v1"
     messages: List[ChatMessage]
     temperature: Optional[float] = 0.0
     max_tokens: Optional[int] = 512
@@ -243,7 +254,7 @@ class ChatCompletionRequest(BaseModel):
 # -----------------------------------------------------------------------------
 def build_engine(cx: Optional[float] = None, cy: Optional[float] = None, zoom: Optional[float] = None):
     if cx is not None and cy is not None and zoom is not None:
-        return wevv.WevvEngine(cx=cx, cy=cy, zoom=zoom)
+        return werr.WerrEngine(cx=cx, cy=cy, zoom=zoom)
     return DEFAULT_ROUTER
 
 
@@ -294,6 +305,7 @@ def get_root():
             "domains": "/v1/domains (GET)",
             "chat_completions": "/v1/chat/completions (POST - OpenAI Compatible)"
         },
+        "engine": "werr-reflex-0.3.0",
         "vram_usage_bytes": 0,
         "uptime_seconds": round(uptime, 2),
         "version": "1.0.0"
@@ -309,14 +321,15 @@ def get_health():
     t0 = time.perf_counter()
     DEFAULT_ROUTER.decide(
         state={"ping": True},
-        questions={"alive": wevv.NoulQuestion(instructions="Is engine responsive?")}
+        questions={"alive": werr.NoulQuestion(instructions="Is engine responsive?")}
     )
     bench_latency_ms = (time.perf_counter() - t0) * 1000.0
 
     return {
         "status": "healthy",
-        "engine": "wevv-reflex",
-        "version": "0.2.2",
+        "engine": "werr-reflex",
+        "version": "0.3.0",
+        "core_architecture": "werr (Adaptive Non-tensor Signal Wave & Error Reflex Resonator)",
         "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
         "vram_bytes": 0,
         "latency_benchmark_ms": round(bench_latency_ms, 3),
@@ -340,10 +353,11 @@ def get_domains():
     }
 
 
-@app.post("/v1/decide", tags=["Decision"])
-def decide(req: DecideRequest):
+@app.post("/v1/decide", tags=["Decision Engine"])
+def post_decide(req: DecisionRequest):
     """
-    Computes a deterministic, sub-millisecond typed decision based on provided state and questions.
+    Sub-millisecond System-One Typed Decision Endpoint.
+    Zero weights stored, zero VRAM used. Evaluates state continuously against fractal boundary.
     """
     t_start = time.perf_counter()
     state = dict(req.state) if req.state else {}
@@ -353,23 +367,23 @@ def decide(req: DecideRequest):
         state = parse_prompt_to_state(req.prompt)
 
     # Resolve questions dictionary
-    wevv_questions = {}
+    werr_questions = {}
 
     if req.questions:
         for q_id, q_spec in req.questions.items():
             q_type = q_spec.type.lower().strip()
             if q_type == "noul":
-                wevv_questions[q_id] = wevv.NoulQuestion(instructions=q_spec.text)
+                werr_questions[q_id] = werr.NoulQuestion(instructions=q_spec.text)
             elif q_type == "choice":
                 crit = q_spec.criteria or {"option_a": "Option A", "option_b": "Option B"}
                 if isinstance(crit, list):
                     crit = {f"opt_{i}": v for i, v in enumerate(crit)}
-                wevv_questions[q_id] = wevv.ChoiceQuestion(instructions=q_spec.text, criteria=crit)
+                werr_questions[q_id] = werr.ChoiceQuestion(instructions=q_spec.text, criteria=crit)
             elif q_type == "score":
                 crit = q_spec.criteria or ["Low", "Moderate", "High", "Extreme"]
                 if isinstance(crit, dict):
                     crit = list(crit.values())
-                wevv_questions[q_id] = wevv.ScoreQuestion(instructions=q_spec.text, criteria=crit)
+                werr_questions[q_id] = werr.ScoreQuestion(instructions=q_spec.text, criteria=crit)
             else:
                 raise HTTPException(
                     status_code=400,
@@ -377,8 +391,8 @@ def decide(req: DecideRequest):
                 )
     elif req.question:
         # User provided a single natural language question
-        wevv_questions["primary_decision"] = wevv.NoulQuestion(instructions=req.question)
-        wevv_questions["recommendation"] = wevv.ChoiceQuestion(
+        werr_questions["primary_decision"] = werr.NoulQuestion(instructions=req.question)
+        werr_questions["recommendation"] = werr.ChoiceQuestion(
             instructions="Recommended Action",
             criteria={
                 "approve": "Approve / Allow",
@@ -386,7 +400,7 @@ def decide(req: DecideRequest):
                 "reject": "Reject / Deny"
             }
         )
-        wevv_questions["risk_score"] = wevv.ScoreQuestion(
+        werr_questions["risk_score"] = werr.ScoreQuestion(
             instructions="Risk Assessment Scale",
             criteria=["Safe / Clean", "Moderate Warning", "High Anomaly", "Critical Hazard"]
         )
@@ -397,26 +411,26 @@ def decide(req: DecideRequest):
             state = dict(preset_data["default_state"])
         for q_id, q_spec in preset_data["default_questions"].items():
             if q_spec["type"] == "noul":
-                wevv_questions[q_id] = wevv.NoulQuestion(instructions=q_spec["text"])
+                werr_questions[q_id] = werr.NoulQuestion(instructions=q_spec["text"])
             elif q_spec["type"] == "choice":
                 crit = q_spec["criteria"]
                 if isinstance(crit, list):
                     crit = {f"opt_{i}": v for i, v in enumerate(crit)}
-                wevv_questions[q_id] = wevv.ChoiceQuestion(instructions=q_spec["text"], criteria=crit)
+                werr_questions[q_id] = werr.ChoiceQuestion(instructions=q_spec["text"], criteria=crit)
             elif q_spec["type"] == "score":
                 crit = q_spec["criteria"]
                 if isinstance(crit, dict):
                     crit = list(crit.values())
-                wevv_questions[q_id] = wevv.ScoreQuestion(instructions=q_spec["text"], criteria=crit)
+                werr_questions[q_id] = werr.ScoreQuestion(instructions=q_spec["text"], criteria=crit)
     else:
         # Default generic evaluation question
-        wevv_questions["decision"] = wevv.NoulQuestion(instructions="Is the proposed operation safe and valid?")
+        werr_questions["decision"] = werr.NoulQuestion(instructions="Is the proposed operation safe and valid?")
 
     # Select engine
     engine = build_engine(req.cx, req.cy, req.zoom)
     
     # Compute decision
-    result = engine.decide(state=state, questions=wevv_questions)
+    result = engine.decide(state=state, questions=werr_questions)
     total_ms = (time.perf_counter() - t_start) * 1000.0
 
     # Format answers
@@ -425,7 +439,7 @@ def decide(req: DecideRequest):
     primary_label = "APPROVED"
 
     for q_id, ans in result.answers.items():
-        if isinstance(ans, wevv.NoulAnswer):
+        if isinstance(ans, (werr.NoulAnswer, wevv.NoulAnswer)):
             answers_out[q_id] = {
                 "type": "noul",
                 "boolean": ans.decision,
@@ -436,14 +450,14 @@ def decide(req: DecideRequest):
             }
             primary_boolean = ans.decision
             primary_label = answers_out[q_id]["label"]
-        elif isinstance(ans, wevv.ChoiceAnswer):
+        elif isinstance(ans, (werr.ChoiceAnswer, wevv.ChoiceAnswer)):
             answers_out[q_id] = {
                 "type": "choice",
                 "choice": ans.choice,
                 "probabilities": {k: round(v, 4) for k, v in ans.probabilities.items()},
                 "confidence": round(ans.confidence, 4)
             }
-        elif isinstance(ans, wevv.ScoreAnswer):
+        elif isinstance(ans, (werr.ScoreAnswer, wevv.ScoreAnswer)):
             answers_out[q_id] = {
                 "type": "score",
                 "score": round(ans.score, 3),
@@ -463,7 +477,14 @@ def decide(req: DecideRequest):
             "total_request_latency_ms": round(total_ms, 3),
             "vram_bytes": 0,
             "memory_seed_bytes": 24,
-            "engine": "wevv-reflex-0.2.2"
+            "engine": "werr-reflex-0.3.0"
+        },
+        "werr_telemetry": {
+            "engine_latency_ms": round(result.latency_ms, 3),
+            "total_request_latency_ms": round(total_ms, 3),
+            "vram_bytes": 0,
+            "memory_seed_bytes": 24,
+            "engine": "werr-reflex-0.3.0"
         }
     }
 
@@ -492,14 +513,14 @@ def chat_completions(req: ChatCompletionRequest):
     result = DEFAULT_ROUTER.decide(
         state=state,
         questions={
-            "permission": wevv.NoulQuestion(instructions=f"Should request proceed: {user_content[:80]}?"),
-            "action": wevv.ChoiceQuestion(instructions="Pipeline action", criteria={
+            "permission": werr.NoulQuestion(instructions=f"Should request proceed: {user_content[:80]}?"),
+            "action": werr.ChoiceQuestion(instructions="Pipeline action", criteria={
                 "direct_api": "Fast Path API",
                 "rate_limit": "Queue Throttling",
                 "quarantine": "Audit Quarantine",
                 "block": "Block Access"
             }),
-            "threat": wevv.ScoreQuestion(instructions="Threat Score", criteria=["Nominal", "Minor", "Substantial", "Critical"])
+            "threat": werr.ScoreQuestion(instructions="Threat Score", criteria=["Nominal", "Minor", "Substantial", "Critical"])
         }
     )
     
@@ -517,7 +538,8 @@ def chat_completions(req: ChatCompletionRequest):
         f"• Action: {ans_choice.choice}\n"
         f"• Threat: {ans_score.level} (Score: {ans_score.score:.2f})\n"
         f"• Confidence: %{ans_noul.confidence * 100:.1f} (p={ans_noul.noul:.3f})\n"
-        f"• Memory: 0 Bytes Tensor VRAM (24-byte coordinate on dM boundary)"
+        f"• Memory: 0 Bytes Tensor VRAM (24-byte coordinate on dM boundary)\n"
+        f"• Engine: werr 0.3.0 (Wave & Error Reflex Resonator)"
     )
 
     return {
@@ -539,6 +561,17 @@ def chat_completions(req: ChatCompletionRequest):
             "prompt_tokens": 0,
             "completion_tokens": 0,
             "total_tokens": 0
+        },
+        "telemetry": {
+            "latency_ms": round(total_ms, 3),
+            "vram_bytes": 0,
+            "zero_memory": True,
+            "engine": "werr-reflex-0.3.0"
+        },
+        "werr_telemetry": {
+            "latency_ms": round(total_ms, 3),
+            "vram_bytes": 0,
+            "zero_memory": True
         },
         "wevv_telemetry": {
             "latency_ms": round(total_ms, 3),

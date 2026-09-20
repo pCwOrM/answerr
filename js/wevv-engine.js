@@ -445,9 +445,11 @@ class WevvEngine {
 }
 
 // Export for browser and ES modules
+const WerrEngine = WevvEngine;
 if (typeof window !== 'undefined') {
   window.WevvEngine = WevvEngine;
+  window.WerrEngine = WerrEngine;
 }
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { WevvEngine };
+  module.exports = { WevvEngine, WerrEngine };
 }

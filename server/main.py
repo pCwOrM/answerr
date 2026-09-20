@@ -1,6 +1,6 @@
 """
 answerr Server - Dual-Cognition AI API Gateway (FastAPI)
-Bridges Gemini System-Two Deliberation with wevv System-One Fractal Reflexes
+Bridges Gemini System-Two Deliberation with werr System-One Fractal Reflexes
 """
 import os
 import sys
@@ -11,21 +11,25 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-# Add wevv directory to path if local
-LOCAL_WEVV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "wevv"))
-if os.path.exists(LOCAL_WEVV_PATH) and LOCAL_WEVV_PATH not in sys.path:
-    sys.path.insert(0, LOCAL_WEVV_PATH)
+# Add local paths if present
+LOCAL_WERR_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "wevv"))
+if os.path.exists(LOCAL_WERR_PATH) and LOCAL_WERR_PATH not in sys.path:
+    sys.path.insert(0, LOCAL_WERR_PATH)
 
 try:
-    from wevv import WevvEngine, NoulQuestion, ChoiceQuestion, ScoreQuestion
-    HAS_LOCAL_WEVV = True
+    from werr import WerrEngine as EngineCls, NoulQuestion, ChoiceQuestion, ScoreQuestion
+    HAS_LOCAL_ENGINE = True
 except ImportError:
-    HAS_LOCAL_WEVV = False
+    try:
+        from wevv import WevvEngine as EngineCls, NoulQuestion, ChoiceQuestion, ScoreQuestion
+        HAS_LOCAL_ENGINE = True
+    except ImportError:
+        HAS_LOCAL_ENGINE = False
 
 app = FastAPI(
     title="answerr API",
-    description="Cognitive bridge between Gemini Flash System-2 and wevv Zero-Memory System-1",
-    version="0.1.0"
+    description="Cognitive bridge between Gemini Flash System-2 and werr Zero-Memory System-1",
+    version="0.3.0"
 )
 
 app.add_middleware(
@@ -53,19 +57,19 @@ def health_check():
     return {
         "status": "ok",
         "service": "answerr",
-        "has_local_wevv": HAS_LOCAL_WEVV,
-        "engine": "wevv-0.1.0-fractal",
+        "has_local_engine": HAS_LOCAL_ENGINE,
+        "engine": "werr-0.3.0-fractal",
         "tensor_vram_bytes": 0,
         "seed_bytes": 24
     }
 
 @app.post("/api/decide")
 def api_decide(req: DecideRequest):
-    """Direct System-One wevv Decision Endpoint (< 2ms)"""
+    """Direct System-One werr Decision Endpoint (< 2ms)"""
     start_time = time.perf_counter()
 
-    if HAS_LOCAL_WEVV:
-        engine = WevvEngine(resolution=48)
+    if HAS_LOCAL_ENGINE:
+        engine = EngineCls(resolution=48)
         if req.question_type == "choice":
             q_obj = ChoiceQuestion(
                 instructions=req.instructions,
@@ -84,7 +88,7 @@ def api_decide(req: DecideRequest):
         elapsed = (time.perf_counter() - start_time) * 1000.0
 
         return {
-            "model": "wevv-0.1.0-fractal",
+            "model": "werr-0.3.0-fractal",
             "type": req.question_type,
             "answer": ans.__dict__,
             "latency_ms": round(elapsed, 2),
@@ -95,7 +99,7 @@ def api_decide(req: DecideRequest):
         # Fallback simulation
         elapsed = (time.perf_counter() - start_time) * 1000.0
         return {
-            "model": "wevv-0.1.0-simulation",
+            "model": "werr-0.3.0-simulation",
             "type": req.question_type,
             "answer": {"decision": True, "confidence": 0.88, "noul": 0.88},
             "latency_ms": round(elapsed, 2),
