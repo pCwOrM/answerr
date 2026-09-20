@@ -202,7 +202,12 @@ body {
   height: 32px;
   border-radius: 8px;
   object-fit: contain;
-  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.45));
+  background: #07090e;
+  filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.55)) drop-shadow(0 0 6px rgba(192, 132, 252, 0.3));
+  transition: filter 0.3s ease;
+}
+.brand-badge:hover .brand-logo-img {
+  filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.75)) drop-shadow(0 0 10px rgba(192, 132, 252, 0.5));
 }
 
 .brand-title {
