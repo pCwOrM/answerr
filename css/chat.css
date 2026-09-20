@@ -1021,3 +1021,136 @@
   line-height: 1.5;
 }
 
+/* =========================================================================
+   Comprehensive Mobile Responsiveness for chat.html
+   ========================================================================= */
+@media (max-width: 768px) {
+  .chat-topbar {
+    height: 54px;
+    padding: 0 0.65rem;
+  }
+  .topbar-left, .topbar-right {
+    gap: 0.4rem;
+  }
+  /* Hide redundant/secondary badges on mobile to keep topbar uncluttered */
+  .werr-badge,
+  .github-badge {
+    display: none !important;
+  }
+  .topbar-nav-link {
+    padding: 0.32rem 0.55rem;
+    font-size: 0.78rem;
+  }
+  .topbar-nav-link .nav-text {
+    display: none; /* Just show the arrow ← on mobile */
+  }
+  .model-badge {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.76rem;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lang-btn {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.76rem;
+  }
+
+  /* Welcome Screen Mobile Scale */
+  .welcome-hero.clean-workspace {
+    margin: 0.5rem auto 130px auto;
+    padding: 0.5rem 0.5rem 0;
+  }
+  .welcome-logo-pulse {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.4rem;
+  }
+  .welcome-hero.clean-workspace .welcome-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .welcome-hero.clean-workspace .welcome-subtitle {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .welcome-quick-tags {
+    margin-bottom: 0.65rem;
+    gap: 0.35rem;
+  }
+  .workspace-pill {
+    font-size: 0.7rem;
+    padding: 0.18rem 0.55rem;
+  }
+  .preset-section-label {
+    margin-bottom: 0.45rem;
+    font-size: 0.68rem;
+  }
+  .preset-grid {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+    max-width: 100%;
+  }
+  .preset-card {
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Scroll Area and Messages */
+  .chat-scroll-area {
+    padding: 0.75rem 0.6rem;
+    scroll-padding-bottom: 120px;
+  }
+  .chat-messages {
+    padding-bottom: 120px;
+    gap: 1.25rem;
+  }
+
+  /* Floating Input Box Mobile */
+  .chat-input-wrapper {
+    padding: 0.5rem 0.65rem 0.75rem;
+  }
+  .chat-input-box {
+    padding: 0.65rem 0.85rem;
+    gap: 0.5rem;
+  }
+  .chat-textarea {
+    font-size: 0.88rem;
+  }
+  .btn-send {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  .chat-disclaimer {
+    font-size: 0.68rem;
+    margin-top: 0.35rem;
+  }
+
+  /* Telemetry HUD & Commentary Mobile */
+  .wevv-hud-card, .werr-hud-card {
+    padding: 0.85rem;
+  }
+  .hud-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .hud-badges {
+    flex-wrap: wrap;
+  }
+  .telemetry-pill {
+    font-size: 0.7rem;
+  }
+  .btn-seed-download {
+    font-size: 0.7rem;
+  }
+  .gemini-commentary-card {
+    padding: 0.85rem;
+  }
+  .gemini-card-header {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+}
+
