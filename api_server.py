@@ -620,6 +620,107 @@ def post_decide(req: DecisionRequest):
     }
 
 
+class SystemOneRequest(BaseModel):
+    """JevBench-compatible TypeSafe wire format for POST /v1/systemone."""
+    task: Optional[str] = None
+    state: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    questions: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    model: Optional[str] = "werr-system-one"
+
+
+@app.post("/v1/systemone", tags=["Decision Engine"])
+def post_systemone(req: SystemOneRequest):
+    """
+    JevBench TypeSafe wire format endpoint.
+    Accepts questions with 'type' + 'labels' (JevBench format) or 'type' + 'text' + 'criteria' (answerr format).
+    Bridges JevBench benchmark runner directly to the WERR fractal kernel.
+    """
+    t_start = time.perf_counter()
+    state = dict(req.state) if req.state else {}
+
+    werr_questions = {}
+    if req.questions:
+        for q_id, q_def in req.questions.items():
+            if isinstance(q_def, dict):
+                q_type = str(q_def.get("type", "noul")).lower().strip()
+                text = str(q_def.get("text", q_id))
+                # JevBench sends 'labels' list; answerr format uses 'criteria' dict
+                labels = q_def.get("labels") or q_def.get("criteria")
+                if q_type == "noul":
+                    werr_questions[q_id] = werr.NoulQuestion(instructions=text)
+                elif q_type == "choice":
+                    if isinstance(labels, list):
+                        crit = {lbl: lbl for lbl in labels}
+                    elif isinstance(labels, dict):
+                        crit = labels
+                    else:
+                        crit = {"option_a": "Option A", "option_b": "Option B"}
+                    werr_questions[q_id] = werr.ChoiceQuestion(instructions=text, criteria=crit)
+                elif q_type == "score":
+                    if isinstance(labels, list):
+                        crit = labels
+                    elif isinstance(labels, dict):
+                        crit = list(labels.values())
+                    else:
+                        crit = ["Low", "Moderate", "High", "Extreme"]
+                    werr_questions[q_id] = werr.ScoreQuestion(instructions=text, criteria=crit)
+                else:
+                    werr_questions[q_id] = werr.NoulQuestion(instructions=text)
+
+    if not werr_questions:
+        werr_questions["decision"] = werr.NoulQuestion(instructions="Is the proposed operation safe and valid?")
+
+    result = DEFAULT_ROUTER.decide(state=state, questions=werr_questions)
+    total_ms = (time.perf_counter() - t_start) * 1000.0
+
+    answers_out = {}
+    for q_id, ans in result.answers.items():
+        if isinstance(ans, (werr.NoulAnswer, wevv.NoulAnswer)):
+            answers_out[q_id] = {
+                "type": "noul",
+                "decision": ans.decision,
+                "boolean": ans.decision,
+                "noul": round(ans.noul, 4),
+                "confidence": round(ans.confidence, 4),
+                "label": "ALLOWED" if ans.decision else "DENIED"
+            }
+        elif isinstance(ans, (werr.ChoiceAnswer, wevv.ChoiceAnswer)):
+            answers_out[q_id] = {
+                "type": "choice",
+                "selected_label": ans.choice,
+                "choice": ans.choice,
+                "probabilities": {k: round(v, 4) for k, v in ans.probabilities.items()},
+                "confidence": round(ans.confidence, 4)
+            }
+        elif isinstance(ans, (werr.ScoreAnswer, wevv.ScoreAnswer)):
+            answers_out[q_id] = {
+                "type": "score",
+                "score": round(ans.score, 3),
+                "level": ans.level,
+                "probabilities": {str(k): round(v, 4) for k, v in ans.probabilities.items()},
+                "confidence": round(ans.confidence, 4)
+            }
+
+    return {
+        "status": "success",
+        "task_id": req.task or "werr-systemone",
+        "wire_protocol": "POST /v1/systemone (JevBench TypeSafe Compatible)",
+        "system_level": "System-1 (Mandelbrot Boundary Wave Dynamics)",
+        "vram_allocated_bytes": 0,
+        "seed_footprint_bytes": 24,
+        "model": req.model,
+        "state": state,
+        "result": answers_out,
+        "telemetry": {
+            "engine_latency_ms": round(result.latency_ms, 3),
+            "total_request_latency_ms": round(total_ms, 3),
+            "vram_bytes": 0,
+            "memory_seed_bytes": 24,
+            "engine": "werr-reflex-0.3.0"
+        }
+    }
+
+
 @app.post("/v1/chat/completions", tags=["OpenAI Adapter"])
 def chat_completions(req: ChatCompletionRequest):
     """
