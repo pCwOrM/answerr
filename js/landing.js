@@ -5,6 +5,21 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Theme Persistence & Toggle
+  const savedTheme = localStorage.getItem('answerr_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const btnLandingTheme = document.getElementById('btn-landing-theme');
+  if (btnLandingTheme) {
+    btnLandingTheme.innerHTML = savedTheme === 'dark' ? '🌙' : '☀️';
+    btnLandingTheme.addEventListener('click', () => {
+      const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const nextTheme = curTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('answerr_theme', nextTheme);
+      btnLandingTheme.innerHTML = nextTheme === 'dark' ? '🌙' : '☀️';
+    });
+  }
+
   let currentLang = localStorage.getItem('answerr_lang') || 'tr';
 
   const LANDING_I18N = {
