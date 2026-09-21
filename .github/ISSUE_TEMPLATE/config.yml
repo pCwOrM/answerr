@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "💬 Community Discussions & Q&A"
+    url: "https://github.com/pCwOrM/answerr/discussions"
+    about: "Ask questions, discuss architectural ideas, or share your implementations with the community."
+  - name: "🌐 Live Web Workspace"
+    url: "https://answerr.me/"
+    about: "Try answerr interactively in your browser with real-time Mandelbrot telemetry."
