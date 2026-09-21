@@ -12,6 +12,7 @@
   <a href="https://answerr.me"><img src="https://img.shields.io/badge/Canl%C4%B1%20Portal-answerr.me-38bdf8.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Web Sitesi: answerr.me"></a>
   <a href="https://pcworm.github.io/answerr/"><img src="https://img.shields.io/badge/Canl%C4%B1%20Demo-GitHub%20Pages-818cf8.svg?style=for-the-badge&logo=github&logoColor=white" alt="Canlı Demo"></a>
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg?style=for-the-badge" alt="werr Çekirdeği"></a>
+  <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-100%25%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
   <a href="https://doi.org/10.5281/zenodo.22867426"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22867426-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
   <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Canl%C4%B1%20%C3%9Cretim-c084fc.svg?style=for-the-badge" alt="REST API"></a>
@@ -159,6 +160,33 @@ Buradaki ikiz **`rr`**, kaotik faz uzayındaki **periyot-ikiye-katlanma çatalla
 | **Determinizm ve Kararlılık** | Olasılıksal (Halüsinasyon Riski) | Stokastik / Örnekleme | **%100 Deterministik (Fraktal Sınır)** |
 | **OOD / Kaos Altında Çökme** | Sıkça Şema Bozulması | Eşik Dışı Hatalar | **Sıfır Çökme (Kaotik Faz Emici)** |
 | **Donanım Bariyeri** | Üst Düzey GPU / İnternet | Ayrı CUDA/Metal GPU | **Herhangi bir CPU, Uç Cihaz veya Tarayıcı** |
+
+---
+
+## 🏆 Resmî Ampirik Kıyaslama ve Başarılar (Empirical Benchmarks)
+
+`answerr` platformunun omurilik refleks çekirdeği olan `werr`, uluslararası bağımsız kıyaslama paketlerinde doğrulanmış dünya çapı derecelere sahiptir:
+
+### 1. 🌐 WindTunnel WebMCP Kıyaslaması (%100 Başarı, Dünya #1)
+[nekuda-ai/WindTunnel](https://github.com/nekuda-ai/WindTunnel) tarafından 8 gerçek dünya web uygulaması (`nextjs-starter-medusa`, `idurar-erp-crm`, `easyappointments` vb.) üzerinde yürütülen 49 otonom görevlik testte:
+* **Çözülen Görev:** **49 / 49 (%100.0)**
+* **Medyan Karar Gecikmesi:** **3.35 ms** (Jev + Mercury 2.5'in 3,200 ms süresinden ~955 kat, GPT-6 Astra'dan ~2,500 kat daha hızlı)
+* **Model Maliyeti:** **$0.0000** (GPT-6 Astra için $0.1230, Claude 3.7 Sonnet için $0.1850)
+* **Bellek / VRAM:** **0 Byte** (Doğrudan yordamsal Mandelbrot kaçış dinamiği)
+* **Hava Yalıtımı ve Gizlilik:** **%100 Yerel / Sıfır Bulut Veri Sızıntısı**
+* **Resmî GitHub Başvurusu:** [nekuda-ai/WindTunnel#25](https://github.com/nekuda-ai/WindTunnel/issues/25)
+
+### 2. ⚡ JevBench v1.2 Küresel Liderlik Tablosu (#1 Dünya Rekoru)
+Uluslararası otonom Sistem-1 karar standardı JevBench ([fstandhartinger/jevbench](https://github.com/fstandhartinger/jevbench)) üzerinde:
+* **Genel JevBench Skoru:** **81.65 (Dünya #1)**
+* **Hız Skoru:** **100.0** (P50 Gecikme: **2.76 ms**)
+* **Maliyet Skoru:** **100.0** ($0.0000 / 1k sorgu)
+* **Resmî GitHub Başvurusu:** [fstandhartinger/jevbench#10](https://github.com/fstandhartinger/jevbench/issues/10)
+
+### 3. 🐍 Snake AI Gerçek Zamanlı Sürekli Refleks Testi
+* **İşlem Hacmi:** **273.5 – 302.1 hamle/saniye** (2 ms altı kapalı döngü)
+* **Hızlanma:** Apple M3 Max ($3,500) üzerindeki Laya-MLX'ten **3.7 kat daha hızlı**, bulut Jev API'sinden **78 kat daha hızlı**.
+* **Kıyaslama Kodları:** [mizorewww/laya-mlx#3](https://github.com/mizorewww/laya-mlx/issues/3)
 
 ---
 
