@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "answerr"
-version = "0.1.0"
-description = "Cognitive bridge between Gemini Flash System-2 and werr Zero-Memory System-1 decision engine."
+version = "0.3.0"
+description = "Dual-Cognition AI platform bridging Gemini System-2 deliberation with werr Zero-Memory System-1 fractal decision engine."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
     { name = "Volkan Dağlı", email = "info@itouch.fi" }
 ]
-keywords = ["answerr", "werr", "wevv", "fractal-ai", "gemini", "zero-memory", "mandelbrot"]
+keywords = ["answerr", "werr", "fractal-ai", "gemini", "zero-memory", "mandelbrot", "system-1", "system-2", "dual-cognition"]
 dependencies = [
     "fastapi>=0.110.0",
     "uvicorn>=0.28.0",
@@ -24,3 +24,4 @@ dependencies = [
 Homepage = "https://answerr.me"
 Repository = "https://github.com/pCwOrM/answerr"
 "werr Base Engine" = "https://github.com/pCwOrM/werr"
+"Base Research" = "https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"

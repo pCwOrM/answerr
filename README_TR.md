@@ -10,13 +10,14 @@
 
 <p align="center">
   <a href="https://answerr.me"><img src="https://img.shields.io/badge/Canl%C4%B1%20Portal-answerr.me-38bdf8.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Web Sitesi: answerr.me"></a>
-  <a href="https://pcworm.github.io/answerr/"><img src="https://img.shields.io/badge/Canl%C4%B1%20Demo-GitHub%20Pages-818cf8.svg?style=for-the-badge&logo=github&logoColor=white" alt="Canlı Demo"></a>
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg?style=for-the-badge" alt="werr Çekirdeği"></a>
-  <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-100%25%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
+  <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Temel%20Ara%C5%9Ft%C4%B1rma-Mandelbrot%20N%C3%B6ral%20Sentez-green.svg?style=for-the-badge" alt="Temel Araştırma"></a>
+  <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-%25100%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
   <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20H%C4%B1zl%C4%B1-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
   <a href="https://doi.org/10.5281/zenodo.22867426"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22867426-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
   <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Canl%C4%B1%20%C3%9Cretim-c084fc.svg?style=for-the-badge" alt="REST API"></a>
+  <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI İş Akışı"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/Lisans-MIT-yellow.svg?style=for-the-badge" alt="Lisans: MIT"></a>
 </p>
 
@@ -282,13 +283,20 @@ python -m http.server 8089
 ```
 Tarayıcınızda [http://localhost:8089](http://localhost:8089) adresini açın.
 
-### Seçenek 2: FastAPI Mikroservisini Başlatma
+### Seçenek 2: Hafif FastAPI Sunucusunu Başlatma
 ```bash
 cd answerr
 pip install -r requirements.txt
 uvicorn server.main:app --reload --port 8000
 ```
 Tarayıcınızda [http://localhost:8000](http://localhost:8000) adresini açın.
+
+### Seçenek 3: Tam Üretim REST API Sunucusunu Başlatma
+```bash
+cd answerr
+python api_server.py
+```
+Hız sınırlandırmalı (rate-limiting), tam OpenAPI dokümantasyonlu ve `/v1` uç noktalarına sahip yüksek verimli üretim REST API motorunu `http://127.0.0.1:8560` üzerinde başlatır.
 
 ---
 
@@ -321,9 +329,11 @@ answerr/
 
 ---
 
-## 📄 Akademik Atıf
+## 📄 Akademik Atıf ve İkiz Araştırma Depoları
 
-0-Byte VRAM Mandelbrot fraktal karar motorunun matematiksel temelleri yoldaş bilimsel araştırma deposunda belgelenmiştir:
+0-Byte VRAM Mandelbrot omurilik refleks karar motorunun matematiksel temelleri ve sıfır-depolamalı ağırlık türetimleri iki bilimsel kardeş depoda belgelenmiştir:
+* **Matematiksel Teori:** [`mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis) (Zenodo: [10.5281/zenodo.22867037](https://doi.org/10.5281/zenodo.22867037))
+* **Sistem-1 Refleks Motoru:** [`werr`](https://github.com/pCwOrM/werr) (Zenodo: [10.5281/zenodo.22867426](https://doi.org/10.5281/zenodo.22867426))
 
 ```bibtex
 @article{dagli2026werr,
@@ -343,6 +353,14 @@ answerr/
   doi     = {10.5281/zenodo.22774934},
   url     = {https://doi.org/10.5281/zenodo.22774934},
   note    = {Zenodo v3.0: https://doi.org/10.5281/zenodo.22867037}
+}
+
+@software{dagli2026answerr,
+  author    = {Volkan Dağlı and Zerrin Dağlı and Dağhan Dağlı},
+  title     = {answerr: Zero-Latency Reflex AI and Dual-Cognition Decision Workspace},
+  year      = {2026},
+  url       = {https://github.com/pCwOrM/answerr},
+  doi       = {10.5281/zenodo.22802921}
 }
 ```
 
