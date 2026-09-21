@@ -390,7 +390,7 @@ answerr/
 @article{dagli2026werr,
   author  = {Volkan Da{\u{g}}l{\i} and Zerrin Da{\u{g}}l{\i} and Da{\u{g}}han Da{\u{g}}l{\i}},
   title   = {Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains},
-  journal = {arXiv preprint arXiv:submit/8106948 [cs.AI]; Companion to Mandelbrot Fractal Neural Synthesis (Chaos, Solitons \& Fractals, Ref: CHAOS-D-26-09598)},
+  journal = {arXiv preprint arXiv:submit/8106948 [cs.AI]; Companion to Mandelbrot Fractal Neural Synthesis (Chaos, Solitons \& Fractals)},
   year    = {2026},
   doi     = {10.5281/zenodo.22867426},
   url     = {https://doi.org/10.5281/zenodo.22867426}
@@ -399,7 +399,7 @@ answerr/
 @article{dagli2026mandelbrot,
   author  = {Volkan Da{\u{g}}l{\i} and Zerrin Da{\u{g}}l{\i} and Da{\u{g}}han Da{\u{g}}l{\i}},
   title   = {Mandelbrot Fractal Neural Synthesis: Zero-Storage Procedural Weight Derivation and Non-Linear Decision Boundaries},
-  journal = {Under review in Chaos, Solitons \& Fractals (Ref: CHAOS-D-26-09598); arXiv:submit/8092292 [cs.NE]},
+  journal = {Under review in Chaos, Solitons \& Fractals; arXiv:submit/8092292 [cs.NE]},
   year    = {2026},
   doi     = {10.5281/zenodo.22774934},
   url     = {https://doi.org/10.5281/zenodo.22774934},
