@@ -80,10 +80,12 @@
         <ul class="docs-nav-items">
           <li><a href="#endpoint-health" class="docs-nav-item"><span class="badge-get">GET</span> /v1/health</a></li>
           <li><a href="#endpoint-decide" class="docs-nav-item"><span class="badge-post">POST</span> /v1/decide</a></li>
+          <li><a href="#endpoint-systemone" class="docs-nav-item"><span class="badge-post">POST</span> /v1/systemone</a></li>
           <li><a href="#endpoint-presets" class="docs-nav-item"><span class="badge-get">GET</span> /v1/presets</a></li>
           <li><a href="#endpoint-domains" class="docs-nav-item"><span class="badge-get">GET</span> /v1/domains</a></li>
           <li><a href="#endpoint-chat" class="docs-nav-item"><span class="badge-post">POST</span> /v1/chat/completions</a></li>
         </ul>
+
       </div>
 
       <div class="docs-nav-group">
@@ -315,7 +317,171 @@
         </div>
       </section>
 
+
+      <!-- Endpoint 2b: SystemOne (JevBench TypeSafe Wire) -->
+      <section id="endpoint-systemone" class="docs-section">
+        <div class="endpoint-header">
+          <span class="badge-method post">POST</span>
+          <span class="endpoint-path">/v1/systemone</span>
+          <span class="badge-env" style="margin-left:0.75rem; font-size:0.75rem; background:rgba(139,92,246,0.15); color:#a78bfa; border:1px solid rgba(139,92,246,0.4); padding:0.2rem 0.6rem; border-radius:999px;">JevBench Wire Format</span>
+        </div>
+        <p class="endpoint-desc">
+          <strong>JevBench TypeSafe wire formatı</strong> için özel uç nokta. <code>POST /v1/decide</code> ile aynı WERR fraktal çekirdeğini kullanır; ancak soruları JevBench'in <code>labels</code> listesi formatında da kabul eder.
+          Bu endpoint sayesinde JevBench benchmark koşucuları, Tau-Bench ajanları ve benzeri çerçeveler doğrudan WERR kararını test edebilir.
+        </p>
+
+        <h3>İstek Parametreleri (Request Body)</h3>
+        <div class="table-wrap">
+          <table class="docs-table">
+            <thead>
+              <tr>
+                <th>Parametre</th>
+                <th>Tip</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>task</code></td>
+                <td>string (opsiyonel)</td>
+                <td>Görev kimliği — yanıtta <code>task_id</code> olarak aynen döner.</td>
+              </tr>
+              <tr>
+                <td><code>state</code></td>
+                <td>object</td>
+                <td>Sistem durum vektörü. Risk skorları, anomali bayrakları vb. key-value çiftleri.</td>
+              </tr>
+              <tr>
+                <td><code>questions</code></td>
+                <td>object</td>
+                <td>
+                  Soru sözlüğü. Her soru için <code>type</code> (<code>noul</code> / <code>choice</code> / <code>score</code>) ve isteğe bağlı <code>text</code> alanı verilir.<br>
+                  <strong>JevBench formatı:</strong> <code>labels: ["OPT_A", "OPT_B", ...]</code> listesi.<br>
+                  <strong>Answerr formatı:</strong> <code>criteria: {"opt_a": "Seçenek A", ...}</code> sözlüğü.<br>
+                  İkisi de kabul edilir.
+                </td>
+              </tr>
+              <tr>
+                <td><code>model</code></td>
+                <td>string (opsiyonel)</td>
+                <td>Model adı — yanıtta aynen döner. Varsayılan: <code>werr-system-one</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Örnek İstek — JevBench Wire Format (cURL)</h3>
+        <div class="code-box">
+          <div class="code-header">
+            <span>CURL — JevBench Labels Format</span>
+            <button class="btn-copy-code" data-target="curl-systemone">Kopyala</button>
+          </div>
+          <pre><code id="curl-systemone">curl -s -X POST https://api.answerr.me:4431/v1/systemone \
+  -H "Content-Type: application/json" \
+  -d '{
+    "task": "jevbench-security-sample",
+    "state": {
+      "anomaly_detected": true,
+      "risk_vector": [0.89, 0.12, 0.95, 0.04],
+      "user_id": "usr_9921"
+    },
+    "questions": {
+      "decision": {
+        "type": "choice",
+        "text": "Security action for autonomous agent request",
+        "labels": [
+          "DENY_AND_QUARANTINE",
+          "REQUEST_HUMAN_OVERRIDE",
+          "APPROVE_WITH_LOGGING",
+          "APPROVE_SILENTLY"
+        ]
+      }
+    }
+  }'</code></pre>
+        </div>
+
+        <h3>Örnek İstek — Python</h3>
+        <div class="code-box">
+          <div class="code-header">
+            <span>PYTHON</span>
+            <button class="btn-copy-code" data-target="py-systemone-code">Kopyala</button>
+          </div>
+          <pre><code id="py-systemone-code">import requests
+
+payload = {
+    "task": "jevbench-security-sample",
+    "state": {
+        "anomaly_detected": True,
+        "risk_vector": [0.89, 0.12, 0.95, 0.04]
+    },
+    "questions": {
+        "decision": {
+            "type": "choice",
+            "text": "Security action",
+            "labels": ["DENY_AND_QUARANTINE", "REQUEST_HUMAN_OVERRIDE",
+                       "APPROVE_WITH_LOGGING", "APPROVE_SILENTLY"]
+        }
+    }
+}
+
+resp = requests.post(
+    "https://api.answerr.me:4431/v1/systemone",
+    json=payload
+)
+data = resp.json()
+print("Seçilen etiket:", data["result"]["decision"]["selected_label"])
+print("Güven skoru:", data["result"]["decision"]["confidence"])
+print("Gecikme:", data["telemetry"]["engine_latency_ms"], "ms")</code></pre>
+        </div>
+
+        <h3>Örnek Yanıt (Response 200 OK)</h3>
+        <div class="code-box">
+          <div class="code-header">
+            <span>JSON</span>
+          </div>
+          <pre><code>{
+  "status": "success",
+  "task_id": "jevbench-security-sample",
+  "wire_protocol": "POST /v1/systemone (JevBench TypeSafe Compatible)",
+  "system_level": "System-1 (Mandelbrot Boundary Wave Dynamics)",
+  "vram_allocated_bytes": 0,
+  "seed_footprint_bytes": 24,
+  "model": "werr-system-one",
+  "state": { "anomaly_detected": true, "risk_vector": [0.89, 0.12, 0.95, 0.04] },
+  "result": {
+    "decision": {
+      "type": "choice",
+      "selected_label": "DENY_AND_QUARANTINE",
+      "choice": "DENY_AND_QUARANTINE",
+      "probabilities": {
+        "DENY_AND_QUARANTINE": 0.5812,
+        "REQUEST_HUMAN_OVERRIDE": 0.2341,
+        "APPROVE_WITH_LOGGING": 0.1433,
+        "APPROVE_SILENTLY": 0.0414
+      },
+      "confidence": 0.5812
+    }
+  },
+  "telemetry": {
+    "engine_latency_ms": 0.182,
+    "total_request_latency_ms": 2.14,
+    "vram_bytes": 0,
+    "memory_seed_bytes": 24,
+    "engine": "werr-reflex-0.3.0"
+  }
+}</code></pre>
+        </div>
+
+        <div style="background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.3); border-radius: 8px; padding: 0.85rem 1rem; margin-top: 1rem; font-size: 0.88rem;">
+          💡 <strong>JevBench Benchmark Uyumluluğu:</strong> Bu endpoint,
+          <a href="https://github.com/fstandhartinger/jevbench/issues/10" target="_blank" rel="noopener" style="color:#a78bfa;">fstandhartinger/jevbench Issue #10</a>
+          ve Tau-Bench wire formatıyla tam uyumludur. Canlı tarayıcı testi için
+          <a href="https://pcworm.github.io/werr/#benchmark-arena" target="_blank" rel="noopener" style="color:#a78bfa;">WERR Live Benchmark Arena</a>'yı ziyaret edin.
+        </div>
+      </section>
+
       <!-- Endpoint 3: Presets & Domains -->
+
       <section id="endpoint-presets" class="docs-section">
         <div class="endpoint-header">
           <span class="badge-method get">GET</span>
