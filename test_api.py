@@ -94,3 +94,30 @@ if __name__ == "__main__":
             ]
         }
     )
+
+    # 6. JevBench TypeSafe Wire Endpoint (/v1/systemone)
+    test_api(
+        "JevBench TypeSafe Wire Endpoint (/v1/systemone)",
+        "https://api.answerr.me:4431/v1/systemone",
+        payload={
+            "task": "jevbench-agentic-security-check",
+            "state": {
+                "anomaly_detected": True,
+                "risk_vector": [0.89, 0.12, 0.95, 0.04],
+                "user_id": "usr_9921"
+            },
+            "questions": {
+                "decision": {
+                    "type": "choice",
+                    "text": "Security action for autonomous agent",
+                    "labels": [
+                        "DENY_AND_QUARANTINE",
+                        "REQUEST_HUMAN_OVERRIDE",
+                        "APPROVE_WITH_LOGGING",
+                        "APPROVE_SILENTLY"
+                    ]
+                }
+            }
+        }
+    )
+

@@ -252,7 +252,51 @@ Yanıt:
 }
 ```
 
-### 3. OpenAI Uyumlu Adaptör (`/v1/chat/completions`)
+### 3. JevBench Tip-Güvenli Tel Formatı (`/v1/systemone`)
+JevBench uyumlu kıyaslama araçları, Tau-Bench ajanları ve `labels` listesi kullanan tüm harici test çerçeveleri için özel uç nokta:
+
+```bash
+curl -X POST https://api.answerr.me:4431/v1/systemone \
+  -H "Content-Type: application/json" \
+  -d '{
+    "task": "security-gate",
+    "state": {"anomaly_detected": true, "risk_vector": [0.89, 0.12, 0.95]},
+    "questions": {
+      "decision": {
+        "type": "choice",
+        "text": "Güvenlik kararı",
+        "labels": ["DENY_AND_QUARANTINE", "REQUEST_HUMAN_OVERRIDE",
+                   "APPROVE_WITH_LOGGING", "APPROVE_SILENTLY"]
+      }
+    }
+  }'
+```
+Yanıt:
+```json
+{
+  "status": "success",
+  "task_id": "security-gate",
+  "wire_protocol": "POST /v1/systemone (JevBench TypeSafe Compatible)",
+  "vram_allocated_bytes": 0,
+  "result": {
+    "decision": {
+      "type": "choice",
+      "selected_label": "DENY_AND_QUARANTINE",
+      "probabilities": {
+        "DENY_AND_QUARANTINE": 0.5812,
+        "REQUEST_HUMAN_OVERRIDE": 0.2341,
+        "APPROVE_WITH_LOGGING": 0.1433,
+        "APPROVE_SILENTLY": 0.0414
+      },
+      "confidence": 0.5812
+    }
+  },
+  "telemetry": {"engine_latency_ms": 0.182, "vram_bytes": 0}
+}
+```
+> Hem `labels: [...]` (JevBench) hem de `criteria: {...}` (answerr yerel) formatları desteklenir. Canlı tarayıcı testi: [WERR Kıyaslama Arenası](https://pcworm.github.io/werr/#benchmark-arena).
+
+### 4. OpenAI Uyumlu Adaptör (`/v1/chat/completions`)
 answerr'ı doğrudan LangChain, LlamaIndex veya resmi OpenAI Python kütüphanelerine kod değiştirmeden takabilirsiniz:
 
 ```python
