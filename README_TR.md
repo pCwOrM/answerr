@@ -294,7 +294,8 @@ Yanıt:
   "telemetry": {"engine_latency_ms": 0.182, "vram_bytes": 0}
 }
 ```
-> Hem `labels: [...]` (JevBench) hem de `criteria: {...}` (answerr yerel) formatları desteklenir. Canlı tarayıcı testi: [WERR Kıyaslama Arenası](https://pcworm.github.io/werr/#benchmark-arena).
+> Hem `labels: [...]` (JevBench) hem de `criteria: {...}` (answerr yerel) formatları desteklenir. Canlı tarayıcı testi: [WERR Kıyaslama Arenası](https://pcworm.github.io/werr/#benchmark-arena).  
+> 🐍 **İnteraktif Karar İstemcileri:** `/v1/systemone` uç noktasına gerçek zamanlı refleks devriyle bağlanan canlı uygulamalar için [`demos/terminal_snake_arena.py`](demos/terminal_snake_arena.py) ve [`demos/snake.html`](demos/snake.html) dosyalarına göz atın.
 
 ### 4. OpenAI Uyumlu Adaptör (`/v1/chat/completions`)
 answerr'ı doğrudan LangChain, LlamaIndex veya resmi OpenAI Python kütüphanelerine kod değiştirmeden takabilirsiniz:
@@ -364,6 +365,12 @@ answerr/
 │   ├── presets.js                  # Örnek Operasyonel Senaryolar (TR / EN)
 │   ├── werr-engine.js              # Tarayıcı İçi Saf JavaScript Fraktal Motoru
 │   └── gemini.js                   # Sistem-2 Google Gemini Flash İstemcisi
+├── demos/                          # Gerçek Zamanlı Karar İstemcileri & Canlı Gösterimler
+│   ├── snake.html                  # İnteraktif Yılan Arenası ve Refleks Devir İstemcisi
+│   ├── terminal_snake.py           # /v1/systemone uç noktasına bağlanan Terminal Yılan betiği
+│   ├── terminal_snake_arena.py     # Çift ajanlı rekabetçi terminal arena testi
+│   ├── terminal_snake_showcase.gif # Kaydedilmiş görsel terminal devir gösterimi
+│   └── terminal_snake_showcase.mp4 # Yüksek çözünürlüklü MP4 gösterim videosu
 ├── index.html                      # Resmi Tanıtım Sayfası (Landing Page)
 ├── chat.html                       # Karar Çalışma Alanı (Workspace & Chat)
 ├── README.md                       # Kapsamlı Küresel Dokümantasyon (İngilizce)
