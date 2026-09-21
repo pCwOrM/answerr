@@ -4,7 +4,7 @@ set -e
 # 1. Add NOPASSWD for answerr-api restart
 echo 'pcworm ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart answerr-api.service, /usr/bin/systemctl reload answerr-api.service, /usr/bin/systemctl status answerr-api.service' > /tmp/pcworm-answerr
 chmod 440 /tmp/pcworm-answerr
-echo "Jesmaat19" | sudo -S cp /tmp/pcworm-answerr /etc/sudoers.d/pcworm-answerr
+sudo cp /tmp/pcworm-answerr /etc/sudoers.d/pcworm-answerr
 rm -f /tmp/pcworm-answerr
 
 # 2. Add post-merge hook to werr repo

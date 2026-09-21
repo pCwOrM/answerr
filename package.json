@@ -1,6 +1,6 @@
 {
   "name": "answerr",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "The Cognitive Bridge between System-Two Deliberative AI (Gemini) and System-One Zero-Memory Fractal Intuition (werr)",
   "homepage": "https://answerr.me",
   "repository": {
@@ -10,11 +10,11 @@
   "keywords": [
     "answerr",
     "werr",
-    "wevv",
     "gemini",
     "gemini-flash",
     "system-1",
     "system-2",
+    "dual-cognition",
     "fractal-ai",
     "mandelbrot",
     "zero-memory",
@@ -23,7 +23,9 @@
   "author": "Volkan Dağlı <pCwOrM>",
   "license": "MIT",
   "scripts": {
-    "start": "python -m http.server 8080",
-    "server": "uvicorn server.main:app --reload --port 8000"
+    "start": "python -m http.server 8089",
+    "server": "uvicorn server.main:app --reload --port 8000",
+    "server:prod": "python api_server.py",
+    "test": "python -m unittest discover tests -v"
   }
 }

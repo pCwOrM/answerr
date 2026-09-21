@@ -10,13 +10,14 @@
 
 <p align="center">
   <a href="https://answerr.me"><img src="https://img.shields.io/badge/Production-answerr.me-38bdf8.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Website: answerr.me"></a>
-  <a href="https://pcworm.github.io/answerr/"><img src="https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-818cf8.svg?style=for-the-badge&logo=github&logoColor=white" alt="Live Demo"></a>
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-Zero--Memory%20Engine-10b981.svg?style=for-the-badge" alt="werr Engine"></a>
+  <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Base%20Research-Mandelbrot%20Neural%20Synthesis-green.svg?style=for-the-badge" alt="Base Research"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-100%25%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
   <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20Faster-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
   <a href="https://doi.org/10.5281/zenodo.22867426"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22867426-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
   <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Live%20Production-c084fc.svg?style=for-the-badge" alt="REST API"></a>
+  <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI Workflow"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT"></a>
 </p>
 
@@ -283,13 +284,20 @@ python -m http.server 8089
 ```
 Open [http://localhost:8089](http://localhost:8089) in your web browser.
 
-### Option 2: Run Fullstack FastAPI Microservice
+### Option 2: Run Lightweight FastAPI Server
 ```bash
 cd answerr
 pip install -r requirements.txt
 uvicorn server.main:app --reload --port 8000
 ```
 Open [http://localhost:8000](http://localhost:8000).
+
+### Option 3: Run Full Production REST API Server
+```bash
+cd answerr
+python api_server.py
+```
+Starts the high-throughput production API engine with rate-limiting, OpenAPI docs, and `/v1` endpoints on `http://127.0.0.1:8560`.
 
 ---
 
@@ -324,9 +332,12 @@ answerr/
 
 ## 📄 Citation & Academic References
 
-The mathematical foundations of the 0-Byte VRAM Mandelbrot spinal reflex engine are documented in the companion scientific research repository:
+The mathematical foundations and zero-storage procedural weight derivations powering the reflex engine are documented across the twin scientific research repositories:
+* **Mathematical Theory:** [`mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis) (Zenodo: [10.5281/zenodo.22867037](https://doi.org/10.5281/zenodo.22867037))
+* **System-1 Reflex Engine:** [`werr`](https://github.com/pCwOrM/werr) (Zenodo: [10.5281/zenodo.22867426](https://doi.org/10.5281/zenodo.22867426))
 
 ```bibtex
+<<<<<<< Updated upstream
 @article{dagli2026werr,
   author  = {Volkan Da{\u{g}}l{\i} and Zerrin Da{\u{g}}l{\i} and Da{\u{g}}han Da{\u{g}}l{\i}},
   title   = {Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains},
@@ -344,6 +355,14 @@ The mathematical foundations of the 0-Byte VRAM Mandelbrot spinal reflex engine 
   doi     = {10.5281/zenodo.22774934},
   url     = {https://doi.org/10.5281/zenodo.22774934},
   note    = {Zenodo v3.0: https://doi.org/10.5281/zenodo.22867037}
+}
+
+@software{dagli2026answerr,
+  author    = {Volkan Dağlı and Zerrin Dağlı and Dağhan Dağlı},
+  title     = {answerr: Zero-Latency Reflex AI and Dual-Cognition Decision Workspace},
+  year      = {2026},
+  url       = {https://github.com/pCwOrM/answerr},
+  doi       = {10.5281/zenodo.22802921}
 }
 ```
 
