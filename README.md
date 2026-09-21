@@ -13,6 +13,7 @@
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-Zero--Memory%20Engine-10b981.svg?style=for-the-badge" alt="werr Engine"></a>
   <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Base%20Research-Mandelbrot%20Neural%20Synthesis-green.svg?style=for-the-badge" alt="Base Research"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-100%25%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
+  <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks"><img src="https://img.shields.io/badge/The%20Gauntlet-Official%20Benchmarks-brightgreen.svg?style=for-the-badge" alt="The Gauntlet Benchmarks"></a>
   <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20Faster-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
   <a href="https://doi.org/10.5281/zenodo.22867426"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22867426-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
   <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
