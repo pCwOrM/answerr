@@ -13,7 +13,7 @@
   <a href="https://pcworm.github.io/answerr/"><img src="https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-818cf8.svg?style=for-the-badge&logo=github&logoColor=white" alt="Live Demo"></a>
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-Zero--Memory%20Engine-10b981.svg?style=for-the-badge" alt="werr Engine"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-100%25%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
-  <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks/jevenator2"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20Faster-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
+  <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20Faster-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
   <a href="https://doi.org/10.5281/zenodo.22867426"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22867426-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
   <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Live%20Production-c084fc.svg?style=for-the-badge" alt="REST API"></a>
@@ -195,6 +195,7 @@ Tested on Matt Mastracci's [mmastrac/jevenator2](https://github.com/mmastrac/jev
 * **Decision Throughput:** **455.7 decisions/second** (vs 45.9 decisions/s for djev)
 * **VRAM / Weights:** **0 Bytes VRAM** (vs ~8 GB GPU VRAM for djev)
 * **Negative Control:** **100% Clean (0 False Positives)**
+* **Official Issue Submission:** [mmastrac/jevenator2#1](https://github.com/mmastrac/jevenator2/issues/1)
 * **Benchmark Harness:** [`benchmarks/jevenator2/`](https://github.com/pCwOrM/werr/tree/main/benchmarks/jevenator2)
 
 ---
