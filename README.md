@@ -295,7 +295,9 @@ Response:
   "telemetry": {"engine_latency_ms": 0.182, "vram_bytes": 0}
 }
 ```
-> Both `labels: [...]` (JevBench) and `criteria: {...}` (answerr native) formats are accepted. Live browser test at [WERR Benchmark Arena](https://pcworm.github.io/werr/#benchmark-arena).
+
+> Both `labels: [...]` (JevBench) and `criteria: {...}` (answerr native) formats are accepted. Live browser test at [WERR Benchmark Arena](https://pcworm.github.io/werr/#benchmark-arena).  
+> 🐍 **Interactive Decision Clients:** See [`demos/terminal_snake_arena.py`](demos/terminal_snake_arena.py) and [`demos/snake.html`](demos/snake.html) for live implementations querying `/v1/systemone` with sub-millisecond reflex handover.
 
 ### 4. OpenAI-Compatible Adapter (`/v1/chat/completions`)
 Drop answerr directly into LangChain, LlamaIndex, or the official OpenAI Python SDK without refactoring:
@@ -365,6 +367,12 @@ answerr/
 │   ├── presets.js                  # Curated Operational Scenarios (Bilingual)
 │   ├── werr-engine.js              # Pure JavaScript 0-Byte Mandelbrot Engine
 │   └── gemini.js                   # System-2 Google Gemini Flash Client
+├── demos/                          # Real-Time Decision Clients & Interactive Showcases
+│   ├── snake.html                  # Interactive Snake Arena & Reflex Handover Client
+│   ├── terminal_snake.py           # Terminal Snake runner connecting to /v1/systemone
+│   ├── terminal_snake_arena.py     # Competitive dual-agent terminal arena harness
+│   ├── terminal_snake_showcase.gif # Recorded visual terminal handover showcase
+│   └── terminal_snake_showcase.mp4 # High-definition MP4 showcase video
 ├── index.html                      # Official High-Conversion Landing Page
 ├── chat.html                       # Decision Workspace (Chat & Telemetry Interface)
 ├── README.md                       # Comprehensive Global Documentation (English)
@@ -381,7 +389,6 @@ The mathematical foundations and zero-storage procedural weight derivations powe
 * **System-1 Reflex Engine:** [`werr`](https://github.com/pCwOrM/werr) (Zenodo: [10.5281/zenodo.22867426](https://doi.org/10.5281/zenodo.22867426))
 
 ```bibtex
-<<<<<<< Updated upstream
 @article{dagli2026werr,
   author  = {Volkan Da{\u{g}}l{\i} and Zerrin Da{\u{g}}l{\i} and Da{\u{g}}han Da{\u{g}}l{\i}},
   title   = {Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains},
