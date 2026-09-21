@@ -13,6 +13,7 @@
   <a href="https://pcworm.github.io/answerr/"><img src="https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-818cf8.svg?style=for-the-badge&logo=github&logoColor=white" alt="Live Demo"></a>
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-Zero--Memory%20Engine-10b981.svg?style=for-the-badge" alt="werr Engine"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-100%25%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
+  <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks/jevenator2"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20Faster-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
   <a href="https://doi.org/10.5281/zenodo.22867426"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22867426-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
   <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Live%20Production-c084fc.svg?style=for-the-badge" alt="REST API"></a>
@@ -187,6 +188,14 @@ Tested on the standard international System-One decision benchmark ([fstandharti
 * **Throughput:** **273.5 – 302.1 moves/second** (Sub-2ms decision loop)
 * **Speedup:** **3.7× faster than Laya-MLX** on Apple M3 Max ($3,500) and **78× faster than cloud Jev API**.
 * **Benchmark Harness:** [mizorewww/laya-mlx#3](https://github.com/mizorewww/laya-mlx/issues/3)
+
+### 4. 🎯 Visual Localisation & Video Tracking Benchmark: Jevenator 2 (Werr vs. Maisa djev)
+Tested on Matt Mastracci's [mmastrac/jevenator2](https://github.com/mmastrac/jevenator2) benchmark across visual region-scan localization and 24-frame temporal video tracking (840 discrete `noul` decisions):
+* **Mean Frame Latency:** **27.39 ms / frame** (vs **761.8 ms** for Maisa's Diffusion-Gemma, **27.8× faster**)
+* **Decision Throughput:** **455.7 decisions/second** (vs 45.9 decisions/s for djev)
+* **VRAM / Weights:** **0 Bytes VRAM** (vs ~8 GB GPU VRAM for djev)
+* **Negative Control:** **100% Clean (0 False Positives)**
+* **Benchmark Harness:** [`benchmarks/jevenator2/`](https://github.com/pCwOrM/werr/tree/main/benchmarks/jevenator2)
 
 ---
 
