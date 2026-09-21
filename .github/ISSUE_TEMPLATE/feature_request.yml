@@ -1,0 +1,41 @@
+name: "🚀 Feature Request"
+description: "Suggest an idea or enhancement for answerr"
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve answerr! Please explain the proposed capability and how it helps the community.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement / Context
+      description: Is your feature request related to a specific problem or limitation?
+      placeholder: "I'm always frustrated when..."
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution or new feature you would like to see.
+      placeholder: "Add support for custom quadrant thresholds in werr choice routing..."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative solutions or workarounds you have considered.
+  - type: dropdown
+    id: target-area
+    attributes:
+      label: Feature Area
+      options:
+        - "Reflex Primitives (noul, choice, score)"
+        - "API Endpoints & Adapters"
+        - "Web UI & Telemetry HUD"
+        - "SDKs & Client Libraries"
+        - "Performance & Benchmark"
+        - "Other"

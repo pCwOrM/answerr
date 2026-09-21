@@ -1,0 +1,61 @@
+name: "🐛 Bug Report"
+description: "Report a reproducible bug or unexpected behavior in answerr or its API"
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! Please provide as much detail as possible to help us reproduce and resolve the problem quickly.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Which part of the answerr ecosystem is encountering the issue?
+      options:
+        - "answerr.me Web Workspace (chat.html / index.html)"
+        - "REST API Server (api_server.py / :4431)"
+        - "werr Geometric Reflex Engine Integration"
+        - "System-2 LLM Deliberation (Gemini / OpenAI)"
+        - "Documentation / Deployment (GitHub Pages, Apache)"
+        - "Other"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: "When sending a decision request with state vector X, received Y instead of Z..."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Open https://answerr.me/ or send POST request to /v1/decide
+        2. Provide payload ...
+        3. Observe error ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or Console Output
+      description: Copy and paste relevant telemetry, server logs or browser console errors.
+      render: shell
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, OS, Python version (e.g. Chrome 128 / Windows 11 / Python 3.11).
+      placeholder: "e.g., Linux Ubuntu 22.04, Python 3.10, FastAPI 0.110"
