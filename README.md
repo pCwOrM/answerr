@@ -12,6 +12,8 @@
   <a href="https://answerr.me"><img src="https://img.shields.io/badge/Production-answerr.me-38bdf8.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Website: answerr.me"></a>
   <a href="https://pcworm.github.io/answerr/"><img src="https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-818cf8.svg?style=for-the-badge&logo=github&logoColor=white" alt="Live Demo"></a>
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-Zero--Memory%20Engine-10b981.svg?style=for-the-badge" alt="werr Engine"></a>
+  <a href="https://doi.org/10.5281/zenodo.22867426"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22867426-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
+  <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Live%20Production-c084fc.svg?style=for-the-badge" alt="REST API"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT"></a>
 </p>
@@ -287,13 +289,23 @@ answerr/
 The mathematical foundations of the 0-Byte VRAM Mandelbrot spinal reflex engine are documented in the companion scientific research repository:
 
 ```bibtex
-@software{dagli2026mandelbrot,
-  author    = {Volkan Dağlı and Zerrin Dağlı and Dağhan Dağlı},
-  title     = {Mandelbrot Fractal Neural Synthesis: Zero-Storage Procedural Weight Derivation and Non-Linear Decision Boundaries},
-  year      = {2026},
-  publisher = {Zenodo},
-  doi       = {10.5281/zenodo.22802921},
-  url       = {https://doi.org/10.5281/zenodo.22802921}
+@article{dagli2026werr,
+  author  = {Volkan Da{\u{g}}l{\i} and Zerrin Da{\u{g}}l{\i} and Da{\u{g}}han Da{\u{g}}l{\i}},
+  title   = {Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains},
+  journal = {arXiv preprint arXiv:submit/8106948 [cs.AI]; Companion to Mandelbrot Fractal Neural Synthesis (Chaos, Solitons \& Fractals, Ref: CHAOS-D-26-09598)},
+  year    = {2026},
+  doi     = {10.5281/zenodo.22867426},
+  url     = {https://doi.org/10.5281/zenodo.22867426}
+}
+
+@article{dagli2026mandelbrot,
+  author  = {Volkan Da{\u{g}}l{\i} and Zerrin Da{\u{g}}l{\i} and Da{\u{g}}han Da{\u{g}}l{\i}},
+  title   = {Mandelbrot Fractal Neural Synthesis: Zero-Storage Procedural Weight Derivation and Non-Linear Decision Boundaries},
+  journal = {Under review in Chaos, Solitons \& Fractals (Ref: CHAOS-D-26-09598); arXiv:submit/8092292 [cs.NE]},
+  year    = {2026},
+  doi     = {10.5281/zenodo.22774934},
+  url     = {https://doi.org/10.5281/zenodo.22774934},
+  note    = {Zenodo v3.0: https://doi.org/10.5281/zenodo.22867037}
 }
 ```
 
