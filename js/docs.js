@@ -4,6 +4,21 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Theme Persistence & Toggle
+  const savedTheme = localStorage.getItem('answerr_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const btnDocsTheme = document.getElementById('btn-docs-theme');
+  if (btnDocsTheme) {
+    btnDocsTheme.innerHTML = savedTheme === 'dark' ? '🌙' : '☀️';
+    btnDocsTheme.addEventListener('click', () => {
+      const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const nextTheme = curTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('answerr_theme', nextTheme);
+      btnDocsTheme.innerHTML = nextTheme === 'dark' ? '🌙' : '☀️';
+    });
+  }
+
   // 1. Copy Code snippet to clipboard
   const copyButtons = document.querySelectorAll('.btn-copy-code');
   copyButtons.forEach(btn => {
