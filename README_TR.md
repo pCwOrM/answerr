@@ -13,6 +13,7 @@
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg?style=for-the-badge" alt="werr Çekirdeği"></a>
   <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Temel%20Ara%C5%9Ft%C4%B1rma-Mandelbrot%20N%C3%B6ral%20Sentez-green.svg?style=for-the-badge" alt="Temel Araştırma"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-%25100%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
+  <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks"><img src="https://img.shields.io/badge/The%20Gauntlet-Resmi%20K%C4%B1yaslama%20Dizini-brightgreen.svg?style=for-the-badge" alt="The Gauntlet Kıyaslama Duvarı"></a>
   <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20H%C4%B1zl%C4%B1-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
   <a href="https://doi.org/10.5281/zenodo.22867426"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22867426-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
   <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
