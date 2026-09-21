@@ -253,7 +253,51 @@ Response:
 }
 ```
 
-### 3. OpenAI-Compatible Adapter (`/v1/chat/completions`)
+### 3. JevBench TypeSafe Wire Format (`/v1/systemone`)
+Dedicated endpoint for JevBench-compatible benchmark runners, Tau-Bench agents, and any framework using the `labels` list format:
+
+```bash
+curl -X POST https://api.answerr.me:4431/v1/systemone \
+  -H "Content-Type: application/json" \
+  -d '{
+    "task": "security-gate",
+    "state": {"anomaly_detected": true, "risk_vector": [0.89, 0.12, 0.95]},
+    "questions": {
+      "decision": {
+        "type": "choice",
+        "text": "Security action",
+        "labels": ["DENY_AND_QUARANTINE", "REQUEST_HUMAN_OVERRIDE",
+                   "APPROVE_WITH_LOGGING", "APPROVE_SILENTLY"]
+      }
+    }
+  }'
+```
+Response:
+```json
+{
+  "status": "success",
+  "task_id": "security-gate",
+  "wire_protocol": "POST /v1/systemone (JevBench TypeSafe Compatible)",
+  "vram_allocated_bytes": 0,
+  "result": {
+    "decision": {
+      "type": "choice",
+      "selected_label": "DENY_AND_QUARANTINE",
+      "probabilities": {
+        "DENY_AND_QUARANTINE": 0.5812,
+        "REQUEST_HUMAN_OVERRIDE": 0.2341,
+        "APPROVE_WITH_LOGGING": 0.1433,
+        "APPROVE_SILENTLY": 0.0414
+      },
+      "confidence": 0.5812
+    }
+  },
+  "telemetry": {"engine_latency_ms": 0.182, "vram_bytes": 0}
+}
+```
+> Both `labels: [...]` (JevBench) and `criteria: {...}` (answerr native) formats are accepted. Live browser test at [WERR Benchmark Arena](https://pcworm.github.io/werr/#benchmark-arena).
+
+### 4. OpenAI-Compatible Adapter (`/v1/chat/completions`)
 Drop answerr directly into LangChain, LlamaIndex, or the official OpenAI Python SDK without refactoring:
 
 ```python
