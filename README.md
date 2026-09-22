@@ -11,6 +11,7 @@
 <p align="center">
   <a href="https://answerr.me"><img src="https://img.shields.io/badge/Production-answerr.me-38bdf8.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Website: answerr.me"></a>
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-Zero--Memory%20Engine-10b981.svg?style=for-the-badge" alt="werr Engine"></a>
+  <a href="https://github.com/pCwOrM/werracle"><img src="https://img.shields.io/badge/werracle-On--Chain%20AI%20Oracle-f59e0b.svg?style=for-the-badge&logo=ethereum&logoColor=white" alt="werracle Oracle"></a>
   <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Base%20Research-Mandelbrot%20Neural%20Synthesis-green.svg?style=for-the-badge" alt="Base Research"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-100%25%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
   <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks"><img src="https://img.shields.io/badge/The%20Gauntlet-Official%20Benchmarks-brightgreen.svg?style=for-the-badge" alt="The Gauntlet Benchmarks"></a>
@@ -39,6 +40,7 @@
 
 1. **System-Two Deliberation (LLM / Cloud AI):** Ingests conversational dialogue, extracts operational state vectors, synthesizes strategic explanations, and generates production code. Integrates seamlessly with Google Gemini 2.5 Flash and OpenAI-compatible pipelines.
 2. **System-One Reflex Arc ([werr](https://github.com/pCwOrM/werr)):** Derives instant, strongly-typed decisions (`noul`, `choice`, `score`) in **$< 0.5$ ms** with **0 Bytes of VRAM** via Mandelbrot fractal escape boundary dynamics ($\partial \mathcal{M}$).
+3. **On-Chain EVM Decision Oracle ([werracle](https://github.com/pCwOrM/werracle)):** Extends System-One reflex decisions to Web3 smart contracts in a single 32-byte storage slot (~20k gas) for intra-block flash-loan defense and dynamic fee governance.
 
 Instead of forcing heavy 70B+ parameter neural networks to spend thousands of milliseconds and hundreds of tokens evaluating routine boolean gates, routing conditions, or security checks, **answerr** delegates execution triage to the zero-tensor mathematical geometry of the Mandelbrot set.
 

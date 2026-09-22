@@ -11,6 +11,7 @@
 <p align="center">
   <a href="https://answerr.me"><img src="https://img.shields.io/badge/Canl%C4%B1%20Portal-answerr.me-38bdf8.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Web Sitesi: answerr.me"></a>
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg?style=for-the-badge" alt="werr Çekirdeği"></a>
+  <a href="https://github.com/pCwOrM/werracle"><img src="https://img.shields.io/badge/werracle-On--Chain%20AI%20Oracle-f59e0b.svg?style=for-the-badge&logo=ethereum&logoColor=white" alt="werracle Oracle"></a>
   <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Temel%20Ara%C5%9Ft%C4%B1rma-Mandelbrot%20N%C3%B6ral%20Sentez-green.svg?style=for-the-badge" alt="Temel Araştırma"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-%25100%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
   <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks"><img src="https://img.shields.io/badge/The%20Gauntlet-Resmi%20K%C4%B1yaslama%20Dizini-brightgreen.svg?style=for-the-badge" alt="The Gauntlet Kıyaslama Duvarı"></a>
@@ -40,6 +41,7 @@
 
 1. **Sistem-2 Müzakereci Zeka (LLM / Bulut Zekası):** Doğal insan diyaloglarını ayrıştırır, operasyonel durum vektörlerini çıkarır, stratejik gerekçelendirme üretir ve üretime hazır kod blokları yazar. Google Gemini 2.5 Flash ve OpenAI uyumlu mimarilerle tam entegredir.
 2. **Sistem-1 Omurilik Refleks Yayı ([werr](https://github.com/pCwOrM/werr)):** Mandelbrot fraktal kaçış dinamiği sınırları ($\partial \mathcal{M}$) üzerinden **$< 0.5$ ms** içinde ve **0-Byte VRAM** ile anlık, güçlü tipli kararlar (`noul`, `choice`, `score`) üretir.
+3. **On-Chain EVM Karar Orakılı ([werracle](https://github.com/pCwOrM/werracle)):** Sistem-1 omurilik reflekslerini tek bir 32-bayt depolama slotunda (~20k gas) akıllı kontratlara genişleterek atomik flash-loan savunması ve dinamik komisyon yönetimi sağlar.
 
 Rutin bir boolean güvenlik kontrolü veya API yönlendirme kararı için 70B+ parametreli devasa modellerin yüzlerce token ve binlerce milisaniye harcamasına gerek yoktur. **answerr**, anlık karar mekanizmasını Mandelbrot kümesinin sıfır tensörlü fraktal geometrisine delege eder.
 
