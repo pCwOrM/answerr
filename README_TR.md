@@ -179,12 +179,12 @@ Buradaki ikiz **`rr`**, kaotik faz uzayındaki **periyot-ikiye-katlanma çatalla
 * **Hava Yalıtımı ve Gizlilik:** **%100 Yerel / Sıfır Bulut Veri Sızıntısı**
 * **Resmî GitHub Başvurusu:** [nekuda-ai/WindTunnel#25](https://github.com/nekuda-ai/WindTunnel/issues/25)
 
-### 2. ⚡ JevBench v1.2 Küresel Liderlik Tablosu (#1 Dünya Rekoru)
+### 2. ⚡ JevBench Değerlendirmesi (Açık Test Setinde Kendi Koşumuz — Issue #10 Kapsamında İncelemede)
 Uluslararası otonom Sistem-1 karar standardı JevBench ([fstandhartinger/jevbench](https://github.com/fstandhartinger/jevbench)) üzerinde:
-* **Genel JevBench Skoru:** **81.65 (Dünya #1)**
+* **Açık Test Seti Skoru (Public Split, 231 öğe):** **81.65** *(Resmî sıralama iddiası değildir; resmî değerlendirme sürecindedir)*
 * **Hız Skoru:** **100.0** (P50 Gecikme: **2.76 ms**)
 * **Maliyet Skoru:** **100.0** ($0.0000 / 1k sorgu)
-* **Resmî GitHub Başvurusu:** [fstandhartinger/jevbench#10](https://github.com/fstandhartinger/jevbench/issues/10)
+* **Resmî Değerlendirme Talebi:** [fstandhartinger/jevbench#10](https://github.com/fstandhartinger/jevbench/issues/10)
 
 ### 3. 🐍 Snake AI Gerçek Zamanlı Sürekli Refleks Testi
 * **İşlem Hacmi:** **273.5 – 302.1 hamle/saniye** (2 ms altı kapalı döngü)
