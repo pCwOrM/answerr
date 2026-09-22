@@ -377,7 +377,7 @@ answerr/
 ├── chat.html                       # Karar Çalışma Alanı (Workspace & Chat)
 ├── README.md                       # Kapsamlı Küresel Dokümantasyon (İngilizce)
 ├── README_TR.md                    # Türkçe Kapsamlı Dokümantasyon
-└── LICENSE                         # MIT Lisansı
+└── LICENSE                         # Business Source License 1.1 (BSL 1.1) Lisansı
 ```
 
 ---

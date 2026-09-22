@@ -782,7 +782,7 @@ Quadrant Phase Energy   : Q1: ${(wevvResult.telemetry.quadRatios[0]*100).toFixed
 --------------------------------------------------------------------------------
 Core Engine Repository  : https://github.com/pCwOrM/werr
 Platform Interface      : https://github.com/pCwOrM/answerr (https://answerr.me)
-License                 : MIT License (%100 Free & Open Source)
+License                 : Business Source License 1.1 (BSL 1.1) • ITouch Systems
 ================================================================================`;
 
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
