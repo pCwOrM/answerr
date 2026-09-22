@@ -19,7 +19,7 @@
   <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Live%20Production-c084fc.svg?style=for-the-badge" alt="REST API"></a>
   <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI Workflow"></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-BSL%201.1-red.svg?style=for-the-badge" alt="License: BSL 1.1"></a>
   <a href="https://education.github.com/globalcampus/exchange"><img src="https://img.shields.io/badge/GitHub%20Education-Community%20Exchange-2ea44f.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Education: Community Exchange"></a>
 </p>
 
@@ -421,7 +421,16 @@ The mathematical foundations and zero-storage procedural weight derivations powe
 
 ---
 
-## ⚖️ License
+## ⚖️ License & Intellectual Property
 
-Released under the **MIT License**.  
-Copyright &copy; 2026 **Volkan Dağlı** &bull; [answerr.me](https://answerr.me) &bull; [pCwOrM](https://github.com/pCwOrM). All rights reserved.
+This project is licensed under the **Business Source License 1.1 (BSL 1.1)**.
+
+* **Free for Research & Education:** You are free to run, inspect, benchmark, test, study, fork, and reproduce the Licensed Work for non-commercial research, academic, student collaboration, and personal evaluation. Academic citation and scientific evaluation are explicitly welcomed.
+* **Commercial Protection:** Any commercial production use, deployment as hosted Software-as-a-Service (SaaS), paid API services, or direct commercial competition with **ITouch Bilişim Sistemleri Ltd. Şti.** or **answerr.me** requires an express written Commercial Enterprise License.
+* **Change Date:** On **2030-01-01**, this repository automatically converts to the permissive **Apache License, Version 2.0**.
+* **Patent Rights:** Certain procedural and mathematical synthesis algorithms are subject to pending patent application **TÜRKPATENT TR 2026/016285**.
+
+For commercial enterprise licensing inquiries, contact:  
+**ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi** &bull; [contact@itouchsystems.com](mailto:contact@itouchsystems.com) &bull; [answerr.me](https://answerr.me).
+
+Copyright &copy; 2026 **ITouch Bilişim Sistemleri Ltd. Şti.** & **Volkan Dağlı** (along with co-authors Zerrin Dağlı and Dağhan Dağlı). All rights reserved.

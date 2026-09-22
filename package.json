@@ -21,7 +21,7 @@
     "decision-engine"
   ],
   "author": "Volkan Dağlı <pCwOrM>",
-  "license": "MIT",
+  "license": "BUSL-1.1",
   "scripts": {
     "start": "python -m http.server 8089",
     "server": "uvicorn server.main:app --reload --port 8000",

@@ -19,7 +19,7 @@
   <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Canl%C4%B1%20%C3%9Cretim-c084fc.svg?style=for-the-badge" alt="REST API"></a>
   <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI İş Akışı"></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/Lisans-MIT-yellow.svg?style=for-the-badge" alt="Lisans: MIT"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/Lisans-BSL%201.1-red.svg?style=for-the-badge" alt="Lisans: BSL 1.1"></a>
   <a href="https://education.github.com/globalcampus/exchange"><img src="https://img.shields.io/badge/GitHub%20Education-Community%20Exchange-2ea44f.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Education: Community Exchange"></a>
 </p>
 
@@ -419,7 +419,16 @@ answerr/
 
 ---
 
-## ⚖️ Lisans
+## ⚖️ Lisans ve Fikri Mülkiyet
 
-Bu proje **MIT Lisansı** ile lisanslanmıştır.  
-Telif Hakkı &copy; 2026 **Volkan Dağlı** &bull; [answerr.me](https://answerr.me) &bull; [pCwOrM](https://github.com/pCwOrM). Tüm hakları saklıdır.
+Bu proje **Business Source License 1.1 (BSL 1.1)** altında lisanslanmıştır.
+
+* **Araştırma ve Eğitim İçin Ücretsiz:** Projeyi ticari olmayan akademik araştırmalar, eğitim, öğrenci işbirlikleri ve kişisel değerlendirmeler amacıyla ücretsiz olarak çalıştırabilir, kaynak kodunu inceleyebilir, kıyaslayabilir (benchmark), forklayabilir ve çoğaltabilirsiniz. Akademik atıf ve açık bilimsel doğrulamalar teşvik edilir.
+* **Ticari Koruma:** Bu projenin (veya içerdiği algoritmaların) ticari bir ürün, barındırılan bulut/SaaS hizmeti veya ücretli API olarak sunulması; ya da **ITouch Bilişim Sistemleri Ltd. Şti.** / **answerr.me** ticari faaliyetleriyle doğrudan rekabet edecek şekilde ticari kullanımı Lisans Veren'in yazılı **Ticari Kurumsal Lisansı**na (Commercial Enterprise License) tabidir.
+* **Dönüşüm Tarihi (Change Date):** Proje, **01.01.2030** tarihinde otomatik olarak tam açık kaynaklı **Apache License, Version 2.0** lisansına dönüşecektir.
+* **Patent Hakları:** Bu depodaki prosedürel ağırlık sentezleme ve Mandelbrot karar mekanizmaları **TÜRKPATENT TR 2026/016285** nolu patent başvurusu kapsamındadır.
+
+Ticari lisanslama ve kurumsal entegrasyon talepleri için iletişim:  
+**ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi** &bull; [contact@itouchsystems.com](mailto:contact@itouchsystems.com) &bull; [answerr.me](https://answerr.me).
+
+Telif Hakkı &copy; 2026 **ITouch Bilişim Sistemleri Ltd. Şti.** & **Volkan Dağlı** (ve ortak yazarlar Zerrin Dağlı, Dağhan Dağlı). Tüm hakları saklıdır.
