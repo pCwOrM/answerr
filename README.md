@@ -379,7 +379,7 @@ answerr/
 ├── chat.html                       # Decision Workspace (Chat & Telemetry Interface)
 ├── README.md                       # Comprehensive Global Documentation (English)
 ├── README_TR.md                    # Türkçe Kapsamlı Dokümantasyon
-└── LICENSE                         # MIT License
+└── LICENSE                         # Business Source License 1.1 (BSL 1.1)
 ```
 
 ---
