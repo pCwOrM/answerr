@@ -179,12 +179,12 @@ Tested on the official [nekuda-ai/WindTunnel](https://github.com/nekuda-ai/WindT
 * **Air-Gap & Privacy:** **100% Local / Zero Cloud Data Leakage**
 * **Official Issue Submission:** [nekuda-ai/WindTunnel#25](https://github.com/nekuda-ai/WindTunnel/issues/25)
 
-### 2. ⚡ JevBench v1.2 Global Leaderboard (#1 World Record)
+### 2. ⚡ JevBench Evaluation (Self-Run on Public Split — Under Review in Issue #10)
 Tested on the standard international System-One decision benchmark ([fstandhartinger/jevbench](https://github.com/fstandhartinger/jevbench)):
-* **Overall JevBench Score:** **81.65 (Rank #1 World)**
+* **Self-Run Score (Public Split, 231 items):** **81.65** *(Not an official board ranking; pending official evaluation)*
 * **Speed Score:** **100.0** (P50 latency: **2.76 ms**)
 * **Cost Score:** **100.0** ($0.0000 / 1k queries)
-* **Official Issue Submission:** [fstandhartinger/jevbench#10](https://github.com/fstandhartinger/jevbench/issues/10)
+* **Official Evaluation Request:** [fstandhartinger/jevbench#10](https://github.com/fstandhartinger/jevbench/issues/10)
 
 ### 3. 🐍 Snake AI Real-Time Continuous Reflex Benchmark
 * **Throughput:** **273.5 – 302.1 moves/second** (Sub-2ms decision loop)
