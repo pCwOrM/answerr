@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctaHeadline: "Karmaşık LLM Gecikmelerine Veda Edin.",
       ctaSubhead: "answerr ile anında karar almaya başlayın. Kayıt gerekmez, tamamen ücretsiz ve anahtarsız mod aktiftir.",
       ctaButton: "Karar Çalışma Alanını Aç ⚡",
-      footerCredits: "© 2026 answerr.me • Volkan Dağlı tarafından geliştirildi. Tüm hakları saklıdır.",
+      footerCredits: "© 2026 answerr.me • Volkan Dağlı / ITouch Bilişim Sistemleri. Tüm hakları saklıdır. • <a href='mailto:ask@answerr.me' style='color:#38bdf8;text-decoration:none;'>ask@answerr.me</a>",
       footerWorkspace: "Karar Çalışma Alanı",
       footerApi: "API & Telemetri"
     },
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctaHeadline: "Say Goodbye to Sluggish LLM Latencies.",
       ctaSubhead: "Start making instant, typed decisions with answerr right now. No sign-up, no API key required.",
       ctaButton: "Open Decision Workspace ⚡",
-      footerCredits: "© 2026 answerr.me • Crafted by Volkan Dağlı. All rights reserved.",
+      footerCredits: "© 2026 answerr.me • Crafted by Volkan Dağlı / ITouch Bilişim Sistemleri. All rights reserved. • <a href='mailto:ask@answerr.me' style='color:#38bdf8;text-decoration:none;'>ask@answerr.me</a>",
       footerWorkspace: "Decision Workspace",
       footerApi: "API & Telemetry"
     }
