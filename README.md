@@ -434,6 +434,6 @@ For commercial enterprise licensing inquiries, contact:
 **ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi**  
 MERSİS: `0469094455800001` &bull; VKN: `4690944558` &bull; Sanayi Sicil: `827254`  
 Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 D:26 Sarıçam / Adana, Türkiye (Çukurova Teknokent)  
-E-Posta: [info@itouch.com.tr](mailto:info@itouch.com.tr) &bull; KEP: `itouchbilisim@hs01.kep.tr` &bull; Web: [answerr.me](https://answerr.me).
+E-Posta: [info@itouch.com.tr](mailto:info@itouch.com.tr) &bull; [ask@answerr.me](mailto:ask@answerr.me) &bull; KEP: `itouchbilisim@hs01.kep.tr` &bull; Web: [answerr.me](https://answerr.me).
 
-Copyright &copy; 2026 **ITouch Bilişim Sistemleri Ltd. Şti.** & **Volkan Dağlı** (along with co-authors Zerrin Dağlı and Dağhan Dağlı). All rights reserved.
+Copyright &copy; 2026 **ITouch Systems** (ITouch Bilişim Sistemleri Ltd. Şti.). All rights reserved.
