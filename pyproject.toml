@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Business Source License 1.1" }
 authors = [
-    { name = "Volkan Dağlı", email = "info@itouch.fi" }
+    { name = "Volkan Dağlı", email = "info@itouch.com.tr" }
 ]
 keywords = ["answerr", "werr", "fractal-ai", "gemini", "zero-memory", "mandelbrot", "system-1", "system-2", "dual-cognition"]
 dependencies = [

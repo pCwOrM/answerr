@@ -429,6 +429,9 @@ Bu proje **Business Source License 1.1 (BSL 1.1)** altında lisanslanmıştır.
 * **Patent Hakları:** Bu depodaki prosedürel ağırlık sentezleme ve Mandelbrot karar mekanizmaları **TÜRKPATENT TR 2026/016285** nolu patent başvurusu kapsamındadır.
 
 Ticari lisanslama ve kurumsal entegrasyon talepleri için iletişim:  
-**ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi** &bull; [contact@itouchsystems.com](mailto:contact@itouchsystems.com) &bull; [answerr.me](https://answerr.me).
+**ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi**  
+MERSİS: `0469094455800001` &bull; VKN: `4690944558` &bull; Sanayi Sicil: `827254`  
+Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 D:26 Sarıçam / Adana, Türkiye (Çukurova Teknokent)  
+E-Posta: [info@itouch.com.tr](mailto:info@itouch.com.tr) &bull; KEP: `itouchbilisim@hs01.kep.tr` &bull; Web: [answerr.me](https://answerr.me).
 
 Telif Hakkı &copy; 2026 **ITouch Bilişim Sistemleri Ltd. Şti.** & **Volkan Dağlı** (ve ortak yazarlar Zerrin Dağlı, Dağhan Dağlı). Tüm hakları saklıdır.
