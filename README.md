@@ -431,6 +431,9 @@ This project is licensed under the **Business Source License 1.1 (BSL 1.1)**.
 * **Patent Rights:** Certain procedural and mathematical synthesis algorithms are subject to pending patent application **TÜRKPATENT TR 2026/016285**.
 
 For commercial enterprise licensing inquiries, contact:  
-**ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi** &bull; [contact@itouchsystems.com](mailto:contact@itouchsystems.com) &bull; [answerr.me](https://answerr.me).
+**ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi**  
+MERSİS: `0469094455800001` &bull; VKN: `4690944558` &bull; Sanayi Sicil: `827254`  
+Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 D:26 Sarıçam / Adana, Türkiye (Çukurova Teknokent)  
+E-Posta: [info@itouch.com.tr](mailto:info@itouch.com.tr) &bull; KEP: `itouchbilisim@hs01.kep.tr` &bull; Web: [answerr.me](https://answerr.me).
 
 Copyright &copy; 2026 **ITouch Bilişim Sistemleri Ltd. Şti.** & **Volkan Dağlı** (along with co-authors Zerrin Dağlı and Dağhan Dağlı). All rights reserved.
