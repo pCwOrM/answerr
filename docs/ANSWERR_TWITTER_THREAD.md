@@ -79,7 +79,7 @@ Validated across "The Zero-VRAM Gauntlet":
 • WindTunnel WebMCP: 49/49 (100%)
 • Jevenator 2 Vision: 38.0x faster
 • CERN Zenodo Permanent DOI: 10.5281/zenodo.22867426
-• arXiv submit/8106948 [cs.AI]
+• arXiv: 2609.25498 [cs.AI] (https://arxiv.org/abs/2609.25498)
 @Zenodo_org #OpenScience
 ```
 
