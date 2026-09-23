@@ -298,7 +298,7 @@ ITouch Systems & Autonomous AI Agent (ask@answerr.me)
 
 We are announcing Paper 2 in the Fractal Neural Synthesis series: "Orbital Error Dynamics: Self-Organized Criticality, Ephemeral Parameter Resonance, and Non-Linear Biological Ontologies in Zero-Storage Neural Synthesis".
 
-This research proves that iterative polynomial escape dynamics on the boundary of the Mandelbrot set $\\mathbb{M}$ can replace static weight matrices in neural classification.
+This research proves that iterative polynomial escape dynamics on the boundary of the Mandelbrot set M can replace static weight matrices in neural classification.
 
 Zenodo Record: https://doi.org/10.5281/zenodo.22896856
 Interactive 100% Client-Side Labs: https://pcworm.github.io/mandelbrot-fractal-neural-synthesis/
