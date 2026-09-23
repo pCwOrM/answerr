@@ -398,12 +398,15 @@ The mathematical foundations and zero-storage procedural weight derivations powe
 
 ```bibtex
 @article{dagli2026werr,
-  author  = {Volkan Da{\u{g}}l{\i} and Zerrin Da{\u{g}}l{\i} and Da{\u{g}}han Da{\u{g}}l{\i}},
-  title   = {Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains},
-  journal = {arXiv preprint arXiv:submit/8106948 [cs.AI]; Companion to Mandelbrot Fractal Neural Synthesis (Chaos, Solitons \& Fractals)},
-  year    = {2026},
-  doi     = {10.5281/zenodo.22867426},
-  url     = {https://doi.org/10.5281/zenodo.22867426}
+  author        = {Volkan Da{\u{g}}l{\i} and Zerrin Da{\u{g}}l{\i} and Da{\u{g}}han Da{\u{g}}l{\i}},
+  title         = {Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains},
+  journal       = {arXiv preprint arXiv:2609.25498},
+  year          = {2026},
+  eprint        = {2609.25498},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.NE},
+  doi           = {10.48550/arXiv.2609.25498},
+  url           = {https://arxiv.org/abs/2609.25498}
 }
 
 @article{dagli2026mandelbrot,
