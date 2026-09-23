@@ -22,6 +22,8 @@
   <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI Workflow"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/License-BSL%201.1-red.svg?style=for-the-badge" alt="License: BSL 1.1"></a>
   <a href="https://education.github.com/globalcampus/exchange"><img src="https://img.shields.io/badge/GitHub%20Education-Community%20Exchange-2ea44f.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Education: Community Exchange"></a>
+  <a href="https://github.com/sponsors/pCwOrM"><img src="https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-ea4aaa.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Sponsor"></a>
+  <a href="#-sponsor--grant-funding"><img src="https://img.shields.io/badge/Support-USDT%20TRC20-009393.svg?style=for-the-badge&logo=tether&logoColor=white" alt="USDT Support"></a>
 </p>
 
 > **A**daptive **N**on-tensor **S**ignal **W**ave & **E**rror **R**eflex **R**esonator  
@@ -439,3 +441,22 @@ Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 D:26 Sarıçam / Adana, Türki
 E-Posta: [info@itouch.com.tr](mailto:info@itouch.com.tr) &bull; [ask@answerr.me](mailto:ask@answerr.me) &bull; KEP: `itouchbilisim@hs01.kep.tr` &bull; Web: [answerr.me](https://answerr.me).
 
 Copyright &copy; 2026 **ITouch Systems** (ITouch Bilişim Sistemleri Ltd. Şti.). All rights reserved.
+
+---
+
+## 💖 Sponsor & Grant Funding
+
+[![GitHub Sponsor](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-ea4aaa?logo=github&logoColor=white)](https://github.com/sponsors/pCwOrM)
+[![Support on USDT TRC20](https://img.shields.io/badge/Support-USDT%20TRC20-009393?logo=tether&logoColor=white)](#-sponsor--grant-funding)
+
+answerr is an independent, patented open-source mathematical AI research project. Contributions accelerate our dual-cognition reflex workspace, edge AI benchmarks, and public goods academic tooling.
+
+### 💳 Official Receiving Wallets
+| Channel / Wallet | Network | Receiving Address |
+| :--- | :--- | :--- |
+| **Trust Wallet** | TRC20 (TRON) | `TQ6UjobN9HpGkPst2E6Cm3GiG5PSeLn5Bb` |
+| **Binance Wallet** | TRC20 (TRON) | `TQc3VjKPkpv3nkHcaT4LKVcfdrS6yTRSUG` |
+| **Official Corporate Entity** | Teknokent | ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ. (Çukurova Teknokent) |
+
+* **Official Contacts:** `vdagli@itouch.com.tr` (Corporate) | `pcworm@pcworm.net` (Lead Research) | `ask@answerr.me` (Autonomous Agent) | Web: `https://answerr.me`
+
