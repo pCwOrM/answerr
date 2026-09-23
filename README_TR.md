@@ -17,7 +17,9 @@
   <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks"><img src="https://img.shields.io/badge/The%20Gauntlet-Resmi%20K%C4%B1yaslama%20Dizini-brightgreen.svg?style=for-the-badge" alt="The Gauntlet Kıyaslama Duvarı"></a>
   <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20H%C4%B1zl%C4%B1-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
   <a href="https://doi.org/10.5281/zenodo.22867426"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22867426-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
-  <a href="https://arxiv.org/"><img src="https://img.shields.io/badge/arXiv-cs.AI%20[submit/8106948]-b31b1b.svg?style=for-the-badge" alt="arXiv submit/8106948"></a>
+  <a href="https://arxiv.org/abs/2609.25498"><img src="https://img.shields.io/badge/arXiv-2609.25498-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.25498"></a>
+  <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow.svg?style=for-the-badge" alt="Hugging Face Dataset"></a>
+  <a href="https://github.com/yh-yao/awesome-edge-ai-agents"><img src="https://img.shields.io/badge/Awesome-Edge%20AI%20Agents-blue.svg?style=for-the-badge" alt="Awesome Edge AI Agents"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Canl%C4%B1%20%C3%9Cretim-c084fc.svg?style=for-the-badge" alt="REST API"></a>
   <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI İş Akışı"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/Lisans-BSL%201.1-red.svg?style=for-the-badge" alt="Lisans: BSL 1.1"></a>
