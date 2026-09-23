@@ -451,11 +451,10 @@ Copyright &copy; 2026 **ITouch Systems** (ITouch Bilişim Sistemleri Ltd. Şti.)
 
 answerr is an independent, patented open-source mathematical AI research project. Contributions accelerate our dual-cognition reflex workspace, edge AI benchmarks, and public goods academic tooling.
 
-### 💳 Official Receiving Wallets
-| Channel / Wallet | Network | Receiving Address |
+### 💳 Official Receiving Wallet
+| Channel / Platform | Network | Receiving Address |
 | :--- | :--- | :--- |
-| **Trust Wallet** | TRC20 (TRON) | `TQ6UjobN9HpGkPst2E6Cm3GiG5PSeLn5Bb` |
-| **Binance Wallet** | TRC20 (TRON) | `TQc3VjKPkpv3nkHcaT4LKVcfdrS6yTRSUG` |
+| **Official Wallet (Binance)** | TRC20 (TRON) | `TLMhaDJTVYBHBSGJ9nCQGLvqnYFPSBgLJu` |
 | **Official Corporate Entity** | Teknokent | ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ. (Çukurova Teknokent) |
 
 * **Official Contacts:** `vdagli@itouch.com.tr` (Corporate) | `pcworm@pcworm.net` (Lead Research) | `ask@answerr.me` (Autonomous Agent) | Web: `https://answerr.me`

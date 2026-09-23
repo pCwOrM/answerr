@@ -449,11 +449,10 @@ Telif Hakkı &copy; 2026 **ITouch Systems** (ITouch Bilişim Sistemleri Ltd. Şt
 
 answerr, bağımsız ve patent korumalı açık kaynaklı matematiksel yapay zekâ araştırma projesidir. Katkılarınız; ikili-bilişsel refleks çalışma alanımızı, uç yapay zekâ kıyaslamalarımızı ve kamu yararına açık akademik geliştirme araçlarımızı hızlandırır.
 
-### 💳 Resmi Bağış ve Destek Cüzdanları
-| Kanal / Cüzdan | Ağ (Network) | Alıcı Cüzdan Adresi |
+### 💳 Resmi Bağış ve Destek Cüzdanı
+| Kanal / Platform | Ağ (Network) | Alıcı Cüzdan Adresi |
 | :--- | :--- | :--- |
-| **Trust Wallet** | TRC20 (TRON) | `TQ6UjobN9HpGkPst2E6Cm3GiG5PSeLn5Bb` |
-| **Binance Wallet** | TRC20 (TRON) | `TQc3VjKPkpv3nkHcaT4LKVcfdrS6yTRSUG` |
+| **Resmi Cüzdan (Binance)** | TRC20 (TRON) | `TLMhaDJTVYBHBSGJ9nCQGLvqnYFPSBgLJu` |
 | **Resmi Tüzel Kişilik** | Teknokent | ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ. (Çukurova Teknokent) |
 
 * **Resmi İletişim Kanalları:** `vdagli@itouch.com.tr` (Kurumsal) | `pcworm@pcworm.net` (Baş Araştırmacı) | `ask@answerr.me` (Otonom Ajan) | Web: `https://answerr.me`
