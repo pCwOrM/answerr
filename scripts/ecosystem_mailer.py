@@ -92,15 +92,6 @@ CHANNELS = {
         "subject": "Web3 Innovation: Zero-Storage On-Chain AI Oracle for Intra-Block Defense",
         "template": "werracle_editorial"
     },
-    "coindesk_tips": {
-        "repo": "werracle",
-        "category": "Web3 Media",
-        "name": "CoinDesk Newsdesk",
-        "to": ["tips@coindesk.com"],
-        "sender": NOREPLY_SENDER,
-        "subject": "Tech Release: Zero-Storage Procedural AI Oracle on EVM (Werracle)",
-        "template": "werracle_editorial"
-    },
     "cointelegraph": {
         "repo": "werracle",
         "category": "Web3 Media",
@@ -108,15 +99,6 @@ CHANNELS = {
         "to": ["editor@cointelegraph.com"],
         "sender": NOREPLY_SENDER,
         "subject": "Open-Source AI Oracle: Werracle Brings Intra-Block Decisioning to EVM",
-        "template": "werracle_editorial"
-    },
-    "decrypt": {
-        "repo": "werracle",
-        "category": "Web3 Media",
-        "name": "Decrypt Media",
-        "to": ["tips@decrypt.co"],
-        "sender": NOREPLY_SENDER,
-        "subject": "Web3 AI: Werracle Replaces ZK-ML Latency with 21k Gas Bytecode Decisions",
         "template": "werracle_editorial"
     },
 
@@ -148,24 +130,51 @@ CHANNELS = {
         "subject": "Grant Inquiry: Werracle - Stylus & EVM Machine-Native Decision Engine for Arbitrum One",
         "template": "werracle_grant"
     },
-    "base_ecosystem": {
+    "optimism_grants": {
         "repo": "werracle",
         "category": "Grants",
-        "name": "Base Ecosystem Fund",
-        "to": ["build@base.org"],
+        "name": "Optimism Foundation Grants",
+        "to": ["grants@optimism.io"],
         "sender": DEFAULT_SENDER,
-        "subject": "Builder Grant: Werracle - Sub-Cent Native AI Decisions & MEV Shielding on Base",
+        "subject": "Grant Inquiry: Werracle - Public Good System-One AI Decision Oracle for the Superchain",
         "template": "werracle_grant"
     },
 
     # AI & Edge Computing Editorial (for WERR & answerr)
+    "import_ai": {
+        "repo": "werr",
+        "category": "AI Newsletters",
+        "name": "Import AI (Jack Clark)",
+        "to": ["jack@importai.net"],
+        "sender": DEFAULT_SENDER,
+        "subject": "Research Story: WERR v2.0 - Zero-VRAM Fractal System-One AI with Formal Lean 4 Proof & 21k Gas EVM Oracle",
+        "template": "import_ai_editorial"
+    },
+    "the_gradient": {
+        "repo": "werr",
+        "category": "AI Newsletters",
+        "name": "The Gradient (Stanford AI)",
+        "to": ["editor@thegradient.pub"],
+        "sender": DEFAULT_SENDER,
+        "subject": "Article Submission: Universal Fractal Natural Language Decision Map (0 Bytes VRAM Edge Triage)",
+        "template": "the_gradient_editorial"
+    },
+    "the_sequence": {
+        "repo": "werr",
+        "category": "AI Newsletters",
+        "name": "The Sequence AI Newsletter",
+        "to": ["newsletter@thesequence.io"],
+        "sender": DEFAULT_SENDER,
+        "subject": "Edge AI Spotlight: WERR v2.0 Synthesizes Real-Time NLP Decisions from Mandelbrot Boundary",
+        "template": "the_sequence_editorial"
+    },
     "tldr_ai": {
         "repo": "werr",
         "category": "AI Newsletters",
         "name": "TLDR AI Editorial (Dan)",
         "to": ["dan@tldr.tech"],
         "sender": DEFAULT_SENDER,
-        "subject": "Project Submission: WERR - Zero-VRAM Machine-Native Reflex AI (27x faster than Gemma)",
+        "subject": "Project Submission: WERR v2.0 - Zero-VRAM Machine-Native Reflex AI (27x faster than Gemma)",
         "template": "werr_editorial"
     },
     "the_rundown_ai": {
@@ -186,23 +195,25 @@ CHANNELS = {
         "subject": "Product Drop: Answerr - 0-Byte VRAM AI Reflex Workspace",
         "template": "answerr_editorial"
     },
-    "alphasignal": {
-        "repo": "mandelbrot",
-        "category": "AI Newsletters",
-        "name": "AlphaSignal AI Digest",
-        "to": ["contact@alphasignal.ai"],
-        "sender": DEFAULT_SENDER,
-        "subject": "Research Feature: Orbital Error Dynamics & Fractal Neural Synthesis",
-        "template": "mandelbrot_editorial"
-    },
-    "venturebeat_ai": {
+
+    # Edge AI & TinyML Foundations
+    "tinyml_foundation": {
         "repo": "werr",
-        "category": "Tech Media",
-        "name": "VentureBeat AI Desk",
-        "to": ["ai-tips@venturebeat.com"],
-        "sender": NOREPLY_SENDER,
-        "subject": "Tech Breakthrough: Zero-Storage Procedural AI Replaces Tensor Weights at the Edge",
-        "template": "werr_editorial"
+        "category": "Edge & TinyML",
+        "name": "TinyML Foundation Community & Research",
+        "to": ["contact@tinyml.org"],
+        "sender": DEFAULT_SENDER,
+        "subject": "TinyML Research: WERR - Zero-Tensor Deterministic Edge Triage for Low-Power Microcontrollers",
+        "template": "tinyml_editorial"
+    },
+    "edge_impulse": {
+        "repo": "werr",
+        "category": "Edge & TinyML",
+        "name": "Edge Impulse Ecosystem Team",
+        "to": ["hello@edgeimpulse.com"],
+        "sender": DEFAULT_SENDER,
+        "subject": "Edge AI Collaboration: WERR Procedural Decision Map (<2KB SRAM footprint on ARM Cortex-M4)",
+        "template": "edge_impulse_editorial"
     }
 }
 
@@ -264,18 +275,25 @@ Email: ask@answerr.me | Corporate: info@itouch.com.tr
 
     "werr_editorial": """Hello {recipient_name},
 
-We are sharing WERR (Waves & Errors), an open-source, patented Zero-VRAM reflex decision engine designed for edge computing and low-latency robotics.
+We are announcing WERR v2.0 (Waves & Errors), an open-source, patented Zero-VRAM reflex decision engine and Universal Fractal Natural Language Decision Map for edge computing, low-power microcontrollers, and on-chain smart contracts.
 
-Empirical Benchmarks:
-• Visual Tracking: Evaluated on the jevenator2 benchmark against Maisa's Diffusion-Gemma. WERR runs 27.8× faster (27.39 ms vs 761.8 ms) with 0 Bytes GPU VRAM and 0 false positives.
-• Text Triage: On Apple M3 Max ($3,500) MLX benchmark (laya-mlx), WERR delivers 273–302 moves/sec (sub-2ms), outperforming MLX by 3.7× and cloud APIs by 78×.
+Key Version 2.0 Innovations:
+• 0 Bytes VRAM / GPU Footprint: Eliminates static neural weight matrices by dynamically deriving non-linear decision boundaries from 24-byte Mandelbrot coordinate seeds.
+• Semantic Token Damping Filter: Token entropy & phonetic spectral density insulate against prompt injections (0.0% empirical bypass; 95% Wilson CI: [0.0%, 27.8%]), pruning iterations by 45.8% and accelerating inference 2.5x to 3.31 ms median latency.
+• Cyclic ℤ/9ℤ Modular Resonance: Slashes floating-point operations by 68.4% (formally proved in Lean 4 Mathlib ZMod 9).
+• On-Chain EVM AI Oracle (werracle): Executes intra-block Boolean reflexes in 21,438 gas and Uniswap v4 dynamic fee hooks in 23,150 gas (< $0.001 on L2) within a single 32-byte slot (bytes32). 15x cheaper and 1,000x faster than ZK-ML.
+• JevBench & Open Dataset: 100.00% TypeSafe compliance on 231 tasks (81.65% calibrated accuracy); 1,150+ open decisions dataset on Hugging Face.
 
-Repository: https://github.com/pCwOrM/werr
-Interactive Browser Demo: https://answerr.me
-Research Preprint: https://doi.org/10.5281/zenodo.22867426
+Academic Papers & Archives:
+• CERN Zenodo Version 2.0 Archive: https://doi.org/10.5281/zenodo.22939253 (Concept DOI: 10.5281/zenodo.22867425)
+• arXiv Preprint: https://arxiv.org/abs/2609.25498
+• GitHub Repository: https://github.com/pCwOrM/werr
+• On-Chain Oracle: https://github.com/pCwOrM/werracle
+• Live Web Lab & Arena: https://pcworm.github.io/werr/
 
 Best regards,
-ITouch Systems Research Team (ask@answerr.me)
+ITouch Systems Research Team (Çukurova Teknokent)
+Contact: ask@answerr.me / pcworm@pcworm.net
 """,
 
     "answerr_editorial": """Hello {recipient_name},
@@ -306,6 +324,101 @@ GitHub Repository: https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis
 
 Best regards,
 ITouch Systems Research Group (ask@answerr.me)
+""",
+
+    "import_ai_editorial": """Hi {recipient_name},
+
+Thought this might interest Import AI readers following edge AI, thermodynamic efficiency, and alternatives to overparameterized neural networks:
+
+We just released Version 2.0 of the Universal Fractal Natural Language Decision Map (WERR) on CERN Zenodo (DOI: 10.5281/zenodo.22939253) and arXiv:2609.25498.
+
+Core Idea:
+Instead of loading multi-gigabyte weight tensors into GPU VRAM, WERR derives non-linear decision boundaries procedurally on-the-fly from a 24-byte Mandelbrot coordinate seed (cx, cy, zoom).
+
+Key v2.0 Advances:
+1. Thermodynamic Dissipation: Analyzes Landauer dissipation bounds, cutting forward-pass energy from 1,500 mJ (cloud LLMs) to 0.04 mJ on ARM Cortex-M4 TinyML profiles (>37,000x efficiency gain).
+2. Semantic Token Damping Filter (T_desc = 0.045): Uses token entropy and phonetic spectral density to insulate against prompt-injection attacks (0.0% empirical bypass, 95% Wilson CI: [0.0%, 27.8%]) while pruning iterations by 45.8% (3.31 ms median latency).
+3. Formal Verification: Cyclic Z/9Z modular resonant grid discretization formally proved in Lean 4 Mathlib (ZMod 9), slashing floating-point operations by 68.4%.
+4. On-Chain EVM Oracle (werracle): The entire model fits into a single 32-byte storage slot (bytes32) and executes intra-block decisions in 21,438 gas inside the EVM (< $0.001 on L2s), enabling real-time MEV and flash-loan defense (15x cheaper than ZK-ML).
+
+Code & Benchmarks: https://github.com/pCwOrM/werr
+Interactive Web Lab: https://pcworm.github.io/werr/
+On-Chain Oracle: https://github.com/pCwOrM/werracle (Simulator: https://pcworm.github.io/werracle/)
+
+Happy to share further data or answer questions!
+
+Best regards,
+Volkan Dağlı & The ITouch Systems Research Team
+ask@answerr.me / pcworm@pcworm.net
+""",
+
+    "the_gradient_editorial": """Dear {recipient_name},
+
+We would like to submit an article pitch / research monograph based on our updated preprint: "Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains" (arXiv:2609.25498 / Zenodo DOI: 10.5281/zenodo.22939253).
+
+The article explores how procedural fractal boundary dynamics (System-One reflex arcs) can eliminate neural weight tensors entirely for high-frequency operational triage, supported by Lean 4 formal verification and sub-cent on-chain EVM deployment.
+
+Preprint PDF: https://github.com/pCwOrM/werr/blob/main/paper/Universal_Fractal_Natural_Language_Decision_Map_CameraReady.pdf
+Live Demos: https://pcworm.github.io/werr/
+
+We look forward to hearing your thoughts.
+
+Sincerely,
+Volkan Dağlı (ITouch Systems & Anadolu University)
+ask@answerr.me
+""",
+
+    "the_sequence_editorial": """Hi {recipient_name},
+
+We are sharing WERR v2.0, an open-source machine-native decision engine that synthesizes typed System-One decisions (Boolean, categorical, ordinal) on CPU in sub-5ms with 0 Bytes VRAM.
+
+Key Highlights:
+• 24-byte seed dynamically derived non-linear manifolds.
+• Formal Lean 4 Mathlib stability proof for Z/9Z modular grids (-68.4% FLOPs).
+• Tested on JevBench (231 tasks, 100% TypeSafe compliance, 81.65% accuracy).
+• Live on-chain EVM oracle (werracle, 21k gas).
+
+Zenodo DOI: https://doi.org/10.5281/zenodo.22939253
+arXiv: https://arxiv.org/abs/2609.25498
+GitHub: https://github.com/pCwOrM/werr
+
+Best regards,
+ITouch Systems Research
+ask@answerr.me
+""",
+
+    "tinyml_editorial": """Dear {recipient_name},
+
+We would like to introduce WERR v2.0 (Waves & Errors), an open-source zero-weight decision engine specifically designed for ultra-low-power microcontrollers (e.g. ARM Cortex-M4 @ 80MHz with 64KB SRAM).
+
+Because WERR derives non-linear decision manifolds procedurally from three Float64 coordinates (24 bytes) using fixed-point integer bit-shifts, the entire inference executes within a temporary ~2 KB SRAM scratchpad with 0 persistent flash memory consumption and sub-0.04 mJ energy dissipation.
+
+We would love to present our findings, benchmark methodology, or host a community talk for the TinyML global meetup series.
+
+Research Archive: https://doi.org/10.5281/zenodo.22939253
+Preprint: https://arxiv.org/abs/2609.25498
+GitHub: https://github.com/pCwOrM/werr
+
+Sincerely,
+Volkan Dağlı
+ITouch Systems / Çukurova Teknokent
+Contact: ask@answerr.me / vdagli@itouch.com.tr
+""",
+
+    "edge_impulse_editorial": """Hi {recipient_name},
+
+We are following your pioneering work in democratizing TinyML and edge deployments. We have developed WERR v2.0, a procedural zero-VRAM reflex decision engine that synthesizes high-frequency operational triage directly on edge CPU cores in sub-5ms with 0 persistent weight tensors.
+
+We would be excited to explore integrating WERR procedural decision blocks as a lightweight reflex triage pre-filter / wake-word gating block within the Edge Impulse deployment toolchain.
+
+Research Paper: https://doi.org/10.5281/zenodo.22939253
+Preprint: https://arxiv.org/abs/2609.25498
+GitHub Repository: https://github.com/pCwOrM/werr
+Interactive Lab: https://pcworm.github.io/werr/
+
+Best regards,
+ITouch Systems Research Team
+ask@answerr.me / pcworm@pcworm.net
 """
 }
 
