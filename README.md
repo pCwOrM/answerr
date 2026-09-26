@@ -188,20 +188,21 @@ Tested on the official [nekuda-ai/WindTunnel](https://github.com/nekuda-ai/WindT
 
 ### 2. ⚡ JevBench Evaluation (Self-Run on Public Split — Under Review in Issue #10)
 Tested on the standard international System-One decision benchmark ([fstandhartinger/jevbench](https://github.com/fstandhartinger/jevbench)):
-* **Self-Run Score (Public Split, 231 items):** **81.65** *(Not an official board ranking; pending official evaluation)*
-* **Speed Score:** **100.0** (P50 latency: **2.76 ms**)
-* **Cost Score:** **100.0** ($0.0000 / 1k queries)
+* **WERR v0.5.1 (`[1,1,1]` State-Signature Guard, Public Split, 231 items):** **54.98% Accuracy (127/231)** &bull; **JevBench v1.4.1 Score: 25.35** (+1.73 pts over v0.5.0) &bull; **P50 Latency: 0.42 ms**
+* **WERR v0.5.0 (Public Split, 231 items):** **52.81% Accuracy (122/231)** &bull; **JevBench v1.4.1 Score: 23.62** (**81.65** under v1.2 formula) *(Not an official board ranking; pending official evaluation)*
+* **Speed Score:** **100.0** (P50 latency: **0.42 ms** local / **2.76 ms** HTTP)
+* **Cost Score:** **100.0** (\$0.0000 / 1k queries)
 * **Official Evaluation Request:** [fstandhartinger/jevbench#10](https://github.com/fstandhartinger/jevbench/issues/10)
 
 ### 3. 🐍 Snake AI Real-Time Continuous Reflex Benchmark
-* **Throughput:** **273.5 – 302.1 moves/second** (Sub-2ms decision loop)
-* **Speedup:** **3.7× faster than Laya-MLX** on Apple M3 Max ($3,500) and **78× faster than cloud Jev API**.
+* **Throughput:** **273.5 – 302.1 moves/second** (Sub-2ms decision loop; **402.0 moves/sec** in v0.5.1 `[0,0,0]` pure fractal mode)
+* **Speedup:** **3.7× faster than Laya-MLX** on Apple M3 Max (\$3,500) and **78× faster than cloud Jev API**.
 * **Benchmark Harness:** [mizorewww/laya-mlx#3](https://github.com/mizorewww/laya-mlx/issues/3)
 
 ### 4. 🎯 Visual Localisation & Video Tracking Benchmark: Jevenator 2 (Werr vs. Maisa djev)
 Tested on Matt Mastracci's [mmastrac/jevenator2](https://github.com/mmastrac/jevenator2) benchmark across visual region-scan localization and 24-frame temporal video tracking (840 discrete `noul` decisions):
-* **Mean Frame Latency:** **27.39 ms / frame** (vs **761.8 ms** for Maisa's Diffusion-Gemma, **27.8× faster**)
-* **Decision Throughput:** **455.7 decisions/second** (vs 45.9 decisions/s for djev)
+* **Mean Frame Latency:** **27.39 ms / frame** (v0.5.0) / **14.37 ms / frame** (v0.5.1 `[0,0,0]`, **53.0× faster** than Maisa's Diffusion-Gemma **761.8 ms**)
+* **Decision Throughput:** **455.7 decisions/second** (v0.5.0) / **1,389.5 decisions/second** (v0.5.1 `[0,0,0]`, vs 45.9 decisions/s for djev)
 * **VRAM / Weights:** **0 Bytes VRAM** (vs ~8 GB GPU VRAM for djev)
 * **Negative Control:** **100% Clean (0 False Positives)**
 * **Official Issue Submission:** [mmastrac/jevenator2#1](https://github.com/mmastrac/jevenator2/issues/1)
@@ -223,7 +224,7 @@ Response:
 {
   "status": "healthy",
   "engine": "werr-reflex",
-  "version": "0.3.0",
+  "version": "0.5.1",
   "vram_bytes": 0,
   "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
   "latency_benchmark_ms": 0.42

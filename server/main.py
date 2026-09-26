@@ -58,7 +58,7 @@ def health_check():
         "status": "ok",
         "service": "answerr",
         "has_local_engine": HAS_LOCAL_ENGINE,
-        "engine": "werr-0.3.0-fractal",
+        "engine": "werr-0.5.1-fractal",
         "tensor_vram_bytes": 0,
         "seed_bytes": 24
     }
@@ -69,7 +69,15 @@ def api_decide(req: DecideRequest):
     start_time = time.perf_counter()
 
     if HAS_LOCAL_ENGINE:
-        engine = EngineCls(resolution=48)
+        engine = EngineCls(
+            resolution=48,
+            enable_domain=True,
+            enable_lexical=True,
+            enable_resonance=True,
+            mode="hybrid",
+            domain_mode="multi",
+            tripod=True,
+        )
         if req.question_type == "choice":
             q_obj = ChoiceQuestion(
                 instructions=req.instructions,
@@ -88,7 +96,7 @@ def api_decide(req: DecideRequest):
         elapsed = (time.perf_counter() - start_time) * 1000.0
 
         return {
-            "model": "werr-0.3.0-fractal",
+            "model": "werr-0.5.1-fractal",
             "type": req.question_type,
             "answer": ans.__dict__,
             "latency_ms": round(elapsed, 2),
@@ -99,7 +107,7 @@ def api_decide(req: DecideRequest):
         # Fallback simulation
         elapsed = (time.perf_counter() - start_time) * 1000.0
         return {
-            "model": "werr-0.3.0-simulation",
+            "model": "werr-0.5.1-simulation",
             "type": req.question_type,
             "answer": {"decision": True, "confidence": 0.88, "noul": 0.88},
             "latency_ms": round(elapsed, 2),

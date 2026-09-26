@@ -188,20 +188,21 @@ Buradaki ikiz **`rr`**, kaotik faz uzayındaki **periyot-ikiye-katlanma çatalla
 
 ### 2. ⚡ JevBench Değerlendirmesi (Açık Test Setinde Kendi Koşumuz — Issue #10 Kapsamında İncelemede)
 Uluslararası otonom Sistem-1 karar standardı JevBench ([fstandhartinger/jevbench](https://github.com/fstandhartinger/jevbench)) üzerinde:
-* **Açık Test Seti Skoru (Public Split, 231 öğe):** **81.65** *(Resmî sıralama iddiası değildir; resmî değerlendirme sürecindedir)*
-* **Hız Skoru:** **100.0** (P50 Gecikme: **2.76 ms**)
-* **Maliyet Skoru:** **100.0** ($0.0000 / 1k sorgu)
+* **WERR v0.5.1 (`[1,1,1]` Durum-İmzası Koruması, Açık Test Seti, 231 öğe):** **%54.98 Doğruluk (127/231)** &bull; **JevBench v1.4.1 Skoru: 25.35** (v0.5.0 üzerine +1.73 puan) &bull; **P50 Gecikme: 0.42 ms**
+* **WERR v0.5.0 (Açık Test Seti, 231 öğe):** **%52.81 Doğruluk (122/231)** &bull; **JevBench v1.4.1 Skoru: 23.62** (v1.2 formülüyle **81.65**) *(Resmî sıralama iddiası değildir; resmî değerlendirme sürecindedir)*
+* **Hız Skoru:** **100.0** (P50 Gecikme: **0.42 ms** yerel / **2.76 ms** HTTP)
+* **Maliyet Skoru:** **100.0** (\$0.0000 / 1k sorgu)
 * **Resmî Değerlendirme Talebi:** [fstandhartinger/jevbench#10](https://github.com/fstandhartinger/jevbench/issues/10)
 
 ### 3. 🐍 Snake AI Gerçek Zamanlı Sürekli Refleks Testi
-* **İşlem Hacmi:** **273.5 – 302.1 hamle/saniye** (2 ms altı kapalı döngü)
-* **Hızlanma:** Apple M3 Max ($3,500) üzerindeki Laya-MLX'ten **3.7 kat daha hızlı**, bulut Jev API'sinden **78 kat daha hızlı**.
+* **İşlem Hacmi:** **273.5 – 302.1 hamle/saniye** (2 ms altı kapalı döngü; v0.5.1 `[0,0,0]` saf fraktal modda **402.0 hamle/saniye**)
+* **Hızlanma:** Apple M3 Max (\$3,500) üzerindeki Laya-MLX'ten **3.7 kat daha hızlı**, bulut Jev API'sinden **78 kat daha hızlı**.
 * **Kıyaslama Kodları:** [mizorewww/laya-mlx#3](https://github.com/mizorewww/laya-mlx/issues/3)
 
 ### 4. 🎯 Görsel Bölge Taraması ve Video Takibi: Jevenator 2 (Werr vs. Maisa djev)
 Matt Mastracci'nin [mmastrac/jevenator2](https://github.com/mmastrac/jevenator2) kıyaslama paketinde görsel ızgara lokalizasyonu ve 24 karelik zamansal video nesne takibi (840 bağımsız `noul` kararı):
-* **Kare Başına Ortalama Gecikme:** **27.39 ms / kare** (Maisa Diffusion-Gemma modelinin **761.8 ms** süresinden **27.8 kat daha hızlı**)
-* **Karar Üretim Hızı:** **455.7 karar/saniye** (djev'in 45.9 karar/s değerine kıyasla ~10 kat fazla)
+* **Kare Başına Ortalama Gecikme:** **27.39 ms / kare** (v0.5.0) / **14.37 ms / kare** (v0.5.1 `[0,0,0]`, Maisa Diffusion-Gemma modelinin **761.8 ms** süresinden **53.0 kat daha hızlı**)
+* **Karar Üretim Hızı:** **455.7 karar/saniye** (v0.5.0) / **1,389.5 karar/saniye** (v0.5.1 `[0,0,0]`, djev'in 45.9 karar/s değerine kıyasla ~30 kat fazla)
 * **VRAM / Bellek:** **0 Byte VRAM** (djev için ~8 GB GPU VRAM)
 * **Negatif Kontrol:** **%100 Kusursuz (0 Yanlış Pozitif - Dyson)**
 * **Kıyaslama Kodları:** [`benchmarks/jevenator2/`](https://github.com/pCwOrM/werr/tree/main/benchmarks/jevenator2)
@@ -222,7 +223,7 @@ Yanıt:
 {
   "status": "healthy",
   "engine": "werr-reflex",
-  "version": "0.3.0",
+  "version": "0.5.1",
   "vram_bytes": 0,
   "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
   "latency_benchmark_ms": 0.42
