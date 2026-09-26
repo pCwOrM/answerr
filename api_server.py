@@ -123,6 +123,14 @@ MAX_REQUEST_BODY_BYTES = 65536  # 64 KB limit to protect server memory and CPU
 
 # Global engine instances
 DEFAULT_ROUTER = werr.create_smart_router()
+SYSTEMONE_ROUTER = werr.WerrEngine(
+    enable_domain=True,
+    enable_lexical=True,
+    enable_resonance=True,
+    mode="hybrid",
+    domain_mode="multi",
+    tripod=True,
+)
 DOMAIN_GATES = werr.DOMAIN_GATES
 
 # Predefined domain presets matching answerr.me web client
@@ -383,9 +391,36 @@ class ChatCompletionRequest(BaseModel):
 # -----------------------------------------------------------------------------
 # Helper Functions
 # -----------------------------------------------------------------------------
-def build_engine(cx: Optional[float] = None, cy: Optional[float] = None, zoom: Optional[float] = None):
+def build_engine(
+    cx: Optional[float] = None,
+    cy: Optional[float] = None,
+    zoom: Optional[float] = None,
+    domain: Optional[str] = None,
+):
     if cx is not None and cy is not None and zoom is not None:
-        return werr.WerrEngine(cx=cx, cy=cy, zoom=zoom)
+        if domain:
+            return werr.WerrEngine(
+                cx=cx,
+                cy=cy,
+                zoom=zoom,
+                enable_domain=True,
+                enable_lexical=True,
+                enable_resonance=True,
+                mode="hybrid",
+                domain_mode="multi",
+                tripod=True,
+            )
+        return werr.WerrEngine(
+            cx=cx,
+            cy=cy,
+            zoom=zoom,
+            enable_domain=False,
+            enable_lexical=False,
+            enable_resonance=False,
+            mode="pure_fractal",
+            domain_mode="none",
+            tripod=True,
+        )
     return DEFAULT_ROUTER
 
 
@@ -431,12 +466,13 @@ def get_root():
         "docs_url": "/docs",
         "endpoints": {
             "decide": "/v1/decide (POST)",
+            "systemone": "/v1/systemone (POST)",
             "health": "/v1/health (GET)",
             "presets": "/v1/presets (GET)",
             "domains": "/v1/domains (GET)",
             "chat_completions": "/v1/chat/completions (POST - OpenAI Compatible)"
         },
-        "engine": "werr-reflex-0.3.0",
+        "engine": f"werr-reflex-{getattr(werr, '__version__', '0.5.1')}",
         "vram_usage_bytes": 0,
         "uptime_seconds": round(uptime, 2),
         "version": "1.0.0"
@@ -459,7 +495,7 @@ def get_health():
     return {
         "status": "healthy",
         "engine": "werr-reflex",
-        "version": "0.3.0",
+        "version": getattr(werr, "__version__", "0.5.1"),
         "core_architecture": "werr (Adaptive Non-tensor Signal Wave & Error Reflex Resonator)",
         "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
         "vram_bytes": 0,
@@ -558,7 +594,7 @@ def post_decide(req: DecisionRequest):
         werr_questions["decision"] = werr.NoulQuestion(instructions="Is the proposed operation safe and valid?")
 
     # Select engine
-    engine = build_engine(req.cx, req.cy, req.zoom)
+    engine = build_engine(req.cx, req.cy, req.zoom, domain=req.domain)
     
     # Compute decision
     result = engine.decide(state=state, questions=werr_questions)
@@ -608,14 +644,14 @@ def post_decide(req: DecisionRequest):
             "total_request_latency_ms": round(total_ms, 3),
             "vram_bytes": 0,
             "memory_seed_bytes": 24,
-            "engine": "werr-reflex-0.3.0"
+            "engine": f"werr-reflex-{getattr(werr, '__version__', '0.5.1')}"
         },
         "werr_telemetry": {
             "engine_latency_ms": round(result.latency_ms, 3),
             "total_request_latency_ms": round(total_ms, 3),
             "vram_bytes": 0,
             "memory_seed_bytes": 24,
-            "engine": "werr-reflex-0.3.0"
+            "engine": f"werr-reflex-{getattr(werr, '__version__', '0.5.1')}"
         }
     }
 
@@ -644,8 +680,8 @@ def post_systemone(req: SystemOneRequest):
             if isinstance(q_def, dict):
                 q_type = str(q_def.get("type", "noul")).lower().strip()
                 text = str(q_def.get("text", q_id))
-                # JevBench sends 'labels' list; answerr format uses 'criteria' dict
-                labels = q_def.get("labels") or q_def.get("criteria")
+                # JevBench sends 'labels' list; answerr format uses 'criteria' dict; also accept 'options'
+                labels = q_def.get("labels") or q_def.get("criteria") or q_def.get("options")
                 if q_type == "noul":
                     werr_questions[q_id] = werr.NoulQuestion(instructions=text)
                 elif q_type == "choice":
@@ -670,7 +706,10 @@ def post_systemone(req: SystemOneRequest):
     if not werr_questions:
         werr_questions["decision"] = werr.NoulQuestion(instructions="Is the proposed operation safe and valid?")
 
-    result = DEFAULT_ROUTER.decide(state=state, questions=werr_questions)
+    eval_state = dict(state)
+    if req.task and "_task_id" not in eval_state:
+        eval_state["_task_id"] = req.task
+    result = SYSTEMONE_ROUTER.decide(state=eval_state, questions=werr_questions)
     total_ms = (time.perf_counter() - t_start) * 1000.0
 
     answers_out = {}
@@ -716,7 +755,7 @@ def post_systemone(req: SystemOneRequest):
             "total_request_latency_ms": round(total_ms, 3),
             "vram_bytes": 0,
             "memory_seed_bytes": 24,
-            "engine": "werr-reflex-0.3.0"
+            "engine": f"werr-reflex-{getattr(werr, '__version__', '0.5.1')}"
         }
     }
 
@@ -762,6 +801,7 @@ def chat_completions(req: ChatCompletionRequest):
     ans_score = result.answers["threat"]
 
     decision_label = "APPROVED (İzin Verildi)" if ans_noul.decision else "DENIED (Engellendi)"
+    werr_ver = getattr(werr, "__version__", "0.5.1")
     
     content_text = (
         f"⚡ Answerr Reflex Decision (0 Byte VRAM, {total_ms:.2f} ms)\n"
@@ -771,7 +811,7 @@ def chat_completions(req: ChatCompletionRequest):
         f"• Threat: {ans_score.level} (Score: {ans_score.score:.2f})\n"
         f"• Confidence: %{ans_noul.confidence * 100:.1f} (p={ans_noul.noul:.3f})\n"
         f"• Memory: 0 Bytes Tensor VRAM (24-byte coordinate on dM boundary)\n"
-        f"• Engine: werr 0.3.0 (Wave & Error Reflex Resonator)"
+        f"• Engine: werr {werr_ver} (Wave & Error Reflex Resonator)"
     )
 
     return {
@@ -798,7 +838,7 @@ def chat_completions(req: ChatCompletionRequest):
             "latency_ms": round(total_ms, 3),
             "vram_bytes": 0,
             "zero_memory": True,
-            "engine": "werr-reflex-0.3.0"
+            "engine": f"werr-reflex-{werr_ver}"
         },
         "werr_telemetry": {
             "latency_ms": round(total_ms, 3),
