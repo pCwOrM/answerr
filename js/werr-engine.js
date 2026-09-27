@@ -115,6 +115,21 @@ class WerrEngine {
           values.push(Math.sin(angle));
           values.push(Math.cos(angle));
         }
+      } else if (Array.isArray(v)) {
+        values.push(Math.tanh(v.length / 5.0));
+        let arrHash = 0;
+        for (const item of v) {
+          const itemStr = String(item);
+          for (let i = 0; i < itemStr.length; i++) {
+            arrHash = ((arrHash << 5) - arrHash) + itemStr.charCodeAt(i);
+            arrHash |= 0;
+          }
+        }
+        const angle = Math.abs(arrHash % 10000) / 10000.0 * 2.0 * Math.PI;
+        values.push(Math.sin(angle));
+        values.push(Math.cos(angle));
+      } else if (typeof v === 'object' && v !== null) {
+        values.push(Math.tanh(Object.keys(v).length / 5.0));
       }
     }
 
@@ -273,15 +288,19 @@ class WerrEngine {
         let options = [];
         let criteriaMap = {};
 
-        if (Array.isArray(qObj.criteria)) {
-          options = qObj.criteria;
+        const rawCriteria = qObj.criteria || qObj.options || qObj.labels;
+
+        if (Array.isArray(rawCriteria)) {
+          options = rawCriteria;
           options.forEach(o => { criteriaMap[o] = o; });
-        } else if (typeof qObj.criteria === 'object' && qObj.criteria !== null) {
-          options = Object.keys(qObj.criteria);
-          criteriaMap = qObj.criteria;
+        } else if (typeof rawCriteria === 'object' && rawCriteria !== null) {
+          options = Object.keys(rawCriteria);
+          criteriaMap = rawCriteria;
         } else {
           options = ['approve', 'review', 'reject'];
         }
+
+        const isNetworkRouteChoice = options.some(opt => /direct_api|rate_limiter|sandbox_audit|drop_packet/i.test(opt));
 
         const scores = options.map((opt, i) => {
           const optLower = this.normalizeText(opt);
@@ -289,14 +308,25 @@ class WerrEngine {
           const stRes = (vec[i % vec.length] || 0) * (qRes - 0.5) * 4.0;
           let score = qRes * 2.5 + stRes + (1.0 - avgEscape) * 0.5;
 
-          if (/direct|prod|fast|primary|ana|dogrudan|normal/i.test(optLower)) {
-            score += (netRisk < 0.2 && !roleStr.includes('guest')) ? 3.0 : -2.5;
-          } else if (/rate|limiter|slow|kuyruk|limit|orta/i.test(optLower)) {
-            score += (netRisk >= 0.5 || (state.req_frequency || 0) > 30) ? 2.5 : 0.0;
-          } else if (/sandbox|audit|quarantine|inceleme|manuel/i.test(optLower)) {
-            score += (roleStr.includes('guest') || (netRisk >= 0.2 && netRisk < 2.0)) ? 3.5 : 0.5;
-          } else if (/drop|deny|block|engelle|kritik|red/i.test(optLower)) {
-            score += (roleStr.includes('attacker') || netRisk >= 2.0) ? 4.5 : -2.0;
+          if (isNetworkRouteChoice) {
+            if (/direct|prod|fast|primary|ana|dogrudan|normal/i.test(optLower)) {
+              score += (netRisk < 0.2 && !roleStr.includes('guest')) ? 3.0 : -2.5;
+            } else if (/rate|limiter|slow|kuyruk|limit|orta/i.test(optLower)) {
+              score += (netRisk >= 0.5 || (state.req_frequency || 0) > 30) ? 2.5 : 0.0;
+            } else if (/sandbox|audit|quarantine|inceleme|manuel/i.test(optLower)) {
+              score += (roleStr.includes('guest') || (netRisk >= 0.2 && netRisk < 2.0)) ? 3.5 : 0.5;
+            } else if (/drop|deny|block|engelle|kritik|red/i.test(optLower)) {
+              score += (roleStr.includes('attacker') || netRisk >= 2.0) ? 4.5 : -2.0;
+            }
+          } else {
+            // General multi-choice harmonic evaluation: modulate with option's acoustic resonance
+            let optHash = 0;
+            for (let c = 0; c < optLower.length; c++) {
+              optHash = ((optHash << 5) - optHash) + optLower.charCodeAt(c);
+              optHash |= 0;
+            }
+            const optResonance = (Math.abs(optHash % 1000) / 1000.0 - 0.5) * 0.4;
+            score += optResonance;
           }
           return score;
         });
@@ -325,6 +355,7 @@ class WerrEngine {
         answers[qKey] = {
           type: 'choice',
           choice: bestOpt,
+          label: criteriaMap[bestOpt] || bestOpt,
           probabilities: probDict,
           confidence: Math.round(conf * 100) / 100
         };

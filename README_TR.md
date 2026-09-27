@@ -18,6 +18,10 @@
   <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20H%C4%B1zl%C4%B1-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
   <a href="https://doi.org/10.5281/zenodo.22939253"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22939253-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
   <a href="https://arxiv.org/abs/2609.25498"><img src="https://img.shields.io/badge/arXiv-2609.25498-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.25498"></a>
+  <a href="https://arxiv.org/abs/2609.30115"><img src="https://img.shields.io/badge/arXiv-2609.30115%20(OED)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.30115"></a>
+  <a href="https://doi.org/10.5281/zenodo.22983889"><img src="https://img.shields.io/badge/Lean%204%20%C4%B0spatlar%C4%B1-v2%20(10%20Teorem)-024dad.svg?style=for-the-badge" alt="Lean 4 Doğrulama"></a>
+  <a href="https://doi.org/10.5281/zenodo.22978460"><img src="https://img.shields.io/badge/Kara%20Delik-Zenodo%20Kayd%C4%B1%2022978460-7c3aed.svg?style=for-the-badge" alt="Kara Delik Page Eğrisi"></a>
+  <a href="https://epats.turkpatent.gov.tr"><img src="https://img.shields.io/badge/Patent%20Ba%C5%9Fvurusu-TR%202026%2F016633%20(Konnektom)-red.svg?style=for-the-badge" alt="TÜRKPATENT TR 2026/016633"></a>
   <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow.svg?style=for-the-badge" alt="Hugging Face Dataset"></a>
   <a href="https://github.com/yh-yao/awesome-edge-ai-agents"><img src="https://img.shields.io/badge/Awesome-Edge%20AI%20Agents-blue.svg?style=for-the-badge" alt="Awesome Edge AI Agents"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Canl%C4%B1%20%C3%9Cretim-c084fc.svg?style=for-the-badge" alt="REST API"></a>
@@ -416,6 +420,46 @@ answerr/
   doi     = {10.5281/zenodo.22774934},
   url     = {https://doi.org/10.5281/zenodo.22774934},
   note    = {Zenodo v3.0: https://doi.org/10.5281/zenodo.22867037}
+}
+
+@article{dagli2026orbital,
+  title         = {Orbital Error Dynamics: Self-Organized Criticality, Ephemeral Parameter Resonance, and Non-Linear Biological Ontologies in Zero-Storage Neural Synthesis},
+  author        = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
+  journal       = {arXiv preprint arXiv:2609.30115 [cs.NE]},
+  year          = {2026},
+  doi           = {10.5281/zenodo.22900465},
+  url           = {https://arxiv.org/abs/2609.30115},
+  note          = {Patent Pending: Turkish Patent and Trademark Office TR 2026/016285}
+}
+
+@article{dagli2026werracle,
+  title         = {Werracle: Sub-Cent Intra-Block AI Reflex Oracles and Flash-Loan Circuit Breakers for EVM Smart Contracts},
+  author        = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
+  journal       = {Zenodo Open Science Archive},
+  year          = {2026},
+  doi           = {10.5281/zenodo.22942599},
+  url           = {https://doi.org/10.5281/zenodo.22942599},
+  note          = {arXiv: submit/8126137}
+}
+
+@article{dagli2026lean4_oed,
+  title        = {Zero-Storage Procedural Neural Synthesis via Boundary Dynamics: Formal Verification in Lean 4 and Bare-Metal Gauntlet Validation},
+  author       = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
+  journal      = {Zenodo Open Science Archive},
+  year         = {2026},
+  doi          = {10.5281/zenodo.22983889},
+  url          = {https://doi.org/10.5281/zenodo.22983889},
+  note         = {Version 2.0; 10 Machine-Verified Theorems in Lean 4 (0 sorry)}
+}
+
+@article{dagli2026wormhole,
+  title        = {Unitary Black Hole Page Curve Reconstruction via Wormhole Error-Kernel Invariants: Non-Dissipative State Preservation, 40-Core Bare-Metal Telemetry, and Formal Verification},
+  author       = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
+  journal      = {Zenodo Open Science Archive},
+  year         = {2026},
+  doi          = {10.5281/zenodo.22978460},
+  url          = {https://doi.org/10.5281/zenodo.22978460},
+  note         = {Version 2.0; Concept DOI: 10.5281/zenodo.22961999}
 }
 
 @software{dagli2026answerr,

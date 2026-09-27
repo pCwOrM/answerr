@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   position: relative;
   overflow: hidden;
   background: transparent;
@@ -131,6 +132,8 @@
   flex-direction: column;
   scroll-behavior: smooth;
   scroll-padding-bottom: 140px;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .chat-messages {
@@ -1164,6 +1167,24 @@
   .gemini-card-header {
     flex-wrap: wrap;
     gap: 0.4rem;
+  }
+  .werr-spec-box, .wevv-spec-box {
+    padding: 0.75rem 0.85rem;
+    overflow: hidden;
+  }
+  .spec-json-pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-size: 0.68rem;
+  }
+  .spec-state-grid {
+    gap: 0.3rem;
+  }
+  .spec-chip {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
   }
 }
 

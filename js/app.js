@@ -417,9 +417,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Restore saved sidebar preference
+  // Restore saved sidebar preference (default to collapsed on mobile if no preference saved)
   const savedSidebarCollapsed = localStorage.getItem('answerr_sidebar_collapsed');
-  if (savedSidebarCollapsed === 'true') {
+  if (savedSidebarCollapsed === 'true' || (savedSidebarCollapsed === null && window.innerWidth < 768)) {
     sidebarEl.classList.add('collapsed');
   }
 
@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 5. Send Message Lifecycle
-  async function handleSendMessage(presetPromptText) {
+  async function handleSendMessage(presetPromptText, presetId = null) {
     const prompt = (presetPromptText || chatInputEl.value).trim();
     if (!prompt || isGenerating) return;
 
@@ -528,7 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       // Step 1: System-2 Decomposition
       updateStepper(stepperEl, t.step1);
-      const step1Result = await gemini.transformPromptToWevv(prompt);
+      const step1Result = await gemini.transformPromptToWevv(prompt, presetId);
 
       const stateData = step1Result.data;
       const stateObj = stateData.state || {};
@@ -652,9 +652,11 @@ document.addEventListener('DOMContentLoaded', () => {
         : `<span class="kw">if not</span> response.<span class="fn">boolean</span>(<span class="str">"${ansKey}"</span>): <span class="fn">BLOCK_OR_QUARANTINE</span>(request)`;
     } else if (ans.type === 'choice') {
       verdictClass = 'routed';
-      verdictTitle = `${t.routed}: ${toAsciiUpper(ans.choice)}`;
+      const choiceDisplay = ans.label || ans.choice;
+      const cleanIdent = toAsciiUpper(ans.choice).replace(/[^A-Z0-9_]/g, '_').substring(0, 32);
+      verdictTitle = `${t.routed || 'SEÇİLEN'}: ${choiceDisplay}`;
       verdictSub = `${t.confidence}: %${(ans.confidence * 100).toFixed(0)}`;
-      smartCodeSnippet = `<span class="kw">match</span> response.<span class="fn">choice</span>(<span class="str">"${ansKey}"</span>): <span class="kw">case</span> <span class="str">"${ans.choice}"</span>: <span class="fn">ROUTE_TO_${toAsciiUpper(ans.choice)}</span>(payload)`;
+      smartCodeSnippet = `<span class="kw">match</span> response.<span class="fn">choice</span>(<span class="str">"${ansKey}"</span>): <span class="kw">case</span> <span class="str">"${escapeHtml(ans.choice)}"</span>: <span class="fn">HANDLE_${cleanIdent}</span>(payload)`;
     } else if (ans.type === 'score') {
       verdictClass = 'scored';
       verdictTitle = `${t.scored}: ${ans.score} / ${ans.scaleMax} (${ans.selectedLevel})`;
@@ -896,7 +898,7 @@ License                 : Business Source License 1.1 (BSL 1.1) • ITouch Syste
 
       card.title = prompt;
       card.addEventListener('click', () => {
-        handleSendMessage(prompt);
+        handleSendMessage(prompt, preset.id);
       });
       presetGridEl.appendChild(card);
     });
