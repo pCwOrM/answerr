@@ -27,6 +27,9 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 # Ensure werr (with fallback to wevv) is loaded
+os.environ["WERR_TELEMETRY"] = "1"
+os.environ["WEVV_TELEMETRY"] = "1"
+
 try:
     import werr
 except ImportError:

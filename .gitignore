@@ -14,11 +14,22 @@ build/
 node_modules/
 npm-debug.log*
 
-# Environment & Secrets
+# Environment & Secrets (STRICTLY EXCLUDED)
+*.env*
 .env
 .env.local
 *.key
 *.pem
+*id_rsa*
+*id_ed25519*
+*token*
+*password*
+*secret*
+*credential*
+*.cert
+*.ppk
+credentials/
+secrets/
 
 # OS
 .DS_Store
@@ -28,3 +39,9 @@ Desktop.ini
 # Logs & temp
 *.log
 .temp/
+scratch/
+
+# Internal automation & mailer scripts
+scripts/*mailer*.py
+scripts/*announcement*.py
+

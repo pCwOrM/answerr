@@ -41,12 +41,12 @@ class GeminiBridge {
    * System-Two Step 1: Transforms unstructured natural language prompt into
    * typed werr parameters (state object, question type, instructions, criteria).
    */
-  async transformPromptToWevv(userPrompt) {
+  async transformPromptToWevv(userPrompt, presetId = null) {
     const apiKey = this.getApiKey();
 
     if (!apiKey) {
       // Intelligent local heuristic parser for zero-key instant preview
-      return this.heuristicParser(userPrompt);
+      return this.heuristicParser(userPrompt, presetId);
     }
 
     const model = this.getModel();
@@ -116,7 +116,7 @@ Respond ONLY with a valid JSON object with the following schema:
       };
     } catch (err) {
       console.warn('[Answerr/Gemini] Fallback to heuristic parser due to:', err.message);
-      const fallback = this.heuristicParser(userPrompt);
+      const fallback = this.heuristicParser(userPrompt, presetId);
       fallback.apiError = err.message;
       return fallback;
     }
@@ -197,73 +197,210 @@ Keep the tone concise, scientific, and professional.`;
    * Local heuristic prompt parser when Gemini API key is not configured or in offline demo mode.
    * Matches curated presets directly and performs intelligent domain/question extraction on custom queries.
    */
-  heuristicParser(prompt) {
+  heuristicParser(prompt, presetId = null) {
     const p = (prompt || '').trim();
     const pLower = p.toLowerCase();
-    const isTurkish = /[çğıöşü]/i.test(p) || /mi\b|mu\b|mı\b|mü\b|izin|onay|durum|istek|sistem|kullanici|nedir|hangisi|acil|sogutma|engellensin/i.test(pLower);
+    const isTurkish = /[çğıöşü]/i.test(p) || /mi\b|mu\b|mı\b|mü\b|izin|onay|durum|istek|sistem|kullanici|nedir|hangisi|acil|sogutma|engellensin|şirket|firma|mevzuat/i.test(pLower);
 
-    // 1. Check if userPrompt matches any known preset in SCENARIO_PRESETS
+    // 1. Strict Preset Matching: ONLY if presetId is explicitly provided or prompt is an EXACT match
     if (typeof SCENARIO_PRESETS !== 'undefined' && Array.isArray(SCENARIO_PRESETS)) {
-      for (const preset of SCENARIO_PRESETS) {
-        const trMatch = preset.prompt && (p === preset.prompt.trim() || pLower.includes((preset.titleTr || '').toLowerCase()) || p.includes(preset.prompt.slice(0, 25)));
-        const enMatch = preset.promptEn && (p === preset.promptEn.trim() || pLower.includes((preset.title || '').toLowerCase()) || p.includes(preset.promptEn.slice(0, 25)));
+      let matchedPreset = null;
+      if (presetId) {
+        matchedPreset = SCENARIO_PRESETS.find(pr => pr.id === presetId);
+      } else {
+        matchedPreset = SCENARIO_PRESETS.find(pr => 
+          (pr.prompt && p === pr.prompt.trim()) || 
+          (pr.promptEn && p === pr.promptEn.trim())
+        );
+      }
 
-        if (trMatch || enMatch) {
-          const langKey = isTurkish ? 'tr' : 'en';
-          const instructions = isTurkish
-            ? (preset.question.instructionsTr || preset.question.instructions)
-            : (preset.question.instructionsEn || preset.question.instructions);
-          const criteria = isTurkish
-            ? (preset.question.criteriaTr || preset.question.criteria)
-            : (preset.question.criteriaEn || preset.question.criteria);
+      if (matchedPreset) {
+        const langKey = isTurkish ? 'tr' : 'en';
+        const instructions = isTurkish
+          ? (matchedPreset.question.instructionsTr || matchedPreset.question.instructions)
+          : (matchedPreset.question.instructionsEn || matchedPreset.question.instructions);
+        const criteria = isTurkish
+          ? (matchedPreset.question.criteriaTr || matchedPreset.question.criteria)
+          : (matchedPreset.question.criteriaEn || matchedPreset.question.criteria);
 
-          return {
-            success: true,
-            source: 'local_heuristic',
-            model: 'werr-preset-compiler',
-            presetId: preset.id,
-            data: {
-              presetId: preset.id,
-              state: { ...preset.state },
-              question: {
-                key: preset.question.key,
-                type: preset.question.type,
-                instructions: instructions,
-                criteria: criteria || null,
-                threshold: preset.question.threshold || 0.5
-              },
-              detectedLanguage: langKey,
-              scenarioSummary: isTurkish
-                ? `Hazır Senaryo: ${preset.titleTr} (Tipli Karar: ${preset.question.type.toUpperCase()})`
-                : `Preset Scenario: ${preset.title} (Typed Decision: ${preset.question.type.toUpperCase()})`
-            }
-          };
-        }
+        return {
+          success: true,
+          source: 'local_heuristic',
+          model: 'werr-preset-compiler',
+          presetId: matchedPreset.id,
+          data: {
+            presetId: matchedPreset.id,
+            state: { ...matchedPreset.state },
+            question: {
+              key: matchedPreset.question.key,
+              type: matchedPreset.question.type,
+              instructions: instructions,
+              criteria: criteria || null,
+              threshold: matchedPreset.question.threshold || 0.5
+            },
+            detectedLanguage: langKey,
+            scenarioSummary: isTurkish
+              ? `Hazır Senaryo: ${matchedPreset.titleTr} (Tipli Karar: ${matchedPreset.question.type.toUpperCase()})`
+              : `Preset Scenario: ${matchedPreset.title} (Typed Decision: ${matchedPreset.question.type.toUpperCase()})`
+          }
+        };
       }
     }
 
-    // 2. Intelligent Dynamic Extraction for Custom Queries
-    let instructions = '';
-    
-    // Extract the actual question from the prompt (sentence ending with '?' or question suffixes)
-    const sentences = p.split(/(?<=[.!?\n])\s+/);
-    const qSentence = sentences.find(s => /\?|mi\b|mu\b|mı\b|mü\b|should\b|is\b|which\b|what\b/i.test(s));
-    if (qSentence) {
-      instructions = qSentence.trim();
-      if (!instructions.endsWith('?')) instructions += '?';
-    } else if (sentences.length > 0) {
-      instructions = sentences[sentences.length - 1].trim();
-      if (!instructions.endsWith('?')) instructions += '?';
-    } else {
-      instructions = isTurkish ? 'Bu işlem onaylansın mı?' : 'Should this action be approved?';
+    // 2. Structured JSON Payload Detection & Parsing
+    let jsonPayload = null;
+    let jsonPreText = '';
+
+    const fenceMatch = p.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    if (fenceMatch) {
+      try {
+        jsonPayload = JSON.parse(fenceMatch[1]);
+        jsonPreText = p.substring(0, p.indexOf(fenceMatch[0])).trim();
+      } catch (e) {}
     }
 
-    // Determine Question Type and Key
+    if (!jsonPayload) {
+      const startIdx = p.indexOf('{');
+      const endIdx = p.lastIndexOf('}');
+      if (startIdx !== -1 && endIdx > startIdx) {
+        try {
+          jsonPayload = JSON.parse(p.substring(startIdx, endIdx + 1));
+          jsonPreText = p.substring(0, startIdx).trim();
+        } catch (e) {}
+      }
+    }
+
+    if (jsonPayload && typeof jsonPayload === 'object') {
+      let extractedState = {};
+      if (jsonPayload.state && typeof jsonPayload.state === 'object') {
+        extractedState = { ...jsonPayload.state };
+      } else if (!jsonPayload.questions && !jsonPayload.question) {
+        extractedState = { ...jsonPayload };
+      }
+
+      if (jsonPreText && !extractedState.baglam && !extractedState.context) {
+        const baglamMatch = jsonPreText.match(/(?:Bağlam|Context):\s*([^\n\r]+)/i);
+        if (baglamMatch) extractedState.baglam = baglamMatch[1].trim();
+      }
+
+      let qKey = 'decision';
+      let qType = 'noul';
+      let instructions = '';
+      let criteria = null;
+      let threshold = 0.5;
+
+      const rawQuestions = jsonPayload.questions || (jsonPayload.question ? { primary: jsonPayload.question } : null);
+      if (rawQuestions && typeof rawQuestions === 'object') {
+        const keys = Object.keys(rawQuestions);
+        const primaryKey = keys.find(k => rawQuestions[k]?.type?.toLowerCase() === 'choice') || keys[0];
+        const qDef = rawQuestions[primaryKey] || {};
+
+        qKey = primaryKey;
+        qType = (qDef.type || 'noul').toLowerCase().trim();
+        instructions = qDef.instructions || qDef.text || qDef.question || '';
+        threshold = qDef.threshold || 0.5;
+
+        const rawOpts = qDef.options || qDef.labels || qDef.criteria;
+        if (Array.isArray(rawOpts)) {
+          criteria = rawOpts;
+        } else if (rawOpts && typeof rawOpts === 'object') {
+          criteria = rawOpts;
+        }
+      }
+
+      if (!instructions) {
+        const soruMatch = (jsonPreText || p).match(/(?:Soru|Question):\s*([^\n\r]+)/i);
+        if (soruMatch) {
+          instructions = soruMatch[1].trim();
+        } else {
+          instructions = isTurkish ? 'İşlem kriterlere uygun mu?' : 'Is operation compliant?';
+        }
+      }
+
+      instructions = instructions.replace(/^["'\s]+|["'\s{}]+$/g, '').trim();
+      if (!instructions.endsWith('?') && !instructions.endsWith('.')) instructions += '?';
+
+      return {
+        success: true,
+        source: 'local_heuristic',
+        model: 'werr-json-compiler',
+        data: {
+          state: extractedState,
+          question: {
+            key: qKey,
+            type: qType,
+            instructions,
+            criteria: criteria || null,
+            threshold
+          },
+          detectedLanguage: isTurkish ? 'tr' : 'en',
+          scenarioSummary: isTurkish
+            ? `Yapılandırılmış durum ve tipli soru derlendi (Tip: ${qType.toUpperCase()}, Soru: "${instructions}").`
+            : `Structured state and typed question compiled (Type: ${qType.toUpperCase()}, Question: "${instructions}").`
+        }
+      };
+    }
+
+    // 3. Dynamic Natural Language Extraction for Custom Queries
+    const lines = p.split('\n').map(l => l.trim()).filter(Boolean);
+    const candidateOptions = [];
+
+    // Extract list items (- Option, * Option, 1. Option, A) Option)
+    for (const line of lines) {
+      const listMatch = line.match(/^(?:[-*•]|\d+[.)]|[A-Ea-e][.)])\s+(.+)$/);
+      if (listMatch) {
+        candidateOptions.push(listMatch[1].trim());
+      }
+    }
+
+    // Extract standalone candidate names after question if not formatted with bullets
+    if (candidateOptions.length < 2) {
+      const entityLines = lines.filter(l => 
+        !/^(Talimat|Bağlam|Soru|İstenen|Context|Instruction|Question):/i.test(l) &&
+        l.length >= 2 && l.length <= 60 &&
+        !l.endsWith('?') && !l.endsWith('.') &&
+        !l.includes('{') && !l.includes('}')
+      );
+      if (entityLines.length >= 2 && entityLines.length <= 8) {
+        candidateOptions.push(...entityLines);
+      }
+    }
+
+    // Clean Question Extraction
+    let instructions = '';
+    const soruMatch = p.match(/(?:Soru|Question):\s*([^\n\r]+)/i);
+    if (soruMatch) {
+      instructions = soruMatch[1].trim();
+    } else {
+      const sentences = p.split(/(?<=[.!?\n])\s+/).map(s => s.trim()).filter(Boolean);
+      const qSentence = sentences.find(s => /\?|mi\b|mu\b|mı\b|mü\b|should\b|is\b|which\b|what\b/i.test(s));
+      if (qSentence) {
+        instructions = qSentence;
+      } else if (sentences.length > 0) {
+        instructions = sentences[0];
+      } else {
+        instructions = isTurkish ? 'Bu işlem onaylansın mı?' : 'Should this action be approved?';
+      }
+    }
+    instructions = instructions.replace(/^["'\s]+|["'\s{}]+$/g, '').trim();
+    if (!instructions.endsWith('?')) instructions += '?';
+
+    // Determine Question Type and Criteria
     let qType = 'noul';
     let qKey = 'allow_execution';
     let criteria = null;
 
-    if (/hangisi|nereye|hangi|rota|route|cluster|which|choose|select/i.test(pLower)) {
+    if (candidateOptions.length >= 2) {
+      qType = 'choice';
+      qKey = 'selected_option';
+      criteria = candidateOptions;
+    } else if (/skor|seviye|risk|tehlike|derece|score|level|puan|severity|rate/i.test(pLower)) {
+      qType = 'score';
+      qKey = 'severity_score';
+      criteria = isTurkish
+        ? ['Normal / Güvenli', 'Düşük Anomali', 'Yüksek Risk', 'Kritik Seviye']
+        : ['Normal / Safe', 'Minor Anomaly', 'Elevated Risk', 'Critical Threat'];
+    } else if (/(?:rota|route|cluster|paket\s+hedefi)\b/i.test(pLower)) {
       qType = 'choice';
       qKey = 'target_route';
       criteria = isTurkish ? {
@@ -277,12 +414,17 @@ Keep the tone concise, scientific, and professional.`;
         sandbox_audit: 'Isolated Sandbox Audit',
         drop_packet: 'Immediate Packet Drop'
       };
-    } else if (/skor|seviye|risk|tehlike|derece|score|level|puan|severity|rate/i.test(pLower)) {
-      qType = 'score';
-      qKey = 'severity_score';
-      criteria = isTurkish
-        ? ['Normal / Güvenli', 'Düşük Anomali', 'Yüksek Risk', 'Kritik Seviye']
-        : ['Normal / Benign', 'Minor Anomaly', 'Elevated Risk', 'Critical Threat'];
+    } else if (/(?:hangisi|hangi|which|choose|select)\b/i.test(pLower)) {
+      qType = 'choice';
+      qKey = 'selected_option';
+      const orMatch = p.match(/([a-zA-Z0-9çğıöşüÇĞİÖŞÜ\s_-]{2,30})\s+(?:veya|ya da|or)\s+([a-zA-Z0-9çğıöşüÇĞİÖŞÜ\s_-]{2,30})/i);
+      if (orMatch) {
+        criteria = [orMatch[1].trim(), orMatch[2].trim()];
+      } else {
+        criteria = isTurkish
+          ? ['Seçenek A', 'Seçenek B', 'Seçenek C']
+          : ['Option A', 'Option B', 'Option C'];
+      }
     } else {
       qType = 'noul';
       if (/engel|bloke|drop|block|ban/i.test(pLower)) {
@@ -298,6 +440,9 @@ Keep the tone concise, scientific, and professional.`;
 
     // Extract State Variables Intelligently
     const state = {};
+
+    const baglamMatch = p.match(/(?:Bağlam|Context):\s*([^\n\r]+)/i);
+    if (baglamMatch) state.baglam = baglamMatch[1].trim();
 
     // Temperature (e.g. 82°C, 95 C, 40 derece)
     const tempMatch = p.match(/(\d+(?:\.\d+)?)\s*(?:°c|c\b|derece)/i);
@@ -399,7 +544,8 @@ Keep the tone concise, scientific, and professional.`;
     if (typeof SCENARIO_PRESETS !== 'undefined' && Array.isArray(SCENARIO_PRESETS)) {
       presetMatch = SCENARIO_PRESETS.find(pr =>
         (stateData?.presetId && pr.id === stateData.presetId) ||
-        (pr.prompt && prompt.includes(pr.prompt.slice(0, 25)))
+        (pr.prompt && prompt.trim() === pr.prompt.trim()) ||
+        (pr.promptEn && prompt.trim() === pr.promptEn.trim())
       );
     }
 
@@ -418,18 +564,18 @@ Keep the tone concise, scientific, and professional.`;
       } else {
         let trueVerdict = isTurkish ? 'ONAYLANDI (TRUE)' : 'APPROVED (TRUE)';
         let falseVerdict = isTurkish ? 'REDDEDİLDİ (FALSE)' : 'DENIED (FALSE)';
-        let trueAction = isTurkish ? `Talimat onaylandı: "${instructions}". Sistem-1 refleksi aksiyonu derhal yürüttü.` : `Instruction approved: "${instructions}". System-1 reflex executed action immediately.`;
-        let falseAction = isTurkish ? `Talimat reddedildi: "${instructions}". Eşik değeri sağlanamadı; işlem durduruldu.` : `Instruction denied: "${instructions}". Threshold not met; operation blocked.`;
+        let trueAction = isTurkish ? `Talimat doğrulandı: "${instructions}". Sistem-1 refleksi aksiyonu yürüttü.` : `Instruction confirmed: "${instructions}". System-1 reflex executed action.`;
+        let falseAction = isTurkish ? `Talimat kriteri sağlanamadı: "${instructions}". Eşik altında kalındı.` : `Instruction threshold not met: "${instructions}". Operation withheld.`;
 
         if (qKey === 'emergency_shutdown' || /acil|durdur|shutdown|halt/i.test(instructions)) {
           trueVerdict = isTurkish ? 'ACİL DURDURMA DEVREYE ALINDI (TRUE)' : 'EMERGENCY SHUTDOWN ENGAGED (TRUE)';
           falseVerdict = isTurkish ? 'NORMAL ÇALIŞMA (FALSE)' : 'NORMAL OPERATION (FALSE)';
-          trueAction = isTurkish ? 'Kritik eşik aşıldı! Acil soğutma ve durdurma protokolü derhal yürütüldü.' : 'Critical threshold crossed! Emergency cooling and shutdown protocol executed.';
-          falseAction = isTurkish ? 'Parametreler operasyonel tolerans içinde; acil durdurma gerekmiyor, robot çalışma döngüsüne devam ediyor.' : 'Parameters within operational tolerance; no shutdown needed.';
+          trueAction = isTurkish ? 'Kritik eşik aşıldı! Acil koruma protokolü yürütüldü.' : 'Critical threshold crossed! Emergency protection protocol executed.';
+          falseAction = isTurkish ? 'Parametreler operasyonel tolerans içinde; normal çalışma devam ediyor.' : 'Parameters within operational tolerance; normal operation continues.';
         } else if (qKey === 'block_request' || /engellensin|bloke|block|drop/i.test(instructions)) {
           trueVerdict = isTurkish ? 'ENGELLEME ONAYLANDI (TRUE)' : 'BLOCK CONFIRMED (TRUE)';
           falseVerdict = isTurkish ? 'GEÇİŞE İZİN VERİLDİ (FALSE)' : 'TRAFFIC ALLOWED (FALSE)';
-          trueAction = isTurkish ? 'Anomali ve kural ihlali tespit edildi. İstek derhal engellendi ve karantinaya alındı.' : 'Anomaly and violation detected. Request blocked and quarantined.';
+          trueAction = isTurkish ? 'Anomali tespit edildi. İstek derhal engellendi ve izole edildi.' : 'Anomaly detected. Request blocked and isolated.';
           falseAction = isTurkish ? 'İstek güvenli parametreler içinde değerlendirildi; geçişe onay verildi.' : 'Request within benign parameters; traffic allowed.';
         }
 
@@ -445,17 +591,35 @@ Keep the tone concise, scientific, and professional.`;
         : `The werr engine perturbed the 24-byte boundary seed along dM. Escape dynamics (${wevvResult.latencyMs} ms) indicated ${ans.decision ? 'positive action manifold confirmed' : 'divergence crossing safety tolerance'}.`;
 
     } else if (ans.type === 'choice') {
-      verdict = isTurkish
-        ? `**Seçilen Rota:** \`${ans.choice}\` (Güven: %${(ans.confidence * 100).toFixed(0)})`
-        : `**Selected Target:** \`${ans.choice}\` (Confidence: ${(ans.confidence * 100).toFixed(0)}%)`;
+      const selectedChoice = ans.label || ans.choice;
+      const isRoute = /cluster|route|direct_api|rate_limiter|sandbox_audit|drop_packet/i.test(qKey) ||
+                      (ans.choice && /direct_api|rate_limiter|sandbox_audit|drop_packet/i.test(ans.choice));
 
-      logic = isTurkish
-        ? `Girdi durumu 4-Kuadran ($Q_1-Q_4$) alt bölgelerine ayrıştırıldı. En yüksek faz enerjisi \`${ans.choice}\` rotasında kilitlendi.`
-        : `Input state was partitioned across the 4-Quadrant phase space ($Q_1-Q_4$). The maximum harmonic density localized at \`${ans.choice}\`.`;
+      if (isRoute) {
+        verdict = isTurkish
+          ? `**Seçilen Rota:** \`${selectedChoice}\` (Güven: %${(ans.confidence * 100).toFixed(0)})`
+          : `**Selected Target:** \`${selectedChoice}\` (Confidence: ${(ans.confidence * 100).toFixed(0)}%)`;
 
-      action = presetMatch?.interpretation
-        ? (isTurkish ? presetMatch.interpretation.tr.actionPrefix : presetMatch.interpretation.en.actionPrefix) + `\`${ans.choice}\``
-        : (isTurkish ? `Paket hedefi \`${ans.choice}\` olarak güncellendi ve ilgili mikroservis tamponuna iletildi.` : `Traffic routed to \`${ans.choice}\` and queued in designated microservice channel.`);
+        logic = isTurkish
+          ? `Girdi durumu 4-Kuadran ($Q_1-Q_4$) alt bölgelerine ayrıştırıldı. En yüksek faz enerjisi \`${selectedChoice}\` rotasında kilitlendi.`
+          : `Input state was partitioned across the 4-Quadrant phase space ($Q_1-Q_4$). The maximum harmonic density localized at \`${selectedChoice}\`.`;
+
+        action = presetMatch?.interpretation
+          ? (isTurkish ? presetMatch.interpretation.tr.actionPrefix : presetMatch.interpretation.en.actionPrefix) + `\`${selectedChoice}\``
+          : (isTurkish ? `Paket hedefi \`${selectedChoice}\` olarak güncellendi ve ilgili kanala iletildi.` : `Traffic routed to \`${selectedChoice}\` and queued in designated channel.`);
+      } else {
+        verdict = isTurkish
+          ? `**Seçilen Karar / Tercih:** **${selectedChoice}** (Güven: %${(ans.confidence * 100).toFixed(0)})`
+          : `**Selected Decision / Choice:** **${selectedChoice}** (Confidence: ${(ans.confidence * 100).toFixed(0)}%)`;
+
+        logic = isTurkish
+          ? `Girdi durumu ve kriterler 4-Kuadran ($Q_1-Q_4$) Mandelbrot faz uzayında çözümlendi. En yüksek harmonik rezonans ve faz enerjisi **${selectedChoice}** seçeneğinde kilitlendi.`
+          : `Input state and criteria evaluated across 4-Quadrant ($Q_1-Q_4$) Mandelbrot phase space. Highest harmonic resonance localized at **${selectedChoice}**.`;
+
+        action = isTurkish
+          ? `Belirlenen **${selectedChoice}** tercihi doğrultusunda operasyonel işlem yürütülüyor.`
+          : `Operational flow proceeding with verified selection: **${selectedChoice}**.`;
+      }
 
     } else if (ans.type === 'score') {
       verdict = isTurkish
