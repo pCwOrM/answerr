@@ -41,7 +41,13 @@ Desktop.ini
 .temp/
 scratch/
 
-# Internal automation & mailer scripts
-scripts/*mailer*.py
-scripts/*announcement*.py
+# TÜRKPATENT Local Administrative Submissions & Applicant Receipts
+turkpatent_*/
+*.tahakkuk
+*dekont*
+*makbuz*
+
+# Test vaults
+_isolated_test_vault/
+_isolated_test_vault.*
 
