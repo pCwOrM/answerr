@@ -18,6 +18,7 @@
   <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20H%C4%B1zl%C4%B1-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
   <a href="https://doi.org/10.5281/zenodo.22939253"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22939253-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
   <a href="https://arxiv.org/abs/2609.25498"><img src="https://img.shields.io/badge/arXiv-2609.25498-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.25498"></a>
+  <a href="https://arxiv.org/abs/2609.33066"><img src="https://img.shields.io/badge/arXiv-2609.33066%20(Temel)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.33066"></a>
   <a href="https://arxiv.org/abs/2609.30115"><img src="https://img.shields.io/badge/arXiv-2609.30115%20(OED)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.30115"></a>
   <a href="https://doi.org/10.5281/zenodo.22983889"><img src="https://img.shields.io/badge/Lean%204%20%C4%B0spatlar%C4%B1-v2%20(10%20Teorem)-024dad.svg?style=for-the-badge" alt="Lean 4 Doğrulama"></a>
   <a href="https://doi.org/10.5281/zenodo.22978460"><img src="https://img.shields.io/badge/Kara%20Delik-Zenodo%20Kayd%C4%B1%2022978460-7c3aed.svg?style=for-the-badge" alt="Kara Delik Page Eğrisi"></a>
@@ -419,10 +420,12 @@ answerr/
 @article{dagli2026mandelbrot,
   author  = {Volkan Da{\u{g}}l{\i} and Zerrin Da{\u{g}}l{\i} and Da{\u{g}}han Da{\u{g}}l{\i}},
   title   = {Mandelbrot Fractal Neural Synthesis: Zero-Storage Procedural Weight Derivation and Non-Linear Decision Boundaries},
-  journal = {Under review in Chaos, Solitons \& Fractals; arXiv:submit/8092292 [cs.NE]},
+  journal = {arXiv preprint arXiv:2609.33066 [cs.NE]},
   year    = {2026},
+  eprint  = {2609.33066},
+  archivePrefix = {arXiv},
   doi     = {10.5281/zenodo.22774934},
-  url     = {https://doi.org/10.5281/zenodo.22774934},
+  url     = {https://arxiv.org/abs/2609.33066},
   note    = {Zenodo v3.0: https://doi.org/10.5281/zenodo.22867037}
 }
 
