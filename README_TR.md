@@ -26,7 +26,7 @@
   <a href="https://doi.org/10.5281/zenodo.22978460"><img src="https://img.shields.io/badge/Kara%20Delik-Zenodo%20Kayd%C4%B1%2022978460-7c3aed.svg?style=for-the-badge" alt="Kara Delik Page Eğrisi"></a>
   <a href="https://epats.turkpatent.gov.tr"><img src="https://img.shields.io/badge/Patent%20Ba%C5%9Fvurusu-TR%202026%2F016633%20(Konnektom)-red.svg?style=for-the-badge" alt="TÜRKPATENT TR 2026/016633"></a>
   <a href="https://github.com/Lexovian/WerrSoma"><img src="https://img.shields.io/badge/WerrSoma-Tüm%20Beyin%20Konnektom-00f0ff.svg?style=for-the-badge" alt="WerrSoma Konnektom"></a>
-  <a href="https://doi.org/10.5281/zenodo.22996626"><img src="https://img.shields.io/badge/Konnektom%20DOI-10.5281%2Fzenodo.22996626-024dad.svg?style=for-the-badge" alt="WerrSoma Zenodo DOI"></a>
+  <a href="https://doi.org/10.5281/zenodo.22996625"><img src="https://img.shields.io/badge/Konnektom%20DOI-10.5281%2Fzenodo.22996625-024dad.svg?style=for-the-badge" alt="WerrSoma Zenodo DOI"></a>
   <a href="https://werrsoma.answerr.me/"><img src="https://img.shields.io/badge/Canlı%20Portal-werrsoma.answerr.me-00f0ff.svg?style=for-the-badge" alt="Lexovian Portalı"></a>
   <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow.svg?style=for-the-badge" alt="Hugging Face Dataset"></a>
   <a href="https://github.com/yh-yao/awesome-edge-ai-agents"><img src="https://img.shields.io/badge/Awesome-Edge%20AI%20Agents-blue.svg?style=for-the-badge" alt="Awesome Edge AI Agents"></a>
@@ -56,7 +56,7 @@
 1. **Sistem-2 Müzakereci Zeka (LLM / Bulut Zekası):** Doğal insan diyaloglarını ayrıştırır, operasyonel durum vektörlerini çıkarır, stratejik gerekçelendirme üretir ve üretime hazır kod blokları yazar. Google Gemini 2.5 Flash ve OpenAI uyumlu mimarilerle tam entegredir.
 2. **Sistem-1 Omurilik Refleks Yayı ([werr](https://github.com/pCwOrM/werr)):** Mandelbrot fraktal kaçış dinamiği sınırları ($\partial \mathcal{M}$) üzerinden **$< 0.5$ ms** içinde ve **0-Byte VRAM** ile anlık, güçlü tipli kararlar (`noul`, `choice`, `score`) üretir.
 3. **On-Chain EVM Karar Orakılı ([werracle](https://github.com/pCwOrM/werracle)):** Sistem-1 omurilik reflekslerini tek bir 32-bayt depolama slotunda (~20k gas) akıllı kontratlara genişleterek atomik flash-loan savunması ve dinamik komisyon yönetimi sağlar.
-4. **Biyo-Sentetik Nöromorfik Konnektom ([WerrSoma](https://github.com/Lexovian/WerrSoma)):** Princeton FlyWire tam *Drosophila* tüm-beyin konnektomunu (158.169 biyolojik nöron, 3.99M sinaps) in silico olarak `werr` ile birleştirir. Sub-4ms duyusal-motor uçuş refleks döngüleri, homeostatik biyokoruma ve sıfır VRAM nöromorfik otonomi sağlar ([DOI: 10.5281/zenodo.22996626](https://doi.org/10.5281/zenodo.22996626), [Canlı 3D Portal](https://werrsoma.answerr.me/)).
+4. **Biyo-Sentetik Nöromorfik Konnektom ([WerrSoma](https://github.com/Lexovian/WerrSoma)):** Princeton FlyWire tam *Drosophila* tüm-beyin konnektomunu (158.169 biyolojik nöron, 3.99M sinaps) `werr` ile birleştirir. Sub-4ms duyusal-motor uçuş refleks döngüleri, homeostatik biyokoruma ve sıfır VRAM nöromorfik otonomi sağlar ([DOI: 10.5281/zenodo.23072929](https://doi.org/10.5281/zenodo.23072929), Çatı: [10.5281/zenodo.22996625](https://doi.org/10.5281/zenodo.22996625), [Canlı 3D Portal](https://werrsoma.answerr.me/)).
 
 Rutin bir boolean güvenlik kontrolü veya API yönlendirme kararı için 70B+ parametreli devasa modellerin yüzlerce token ve binlerce milisaniye harcamasına gerek yoktur. **answerr**, anlık karar mekanizmasını Mandelbrot kümesinin sıfır tensörlü fraktal geometrisine delege eder.
 
@@ -485,14 +485,14 @@ answerr/
 }
 
 @article{dagli2026werrsoma,
-  title        = {Bio-Synthetic Neuromorphic Interfacing: In Silico Integration of the Princeton FlyWire Drosophila Whole-Brain Connectome (158K Neurons) with a Zero-Memory Fractal System-One Decision Engine (WERR)},
+  title        = {Bio-Synthetic Neuromorphic Interfacing: Integration of a Zero-Memory Fractal Decision Engine with the Whole-Brain Drosophila Melanogaster Connectome},
   author       = {Da{\u{g}}l{\i}, Da{\u{g}}han and Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin},
   journal      = {Zenodo Open Science Archive},
   year         = {2026},
-  month        = {September},
-  doi          = {10.5281/zenodo.22996626},
-  url          = {https://doi.org/10.5281/zenodo.22996626},
-  note         = {158.169 nöron, 3.99M sinaps. Sub-4ms refleks gecikmesi, 0 VRAM. TÜRKPATENT Başvuru: TR 2026/016633. Canlı 3D Portal: https://werrsoma.answerr.me/}
+  month        = {October},
+  doi          = {10.5281/zenodo.23072929},
+  url          = {https://doi.org/10.5281/zenodo.23072929},
+  note         = {158.262 nöron, 3.99M sinaps. Sub-4ms refleks gecikmesi, 0 VRAM. TÜRKPATENT Başvuru: TR 2026/016633. Çatı DOI: 10.5281/zenodo.22996625. Canlı 3D Portal: https://werrsoma.answerr.me/}
 }
 
 @software{dagli2026answerr,

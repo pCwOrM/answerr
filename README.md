@@ -26,7 +26,7 @@
   <a href="https://doi.org/10.5281/zenodo.22978460"><img src="https://img.shields.io/badge/Black%20Hole-Zenodo%20Record%2022978460-7c3aed.svg?style=for-the-badge" alt="Black Hole Page Curve"></a>
   <a href="https://epats.turkpatent.gov.tr"><img src="https://img.shields.io/badge/Patent%20Pending-TR%202026%2F016633%20(Connectome)-red.svg?style=for-the-badge" alt="TÜRKPATENT TR 2026/016633"></a>
   <a href="https://github.com/Lexovian/WerrSoma"><img src="https://img.shields.io/badge/WerrSoma-Whole--Brain%20Connectome-00f0ff.svg?style=for-the-badge" alt="WerrSoma Connectome"></a>
-  <a href="https://doi.org/10.5281/zenodo.22996626"><img src="https://img.shields.io/badge/Connectome%20DOI-10.5281%2Fzenodo.22996626-024dad.svg?style=for-the-badge" alt="WerrSoma Zenodo DOI"></a>
+  <a href="https://doi.org/10.5281/zenodo.22996625"><img src="https://img.shields.io/badge/Connectome%20DOI-10.5281%2Fzenodo.22996625-024dad.svg?style=for-the-badge" alt="WerrSoma Zenodo DOI"></a>
   <a href="https://werrsoma.answerr.me/"><img src="https://img.shields.io/badge/Live%20Portal-werrsoma.answerr.me-00f0ff.svg?style=for-the-badge" alt="Lexovian Portal"></a>
   <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow.svg?style=for-the-badge" alt="Hugging Face Dataset"></a>
   <a href="https://github.com/yh-yao/awesome-edge-ai-agents"><img src="https://img.shields.io/badge/Awesome-Edge%20AI%20Agents-blue.svg?style=for-the-badge" alt="Awesome Edge AI Agents"></a>
@@ -55,7 +55,7 @@
 1. **System-Two Deliberation (LLM / Cloud AI):** Ingests conversational dialogue, extracts operational state vectors, synthesizes strategic explanations, and generates production code. Integrates seamlessly with Google Gemini 2.5 Flash and OpenAI-compatible pipelines.
 2. **System-One Reflex Arc ([werr](https://github.com/pCwOrM/werr)):** Derives instant, strongly-typed decisions (`noul`, `choice`, `score`) in **$< 0.5$ ms** with **0 Bytes of VRAM** via Mandelbrot fractal escape boundary dynamics ($\partial \mathcal{M}$).
 3. **On-Chain EVM Decision Oracle ([werracle](https://github.com/pCwOrM/werracle)):** Extends System-One reflex decisions to Web3 smart contracts in a single 32-byte storage slot (~20k gas) for intra-block flash-loan defense and dynamic fee governance.
-4. **Bio-Synthetic Neuromorphic Connectome ([WerrSoma](https://github.com/Lexovian/WerrSoma)):** Integrates the complete Princeton FlyWire *Drosophila* whole-brain connectome (158,169 biological neurons, 3.99M synapses) with `werr` in silico. Enables sub-4ms sensory-motor flight reflex loops, homeostatic bioprotection, and zero-VRAM neuromorphic agency ([DOI: 10.5281/zenodo.22996626](https://doi.org/10.5281/zenodo.22996626), [Live 3D Portal](https://werrsoma.answerr.me/)).
+4. **Bio-Synthetic Neuromorphic Connectome ([WerrSoma](https://github.com/Lexovian/WerrSoma)):** Integrates the complete Princeton FlyWire *Drosophila* whole-brain connectome (158,169 biological neurons, 3.99M synapses) with `werr`. Enables sub-4ms sensory-motor flight reflex loops, homeostatic bioprotection, and zero-VRAM neuromorphic agency ([DOI: 10.5281/zenodo.23072929](https://doi.org/10.5281/zenodo.23072929), Concept: [10.5281/zenodo.22996625](https://doi.org/10.5281/zenodo.22996625), [Live 3D Portal](https://werrsoma.answerr.me/)).
 
 Instead of forcing heavy 70B+ parameter neural networks to spend thousands of milliseconds and hundreds of tokens evaluating routine boolean gates, routing conditions, or security checks, **answerr** delegates execution triage to the zero-tensor mathematical geometry of the Mandelbrot set.
 
@@ -487,14 +487,14 @@ The mathematical foundations and zero-storage procedural weight derivations powe
 }
 
 @article{dagli2026werrsoma,
-  title        = {Bio-Synthetic Neuromorphic Interfacing: In Silico Integration of the Princeton FlyWire Drosophila Whole-Brain Connectome (158K Neurons) with a Zero-Memory Fractal System-One Decision Engine (WERR)},
+  title        = {Bio-Synthetic Neuromorphic Interfacing: Integration of a Zero-Memory Fractal Decision Engine with the Whole-Brain Drosophila Melanogaster Connectome},
   author       = {Da{\u{g}}l{\i}, Da{\u{g}}han and Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin},
   journal      = {Zenodo Open Science Archive},
   year         = {2026},
-  month        = {September},
-  doi          = {10.5281/zenodo.22996626},
-  url          = {https://doi.org/10.5281/zenodo.22996626},
-  note         = {158,169 neurons, 3.99M synapses. Sub-4ms latency, zero VRAM. TÜRKPATENT Priority: TR 2026/016633. Live 3D Portal: https://werrsoma.answerr.me/}
+  month        = {October},
+  doi          = {10.5281/zenodo.23072929},
+  url          = {https://doi.org/10.5281/zenodo.23072929},
+  note         = {158,262 neurons, 3.99M synapses. Sub-4ms latency, zero VRAM. TÜRKPATENT Priority: TR 2026/016633. Concept DOI: 10.5281/zenodo.22996625. Live 3D Portal: https://werrsoma.answerr.me/}
 }
 
 @software{dagli2026answerr,
