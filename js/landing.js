@@ -6,7 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // Theme Persistence & Toggle
-  const savedTheme = localStorage.getItem('answerr_theme') || 'dark';
+  const savedTheme = localStorage.getItem('answerr-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
   const btnLandingTheme = document.getElementById('btn-landing-theme');
   if (btnLandingTheme) {
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
       const nextTheme = curTheme === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', nextTheme);
-      localStorage.setItem('answerr_theme', nextTheme);
+      localStorage.setItem('answerr-theme', nextTheme);
       btnLandingTheme.innerHTML = nextTheme === 'dark' ? '🌙' : '☀️';
     });
   }
