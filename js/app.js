@@ -429,11 +429,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('answerr_theme', newTheme);
+      localStorage.setItem('answerr-theme', newTheme);
       btnThemeToggleEl.innerHTML = newTheme === 'dark' ? '🌙' : '☀️';
     });
 
-    const savedTheme = localStorage.getItem('answerr_theme') || 'dark';
+    const savedTheme = localStorage.getItem('answerr-theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
     btnThemeToggleEl.innerHTML = savedTheme === 'dark' ? '🌙' : '☀️';
   }

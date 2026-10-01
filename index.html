@@ -4,6 +4,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (() => {
+      const themeKey = 'answerr-theme';
+      const legacyThemeKey = 'answerr_theme';
+      const savedTheme =
+        localStorage.getItem(themeKey) ||
+        localStorage.getItem(legacyThemeKey) ||
+        'dark';
+
+      const theme = savedTheme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+
+      if (!localStorage.getItem(themeKey) && localStorage.getItem(legacyThemeKey)) {
+        localStorage.setItem(themeKey, theme);
+      }
+    })();
+  </script>
   <title>answerr | The Zero-Latency Reflex AI (answerr.me)</title>
   <meta name="description"
     content="A.N.S.W.E.R.R. (Adaptive Non-tensor Signal Wave & Error Reflex Resonator): werr 0-Byte VRAM fraktal omurilik karar motoru. Deterministik, sıfır halüsinasyon ve mikrosaniyelik refleks.">
