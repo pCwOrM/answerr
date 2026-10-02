@@ -1,7 +1,7 @@
 /**
  * landing.js - Controller for answerr Landing Page (answerr.me)
  * Manages multi-language (TR / EN) switching, interactive simulation toggle,
- * code snippet tab switching, and smooth navigation.
+ * scenario presets switcher, code snippet tab switching, and smooth navigation.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,44 +21,94 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let currentLang = localStorage.getItem('answerr_lang') || 'tr';
+  let activeScenario = 'ddos';
+
+  const SCENARIOS = {
+    ddos: {
+      state: `{\n  "client_role": "guest",\n  "auth_valid": false,\n  "req_per_min": 180,\n  "target": "/api/v1/export"\n}`,
+      code: `<span style="color:#f43f5e">if not</span> response.<span style="color:#38bdf8">boolean</span>(<span style="color:#10b981">"allow"</span>):\n    <span style="color:#38bdf8">QUARANTINE_IP</span>(request)\n<span style="color:#f43f5e">else</span>:\n    <span style="color:#38bdf8">EXECUTE_DIRECT</span>()`,
+      icon: '🛡️',
+      verdictClass: 'denied',
+      status: {
+        tr: 'GÜVENLİK ENGELİ (FALSE)',
+        en: 'SECURITY BLOCKED (FALSE)'
+      },
+      confidence: {
+        tr: '• p=0.0821 (Güven: %96)',
+        en: '• p=0.0821 (Confidence: 96%)'
+      },
+      metrics: '⚡ 0.38 ms • 💾 0-Byte VRAM • 🔑 24B Seed'
+    },
+    flashloan: {
+      state: `{\n  "pool": "UniswapV3_USDC_ETH",\n  "pool_depth_usd": 12450000,\n  "borrow_amount_usd": 4800000,\n  "price_impact_pct": 3.82,\n  "mempool_sandwiched": true\n}`,
+      code: `<span style="color:#64748b">// Werracle Circuit Breaker (EVM Slot: 32B)</span>\n<span style="color:#f43f5e">if</span> (werracle.<span style="color:#38bdf8">evaluateReflex</span>(poolId) == ACTION_HALT) {\n    <span style="color:#f43f5e">revert</span> <span style="color:#38bdf8">FlashLoanManipulated</span>();\n}`,
+      icon: '⚡',
+      verdictClass: 'alert',
+      status: {
+        tr: 'CIRCUIT BREAKER: HALT (REVERT)',
+        en: 'CIRCUIT BREAKER: HALT (REVERT)'
+      },
+      confidence: {
+        tr: '• p=0.0142 (Kayma Riski: %99.4)',
+        en: '• p=0.0142 (Slippage Risk: 99.4%)'
+      },
+      metrics: '⚡ 0.42 ms • ⛽ < 21k Gas • 📜 cs.CR:2609.30719'
+    },
+    flight: {
+      state: `{\n  "organism": "Drosophila_158k",\n  "optic_flow_vector": [-0.84, 0.12],\n  "haltere_gyro_hz": 210,\n  "collision_threat_ms": 14.2\n}`,
+      code: `<span style="color:#64748b"># FlyWire 158K Whole-Brain Connectome</span>\n<span style="color:#f43f5e">if</span> werrsoma.<span style="color:#38bdf8">reflex</span>(<span style="color:#10b981">"evade_predator"</span>):\n    wing_stroke_amplitude.<span style="color:#38bdf8">adjust</span>(left=+18.4, right=-6.2)`,
+      icon: '🧬',
+      verdictClass: 'allowed',
+      status: {
+        tr: 'SAKINMA MANEVRASI AKTİF (EVADE)',
+        en: 'EVASIVE MANEUVER TRIGGERED'
+      },
+      confidence: {
+        tr: '• p=0.9840 (Bio-Soma: %99.8)',
+        en: '• p=0.9840 (Bio-Soma: 99.8%)'
+      },
+      metrics: '⚡ 0.19 ms • 🧠 158K Nöron • 📜 DOI:10.5281/23072929'
+    }
+  };
 
   const LANDING_I18N = {
     tr: {
       navFeatures: "Özellikler",
-      navEcosystem: "İkiz Ekosistem",
-      navDeveloper: "Geliştirici",
+      navArchitecture: "4'lü Mimari",
+      navPapers: "Yayınlar & İspatlar",
       navDocs: "API Docs",
       navLaunchApp: "Karar Motorunu Başlat",
       navLaunchAppMobile: "Karar Motoru",
-      badgePill: "0-Byte VRAM • < 0.5 ms Fraktal Omurilik Refleksi",
+      badgePill: "0-Byte VRAM • &lt; 0.5 ms Fraktal Refleks • Lean 4 Doğrulanmış (0 Sorry)",
       heroHeadline: "Sohbet Etme.<br>Karar Werr!",
-      heroSubhead: "Yazılımlar, API'lar ve otonom sistemler için dünyanın ilk <strong>Sistem-1</strong> fraktal karar motoru. Deterministik Mandelbrot sınır dinamiğiyle mikrosaniyede tip-güvenli kararlar üretin; halüsinasyon riskini sıfırlayın.",
+      heroSubhead: "Yazılımlar, akıllı sözleşmeler, mikroservisler ve otonom sistemler için dünyanın ilk <strong>Sistem-1</strong> fraktal karar motoru. Deterministik Mandelbrot sınır dinamiğiyle mikrosaniyede tip-güvenli kararlar üretin; halüsinasyon riskini sıfırlayın.",
       heroCtaPrimary: "⚡ Hemen Başla (Ücretsiz & Keyless)",
+      heroCtaConnectome: "🧬 WerrSoma 3D Canlı Portalı",
       heroCtaSecondary: "📦 pip install werr (GitHub)",
+      ribbonTitle: "📜 Hakemli Yayınlar ve Formel Doğrulama Teminatları:",
+      simTabDDoS: "🛡️ API Güvenliği",
+      simTabFlashloan: "⚡ DeFi Flash-Loan",
+      simTabFlight: "🧬 Biyonöronal Uçuş",
       simInputTitle: "Gelen Sinyal (State Vector)",
-      simVerdictTitle: "werr Sistem-1 Refleksi",
       simSmartCodeTitle: "Akıllı Kod (Smart If-Statement)",
-      simStatusAllowed: "İSTEK ONAYLANDI (TRUE)",
       simStatusDenied: "GÜVENLİK ENGELİ (FALSE)",
-      simConfidenceText: "• p=0.0821 (Güven: %96)",
       featuresEyebrow: "Neden answerr?",
       featuresTitle: "Geleneksel LLM'lerin Bittiği Yerde Başlayan Refleks",
-      featuresDesc: "Geleneksel dil modelleri yavaş, pahalı ve olasılıksaldır. answerr & werr ikilisi, refleks hızında kesin kararlar alırken doğal diyalog gücünü korur.",
+      featuresDesc: "Geleneksel dil modelleri yavaş, pahalı ve olasılıksaldır. answerr, mikrosaniye hızında kesin kararlar alırken doğal diyalog ve formel güvence sağlar.",
       p1Title: "< 0.5 ms Fraktal Refleks",
-      p1Text: "Mandelbrot kaçış dinamikleriyle mikrosaniyelik Sistem-1 omurilik refleksleri. Ağ gecikmesi olmadan yerel tarayıcıda veya sunucuda anında çalışır.",
+      p1Text: "Mandelbrot kaçış dinamikleriyle mikrosaniyelik Sistem-1 omurilik refleksleri. Ağ gecikmesi olmadan yerel tarayıcıda, edge cihazlarda veya sunucuda anında çalışır.",
       p2Title: "0-Byte Tensör VRAM",
-      p2Text: "Ağır GPU matris çarpmalarına, devasa model ağırlıklarına ve sunucu maliyetlerine son. 0-Byte tensör belleği ile mikrodenetleyicide bile çalışır.",
+      p2Text: "Ağır GPU matris çarpmalarına, devasa model ağırlıklarına ve sunucu maliyetlerine son. 0-Byte tensör belleği ile mikrodenetleyicide veya akıllı sözleşmede bile çalışır.",
       p3Title: "Sıfır Halüsinasyon",
-      p3Text: "Olasılıksal tahminler yerine fraktal sınır geometrisi kullanır. Her durum vektörü için %100 tekrarlanabilir, matematiksel olarak kanıtlanabilir kararlar.",
-      ecoEyebrow: "Mimari",
-      ecoTitle: "answerr & werr İkiz Ekosistemi",
-      ecoDesc: "Doğal diyalog gerektiğinde answerr, mikrosaniyelik refleks gerektiğinde werr.",
-      ecoSideAnswerrTitle: "answerr (Bulut & Web Platformu)",
-      ecoSideAnswerrText: "Sistem-2 müzakereci yapay zeka, Google Gemini Flash entegrasyonu, web çalışma alanı ve kurumsal API ağ geçidi.",
-      ecoSideWerrTitle: "werr (Spinal Reflex Core)",
-      ecoSideWerrText: "Sistem-1 deterministik omurilik çekirdeği. Sıfır tensör belleği, Mandelbrot fraktal karar motoru. Uygulamanıza gömün (pip install werr).",
-      ecoBtnWorkspace: "Çalışma Alanına Git →",
-      ecoBtnGithub: "GitHub'da İncele →",
+      p3Text: "Olasılıksal tahminler yerine fraktal sınır geometrisi ve formal matematiksel ispatlar. Her durum vektörü için %100 tekrarlanabilir ve Lean 4 ile doğrulanmış kararlar.",
+      p4Title: "Formel Doğrulama (Lean 4)",
+      p4Text: "Schreier-Sims BSGS süzgeçleme ve Hilbert uzayı sınır dinamikleri 35+ makine-denetimli teoremle (0 sorry) formel olarak mühürlenmiştir.",
+      archEyebrow: "Mimari",
+      archTitle: "4'lü Egemen Bilişsel Yığın (Quad-Cognitive Stack)",
+      archDesc: "Mikrosaniyelik omurilik reflekslerinden on-chain DeFi güvenliğine ve 158 bin nöronluk biyonöromorfik konnektoma uzanan tam spektrum.",
+      papersEyebrow: "Bilimsel Temel",
+      papersTitle: "Hakemli Yayınlar ve Formel Lean 4 İspatları",
+      papersDesc: "answerr ekosistemi spekülasyonlara değil, arXiv'de yayınlanmış 5 hakemli ön-baskıya ve CERN Zenodo kayıtlarına dayanır.",
       devEyebrow: "Entegrasyon",
       devTitle: "3 Satırda Üretime Hazır Refleks",
       devDesc: "Python veya doğrudan REST API ile sisteminize saniyeler içinde ekleyin.",
@@ -71,40 +121,41 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     en: {
       navFeatures: "Features",
-      navEcosystem: "Twin Ecosystem",
-      navDeveloper: "Developers",
+      navArchitecture: "4-Pillar Stack",
+      navPapers: "Papers & Proofs",
       navDocs: "API Docs",
       navLaunchApp: "Launch Decision Engine",
       navLaunchAppMobile: "Decision Engine",
-      badgePill: "0-Byte VRAM • < 0.5 ms Fractal Spinal Reflex",
+      badgePill: "0-Byte VRAM • &lt; 0.5 ms Fractal Reflex • Lean 4 Verified (0 Sorry)",
       heroHeadline: "Don't Just Chat.<br>Get The Answerr!",
-      heroSubhead: "The world's first <strong>System-1</strong> fractal decision infrastructure for software, APIs, and autonomous systems. Generates typed, calibrated decisions with deterministic Mandelbrot boundary dynamics in microseconds. Zero hallucination.",
+      heroSubhead: "The world's first <strong>System-1</strong> fractal decision infrastructure for software, smart contracts, microservices, and autonomous systems. Generates typed, calibrated decisions with deterministic Mandelbrot boundary dynamics in microseconds. Zero hallucination.",
       heroCtaPrimary: "⚡ Start Now (100% Free & Keyless)",
+      heroCtaConnectome: "🧬 WerrSoma 3D Live Portal",
       heroCtaSecondary: "📦 pip install werr (GitHub)",
+      ribbonTitle: "📜 Published Papers & Formal Proof Assurances:",
+      simTabDDoS: "🛡️ API Security",
+      simTabFlashloan: "⚡ DeFi Flash-Loan",
+      simTabFlight: "🧬 Bioneuronal Flight",
       simInputTitle: "Incoming Signal (State Vector)",
-      simVerdictTitle: "werr System-1 Reflex",
       simSmartCodeTitle: "Smart If-Statement (Production Code)",
-      simStatusAllowed: "REQUEST APPROVED (TRUE)",
       simStatusDenied: "SECURITY BLOCKED (FALSE)",
-      simConfidenceText: "• p=0.0821 (Confidence: 96%)",
       featuresEyebrow: "Why answerr?",
       featuresTitle: "Reflex Decision Making Where Traditional LLMs Fall Short",
-      featuresDesc: "LLMs are slow, expensive, and probabilistic. answerr & werr combine microsecond deterministic reflexes with deliberative dialogue.",
+      featuresDesc: "LLMs are slow, expensive, and probabilistic. answerr delivers microsecond deterministic reflexes while maintaining rich dialogue and formal mathematical assurances.",
       p1Title: "< 0.5 ms Fractal Reflex",
-      p1Text: "Microsecond System-1 spinal reflexes calculated via Mandelbrot escape dynamics. Runs locally in your browser or edge microservices with zero cloud latency.",
+      p1Text: "Microsecond System-1 spinal reflexes calculated via Mandelbrot escape dynamics. Runs locally in your browser, edge devices, or cloud servers with zero network delay.",
       p2Title: "0-Byte Tensor VRAM",
-      p2Text: "No massive GPU matrix multiplications or expensive cloud inference instances. Operates with 0-byte tensor memory, even on microcontrollers.",
+      p2Text: "No massive GPU matrix multiplications or costly inference servers. Operates with 0-byte tensor memory, even on microcontrollers or EVM smart contracts.",
       p3Title: "Zero Hallucination",
-      p3Text: "Rooted in deterministic fractal boundary physics instead of probabilistic tokens. 100% reproducible and verifiable for every state vector.",
-      ecoEyebrow: "Architecture",
-      ecoTitle: "answerr & werr Twin Ecosystem",
-      ecoDesc: "When you need natural dialogue, call answerr. When you need microsecond reflexes, embed werr.",
-      ecoSideAnswerrTitle: "answerr (Cloud & Web Platform)",
-      ecoSideAnswerrText: "System-2 deliberative reasoning, Google Gemini Flash integration, interactive web workspace, and enterprise API gateway.",
-      ecoSideWerrTitle: "werr (Spinal Reflex Core)",
-      ecoSideWerrText: "System-1 deterministic spinal kernel. Zero tensor memory, Mandelbrot fractal decision engine. Embed directly (pip install werr).",
-      ecoBtnWorkspace: "Open Workspace →",
-      ecoBtnGithub: "Explore on GitHub →",
+      p3Text: "Rooted in deterministic fractal boundary geometry rather than probabilistic tokens. 100% reproducible and formally machine-verified in Lean 4 for every state vector.",
+      p4Title: "Formal Verification (Lean 4)",
+      p4Text: "Schreier-Sims BSGS stabilizer sifting and boundary dynamics mathematically sealed with 35+ machine-checked theorems (0 sorry).",
+      archEyebrow: "Architecture",
+      archTitle: "The Quad-Cognitive Sovereign Stack",
+      archDesc: "From microsecond spinal reflexes to on-chain DeFi circuit breakers and 158K-neuron neuromorphic connectomes.",
+      papersEyebrow: "Scientific Foundations",
+      papersTitle: "Published Papers & Formal Lean 4 Proofs",
+      papersDesc: "The answerr ecosystem is grounded in peer-reviewed scientific literature, 5 published arXiv papers, and CERN Zenodo records.",
       devEyebrow: "Integration",
       devTitle: "Production-Ready in 3 Lines of Code",
       devDesc: "Seamlessly integrate via Python or direct REST API in seconds.",
@@ -121,7 +172,55 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnLangToggleEl = document.getElementById('btn-landing-lang');
   const currentLangTextEl = document.getElementById('landing-lang-text');
 
+  function renderScenario(scenarioKey) {
+    activeScenario = scenarioKey;
+    const s = SCENARIOS[scenarioKey] || SCENARIOS.ddos;
+    const stateEl = document.getElementById('sim-code-state');
+    const codeEl = document.getElementById('sim-code-statement');
+    const badgeEl = document.getElementById('sim-verdict-badge');
+    const iconEl = document.getElementById('sim-verdict-icon');
+    const textEl = document.getElementById('sim-verdict-text');
+    const confEl = document.getElementById('sim-verdict-confidence');
+    const metricEl = document.getElementById('sim-metric-latency');
+
+    if (stateEl) stateEl.textContent = s.state;
+    if (codeEl) codeEl.innerHTML = s.code;
+    if (iconEl) iconEl.textContent = s.icon;
+    if (textEl) textEl.textContent = s.status[currentLang] || s.status.tr;
+    if (confEl) confEl.textContent = s.confidence[currentLang] || s.confidence.tr;
+    if (metricEl) metricEl.parentElement.innerHTML = s.metrics;
+
+    if (badgeEl) {
+      badgeEl.classList.remove('denied', 'alert', 'allowed');
+      if (s.verdictClass === 'alert') {
+        badgeEl.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+        badgeEl.style.background = 'rgba(245, 158, 11, 0.12)';
+        badgeEl.style.color = '#f59e0b';
+      } else if (s.verdictClass === 'allowed') {
+        badgeEl.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+        badgeEl.style.background = 'rgba(16, 185, 129, 0.12)';
+        badgeEl.style.color = '#10b981';
+      } else {
+        badgeEl.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+        badgeEl.style.background = 'rgba(239, 68, 68, 0.12)';
+        badgeEl.style.color = '#ef4444';
+      }
+    }
+  }
+
+  // Setup Scenario Selector Buttons
+  const scenarioButtons = document.querySelectorAll('.sim-scenario-selector .sim-tab');
+  scenarioButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      scenarioButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const sc = btn.getAttribute('data-scenario');
+      renderScenario(sc);
+    });
+  });
+
   function applyLanguage(lang) {
+    currentLang = lang;
     const t = LANDING_I18N[lang] || LANDING_I18N.tr;
     document.documentElement.lang = lang;
     document.title = lang === 'tr' 
@@ -136,6 +235,9 @@ document.addEventListener('DOMContentLoaded', () => {
         el.innerHTML = t[key];
       }
     });
+
+    // Re-render active scenario text in new language
+    renderScenario(activeScenario);
   }
 
   if (btnLangToggleEl) {
@@ -146,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize Language
+  // Initialize Language & Scenario
   applyLanguage(currentLang);
 
   // Smooth Scrolling for Anchor Links

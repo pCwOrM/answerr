@@ -1,6 +1,7 @@
 /**
  * presets.js - Curated System-One / System-Two Scenario Templates
  * for answerr (answerr.me)
+ * Updated with DeFi Flash-Loan, Drosophila Neuromorphic Connectome & Autonomous Flight
  */
 
 const SCENARIO_PRESETS = [
@@ -38,6 +39,82 @@ const SCENARIO_PRESETS = [
         falseVerdict: 'DENIED (FALSE)',
         trueAction: 'Admin credentials and session parameters verified. Request executed immediately in production pipeline.',
         falseAction: 'Authorization criteria not met. Operation aborted.'
+      }
+    }
+  },
+  {
+    id: 'defi-flashloan-werracle',
+    category: 'DeFi & Web3',
+    categoryTr: 'DeFi & Web3',
+    icon: '⚡',
+    title: 'Werracle DeFi Flash-Loan Shield',
+    titleTr: 'Werracle DeFi Flash-Loan Kalkanı',
+    prompt: 'Uniswap V3 USDC/ETH havuzunda 4.8M USD borçlanma isteği, havuz derinliği 12.45M USD, anlık fiyat kayması %3.82, mempool sandviç atağı şüphesi. Flash-loan işlemi askıya alınsın mı?',
+    promptEn: 'Uniswap V3 USDC/ETH pool 4.8M USD borrow, pool depth 12.45M USD, slippage impact 3.82%, mempool sandwich risk. Should flash-loan be halted?',
+    state: {
+      pool: 'UniswapV3_USDC_ETH',
+      pool_depth_usd: 12450000,
+      borrow_amount_usd: 4800000,
+      price_impact_pct: 3.82,
+      mempool_sandwiched: true
+    },
+    question: {
+      key: 'halt_flashloan',
+      type: 'noul',
+      instructionsTr: 'Flash-loan işlemi güvenlik devre kesicisi ile askıya alınsın mı?',
+      instructionsEn: 'Should flash-loan transaction be halted via circuit breaker?',
+      threshold: 0.5
+    },
+    interpretation: {
+      tr: {
+        trueVerdict: 'CIRCUIT BREAKER: HALT (REVERT)',
+        falseVerdict: 'İŞLEM ONAYLANDI (PASS)',
+        trueAction: 'Werracle 32-bayt intra-block orakıl refleksi (cs.CR:2609.30719): Ani likidite boşalması ve sandviç anomalisi saptandı. İşlem EVM düzeyinde revert edildi.',
+        falseAction: 'Likidite parametreleri ve slippage toleransı güvenli aralıkta; işlem yürütülüyor.'
+      },
+      en: {
+        trueVerdict: 'CIRCUIT BREAKER: HALT (REVERT)',
+        falseVerdict: 'TRANSACTION APPROVED (PASS)',
+        trueAction: 'Werracle 32-byte intra-block oracle reflex (cs.CR:2609.30719): Sudden liquidity drain & sandwich anomaly detected. Reverted at EVM level.',
+        falseAction: 'Liquidity parameters and slippage tolerance within safe bounds; transaction executed.'
+      }
+    }
+  },
+  {
+    id: 'werrsoma-connectome-evade',
+    category: 'Neuromorphic AI',
+    categoryTr: 'Biyonöromorfik AI',
+    icon: '🧬',
+    title: 'WerrSoma 158K Whole-Brain Connectome',
+    titleTr: 'WerrSoma 158K Konnektom Uçuş Refleksi',
+    prompt: 'Drosophila 158.000 nöron ve 3.99M sinaps konnektomu: optik akış vektörü [-0.84, 0.12], haltere jiroskop frekansı 210 Hz, yaklaşan çarpışma süresi 14.2 ms. Sakınma manevrası tetiklensin mi?',
+    promptEn: 'Drosophila 158K neuron & 3.99M synapse connectome: optic flow [-0.84, 0.12], haltere gyro 210 Hz, collision threat in 14.2 ms. Trigger evasive maneuver?',
+    state: {
+      organism: 'Drosophila_158k',
+      optic_flow_vector_x: -0.84,
+      optic_flow_vector_y: 0.12,
+      haltere_gyro_hz: 210,
+      collision_threat_ms: 14.2
+    },
+    question: {
+      key: 'trigger_evade',
+      type: 'noul',
+      instructionsTr: 'Sakınma manevrası tetiklensin mi?',
+      instructionsEn: 'Should evasive flight maneuver be triggered?',
+      threshold: 0.5
+    },
+    interpretation: {
+      tr: {
+        trueVerdict: 'SAKINMA MANEVRASI AKTİF (EVADE)',
+        falseVerdict: 'ROTA SABİT (CRUISE)',
+        trueAction: 'Princeton FlyWire 158K konnektom (DOI: 10.5281/zenodo.23072929): Dev nöron aksonları ve kanat vuruş genliği ayarlandı. 0.19 ms içinde kaçış manevrası tamamlandı.',
+        falseAction: 'Optik akış stabilitesi olağan; seyir rotasında devam ediliyor.'
+      },
+      en: {
+        trueVerdict: 'EVASIVE MANEUVER TRIGGERED',
+        falseVerdict: 'CRUISE STEADY',
+        trueAction: 'Princeton FlyWire 158K connectome (DOI: 10.5281/zenodo.23072929): Giant fiber axons and wing stroke amplitudes adjusted. Evaded within 0.19 ms.',
+        falseAction: 'Optic flow stable; cruise vector maintained.'
       }
     }
   },

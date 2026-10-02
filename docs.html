@@ -58,12 +58,12 @@
       <nav aria-label="Ana Menü">
         <ul class="landing-nav-links">
           <li><a href="index.html#features" class="landing-nav-link" data-i18n="navFeatures">Özellikler</a></li>
-          <li><a href="index.html#ecosystem" class="landing-nav-link" data-i18n="navEcosystem">İkiz Ekosistem</a></li>
+          <li><a href="index.html#architecture" class="landing-nav-link" data-i18n="navArchitecture">4'lü Mimari</a></li>
+          <li><a href="index.html#papers" class="landing-nav-link" data-i18n="navPapers">Yayınlar & İspatlar</a></li>
           <li><a href="docs.html" class="landing-nav-link active" data-i18n="navDocs">API Docs</a></li>
-          <li><a href="https://pcworm.github.io/mandelbrot-fractal-neural-synthesis/benchmarks.html" class="landing-nav-link" style="color: #10b981; font-weight: 700;">⚔️ Benchmarks</a></li>
-          <li><a href="https://github.com/pCwOrM/answerr" target="_blank" rel="noopener" class="landing-nav-link">GitHub (answerr)</a></li>
-          <li><a href="https://github.com/pCwOrM/werr" target="_blank" rel="noopener" class="landing-nav-link">GitHub (werr)</a></li>
-          <li><a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis" target="_blank" rel="noopener" class="landing-nav-link">Base Research</a></li>
+          <li><a href="https://werrsoma.answerr.me" target="_blank" rel="noopener" class="landing-nav-link" style="color: #a78bfa; font-weight: 700;">🧬 WerrSoma</a></li>
+          <li><a href="https://pcworm.github.io/werracle/" target="_blank" rel="noopener" class="landing-nav-link" style="color: #f59e0b; font-weight: 700;">⚡ Werracle</a></li>
+          <li><a href="https://pcworm.github.io/mandelbrot-fractal-neural-synthesis/benchmarks.html" target="_blank" rel="noopener" class="landing-nav-link" style="color: #10b981; font-weight: 700;">⚔️ Benchmarks</a></li>
         </ul>
       </nav>
 
@@ -115,6 +115,15 @@
           <li><a href="#sdk-python" class="docs-nav-item">Python (werr SDK)</a></li>
           <li><a href="#sdk-curl" class="docs-nav-item">cURL & REST İstemcileri</a></li>
           <li><a href="#sdk-openai" class="docs-nav-item">OpenAI SDK Uyumluluğu</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">BİLİMSEL İSPATLAR & YAYINLAR</div>
+        <ul class="docs-nav-items">
+          <li><a href="#scientific-foundation" class="docs-nav-item">Lean 4 Formel İspatları (0 Sorry)</a></li>
+          <li><a href="#arxiv-publications" class="docs-nav-item">arXiv 5 Hakemli Ön-Baskı</a></li>
+          <li><a href="#connectome-flywire" class="docs-nav-item">WerrSoma 158K Konnektom</a></li>
         </ul>
       </div>
     </aside>
@@ -225,7 +234,8 @@
           <pre><code>{
   "status": "healthy",
   "engine": "werr-reflex",
-  "version": "0.3.0",
+  "version": "0.5.1",
+  "formal_verification": "Lean 4 Verified (0 sorry)",
   "core_architecture": "werr (Adaptive Non-tensor Signal Wave & Error Reflex Resonator)",
   "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
   "vram_bytes": 0,
@@ -332,7 +342,8 @@
     "engine_latency_ms": 0.177,
     "vram_bytes": 0,
     "memory_seed_bytes": 24,
-    "engine": "werr-reflex-0.3.0"
+    "engine": "werr-reflex-0.5.1",
+    "formal_verification": "Lean 4 (0 sorry)"
   }
 }</code></pre>
         </div>
@@ -488,7 +499,8 @@ print("Gecikme:", data["telemetry"]["engine_latency_ms"], "ms")</code></pre>
     "total_request_latency_ms": 2.14,
     "vram_bytes": 0,
     "memory_seed_bytes": 24,
-    "engine": "werr-reflex-0.3.0"
+    "engine": "werr-reflex-0.5.1",
+    "formal_verification": "Lean 4 (0 sorry)"
   }
 }</code></pre>
         </div>
@@ -596,6 +608,76 @@ questions = {
 verdict = engine.decide(state=state, questions=questions)
 print("Sonuç:", verdict.answers["permit"].boolean)
 print("Aksiyon:", verdict.answers["action"].choice)</code></pre>
+        </div>
+      </section>
+
+      <!-- Section 5: Scientific Foundation & Formal Proofs -->
+      <section id="scientific-foundation" class="docs-section">
+        <div class="docs-eyebrow">MATHEMATICAL RIGOR & LEAN 4 VERIFICATION</div>
+        <h2 class="docs-section-title">Lean 4 Formel İspatları (0 Sorry)</h2>
+        <p class="docs-lead">
+          answerr ve werr karar motorları, olasılıksal varsayımlarla değil; makine tarafından denetlenmiş 
+          <strong>35+ Lean 4 teoremi</strong> ile matematiksel olarak ispatlanmış Hilbert uzayı sınır dinamiklerine dayanır.
+        </p>
+
+        <div style="background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.25); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 2rem;">
+          <h4 style="color:var(--cyan); margin-top:0; margin-bottom:0.5rem;">📜 Teorem Teminatları:</h4>
+          <ul style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7; padding-left:1.25rem;">
+            <li><strong>Hilbert Uzayı Determinizmi:</strong> <code>HilbertBoundarySpace.lean</code> — Deterministik faz geçişleri ve manifold kararlılığı.</li>
+            <li><strong>Schreier-Sims BSGS Süzgeci:</strong> <code>BSGS.lean</code> — Simetri stabilizatör zincirleri ve permütasyon süzgeci (35+ teorem, 0 sorry).</li>
+            <li><strong>0-Byte Tensör Depolama:</strong> Parametre ağırlık tensörü saklamadan, sadece 24-baytlık Mandelbrot tohumundan türetilebilirlik.</li>
+          </ul>
+        </div>
+
+        <h2 class="docs-section-title" id="arxiv-publications">arXiv Hakemli Ön-Baskılar</h2>
+        <p>
+          Ekosistemimizin temelini oluşturan ve arXiv'de yayınlanan 5 resmi araştırma:
+        </p>
+
+        <div class="docs-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+          <div class="stat-card" style="text-align:left; padding:1.2rem;">
+            <div style="font-size:0.75rem; color:#f43f5e; font-weight:700; margin-bottom:0.25rem;">cs.NE • arXiv:2609.25498</div>
+            <a href="https://arxiv.org/abs/2609.25498" target="_blank" rel="noopener" style="font-weight:700; color:var(--text-main); text-decoration:none; font-size:0.95rem; display:block; margin-bottom:0.4rem;">Universal Fractal Natural Language Decision Map</a>
+            <div style="font-size:0.8rem; color:var(--text-secondary);">Real-Time Edge Triage Across Heterogeneous Domains.</div>
+          </div>
+
+          <div class="stat-card" style="text-align:left; padding:1.2rem;">
+            <div style="font-size:0.75rem; color:#38bdf8; font-weight:700; margin-bottom:0.25rem;">cs.LG • arXiv:2609.33066</div>
+            <a href="https://arxiv.org/abs/2609.33066" target="_blank" rel="noopener" style="font-weight:700; color:var(--text-main); text-decoration:none; font-size:0.95rem; display:block; margin-bottom:0.4rem;">Zero-Storage Procedural Neural Synthesis</a>
+            <div style="font-size:0.8rem; color:var(--text-secondary);">Formal Verification in Lean 4 and Bare-Metal Gauntlet Validation.</div>
+          </div>
+
+          <div class="stat-card" style="text-align:left; padding:1.2rem;">
+            <div style="font-size:0.75rem; color:#f59e0b; font-weight:700; margin-bottom:0.25rem;">cs.CR • arXiv:2609.30719</div>
+            <a href="https://arxiv.org/abs/2609.30719" target="_blank" rel="noopener" style="font-weight:700; color:var(--text-main); text-decoration:none; font-size:0.95rem; display:block; margin-bottom:0.4rem;">Werracle: Sub-Cent Intra-Block Reflex Oracles</a>
+            <div style="font-size:0.8rem; color:var(--text-secondary);">Flash-Loan Circuit Breakers for EVM Smart Contracts (32-byte slot).</div>
+          </div>
+
+          <div class="stat-card" style="text-align:left; padding:1.2rem;">
+            <div style="font-size:0.75rem; color:#a78bfa; font-weight:700; margin-bottom:0.25rem;">cs.NE • arXiv:2609.30115</div>
+            <a href="https://arxiv.org/abs/2609.30115" target="_blank" rel="noopener" style="font-weight:700; color:var(--text-main); text-decoration:none; font-size:0.95rem; display:block; margin-bottom:0.4rem;">Orbital Error Dynamics</a>
+            <div style="font-size:0.8rem; color:var(--text-secondary);">Self-Organized Criticality, Ephemeral Parameter Resonance & Non-Linear Ontologies.</div>
+          </div>
+
+          <div class="stat-card" style="text-align:left; padding:1.2rem;">
+            <div style="font-size:0.75rem; color:#10b981; font-weight:700; margin-bottom:0.25rem;">cs.LO • arXiv:2609.38492</div>
+            <a href="https://arxiv.org/abs/2609.38492" target="_blank" rel="noopener" style="font-weight:700; color:var(--text-main); text-decoration:none; font-size:0.95rem; display:block; margin-bottom:0.4rem;">Computational Group Theory in Lean 4</a>
+            <div style="font-size:0.8rem; color:var(--text-secondary);">Operational Schreier-Sims Stabilizer Chains, BSGS Sifting & Backtrack Partitions.</div>
+          </div>
+        </div>
+
+        <h2 class="docs-section-title" id="connectome-flywire">WerrSoma 158K Nöron Biyonöromorfik Konnektom</h2>
+        <p>
+          Princeton FlyWire tam beyin konnektomu (158.000 nöron ve 3.990.000 kimyasal sinaps), CERN Zenodo üzerinde açık veri seti olarak yayımlanmıştır:
+        </p>
+        <div style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.3); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 2rem;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+            <div>
+              <div style="font-weight:700; color:#10b981; font-size:1rem;">🧬 WerrSoma Drosophila Connectome (Zenodo DOI)</div>
+              <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:0.25rem;">DOI: 10.5281/zenodo.23072929 • 158K Nöron • 3.99M Sinaps</div>
+            </div>
+            <a href="https://doi.org/10.5281/zenodo.23072929" target="_blank" rel="noopener" class="btn-primary" style="text-decoration:none; padding:0.5rem 1rem; font-size:0.85rem;">Zenodo Kaydını İncele ↗</a>
+          </div>
         </div>
       </section>
 
