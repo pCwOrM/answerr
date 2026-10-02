@@ -29,7 +29,7 @@ except ImportError:
 app = FastAPI(
     title="answerr API",
     description="Cognitive bridge between Gemini Flash System-2 and werr Zero-Memory System-1",
-    version="0.3.0"
+    version="0.5.1"
 )
 
 app.add_middleware(

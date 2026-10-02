@@ -479,6 +479,12 @@ class WerrEngine {
 // Backward compatibility aliases
 const WevvEngine = WerrEngine;
 
+// Engine metadata and formal verification status
+WerrEngine.VERSION = '0.5.1';
+WerrEngine.FORMAL_VERIFICATION = 'Lean 4 Verified (0 sorry)';
+WevvEngine.VERSION = '0.5.1';
+WevvEngine.FORMAL_VERIFICATION = 'Lean 4 Verified (0 sorry)';
+
 // Export for browser and ES modules
 if (typeof window !== 'undefined') {
   window.WerrEngine = WerrEngine;

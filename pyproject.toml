@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "answerr"
-version = "0.3.0"
+version = "0.5.1"
 description = "Dual-Cognition AI platform bridging Gemini System-2 deliberation with werr Zero-Memory System-1 fractal decision engine."
 readme = "README.md"
 requires-python = ">=3.10"

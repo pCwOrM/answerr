@@ -533,4 +533,18 @@ body.landing-body {
   .sidebar.collapsed ~ .chat-container .btn-open-sidebar {
     display: inline-flex;
   }
+
+  /* Mobile Touch Ergonomics (>= 44px target) */
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .btn-primary, .btn-secondary {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
