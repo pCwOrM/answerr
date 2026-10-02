@@ -108,6 +108,8 @@
   font-weight: 600;
   color: var(--emerald);
   font-family: var(--font-mono);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .lang-btn {
