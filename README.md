@@ -29,6 +29,7 @@
   <a href="https://doi.org/10.5281/zenodo.22996625"><img src="https://img.shields.io/badge/Connectome%20DOI-10.5281%2Fzenodo.22996625-024dad.svg?style=for-the-badge" alt="WerrSoma Zenodo DOI"></a>
   <a href="https://werrsoma.answerr.me/"><img src="https://img.shields.io/badge/Live%20Portal-werrsoma.answerr.me-00f0ff.svg?style=for-the-badge" alt="Lexovian Portal"></a>
   <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow.svg?style=for-the-badge" alt="Hugging Face Dataset"></a>
+  <a href="https://github.com/jesmaat/WerreduR"><img src="https://img.shields.io/badge/WerreduR-Fractal%20Pedagogy-blue.svg?style=for-the-badge" alt="WerreduR Fractal Pedagogy"></a>
   <a href="https://github.com/yh-yao/awesome-edge-ai-agents"><img src="https://img.shields.io/badge/Awesome-Edge%20AI%20Agents-blue.svg?style=for-the-badge" alt="Awesome Edge AI Agents"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Live%20Production-c084fc.svg?style=for-the-badge" alt="REST API"></a>
   <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI Workflow"></a>
@@ -55,7 +56,8 @@
 1. **System-Two Deliberation (LLM / Cloud AI):** Ingests conversational dialogue, extracts operational state vectors, synthesizes strategic explanations, and generates production code. Integrates seamlessly with Google Gemini 2.5 Flash and OpenAI-compatible pipelines.
 2. **System-One Reflex Arc ([werr](https://github.com/pCwOrM/werr)):** Derives instant, strongly-typed decisions (`noul`, `choice`, `score`) in **$< 0.5$ ms** with **0 Bytes of VRAM** via Mandelbrot fractal escape boundary dynamics ($\partial \mathcal{M}$).
 3. **On-Chain EVM Decision Oracle ([werracle](https://github.com/pCwOrM/werracle)):** Extends System-One reflex decisions to Web3 smart contracts in a single 32-byte storage slot (~20k gas) for intra-block flash-loan defense and dynamic fee governance.
-4. **Bio-Synthetic Neuromorphic Connectome ([WerrSoma](https://github.com/Lexovian/WerrSoma)):** Integrates the complete Princeton FlyWire *Drosophila* whole-brain connectome (158,169 biological neurons, 3.99M synapses) with `werr`. Enables sub-4ms sensory-motor flight reflex loops, homeostatic bioprotection, and zero-VRAM neuromorphic agency ([DOI: 10.5281/zenodo.23072929](https://doi.org/10.5281/zenodo.23072929), Concept: [10.5281/zenodo.22996625](https://doi.org/10.5281/zenodo.22996625), [Live 3D Portal](https://werrsoma.answerr.me/)).
+4. **Bio-Synthetic Neuromorphic Connectome ([WerrSoma](https://github.com/Lexovian/WerrSoma)):** Integrates the complete Princeton FlyWire *Drosophila* whole-brain connectome (158,262 biological neurons, 3.99M synapses) with `werr`. Enables sub-4ms sensory-motor flight reflex loops, homeostatic bioprotection, and zero-VRAM neuromorphic agency ([DOI: 10.5281/zenodo.23072929](https://doi.org/10.5281/zenodo.23072929), Concept: [10.5281/zenodo.22996625](https://doi.org/10.5281/zenodo.22996625), [Live 3D Portal](https://werrsoma.answerr.me/)).
+5. **Procedural Fractal Pedagogy ([WerreduR](https://github.com/jesmaat/WerreduR)):** Powers client-side intelligent tutoring systems and real-time student cognitive scaffolding via zero-storage Mandelbrot boundary reflexes and 1PL Rasch-validated productive disequilibrium ([DOI: 10.5281/zenodo.23034488](https://doi.org/10.5281/zenodo.23034488), Concept: [10.5281/zenodo.22999420](https://doi.org/10.5281/zenodo.22999420), Target: Q1 AIED Journal, TÜRKPATENT Priority: TR 2026/016285).
 
 Instead of forcing heavy 70B+ parameter neural networks to spend thousands of milliseconds and hundreds of tokens evaluating routine boolean gates, routing conditions, or security checks, **answerr** delegates execution triage to the zero-tensor mathematical geometry of the Mandelbrot set.
 
@@ -503,6 +505,16 @@ The mathematical foundations and zero-storage procedural weight derivations powe
   year      = {2026},
   url       = {https://github.com/pCwOrM/answerr},
   doi       = {10.5281/zenodo.22802921}
+}
+
+@misc{werredur2026package,
+  author       = {Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Da{\u{g}}han},
+  title        = {{WerreduR}: Procedural Fractal Pedagogy ({PFP}) Client-Side Engine and Replication Suite (Version 3.0)},
+  year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.23034488},
+  url          = {https://doi.org/10.5281/zenodo.23034488},
+  note         = {Target: Computers & Education: Artificial Intelligence (Elsevier). Priority Patent: TR 2026/016285.}
 }
 ```
 
