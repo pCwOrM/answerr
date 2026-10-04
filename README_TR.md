@@ -467,7 +467,7 @@ answerr/
 
 @article{dagli2026gap_lean4_arxiv,
   author       = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
-  title        = {{Machine-Checked Computational Group Theory in Lean 4: Operational Schreier-Sims Stabilizer Chains, BSGS Sifting, and Backtrack Ordered Partitions}},
+  title        = "{Machine-Checked Computational Group Theory in Lean 4: Operational Schreier-Sims Stabilizer Chains, BSGS Sifting, and Backtrack Ordered Partitions}",
   journal      = {arXiv preprint arXiv:2609.38492 [cs.LO]},
   year         = {2026},
   month        = sep,
@@ -507,7 +507,7 @@ answerr/
 
 @misc{werredur2026package,
   author       = {Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Da{\u{g}}han},
-  title        = {{WerreduR}: Procedural Fractal Pedagogy ({PFP}) Client-Side Engine and Replication Suite (Version 3.0)},
+  title        = "{WerreduR}: Procedural Fractal Pedagogy ({PFP}) Client-Side Engine and Replication Suite (Version 3.0)",
   year         = {2026},
   publisher    = {Zenodo},
   doi          = {10.5281/zenodo.23034488},
