@@ -31,6 +31,7 @@
   <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow.svg?style=for-the-badge" alt="Hugging Face Dataset"></a>
   <a href="https://github.com/jesmaat/WerreduR"><img src="https://img.shields.io/badge/WerreduR-Fraktal%20Pedagoji-blue.svg?style=for-the-badge" alt="WerreduR Fraktal Pedagoji"></a>
   <a href="https://github.com/yh-yao/awesome-edge-ai-agents"><img src="https://img.shields.io/badge/Awesome-Edge%20AI%20Agents-blue.svg?style=for-the-badge" alt="Awesome Edge AI Agents"></a>
+  <a href="https://awesomejev.com"><img src="https://img.shields.io/badge/Awesome-Jev-blueviolet.svg?style=for-the-badge" alt="Awesome Jev"></a>
   <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Canl%C4%B1%20%C3%9Cretim-c084fc.svg?style=for-the-badge" alt="REST API"></a>
   <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI İş Akışı"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/Lisans-BSL%201.1-red.svg?style=for-the-badge" alt="Lisans: BSL 1.1"></a>
