@@ -326,11 +326,26 @@ Keep the tone concise, scientific, and professional.`;
       instructions = instructions.replace(/^["'\s]+|["'\s{}]+$/g, '').trim();
       if (!instructions.endsWith('?') && !instructions.endsWith('.')) instructions += '?';
 
+      // Domain inference for JSON payloads
+      let detectedDomain = 'universal';
+      const jsonStr = (JSON.stringify(extractedState) + ' ' + instructions).toLowerCase();
+      if (/api|token|auth|hacker|saldirgan|ddos/i.test(jsonStr)) detectedDomain = 'api_security';
+      else if (/amount|tutar|credit|loan|usd|eur|odeme|para/i.test(jsonStr)) detectedDomain = 'financial_risk';
+      else if (/temp|sicaklik|torque|tork|vibration|duman|gaz|sensor/i.test(jsonStr)) detectedDomain = 'iot_safety';
+      else if (/route|rota|cluster|kume|prod|kuyruk/i.test(jsonStr)) detectedDomain = 'smart_router';
+      else if (/health|hp|ammo|mermi|combat|savas|siper/i.test(jsonStr)) detectedDomain = 'game_combat';
+
+      const domainSeed = (typeof WerrEngine !== 'undefined' && WerrEngine.SEEDS && WerrEngine.SEEDS[detectedDomain])
+        ? WerrEngine.SEEDS[detectedDomain]
+        : null;
+
       return {
         success: true,
         source: 'local_heuristic',
         model: 'werr-json-compiler',
         data: {
+          domain: detectedDomain,
+          seed: domainSeed,
           state: extractedState,
           question: {
             key: qKey,
@@ -454,9 +469,22 @@ Keep the tone concise, scientific, and professional.`;
     const tempMatch = p.match(/(\d+(?:\.\d+)?)\s*(?:°c|c\b|derece)/i);
     if (tempMatch) state.temp_c = parseFloat(tempMatch[1]);
 
-    // Percentage / Torque / Load (e.g. %94 or 94%)
+    // Percentage / Health / Ammo / Torque / Load (e.g. %94 or 94%)
     const pctMatch = p.match(/(?:%(\d+(?:\.\d+)?)|(\d+(?:\.\d+)?)\s*%)/);
-    if (pctMatch) state.torque_or_load_pct = parseFloat(pctMatch[1] || pctMatch[2]);
+    if (pctMatch) {
+      const pVal = parseFloat(pctMatch[1] || pctMatch[2]);
+      if (/can\b|hp\b|health\b|saglik\b/i.test(pLower)) {
+        state.health_pct = pVal;
+      } else if (/ammo\b|mermi\b|sarjor\b|bullet\b/i.test(pLower)) {
+        state.ammo_pct = pVal;
+      } else {
+        state.torque_or_load_pct = pVal;
+      }
+    }
+
+    if (/\bsiper\b|\bcover\b/i.test(pLower)) {
+      state.cover_available = true;
+    }
 
     // Multipliers / Ratios (e.g. 2.8 katı, 3x baseline)
     const ratioMatch = p.match(/(\d+(?:\.\d+)?)\s*(?:katı|kat|x|times)\b/i);
@@ -511,11 +539,31 @@ Keep the tone concise, scientific, and professional.`;
       }
     }
 
+    // Intelligent Domain & Calibrated Seed Resolution for Custom Queries
+    let detectedDomain = 'universal';
+    if (/\b(?:api|token|auth|bearer|firewall|waf|hacker|saldirgan|ddos|botnet|ip|guvenlik|erisim|brute_force|istek)\b/i.test(pLower)) {
+      detectedDomain = 'api_security';
+    } else if (/\b(?:odeme|tutar|kredi|borc|gelir|finans|transfer|fraud|sahtekarlik|dolar|usd|eur|try|tl|para|kart|borrow)\b/i.test(pLower)) {
+      detectedDomain = 'financial_risk';
+    } else if (/\b(?:sicaklik|temp|yangin|duman|gaz|motor|robot|tork|titresim|sensor|kacak|alarm|termal|sogutma)\b/i.test(pLower)) {
+      detectedDomain = 'iot_safety';
+    } else if (/\b(?:rota|route|kume|cluster|prod|kuyruk|queue|mikroservis|paket|yonlendir)\b/i.test(pLower)) {
+      detectedDomain = 'smart_router';
+    } else if (/\b(?:combat|savas|npc|can|health|hp|ammo|mermi|siper|dovus|dusman)\b/i.test(pLower)) {
+      detectedDomain = 'game_combat';
+    }
+
+    const domainSeed = (typeof WerrEngine !== 'undefined' && WerrEngine.SEEDS && WerrEngine.SEEDS[detectedDomain])
+      ? WerrEngine.SEEDS[detectedDomain]
+      : null;
+
     return {
       success: true,
       source: 'local_heuristic',
       model: 'local-state-compiler',
       data: {
+        domain: detectedDomain,
+        seed: domainSeed,
         state,
         question: {
           key: qKey,
