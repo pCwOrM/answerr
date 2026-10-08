@@ -7,6 +7,10 @@
 const SCENARIO_PRESETS = [
   {
     id: 'api-security-safe',
+    domain: 'api_security',
+    cx: -0.7436438870371587,
+    cy: 0.1318259042053119,
+    zoom: 120.0,
     category: 'Cybersecurity',
     categoryTr: 'Siber Güvenlik',
     icon: '🛡️',
@@ -44,6 +48,10 @@ const SCENARIO_PRESETS = [
   },
   {
     id: 'defi-flashloan-werracle',
+    domain: 'financial_risk',
+    cx: -0.748,
+    cy: 0.065,
+    zoom: 60.0,
     category: 'DeFi & Web3',
     categoryTr: 'DeFi & Web3',
     icon: '⚡',
@@ -82,6 +90,10 @@ const SCENARIO_PRESETS = [
   },
   {
     id: 'werrsoma-connectome-evade',
+    domain: 'neuromorphic_flight',
+    cx: -0.7445,
+    cy: 0.125,
+    zoom: 65.0,
     category: 'Neuromorphic AI',
     categoryTr: 'Biyonöromorfik AI',
     icon: '🧬',
@@ -120,6 +132,10 @@ const SCENARIO_PRESETS = [
   },
   {
     id: 'api-security-attack',
+    domain: 'api_security',
+    cx: -0.7436438870371587,
+    cy: 0.1318259042053119,
+    zoom: 120.0,
     category: 'Cybersecurity',
     categoryTr: 'Siber Güvenlik',
     icon: '🚨',
@@ -158,6 +174,10 @@ const SCENARIO_PRESETS = [
   },
   {
     id: 'cloud-routing',
+    domain: 'smart_router',
+    cx: -0.10109636384562,
+    cy: 0.95628651080914,
+    zoom: 45.0,
     category: 'Cloud DevOps',
     categoryTr: 'Bulut & Mikroservis',
     icon: '⚡',
@@ -197,6 +217,10 @@ const SCENARIO_PRESETS = [
   },
   {
     id: 'fraud-triage',
+    domain: 'financial_risk',
+    cx: -0.748,
+    cy: 0.065,
+    zoom: 60.0,
     category: 'Fintech',
     categoryTr: 'Finansal Triage',
     icon: '💳',
@@ -228,6 +252,10 @@ const SCENARIO_PRESETS = [
   },
   {
     id: 'robotics-thermal',
+    domain: 'iot_safety',
+    cx: -0.745,
+    cy: 0.112,
+    zoom: 85.0,
     category: 'IoT & Robotics',
     categoryTr: 'Otonom Robotik',
     icon: '🤖',
@@ -264,6 +292,10 @@ const SCENARIO_PRESETS = [
   },
   {
     id: 'game-ai-combat',
+    domain: 'game_combat',
+    cx: -0.7445,
+    cy: 0.125,
+    zoom: 65.0,
     category: 'Game AI',
     categoryTr: 'Oyun Yapay Zekası',
     icon: '🎯',

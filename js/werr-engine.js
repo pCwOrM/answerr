@@ -68,27 +68,39 @@ class WerrEngine {
 
         if (kl.includes('fail') || kl.includes('error') || kl.includes('attempt') || kl.includes('hata')) {
           netRisk += (v / 5.0) * 1.5;
-        } else if (kl.includes('freq') || kl.includes('rate') || kl.includes('speed') || kl.includes('hiz')) {
+        } else if (kl.includes('freq') || kl.includes('rate') || kl.includes('speed') || kl.includes('hiz') || kl.includes('count')) {
           netRisk += (v / 50.0) * 1.0;
         } else if (kl.includes('payload') || kl.includes('byte') || kl.includes('kb') || kl.includes('mb') || kl.includes('boyut')) {
           netRisk += (v / 500.0) * 0.5;
         } else if (kl.includes('latency') || kl.includes('gecikme') || kl.includes('ping')) {
           netRisk += (v / 100.0) * 0.6;
         } else if (kl.includes('temp') || kl.includes('sicaklik')) {
-          netRisk += (v > 75 ? (v - 75) / 10.0 * 2.2 : -0.5);
+          netRisk += (v > 75 ? (v - 75) / 10.0 * 2.2 : (v < 5 ? 1.5 : -0.5));
         } else if (kl.includes('torque') || kl.includes('tork') || kl.includes('load') || kl.includes('yuk')) {
           netRisk += (v > 85 ? (v - 85) / 10.0 * 1.8 : -0.4);
         } else if (kl.includes('vibration') || kl.includes('titresim')) {
           netRisk += (v > 1.8 ? (v - 1.0) * 1.8 : -0.5);
-        } else if (kl.includes('amount') || kl.includes('tutar') || kl.includes('price')) {
-          netRisk += (v > 2000 ? (v / 2000.0) * 0.8 : -0.3);
+        } else if (kl.includes('amount') || kl.includes('tutar') || kl.includes('price') || kl.includes('borrow')) {
+          netRisk += (v > 2000 ? Math.min(3.0, Math.log10(v / 1000.0) * 1.2) : -0.3);
+        } else if (kl.includes('slippage') || kl.includes('impact') || kl.includes('kayma')) {
+          netRisk += (v > 1.5 ? (v - 1.0) * 1.4 : -0.4);
+        } else if (kl.includes('collision') || kl.includes('threat_ms') || kl.includes('carpism')) {
+          netRisk += (v < 50.0 ? (50.0 - v) / 15.0 * 1.2 : -0.5);
+        } else if (kl.includes('health') || kl.includes('hp') || kl.includes('saglik') || kl.includes('can')) {
+          netRisk += (v < 25.0 ? 3.0 : (v < 40.0 ? 1.5 : (v >= 65.0 ? -1.0 : 0.0)));
+        } else if (kl.includes('ammo') || kl.includes('mermi') || kl.includes('bullet') || kl.includes('sarjor')) {
+          netRisk += (v < 15.0 ? 2.0 : (v < 30.0 ? 1.0 : -0.5));
+        } else if (kl.includes('distance') || kl.includes('mesafe')) {
+          netRisk += (v < 10.0 ? 0.8 : -0.3);
         }
       } else if (typeof v === 'boolean') {
         values.push(v ? 1.0 : -1.0);
-        if (kl.includes('auth') || kl.includes('valid') || kl.includes('safe') || kl.includes('dogru') || kl.includes('guvenli')) {
+        if (kl.includes('auth') || kl.includes('valid') || kl.includes('safe') || kl.includes('dogru') || kl.includes('guvenli') || kl.includes('verified') || kl.includes('internal')) {
           netRisk += v ? -0.8 : 1.2;
-        } else if (kl.includes('suspicious') || kl.includes('supheli') || kl.includes('anomali')) {
-          netRisk += v ? 1.8 : -0.5;
+        } else if (kl.includes('suspicious') || kl.includes('supheli') || kl.includes('anomali') || kl.includes('sandwich') || kl.includes('attack') || kl.includes('threat') || kl.includes('exploit') || kl.includes('saldiri') || kl.includes('under_fire') || kl.includes('ates_altinda')) {
+          netRisk += v ? 2.5 : -0.5;
+        } else if (kl.includes('cover') || kl.includes('siper')) {
+          netRisk += v ? -1.0 : 0.6;
         }
       } else if (typeof v === 'string') {
         const vl = this.normalizeText(v);
@@ -220,21 +232,28 @@ class WerrEngine {
    *   [key]: { type: 'noul' | 'choice' | 'score', instructions: string, criteria?: any, threshold?: number, weightBias?: number }
    * }
    */
-  decide(state = {}, questions = {}) {
+  decide(state = {}, questions = {}, options = {}) {
     const startTime = performance.now();
 
     // 1. State-to-Wave Modulation
     const { vec, netRisk } = this.stateToVector(state);
     const roleStr = this.normalizeText(state.user_role || state.role || '');
 
+    // Allow overriding base coordinates per-decision (e.g. from preset or domain gate)
+    const seedKey = options.domain || options.presetId || '';
+    const presetSeed = (WerrEngine.SEEDS && WerrEngine.SEEDS[seedKey]) || {};
+    const baseCx = options.cx ?? presetSeed.cx ?? this.baseCx;
+    const baseCy = options.cy ?? presetSeed.cy ?? this.baseCy;
+    const baseZoom = options.zoom ?? presetSeed.zoom ?? this.baseZoom;
+
     // Coordinate Perturbation with Acoustic Damping
-    const scale = 1.0 / this.baseZoom;
+    const scale = 1.0 / baseZoom;
     const deltaX = Math.tanh(netRisk !== 0.0 ? netRisk : vec[0]) * scale * 0.45 * (1.0 - this.dampingFactor);
     const deltaY = Math.tanh(vec[1] || 0.0) * scale * 0.45 * (1.0 - this.dampingFactor);
 
-    const effCx = this.baseCx + deltaX;
-    const effCy = this.baseCy + deltaY;
-    const effZoom = this.baseZoom * (1.0 + 0.1 * Math.sin(vec.reduce((a, b) => a + b, 0)));
+    const effCx = baseCx + deltaX;
+    const effCy = baseCy + deltaY;
+    const effZoom = baseZoom * (1.0 + 0.1 * Math.sin(vec.reduce((a, b) => a + b, 0)));
 
     // 2. Fractal Forward Pass
     const { blackRatio, avgEscape, escapeIters } = this.computeMandelbrotPatch(
@@ -254,12 +273,20 @@ class WerrEngine {
 
       if (qType === 'noul') {
         const threshold = qObj.threshold ?? 0.5;
-        const isAllowQ = /allow|permit|grant|izin|safe|valid|ok|auth|pass|gecis|onay/i.test(instr) && !/engelle|durdur|block|shutdown/i.test(instr);
-        const isDenyQ = /threat|danger|attack|block|malicious|hata|tehlike|risk|red|engelle|acil|durdur|kapat|shutdown|stop|halt/i.test(instr) ||
-          qKey.includes('block') || qKey.includes('shutdown') || qKey.includes('deny');
+        const isAllowQ = /allow|permit|grant|izin|safe|valid|ok|auth|pass|gecis|onay/i.test(instr) && !/engelle|durdur|block|shutdown|halt|aski|siper|kac/i.test(instr);
+        const isDenyQ = /threat|danger|attack|block|malicious|hata|tehlike|risk|red|engelle|acil|durdur|kapat|shutdown|stop|halt|aski|askiya|kesici|revert|quarantine/i.test(instr) ||
+          /block|shutdown|deny|halt|revert|quarantine|tehlike/i.test(qKey);
+        const isCombatAssaultQ = /assault|attack|taarruz/i.test(qKey) || /taarruz|agresif|assault/i.test(instr);
+        const isEvadeQ = /evade|sakinma|kacis/i.test(qKey) || /sakinma|evade/i.test(instr);
 
         let prob = 0.5;
-        if (isAllowQ || (netRisk !== 0.0 && !isDenyQ)) {
+        if (isCombatAssaultQ) {
+          // In combat: critical health / ammo or intense fire favors tactical retreat to cover (assault = false)
+          prob = netRisk > 1.2 ? 0.03 : 0.95;
+        } else if (isEvadeQ) {
+          // Imminent collision or threat triggers evasive reflex
+          prob = netRisk > 0.5 ? 0.96 : 0.08;
+        } else if (isAllowQ) {
           const baseProb = 1.0 / (1.0 + Math.exp((netRisk - 0.2) * 2.0));
           const fractalBoost = 0.8 + 0.4 * (1.0 - avgEscape);
           prob = baseProb * fractalBoost;
@@ -268,6 +295,9 @@ class WerrEngine {
           }
         } else if (isDenyQ) {
           prob = 1.0 / (1.0 + Math.exp((-netRisk - 0.2) * 2.0));
+        } else if (netRisk !== 0.0) {
+          const baseProb = 1.0 / (1.0 + Math.exp((netRisk - 0.2) * 2.0));
+          prob = baseProb;
         } else {
           const dot = vec[0] * w1 + vec[1] * w2 + (vec[2] || 0) * w3 + bias + (qObj.weightBias || 0);
           prob = 1.0 / (1.0 + Math.exp(-dot));
@@ -300,7 +330,7 @@ class WerrEngine {
           options = ['approve', 'review', 'reject'];
         }
 
-        const isNetworkRouteChoice = options.some(opt => /direct_api|rate_limiter|sandbox_audit|drop_packet/i.test(opt));
+        const isNetworkRouteChoice = options.some(opt => /direct|prod|fast|primary|ana|dogrudan|normal|rate_limit|rate|kuyruk|limit|orta|buffer|sandbox|audit|quarantine|inceleme|manuel|drop|deny|block|engelle|kritik|red/i.test(opt));
 
         const scores = options.map((opt, i) => {
           const optLower = this.normalizeText(opt);
@@ -476,8 +506,23 @@ class WerrEngine {
   }
 }
 
+// Pre-calibrated Benchmark Coordinates discovered along chaotic Mandelbrot boundary (dM)
+WerrEngine.SEEDS = {
+  universal: { cx: -0.743643887037158704752191506114774, cy: 0.131825904205311970493132056385139, zoom: 50.0 },
+  smart_router: { cx: -0.10109636384562, cy: 0.95628651080914, zoom: 45.0 },
+  security_guard: { cx: -0.7436438870371587, cy: 0.1318259042053119, zoom: 120.0 },
+  api_security: { cx: -0.7436438870371587, cy: 0.1318259042053119, zoom: 120.0 },
+  financial_risk: { cx: -0.748, cy: 0.065, zoom: 60.0 },
+  iot_safety: { cx: -0.745, cy: 0.112, zoom: 85.0 },
+  ecommerce_fraud: { cx: -0.7495, cy: 0.082, zoom: 70.0 },
+  game_combat: { cx: -0.7445, cy: 0.125, zoom: 65.0 },
+  defi_flashloan: { cx: -0.748, cy: 0.065, zoom: 60.0 },
+  neuromorphic_flight: { cx: -0.7445, cy: 0.125, zoom: 65.0 }
+};
+
 // Backward compatibility aliases
 const WevvEngine = WerrEngine;
+WevvEngine.SEEDS = WerrEngine.SEEDS;
 
 // Engine metadata and formal verification status
 WerrEngine.VERSION = '0.5.1';
