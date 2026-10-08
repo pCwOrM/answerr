@@ -544,6 +544,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const wevvResult = wevv.decide(stateObj, {
         [questionObj.key || 'decision']: questionObj
+      }, {
+        presetId: stateData.presetId || presetId,
+        domain: stateData.domain,
+        cx: stateData.seed?.cx,
+        cy: stateData.seed?.cy,
+        zoom: stateData.seed?.zoom
       });
 
       const ansKey = Object.keys(wevvResult.answers)[0];

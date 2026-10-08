@@ -230,6 +230,12 @@ Keep the tone concise, scientific, and professional.`;
           presetId: matchedPreset.id,
           data: {
             presetId: matchedPreset.id,
+            domain: matchedPreset.domain,
+            seed: {
+              cx: matchedPreset.cx,
+              cy: matchedPreset.cy,
+              zoom: matchedPreset.zoom
+            },
             state: { ...matchedPreset.state },
             question: {
               key: matchedPreset.question.key,
