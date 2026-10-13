@@ -39,8 +39,10 @@ def load_mail_credentials():
 
 SMTP_SERVER, SMTP_PORT, AUTH_USER, AUTH_PASS = load_mail_credentials()
 
-DEFAULT_SENDER = "ITouch Systems AI <ask@answerr.me>"
-NOREPLY_SENDER = "ITouch Systems Announcements <noreply@answerr.me>"
+from email.utils import formataddr
+
+DEFAULT_SENDER = formataddr(("ITouch Systems AI", "ask@answerr.me"))
+NOREPLY_SENDER = formataddr(("ITouch Systems Announcements", "noreply@answerr.me"))
 REPLY_TO = "ask@answerr.me, pcworm@pcworm.net"
 
 CHANNELS = {
