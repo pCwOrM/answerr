@@ -2,57 +2,168 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>answerr & werr Ar-Ge Külliyatı — 12 Akademik Yayın, 2 Patent ve Lean 4 İspatları | ITouch Bilişim</title>
-  <link rel="icon" type="image/svg+xml" href="../img/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>answerr Ar-Ge & Fikri Mülkiyet Kasası — arXiv, HuggingFace ve Patentler | ITouch Bilişim</title>
+  <meta name="description" content="ITouch Bilişim Ar-Ge tarafından yayımlanan 5 arXiv makalesi, Hugging Face veri setleri, Lean 4 biçimsel ispatları ve TÜRKPATENT (TR 2026/016285 & TR 2026/016633) başvuruları." />
+  <link rel="icon" type="image/svg+xml" href="../assets/answerr_logo_portal_fav_trans.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #07090e;
-      --bg-card: #0d111a;
-      --bg-elevated: #131926;
-      --border: #1e293b;
+      --bg: #05070b;
+      --bg-card: rgba(13, 18, 30, 0.82);
+      --bg-elevated: rgba(20, 28, 46, 0.9);
+      --border: rgba(148, 163, 184, 0.15);
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --emerald: #10b981;
       --cyan: #06b6d4;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
       --purple: #a855f7;
-      --font-sans: 'Inter', sans-serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; }
-    a { color: inherit; text-decoration: none; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-    .navbar {
-      background: rgba(7, 9, 14, 0.9); border-bottom: 1px solid var(--border); padding: 14px 0;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 75% 45% at 50% -10%, rgba(168, 85, 247, 0.14), transparent),
+        radial-gradient(ellipse 55% 40% at 85% 20%, rgba(6, 182, 212, 0.12), transparent);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
     }
-    .navbar .container { display: flex; justify-content: space-between; align-items: center; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 21px; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(5, 7, 11, 0.86);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .navbar .container { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 21px; flex-shrink: 0; }
     .brand-r1 { color: var(--cyan); }
     .brand-r2 { color: var(--emerald); }
+    .brand-tag {
+      font-family: var(--font-mono); font-size: 10.5px; padding: 2px 8px;
+      border-radius: 999px; background: rgba(168, 85, 247, 0.15); color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.4); white-space: nowrap;
+    }
     .nav-links { display: flex; gap: 20px; font-size: 14px; color: var(--text-muted); }
+    .nav-links a { white-space: nowrap; }
+    .nav-links a:hover { color: var(--text); }
     .nav-links a.active { color: var(--emerald); font-weight: 600; }
-    .section { padding: 44px 0; border-bottom: 1px solid var(--border); }
-    .tag { font-family: var(--font-mono); font-size: 11px; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.08em; }
-    h1 { font-size: 34px; font-weight: 800; margin: 8px 0 12px; }
-    h2 { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 18px; }
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+    .mobile-toggle {
+      display: none; background: var(--bg-elevated); border: 1px solid var(--border);
+      color: var(--text); border-radius: 8px; padding: 8px 11px; font-size: 16px; cursor: pointer;
+    }
+    .mobile-drawer {
+      display: none; flex-direction: column; gap: 12px; padding: 16px 20px;
+      background: rgba(10, 14, 24, 0.98); border-bottom: 1px solid var(--border);
+    }
+    .mobile-drawer.open { display: flex; }
+    .mobile-drawer a { font-size: 15px; color: var(--text-muted); padding: 6px 0; border-bottom: 1px solid rgba(148,163,184,0.08); }
+    .mobile-drawer a.active { color: var(--emerald); font-weight: 700; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 8px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600;
+      cursor: pointer; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--text);
+      transition: all 0.15s; white-space: nowrap;
+    }
+    .btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    .section { padding: 42px 0; border-bottom: 1px solid var(--border); }
+    .tag { font-family: var(--font-mono); font-size: 11.5px; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.08em; }
+    h1 { font-size: clamp(24px, 4vw, 36px); font-weight: 800; margin: 8px 0 12px; line-height: 1.18; }
+    h2 { font-size: clamp(20px, 2.8vw, 24px); font-weight: 700; margin-bottom: 18px; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
     .card {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
     }
-    .card h3 { font-size: 16px; margin-bottom: 6px; color: var(--text); }
-    .card p { font-size: 13.5px; color: var(--text-muted); margin-bottom: 10px; }
-    .doi-badge {
-      display: inline-block; font-family: var(--font-mono); font-size: 11px;
-      padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.35); color: var(--emerald);
+    .card h3 { font-size: 16px; color: var(--text); line-height: 1.35; }
+    .card p { font-size: 13.5px; color: var(--text-muted); }
+
+    .badge-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+      padding: 4px 9px; border-radius: 6px;
     }
-    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; }
-    th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border); }
-    th { color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; }
+    .badge-arxiv {
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+    .badge-hf {
+      background: rgba(250, 204, 21, 0.14);
+      border: 1px solid rgba(250, 204, 21, 0.4);
+      color: #fde047;
+    }
+    .badge-patent {
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--emerald);
+    }
+    .badge-bench {
+      background: rgba(6, 182, 212, 0.14);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: var(--cyan);
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-card);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 580px; }
+    th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    th { color: var(--text-muted); font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; }
+
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .mobile-toggle { display: inline-flex; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 0 14px; }
+      .card { padding: 16px; }
+      .section { padding: 30px 0; }
+    }
   </style>
 </head>
 <body>
@@ -61,114 +172,219 @@
     <div class="container">
       <a href="index.html" class="brand">
         <span>answe<span class="brand-r1">r</span><span class="brand-r2">r</span></span>
-        <span class="tag" style="margin-left:8px;">DEEP-TECH & PATENT VAULT</span>
+        <span class="brand-tag">AR-GE & PATENT KASASI</span>
       </a>
       <div class="nav-links">
-        <a href="index.html">Ürün & Kapılar</a>
+        <a href="index.html">Ürün & Canlı Kasa</a>
         <a href="studio.html">Politika Stüdyosu</a>
-        <a href="research.html" class="active">Derin Teknoloji & Patentler</a>
+        <a href="research.html" class="active">arXiv, HuggingFace & Patentler</a>
         <a href="https://api.answerr.me/docs" target="_blank" rel="noopener">REST API</a>
       </div>
+      <div class="nav-actions">
+        <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="btn">ITouch Bilişim</a>
+        <button class="mobile-toggle" onclick="document.getElementById('mobileDrawer').classList.toggle('open')" aria-label="Menü">☰</button>
+      </div>
+    </div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="index.html">⚡ Ürün & Canlı Kasa</a>
+      <a href="studio.html">🛡️ Politika Stüdyosu (System-2)</a>
+      <a href="research.html" class="active">📜 arXiv, HuggingFace & Patentler</a>
+      <a href="https://api.answerr.me/docs" target="_blank" rel="noopener">🔌 Canlı REST API (/docs)</a>
     </div>
   </nav>
 
   <main class="container">
     <section class="section">
-      <div class="tag">BİLİMSEL ŞEFFAFLIK VE FİKRİ MÜLKİYET (DUE DILIGENCE AYRIMI)</div>
-      <h1>WERR Külliyatı, TÜRKPATENT Başvuruları ve Lean 4 Matematiksel İspatları</h1>
+      <div class="tag">AÇIK BİLİM KANITLARI & KAPALI KASA TİCARİ SIRRI</div>
+      <h1>arXiv Makaleleri, Hugging Face Veri Setleri ve TÜRKPATENT Başvuruları</h1>
       <p style="color:var(--text-muted); max-width:880px; font-size:15px;">
-        Kurumsal şeffaflık ilkemiz gereği; <strong>answerr Enterprise</strong> ticari karar motorunun deterministik politika katmanı ile <strong>ITouch Bilişim Ar-Ge</strong> ekibinin yürüttüğü fraktal dinamikler, cebirsel topoloji ve donanım refleks araştırmaları burada açıkça belgelenmektedir.
+        <strong>answerr</strong>, dünyada hem <strong>arXiv</strong> ve <strong>Hugging Face</strong> üzerinde bağımsız kıyaslamalarla doğrulanmış matematiksel temellere sahip olan, hem de üretimdeki <strong>WERR-24B™ Kalibrasyon Formülünü</strong> ticari sır ve patent koruması altında tutan çift katmanlı bir derin teknoloji (Deep-Tech) ürünüdür.
       </p>
     </section>
 
+    <!-- 1. Official arXiv & HuggingFace Papers -->
     <section class="section">
-      <h2>1. Resmi Patent Başvuruları (TÜRKPATENT)</h2>
+      <h2>1. Resmi arXiv Yayınlarımız & Hugging Face Makale/Veri Seti Kayıtları</h2>
       <div class="grid-2">
         <div class="card">
-          <span class="doi-badge">TR 2026/016285</span>
-          <h3 style="margin-top:10px;">Sıfır Bellekli Deterministik Karar Motoru ve 24-Bayt Tohum Mimarisi</h3>
-          <p>
-            Çok boyutlu durum vektörlerini 24-baytlık (cx, cy, zoom) koordinat tohumu ve çok ölçekli Tripod (0.60x, 1.00x, 1.60x) sınır dinamikleriyle sıfır GPU/VRAM kullanarak değerlendiren Sistem-1 refleks mimarisi.
-          </p>
+          <div>
+            <div class="badge-row" style="margin-bottom:10px;">
+              <a href="https://arxiv.org/abs/2609.25498" target="_blank" rel="noopener" class="badge badge-arxiv">📄 arXiv:2609.25498</a>
+              <a href="https://huggingface.co/papers/2609.25498" target="_blank" rel="noopener" class="badge badge-hf">🤗 HF Paper</a>
+              <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions" target="_blank" rel="noopener" class="badge badge-hf">🤗 HF Dataset</a>
+            </div>
+            <h3>Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains</h3>
+            <p style="margin-top:6px;">
+              Sıfır GPU belleği (0-Byte VRAM) ile doğal dil karar uzaylarını milisaniye altında sınıflandıran çekirdek WERR mimarisi ve açık karar veri seti.
+            </p>
+          </div>
+          <div class="badge-row">
+            <a href="https://arxiv.org/abs/2609.25498" target="_blank" rel="noopener" class="btn">arXiv'de Oku →</a>
+            <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions" target="_blank" rel="noopener" class="btn">HuggingFace Veri Seti →</a>
+          </div>
         </div>
+
         <div class="card">
-          <span class="doi-badge">TR 2026/016633</span>
-          <h3 style="margin-top:10px;">Doğal Dil Politikalarından Deterministik Refleks Kapılarına Hibrit Derleme (System-2 → System-1)</h3>
-          <p>
-            Yüksek gecikmeli bilişsel modellerin (System-2) yalnızca derleme/kalibrasyon aşamasında kullanılıp çalışma zamanında 0-Byte VRAM deterministik kapılara mühürlenmesi yöntemi.
-          </p>
+          <div>
+            <div class="badge-row" style="margin-bottom:10px;">
+              <a href="https://arxiv.org/abs/2609.33066" target="_blank" rel="noopener" class="badge badge-arxiv">📄 arXiv:2609.33066</a>
+              <a href="https://huggingface.co/papers/2609.33066" target="_blank" rel="noopener" class="badge badge-hf">🤗 HF Paper</a>
+            </div>
+            <h3>Zero-Storage Procedural Neural Synthesis via Boundary Dynamics: Formal Verification in Lean 4</h3>
+            <p style="margin-top:6px;">
+              Tensör ağırlıkları depolamak yerine çalışma zamanında 24-Bayt tohumdan deterministik sınır sentezi ve Lean 4 (0 sorry) biçimsel doğrulaması.
+            </p>
+          </div>
+          <div class="badge-row">
+            <a href="https://arxiv.org/abs/2609.33066" target="_blank" rel="noopener" class="btn">arXiv'de Oku →</a>
+            <a href="https://huggingface.co/papers/2609.33066" target="_blank" rel="noopener" class="btn">HuggingFace Sayfası →</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <div class="badge-row" style="margin-bottom:10px;">
+              <a href="https://arxiv.org/abs/2609.30115" target="_blank" rel="noopener" class="badge badge-arxiv">📄 arXiv:2609.30115</a>
+              <a href="https://huggingface.co/papers/2609.30115" target="_blank" rel="noopener" class="badge badge-hf">🤗 HF Paper</a>
+              <span class="badge badge-patent">TR 2026/016285</span>
+            </div>
+            <h3>Orbital Error Dynamics (OED): Self-Organized Criticality & Ephemeral Parameter Resonance</h3>
+            <p style="margin-top:6px;">
+              Çok ölçekli yörünge hata dinamikleri ve sınır rezonansı ile aşırı öğrenme (overfitting) olmadan deterministik karar ayrımı.
+            </p>
+          </div>
+          <div class="badge-row">
+            <a href="https://arxiv.org/abs/2609.30115" target="_blank" rel="noopener" class="btn">arXiv'de Oku →</a>
+            <a href="https://huggingface.co/papers/2609.30115" target="_blank" rel="noopener" class="btn">HuggingFace Sayfası →</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <div class="badge-row" style="margin-bottom:10px;">
+              <a href="https://arxiv.org/abs/2609.30719" target="_blank" rel="noopener" class="badge badge-arxiv">📄 arXiv:2609.30719</a>
+              <a href="https://huggingface.co/papers/2609.30719" target="_blank" rel="noopener" class="badge badge-hf">🤗 HF Paper</a>
+            </div>
+            <h3>Werracle: Sub-Cent Intra-Block AI Reflex Oracles & Flash-Loan Circuit Breakers for EVM</h3>
+            <p style="margin-top:6px;">
+              Akıllı sözleşmeler ve otonom finansal ajanlar için blok içi milisaniye altı güvenlik kesicisi ve tek slot (32-Bayt) karar kahini.
+            </p>
+          </div>
+          <div class="badge-row">
+            <a href="https://arxiv.org/abs/2609.30719" target="_blank" rel="noopener" class="btn">arXiv'de Oku →</a>
+            <a href="https://huggingface.co/papers/2609.30719" target="_blank" rel="noopener" class="btn">HuggingFace Sayfası →</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <div class="badge-row" style="margin-bottom:10px;">
+              <a href="https://arxiv.org/abs/2609.38492" target="_blank" rel="noopener" class="badge badge-arxiv">📄 arXiv:2609.38492</a>
+              <a href="https://huggingface.co/papers/2609.38492" target="_blank" rel="noopener" class="badge badge-hf">🤗 HF Paper</a>
+            </div>
+            <h3>Machine-Checked Computational Group Theory in Lean 4 (35 Formal Theorems, 0 sorry)</h3>
+            <p style="margin-top:6px;">
+              Schreier-Sims sabitleyici zincirleri, BSGS eleme ve ayrık cebirsel değişmezlerin Lean 4 ile makine tarafından doğrulanmış kanıtları.
+            </p>
+          </div>
+          <div class="badge-row">
+            <a href="https://arxiv.org/abs/2609.38492" target="_blank" rel="noopener" class="btn">arXiv'de Oku →</a>
+            <a href="https://huggingface.co/papers/2609.38492" target="_blank" rel="noopener" class="btn">HuggingFace Sayfası →</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <div class="badge-row" style="margin-bottom:10px;">
+              <span class="badge badge-patent">🏛️ TÜRKPATENT TR 2026/016285</span>
+              <span class="badge badge-patent">🏛️ TÜRKPATENT TR 2026/016633</span>
+            </div>
+            <h3>Endüstriyel Patent Koruması & ITouch Bilişim Ticari Sır Kasası</h3>
+            <p style="margin-top:6px;">
+              Teorik çerçeve akademik şeffaflıkla paylaşılırken; üretimdeki <strong>WERR-24B™</strong> kalibrasyon katsayıları ve derleyici dönüşüm matrisleri <strong>ITouch Bilişim Sistemleri Ltd. Şti.</strong> ticari sırrı ve patent başvuruları kapsamında korunmaktadır.
+            </p>
+          </div>
+          <div class="badge-row">
+            <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="btn">ITouch Bilişim Kurumsal →</a>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- 2. Independent World Benchmarks -->
     <section class="section">
-      <h2>2. Ekosistem Modülleri ve WERR Jargonu Sözlüğü</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Terim / Modül</th>
-            <th>Rolü ve Katmanı</th>
-            <th>Ticari / Ar-Ge Statüsü</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>answerr</code></td>
-            <td>Doğal dilden derlenen, SHA-256 mühürlü kurumsal karar politikası platformu ve REST API (<code>api.answerr.me</code>)</td>
-            <td><span class="doi-badge">Amiral Gemisi Ticari Ürün</span></td>
-          </tr>
-          <tr>
-            <td><code>werr</code></td>
-            <td>0-Byte VRAM, mikrosaniyelik deterministik çalışma zamanı çekirdeği (Python PyPI & JS SDK)</td>
-            <td><span class="doi-badge">Açık Çekirdek Runtime (v0.6.0)</span></td>
-          </tr>
-          <tr>
-            <td><code>noul / choice / score</code></td>
-            <td>Tipli karar sözleşmesi: ikili karar + olasılık (<code>noul</code>), deterministik rota (<code>choice</code>), dereceli risk (<code>score</code>)</td>
-            <td><span class="doi-badge">Üretim API Sözleşmesi</span></td>
-          </tr>
-          <tr>
-            <td><code>ABSTAIN_REVIEW</code></td>
-            <td>Şema dışı (Out-of-Domain) bilinmeyen girdilerde yanlış özgüveni önleyen kurumsal sorumluluk kalkanı</td>
-            <td><span class="doi-badge">Üretim Güvenlik Kalkanı</span></td>
-          </tr>
-          <tr>
-            <td><code>maat</code></td>
-            <td>Parametrik karar doğrulama, gölge mod (Shadow Mode) ve Champion/Challenger yönetici konsolu</td>
-            <td><span class="doi-badge">Yönetici & Kalibrasyon Konsolu</span></td>
-          </tr>
-          <tr>
-            <td><code>WerrSoma / WerreduR / Werracle</code></td>
-            <td>Endüstriyel robotik refleks (WerrSoma), pedagojik simülasyon (WerreduR) ve EVM zincir üstü Solidity kahini (Werracle)</td>
-            <td><span class="doi-badge">Dikey Ar-Ge & Vitrin Modülleri</span></td>
-          </tr>
-        </tbody>
-      </table>
+      <h2>2. Bağımsız Uluslararası Kıyaslamalar (Benchmarks)</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div>
+            <span class="badge badge-bench">WindTunnel WebMCP #25</span>
+            <h3 style="margin-top:10px;">%100 Doğruluk (49 / 49)</h3>
+            <p style="margin-top:6px;">
+              Otonom WebMCP ajan yönlendirme ve araç seçimi kıyaslamasında 0-Byte VRAM ile 49 senaryonun tamamında kusursuz isabet.
+            </p>
+          </div>
+          <a href="https://github.com/nekuda-ai/WindTunnel/issues/25" target="_blank" rel="noopener" class="btn">GitHub Kaydını Gör →</a>
+        </div>
+
+        <div class="card">
+          <div>
+            <span class="badge badge-bench">Jevenator 2 Benchmark #1</span>
+            <h3 style="margin-top:10px;">53.0× Daha Hızlı (1,389 karar/sn)</h3>
+            <p style="margin-top:6px;">
+              8 GB GPU VRAM tüketen Diffusion-Gemma (761.8 ms) karşısında 0-Byte VRAM ile kare başına 14.37 ms gecikme ve %0 yanlış pozitif.
+            </p>
+          </div>
+          <a href="https://github.com/mmastrac/jevenator2/issues/1" target="_blank" rel="noopener" class="btn">GitHub Kaydını Gör →</a>
+        </div>
+
+        <div class="card">
+          <div>
+            <span class="badge badge-hf">🤗 Hugging Face Open Decisions</span>
+            <h3 style="margin-top:10px;">Tekrarlanabilir Karar Veri Seti</h3>
+            <p style="margin-top:6px;">
+              Deterministik karar izleri (`noul`, `choice`, `score`) ve çoklu etki alanı doğrulama paketleri Hugging Face üzerinde açık erişimde.
+            </p>
+          </div>
+          <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions" target="_blank" rel="noopener" class="btn">Veri Setini İncele →</a>
+        </div>
+      </div>
     </section>
 
-    <section class="section">
-      <h2>3. Hakemli / Açık Arşiv Yayınlar (Zenodo DOIs & Lean 4 Formal İspatlar)</h2>
-      <div class="grid-2">
-        <div class="card">
-          <span class="doi-badge">DOI: 10.5281/zenodo.19040337</span>
-          <h3 style="margin-top:8px;">WERR: Zero-Memory Deterministic Decision Engine via Boundary Dynamics</h3>
-          <p>24-Bayt tohum temsili, çok ölçekli Tripod örneklemesi ve O(1) bellek iziyle deterministik karar üretimi.</p>
-        </div>
-        <div class="card">
-          <span class="doi-badge">DOI: 10.5281/zenodo.19055599</span>
-          <h3 style="margin-top:8px;">A.N.S.W.E.R.R.: Dual-Cognitive System-2 to System-1 Reflex Compilation</h3>
-          <p>Bilişsel dil modelleri ile deterministik çalışma zamanı refleks motorları arasındaki mimari köprü.</p>
-        </div>
-        <div class="card">
-          <span class="doi-badge">DOI: 10.5281/zenodo.19453402</span>
-          <h3 style="margin-top:8px;">Lean 4 Formal Verification Ledger & Algebraic Invariants</h3>
-          <p>Sıfır <code>sorry</code> aksiyomuyla derlenen 40+ formal Lean 4 teoremi ve cebirsel değişmezlik ispatları.</p>
-        </div>
-        <div class="card">
-          <span class="doi-badge">DOI: 10.5281/zenodo.19187179</span>
-          <h3 style="margin-top:8px;">WerrSoma & Edge Reflex Governors for Cyber-Physical Systems</h3>
-          <p>Endüstriyel aktüatörler ve otonom sistemler için mikrosaniyelik termal/tork güvenlik kesicileri.</p>
-        </div>
+    <!-- 3. Ecosystem Terminology Table -->
+    <section class="section" style="border-bottom:none;">
+      <h2>3. Kurumsal Mimari Katmanları</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Katman / Modül</th>
+              <th>Fonksiyonu</th>
+              <th>Erişim / Koruma Statüsü</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>answerr Enterprise</strong></td>
+              <td>Doğal dilden 24-Bayt mühürlü politikaya derleme ve REST karar kapıları (`api.answerr.me`)</td>
+              <td><span class="badge badge-patent">ITouch Bilişim Ticari Ürün</span></td>
+            </tr>
+            <tr>
+              <td><strong>WERR-24B™ Vault</strong></td>
+              <td>Sıfır bellekli sınır rezonansı ve çok ölçekli Tripod karar çekirdeği</td>
+              <td><span class="badge badge-patent">Patent & Ticari Sır Korumalı</span></td>
+            </tr>
+            <tr>
+              <td><strong>ABSTAIN_REVIEW Shield</strong></td>
+              <td>Şema dışı (OOD) bilinmeyen girdilerde yanlış özgüveni sıfırlayan kurumsal sorumluluk kalkanı</td>
+              <td><span class="badge badge-bench">Üretim Standart Kalkanı</span></td>
+            </tr>
+            <tr>
+              <td><strong>WerrSoma & Werracle</strong></td>
+              <td>158K nöronlu konnektom refleksi (<a href="https://werrsoma.answerr.me" target="_blank" rel="noopener" style="color:var(--cyan);">werrsoma.answerr.me</a>) ve EVM blok içi kahini (<a href="https://arxiv.org/abs/2609.30719" target="_blank" rel="noopener" style="color:var(--cyan);">arXiv:2609.30719</a>)</td>
+              <td><span class="badge badge-arxiv">İleri Ar-Ge & Dikey Çözümler</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
   </main>
