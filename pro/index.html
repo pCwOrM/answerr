@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>answerr Enterprise — Deterministik Karar Politikaları & AI Ajan Korkuluğu | ITouch Bilişim</title>
+  <meta name="description" content="Politikanızı doğal dilde (Türkçe/İngilizce) yazın; answerr Sistem-2 derleyicisi SHA-256 mühürlü deterministik karar grafiğine ve 24-Bayt werr çekirdeğine dönüştürsün. 0-Byte VRAM, <0.5ms refleks, tam denetim izi (Decision Trace) ve OOD ABSTAIN_REVIEW güvencesi." />
+  <link rel="icon" type="image/svg+xml" href="../img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #07090e;
+      --bg-card: #0d111a;
+      --bg-elevated: #131926;
+      --border: #1e293b;
+      --border-accent: rgba(16, 185, 129, 0.35);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --emerald: #10b981;
+      --cyan: #06b6d4;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --purple: #8b5cf6;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at 15% 0%, rgba(16, 185, 129, 0.08), transparent 40%),
+                  radial-gradient(circle at 85% 10%, rgba(6, 182, 212, 0.08), transparent 40%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+    /* Top Corporate Ribbon */
+    .corp-ribbon {
+      background: rgba(13, 17, 26, 0.9);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      padding: 8px 0;
+      color: var(--text-muted);
+    }
+    .corp-ribbon .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .corp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+    }
+    .corp-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+    }
+    .corp-link { color: var(--emerald); font-weight: 600; }
+    .corp-link:hover { text-decoration: underline; }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 9, 14, 0.82);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .navbar .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+    }
+    .brand-answe { color: #ffffff; }
+    .brand-r1 { color: var(--cyan); }
+    .brand-r2 { color: var(--emerald); }
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--emerald);
+      border: 1px solid var(--border-accent);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--emerald); font-weight: 600; }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--emerald), var(--cyan));
+      color: #04130e;
+      font-weight: 700;
+    }
+    .btn-primary:hover { transform: translateY(-1px); filter: brightness(1.08); }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--emerald); color: var(--emerald); }
+
+    /* Hero */
+    .hero {
+      padding: 68px 0 48px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 54px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      max-width: 960px;
+      margin: 0 auto 20px;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(90deg, var(--emerald), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p.lead {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 820px;
+      margin: 0 auto 32px;
+    }
+    .hero-ctas {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 44px;
+    }
+
+    /* Metric Strip */
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      text-align: left;
+    }
+    .metric-val {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--emerald);
+      margin-bottom: 4px;
+    }
+    .metric-label { font-size: 13px; color: var(--text-muted); }
+
+    /* Section Headers */
+    .section { padding: 56px 0; border-top: 1px solid var(--border); }
+    .section-header { margin-bottom: 36px; }
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--emerald);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .section-title { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .section-desc { color: var(--text-muted); max-width: 760px; font-size: 15px; }
+
+    /* Live Sandbox Grid */
+    .sandbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+    @media (max-width: 960px) {
+      .sandbox-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .panel-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .gate-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .gate-tab {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .gate-tab.active {
+      border-color: var(--emerald);
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--text);
+    }
+    .gate-tab small {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--cyan);
+      margin-top: 2px;
+    }
+    textarea.code-input {
+      width: 100%;
+      min-height: 170px;
+      background: #05070b;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      color: #e2e8f0;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      resize: vertical;
+    }
+    .trace-box {
+      background: #05070b;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      overflow-x: auto;
+      flex: 1;
+    }
+    .verdict-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+    .verdict-allow {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--emerald);
+    }
+    .verdict-deny {
+      background: rgba(244, 63, 94, 0.12);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      color: var(--rose);
+    }
+    .verdict-abstain {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: var(--amber);
+    }
+    .trace-kv {
+      display: grid;
+      grid-template-columns: 165px 1fr;
+      gap: 6px 12px;
+      margin-top: 12px;
+      font-size: 12px;
+    }
+    .trace-k { color: var(--text-muted); }
+    .trace-v { color: var(--text); word-break: break-all; }
+
+    /* Pillars / Architecture */
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .card h3 { font-size: 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .card p { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; }
+    .code-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--cyan);
+    }
+
+    /* Pricing Table */
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .pricing-card.featured {
+      border-color: var(--emerald);
+      box-shadow: 0 0 35px rgba(16, 185, 129, 0.12);
+    }
+    .price-amount {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 800;
+      margin: 12px 0 4px;
+    }
+    .price-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 18px; }
+    .feature-list { list-style: none; margin-bottom: 24px; }
+    .feature-list li {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .feature-list li span.check { color: var(--emerald); font-weight: bold; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      margin-top: 60px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Corporate Authority Ribbon -->
+  <div class="corp-ribbon">
+    <div class="container">
+      <div class="corp-badge">
+        <span class="corp-dot"></span>
+        <span>Resmi Kurumsal Ürün: <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="corp-link">ITouch Bilişim Sistemleri Ltd. Şti.</a> (Çukurova Teknokent)</span>
+      </div>
+      <div class="corp-badge">
+        <span>API Durumu: <strong id="liveApiBadge" style="color:var(--emerald)">https://api.answerr.me (:443 ONLINE)</strong></span>
+        <span>•</span>
+        <span>Motor: <strong>werr v0.6.0 / API v1.1.0</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <span><span class="brand-answe">answe</span><span class="brand-r1">r</span><span class="brand-r2">r</span></span>
+        <span class="brand-tag">ENTERPRISE v1.1</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="active" data-i18n="navProduct">Ürün & Kapılar</a>
+        <a href="studio.html" data-i18n="navStudio">Politika Stüdyosu (System-2)</a>
+        <a href="research.html" data-i18n="navResearch">Derin Teknoloji & Patentler</a>
+        <a href="https://api.answerr.me/docs" target="_blank" rel="noopener">REST API (/docs)</a>
+        <a href="../chat.html" data-i18n="navClassic">Klasik Konsol</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-outline" id="langBtn" onclick="toggleLang()">EN / TR</button>
+        <a href="studio.html" class="btn btn-primary" data-i18n="ctaCompile">Politika Derle →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">
+        <span>⚡ SYSTEM-2 DÜŞÜNÜR VE DERLER • SYSTEM-1 MİKROSANİYEDE REFLEKS VERİR</span>
+      </div>
+      <h1 id="heroTitle">
+        Doğal Dilde Yazılan, <span class="grad">Deterministik ve Denetlenebilir</span> Karar Politikaları
+      </h1>
+      <p class="lead" id="heroLead">
+        Kurallarınızı Türkçe veya İngilizce yazın; <strong>answerr</strong> yazım anında bunları <strong>SHA-256 mühürlü</strong> bir karar grafiğine ve <strong>24-Bayt werr çekirdeğine</strong> derlesin. Çalışma anında LLM veya GPU olmadan, her ortamda (Sunucu, Tarayıcı, Edge, MCP Ajan Kapısı) <strong>&lt; 0.5 ms</strong> içinde tam <strong>Karar İzi (Decision Trace)</strong> ile çalıştırın.
+      </p>
+      <div class="hero-ctas">
+        <a href="studio.html" class="btn btn-primary" style="padding:12px 24px; font-size:15px;">
+          🚀 Doğal Dilden Politika Stüdyosunu Aç
+        </a>
+        <a href="#live-sandbox" class="btn btn-outline" style="padding:12px 24px; font-size:15px;">
+          🔍 Canlı Karar İzi (Decision Trace) Testi
+        </a>
+        <a href="research.html" class="btn btn-outline" style="padding:12px 24px; font-size:15px;">
+          📜 12 Akademik Yayın & 2 TÜRKPATENT Başvurusu
+        </a>
+      </div>
+
+      <!-- Metric Strip -->
+      <div class="metric-strip">
+        <div class="metric-card">
+          <div class="metric-val">&lt; 0.5 ms</div>
+          <div class="metric-label">Deterministik Sistem-1 Refleks Gecikmesi (Sıfır Çalışma Zamanı LLM)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">0-Byte VRAM</div>
+          <div class="metric-label">GPU / Tensör Ağırlığı Yok • 24-Bayt Tohum (cx, cy, zoom)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">100% Trace</div>
+          <div class="metric-label">Tetiklenen Kurallar, Alan Ağırlıkları ve SHA-256 Politika Mührü</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">ABSTAIN_REVIEW</div>
+          <div class="metric-label">Tanınmayan Şema (OOD) Koruması — Kör Tahmin / Halüsinasyon Yok</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Live Interactive Commercial Gate & Trace Sandbox -->
+  <section class="section" id="live-sandbox">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">CANLI KURUMSAL DOĞRULAMA (DUE DILIGENCE SANDBOX)</div>
+        <h2 class="section-title">Karar İzi (Decision Trace) ve OOD Korumasını Canlı Sınayın</h2>
+        <p class="section-desc">
+          Aşağıdaki 4 kurumsal senaryodan birini seçin veya JSON girdisini değiştirin. Hem tarayıcı içi <code>werr-engine.js v0.6.0</code> hem de <code>https://api.answerr.me/v1/decide</code> aynı deterministik sonucu, tetiklenen kuralları ve şema dışı (OOD) <code>ABSTAIN_REVIEW</code> güvenlik bayrağını döndürür.
+        </p>
+      </div>
+
+      <div class="sandbox-grid">
+        <!-- Left: Gate Selector & JSON State -->
+        <div class="panel">
+          <div class="panel-title">
+            <span>1. Kurumsal Politika Kapısı Seçin</span>
+            <span class="code-pill" id="selectedGateBadge">gate_id: agent_mcp_guard</span>
+          </div>
+          <div class="gate-tabs">
+            <button class="gate-tab active" onclick="selectScenario('agent_block', this)">
+              🛡️ AI Ajan / MCP Korkuluğu (Red)
+              <small>drop_production_table • $12,500</small>
+            </button>
+            <button class="gate-tab" onclick="selectScenario('agent_safe', this)">
+              ✅ AI Ajan / MCP Korkuluğu (İzin)
+              <small>read_invoice_summary • $0</small>
+            </button>
+            <button class="gate-tab" onclick="selectScenario('fintech_tr', this)">
+              💳 TR Fintech & E-Ticaret Fraud
+              <small>Kart Hızı & Tutar Kapısı (KVKK)</small>
+            </button>
+            <button class="gate-tab" onclick="selectScenario('ood_guard', this)">
+              ⚠️ Şema Dışı (OOD) Sorumluluk Koruması
+              <small>Tanınmayan Alanlar → ABSTAIN_REVIEW</small>
+            </button>
+          </div>
+
+          <div class="panel-title" style="margin-top:4px;">
+            <span>2. Girdi Durumu (JSON State) & Tipli Soru (`noul`)</span>
+            <button class="btn btn-primary" onclick="runLiveEvaluation()" id="runBtn">⚡ Karar Ver & İzi Göster</button>
+          </div>
+          <textarea class="code-input" id="stateInput" spellcheck="false"></textarea>
+          <div style="font-size:12px; color:var(--text-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+            <span>Soru Tipleri: <code>noul</code> (Karar + Olasılık), <code>choice</code> (Rota), <code>score</code> (Risk)</span>
+            <span> Çoklu Ölçek: <code>Tripod (0.60x, 1.00x, 1.60x)</code></span>
+          </div>
+        </div>
+
+        <!-- Right: Live Decision Trace & API Output -->
+        <div class="panel">
+          <div class="panel-title">
+            <span>3. Deterministik Karar & Denetim İzi (Decision Trace)</span>
+            <span class="code-pill" id="latencyBadge">0.12 ms</span>
+          </div>
+
+          <div id="verdictBanner" class="verdict-banner verdict-deny">
+            <span id="verdictTitle">KARAR: DENY (NOUL = 0.0820)</span>
+            <span id="verdictMode">MODE: DETERMINISTIC_EXECUTE</span>
+          </div>
+
+          <div class="trace-kv" id="traceSummary">
+            <div class="trace-k">Politika Kapısı / Sürüm:</div>
+            <div class="trace-v" id="trPolicy">agent_mcp_guard (v1.1.0)</div>
+            <div class="trace-k">SHA-256 Politika Mührü:</div>
+            <div class="trace-v" id="trSeal">e3b0c44298fc1c149afbf4c8996fb924...</div>
+            <div class="trace-k">Tetiklenen Kurallar:</div>
+            <div class="trace-v" id="trRules">hard_rule:block_destructive_sql</div>
+            <div class="trace-k">Alan Katkıları (Weights):</div>
+            <div class="trace-v" id="trWeights">tool_name: +2.2, amount_usd: +1.0</div>
+            <div class="trace-k">Tanınan / Tanınmayan Alan:</div>
+            <div class="trace-v" id="trFields">Tanınan: 4 | Tanınmayan (OOD): 0</div>
+            <div class="trace-k">24-Bayt Tohum (Seed):</div>
+            <div class="trace-v" id="trSeed">cx: -0.74364388, cy: +0.1318259, zoom: 240.0</div>
+          </div>
+
+          <div class="trace-box" id="rawTraceJson">Yükleniyor...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Value Proposition & WERR Jargon Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">NEDEN ANSWERR + WERR?</div>
+        <h2 class="section-title">Kurumsal Karar Motorlarında Yeni Kategori: "Derle ve Refleks Ver"</h2>
+        <p class="section-desc">
+          Klasik kural motorları (OPA, Cerbos, GoRules) el ile karmaşık kod yazımı gerektirir; çalışma anında LLM kullanan ajanlar ise yavaştır, pahalıdır ve halüsinasyon görür. <strong>answerr</strong> iki dünyayı birleştirir:
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <div class="card">
+          <h3>🧠 1. Sistem-2 Politika Derleyicisi</h3>
+          <p>
+            Güvenlik, risk veya ajan yetkilendirme kurallarınızı doğal dilde (Türkçe/İngilizce) ifade edin. <code>POST /v1/policies/compile</code> uç noktası metni deterministik eşiklere, alan ağırlıklarına ve 24-Bayt <code>werr</code> koordinatlarına derleyip <strong>SHA-256 mührüyle</strong> kilitler.
+          </p>
+          <span class="code-pill">POST /v1/policies/compile</span>
+        </div>
+
+        <div class="card">
+          <h3>⚡ 2. Sistem-1 Omurilik Refleksi (`werr`)</h3>
+          <p>
+            Derlenen politika; Python (<code>pip install werr</code>), tarayıcı (<code>werr-engine.js</code>), REST API (<code>api.answerr.me</code>) ve EVM (<code>werracle</code>) üzerinde <strong>0-Byte VRAM</strong> ile mikrosaniyeler içinde aynı <code>noul</code>, <code>choice</code> ve <code>score</code> çıktısını üretir.
+          </p>
+          <span class="code-pill">POST /v1/gates/{gate_id}/decide</span>
+        </div>
+
+        <div class="card">
+          <h3>🛡️ 3. Tam Denetim İzi & OOD Güvencesi</h3>
+          <p>
+            Her karar; tetiklenen kesin kuralları (<code>matched_rules</code>), alan bazlı katkı vektörünü (<code>feature_contributions</code>) ve şema dışı bilinmeyen girdilerde sorumluluk kalkanını (<code>ABSTAIN_REVIEW</code>) içeren tam bir denetim iziyle döner.
+          </p>
+          <span class="code-pill">trace.recommended_mode</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Commercial Tiers (ITouch Bilişim) -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">TİCARİ LİSANSLAMA VE PAKETLER — ITOUCH BİLİŞİM</div>
+        <h2 class="section-title">Açık Çekirdekten Kurumsal Egemen Kuruluma</h2>
+        <p class="section-desc">
+          <code>answerr</code> ve <code>werr</code> çekirdeği, <strong>ITouch Bilişim Sistemleri Ltd. Şti. (Çukurova Teknokent)</strong> güvencesiyle geliştirilmekte ve lisanslanmaktadır. Türkiye içi KVKK uyumlu barındırma ve kurumsal faturalandırma mevcuttur.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <!-- Tier 1 -->
+        <div class="pricing-card">
+          <div>
+            <span class="code-pill">OPEN RUNTIME</span>
+            <h3 style="margin-top:12px; font-size:20px;">werr Open Core</h3>
+            <div class="price-amount">Ücretsiz</div>
+            <div class="price-sub">Bireysel geliştiriciler, akademik araştırma ve prototipleme</div>
+            <ul class="feature-list">
+              <li><span class="check">✓</span> <code>pip install werr</code> & JS SDK</li>
+              <li><span class="check">✓</span> <code>noul</code>, <code>choice</code>, <code>score</code> soru tipleri</li>
+              <li><span class="check">✓</span> 0-Byte VRAM yerel çalışma zamanı</li>
+              <li><span class="check">✓</span> Topluluk API limiti (120 istek/dk)</li>
+              <li><span class="check">✓</span> Karar İzi (Decision Trace) ve OOD algılama</li>
+            </ul>
+          </div>
+          <a href="https://pypi.org/project/werr/" target="_blank" rel="noopener" class="btn btn-outline" style="justify-content:center;">pip install werr</a>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="pricing-card featured">
+          <div>
+            <span class="code-pill" style="border-color:var(--emerald); color:var(--emerald);">EN ÇOK TERCİH EDİLEN</span>
+            <h3 style="margin-top:12px; font-size:20px;">answerr Pro & AI Agent Gate</h3>
+            <div class="price-amount">$149 <span style="font-size:15px; font-weight:500; color:var(--text-muted)">/ ay</span></div>
+            <div class="price-sub">Fintech, E-Ticaret, SaaS ekipleri ve AI Ajan (MCP) geliştiricileri</div>
+            <ul class="feature-list">
+              <li><span class="check">✓</span> <strong>Doğal Dilden Politika Stüdyosu</strong> (TR / EN)</li>
+              <li><span class="check">✓</span> Özel Sürümlenmiş Kapılar (<code>/v1/gates/{id}/decide</code>)</li>
+              <li><span class="check">✓</span> SHA-256 Politika Mührü & Denetim Günlüğü</li>
+              <li><span class="check">✓</span> AI Ajan MCP Korkuluğu & TR E-Ticaret Fraud Şablonları</li>
+              <li><span class="check">✓</span> Aylık 5 Milyon Deterministik Karar Çağrısı</li>
+            </ul>
+          </div>
+          <a href="studio.html" class="btn btn-primary" style="justify-content:center;">Politika Stüdyosunda Başla →</a>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="pricing-card">
+          <div>
+            <span class="code-pill">KURUMSAL & EGEMEN (ON-PREM)</span>
+            <h3 style="margin-top:12px; font-size:20px;">answerr Sovereign Enterprise</h3>
+            <div class="price-amount">Kurumsal Lisans</div>
+            <div class="price-sub">Bankacılık, Sigorta, Savunma, Robotik (WerrSoma) ve Yüksek Trafikli Platformlar</div>
+            <ul class="feature-list">
+              <li><span class="check">✓</span> <strong>ITouch Bilişim BSL 1.1 Ticari Üretim Lisansı</strong></li>
+              <li><span class="check">✓</span> On-Premise / Air-Gapped Kurulum & KVKK TR Sunucu</li>
+              <li><span class="check">✓</span> Gölge Mod (Shadow Mode) & Champion/Challenger A/B Testi</li>
+              <li><span class="check">✓</span> Donanım / Edge C++ & WerrSoma Robotik Refleks Entegrasyonu</li>
+              <li><span class="check">✓</span> 99.99% SLA ve 7/24 Mühendislik Desteği</li>
+            </ul>
+          </div>
+          <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="btn btn-outline" style="justify-content:center;">ITouch Bilişim ile İletişime Geçin</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-row">
+        <div>
+          <strong>answerr.me</strong> — Resmi Ticari Sağlayıcı: <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="corp-link">ITouch Bilişim Sistemleri Ltd. Şti.</a> (Çukurova Teknokent, Adana / Türkiye)
+          <div style="margin-top:4px; font-size:12px;">
+            TÜRKPATENT Başvuruları: <code>TR 2026/016285</code> & <code>TR 2026/016633</code> • BSL 1.1 Ticari Lisans Korunmaktadır.
+          </div>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <a href="studio.html">Politika Stüdyosu</a>
+          <a href="research.html">Akademik Külliyat (12 Yayın)</a>
+          <a href="https://api.answerr.me/docs" target="_blank" rel="noopener">OpenAPI / Swagger</a>
+          <a href="../index.html">Mevcut Ana Sayfa</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Load Upgraded Client Engine v0.6.0 -->
+  <script src="../js/werr-engine.js"></script>
+  <script>
+    const werrClient = new WerrEngine();
+
+    const SCENARIOS = {
+      agent_block: {
+        gate_id: "agent_mcp_guard",
+        strict_policy: true,
+        state: {
+          tool_name: "drop_production_table",
+          amount_usd: 12500,
+          user_role: "agent_autonomous",
+          auth_status: true,
+          failed_attempts: 0
+        },
+        questions: {
+          allow_tool_call: {
+            type: "noul",
+            text: "Should this autonomous AI agent tool call be permitted without human approval?"
+          },
+          execution_route: {
+            type: "choice",
+            text: "Select agent execution route",
+            criteria: {
+              direct_execute: "Execute tool call immediately",
+              human_in_the_loop: "Escalate to human supervisor approval",
+              block_and_alert: "Block destructive tool call & alert security"
+            }
+          }
+        }
+      },
+      agent_safe: {
+        gate_id: "agent_mcp_guard",
+        strict_policy: true,
+        state: {
+          tool_name: "read_invoice_summary",
+          amount_usd: 0,
+          user_role: "admin",
+          auth_status: true,
+          failed_attempts: 0
+        },
+        questions: {
+          allow_tool_call: {
+            type: "noul",
+            text: "Should this read-only AI agent tool call be permitted?"
+          }
+        }
+      },
+      fintech_tr: {
+        gate_id: "fintech_payment_tr",
+        strict_policy: true,
+        state: {
+          cart_value: 28500,
+          card_attempts: 4,
+          geo_velocity: 920,
+          known_device: false,
+          shipping_billing_mismatch: true
+        },
+        questions: {
+          approve_payment: {
+            type: "noul",
+            text: "Bu e-ticaret ödemesi doğrudan onaylanmalı mı?"
+          },
+          fraud_risk_level: {
+            type: "score",
+            text: "Dolandırıcılık risk seviyesi",
+            criteria: ["Düşük Risk", "Orta Risk (3D Secure)", "Yüksek Risk (Manuel İnceleme)", "Kritik Fraud (Blok)"]
+          }
+        }
+      },
+      ood_guard: {
+        gate_id: "agent_mcp_guard",
+        strict_policy: true,
+        state: {
+          coffee_grams: 18.5,
+          water_temp_c: 93,
+          roast_level: "medium_light"
+        },
+        questions: {
+          deploy_friday: {
+            type: "noul",
+            text: "Cuma akşamı canlı ortama yeni sürüm çıkalım mı?"
+          }
+        }
+      }
+    };
+
+    let currentScenario = "agent_block";
+
+    function selectScenario(key, btnEl) {
+      currentScenario = key;
+      document.querySelectorAll('.gate-tab').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      const sc = SCENARIOS[key];
+      document.getElementById('selectedGateBadge').textContent = `gate_id: ${sc.gate_id}`;
+      document.getElementById('stateInput').value = JSON.stringify(sc, null, 2);
+      runLiveEvaluation();
+    }
+
+    async function runLiveEvaluation() {
+      const raw = document.getElementById('stateInput').value;
+      let payload;
+      try {
+        payload = JSON.parse(raw);
+      } catch (e) {
+        alert("Geçersiz JSON formatı: " + e.message);
+        return;
+      }
+
+      // 1. Run instant client-side WerrEngine v0.6.0
+      const localRes = werrClient.evaluate(payload.state || {}, payload.questions || {}, {
+        strictPolicy: Boolean(payload.strict_policy),
+        policy: { id: payload.gate_id || "universal_default", version: "1.1.0" }
+      });
+
+      // 2. Also query live https://api.answerr.me/v1/decide if available
+      let finalData = null;
+      let sourceLabel = "Client werr-engine.js v0.6.0";
+      try {
+        const resp = await fetch("https://api.answerr.me/v1/decide", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (resp.ok) {
+          finalData = await resp.json();
+          sourceLabel = "Live API https://api.answerr.me/v1/decide";
+        }
+      } catch (_) {}
+
+      const trace = (finalData && finalData.trace) ? finalData.trace : localRes.trace;
+      const results = (finalData && finalData.results) ? finalData.results : localRes.answers;
+      const firstKey = Object.keys(results)[0];
+      const firstAns = results[firstKey] || {};
+      const latency = (finalData && finalData.latency_ms) ? finalData.latency_ms : localRes.latencyMs;
+
+      document.getElementById('latencyBadge').textContent = `${latency} ms (${sourceLabel})`;
+
+      const banner = document.getElementById('verdictBanner');
+      const recMode = trace.recommended_mode || trace.recommendedMode || "DETERMINISTIC_EXECUTE";
+      const ood = trace.ood_detected || trace.oodDetected;
+      const noulVal = (firstAns.noul !== undefined ? firstAns.noul : firstAns.confidence || 0).toFixed(4);
+
+      if (ood || recMode === "ABSTAIN_REVIEW" || firstAns.decision === null) {
+        banner.className = "verdict-banner verdict-abstain";
+        document.getElementById('verdictTitle').textContent = `KARAR: ABSTAIN_REVIEW (ŞEMA DIŞI / BİLİNMEYEN GİRDİ)`;
+        document.getElementById('verdictMode').textContent = `MODE: ${recMode}`;
+      } else if (firstAns.decision === true) {
+        banner.className = "verdict-banner verdict-allow";
+        document.getElementById('verdictTitle').textContent = `KARAR: ALLOW / ONAY (NOUL = ${noulVal})`;
+        document.getElementById('verdictMode').textContent = `MODE: ${recMode}`;
+      } else {
+        banner.className = "verdict-banner verdict-deny";
+        document.getElementById('verdictTitle').textContent = `KARAR: DENY / BLOK (NOUL = ${noulVal})`;
+        document.getElementById('verdictMode').textContent = `MODE: ${recMode}`;
+      }
+
+      document.getElementById('trPolicy').textContent = `${trace.policy_id || trace.policyId} (v${trace.policy_version || trace.policyVersion})`;
+      document.getElementById('trSeal').textContent = trace.policy_seal || trace.policySeal || "—";
+      const rules = trace.matched_rules || trace.matchedRules || [];
+      document.getElementById('trRules').textContent = rules.length ? rules.join(" | ") : "Hiçbir bilinen sinyal eşleşmedi (OOD)";
+      const weights = trace.feature_contributions || trace.featureContributions || {};
+      document.getElementById('trWeights').textContent = Object.entries(weights).map(([k,v]) => `${k}: ${v >= 0 ? '+' : ''}${v}`).join(", ") || "—";
+      const recF = trace.recognized_fields || trace.recognizedFields || [];
+      const unrecF = trace.unrecognized_fields || trace.unrecognizedFields || [];
+      document.getElementById('trFields').textContent = `Tanınan (${recF.length}): [${recF.join(', ')}] | Tanınmayan (${unrecF.length}): [${unrecF.join(', ')}]`;
+      const seed = (finalData && finalData.seed_24b) ? finalData.seed_24b : localRes.coordinates;
+      document.getElementById('trSeed').textContent = `cx: ${seed.cx}, cy: ${seed.cy}, zoom: ${seed.zoom}`;
+
+      document.getElementById('rawTraceJson').textContent = JSON.stringify(finalData || localRes, null, 2);
+    }
+
+    function toggleLang() {
+      const h1 = document.getElementById('heroTitle');
+      const lead = document.getElementById('heroLead');
+      if (document.documentElement.lang === 'tr') {
+        document.documentElement.lang = 'en';
+        h1.innerHTML = 'Natural-Language-Compiled, <span class="grad">Deterministic & Auditable</span> Decision Policies';
+        lead.innerHTML = 'Write your rules in English or Turkish; <strong>answerr</strong> compiles them at authoring time into a <strong>SHA-256 sealed</strong> policy graph and <strong>24-Byte werr seed</strong>. Execute at runtime in <strong>&lt; 0.5 ms</strong> with <strong>0-Byte VRAM</strong>, full <strong>Decision Trace</strong>, and <strong>ABSTAIN_REVIEW</strong> Out-of-Domain safety.';
+      } else {
+        document.documentElement.lang = 'tr';
+        h1.innerHTML = 'Doğal Dilde Yazılan, <span class="grad">Deterministik ve Denetlenebilir</span> Karar Politikaları';
+        lead.innerHTML = 'Kurallarınızı Türkçe veya İngilizce yazın; <strong>answerr</strong> yazım anında bunları <strong>SHA-256 mühürlü</strong> bir karar grafiğine ve <strong>24-Bayt werr çekirdeğine</strong> derlesin. Çalışma anında LLM veya GPU olmadan, her ortamda (Sunucu, Tarayıcı, Edge, MCP Ajan Kapısı) <strong>&lt; 0.5 ms</strong> içinde tam <strong>Karar İzi (Decision Trace)</strong> ile çalıştırın.';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      selectScenario('agent_block', document.querySelector('.gate-tab'));
+    });
+  </script>
+</body>
+</html>
