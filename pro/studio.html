@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>answerr Politika Stüdyosu — Doğal Dilden SHA-256 Mühürlü Karar Kapısına | ITouch Bilişim</title>
+  <link rel="icon" type="image/svg+xml" href="../img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #07090e;
+      --bg-card: #0d111a;
+      --bg-elevated: #131926;
+      --border: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --emerald: #10b981;
+      --cyan: #06b6d4;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
+    .navbar {
+      backdrop-filter: blur(14px);
+      background: rgba(7, 9, 14, 0.88);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 21px; }
+    .brand-r1 { color: var(--cyan); }
+    .brand-r2 { color: var(--emerald); }
+    .brand-tag {
+      font-family: var(--font-mono); font-size: 11px; padding: 2px 8px;
+      border-radius: 999px; background: rgba(6, 182, 212, 0.14); color: var(--cyan);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+    }
+    .nav-links { display: flex; gap: 20px; font-size: 14px; color: var(--text-muted); }
+    .nav-links a.active { color: var(--emerald); font-weight: 600; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px;
+      border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid transparent;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--emerald), var(--cyan)); color: #04130e; font-weight: 700; }
+    .btn-outline { background: rgba(255,255,255,0.03); border-color: var(--border); color: var(--text); }
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 36px 0 60px;
+    }
+    @media (max-width: 960px) { .studio-grid { grid-template-columns: 1fr; } }
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .panel h2 { font-size: 18px; display: flex; justify-content: space-between; align-items: center; }
+    .pill {
+      font-family: var(--font-mono); font-size: 11px; padding: 3px 8px;
+      border-radius: 6px; background: var(--bg-elevated); border: 1px solid var(--border); color: var(--emerald);
+    }
+    label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    input, select, textarea {
+      width: 100%; background: #05070b; border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px; color: var(--text); font-family: var(--font-mono); font-size: 13px;
+    }
+    textarea { min-height: 120px; resize: vertical; }
+    pre.code-out {
+      background: #05070b; border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px; font-family: var(--font-mono); font-size: 12px; overflow-x: auto; color: #cbd5e1;
+      max-height: 360px;
+    }
+    .template-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip {
+      font-size: 12px; padding: 6px 10px; border-radius: 6px;
+      background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer;
+    }
+    .chip:hover { border-color: var(--emerald); color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <span>answe<span class="brand-r1">r</span><span class="brand-r2">r</span></span>
+        <span class="brand-tag">POLICY STUDIO (SYSTEM-2 → SYSTEM-1)</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Ürün & Kapılar</a>
+        <a href="studio.html" class="active">Politika Stüdyosu</a>
+        <a href="research.html">Derin Teknoloji & Patentler</a>
+        <a href="https://api.answerr.me/docs" target="_blank" rel="noopener">REST API</a>
+      </div>
+      <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="btn btn-outline">ITouch Bilişim</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div style="padding-top:32px;">
+      <h1 style="font-size:28px; font-weight:800;">Doğal Dilden Deterministik Karar Grafiğine (System-2 Derleyici)</h1>
+      <p style="color:var(--text-muted); font-size:15px; max-width:860px; margin-top:6px;">
+        Kurallarınızı Türkçe veya İngilizce yazın. <code>POST https://api.answerr.me/v1/policies/compile</code> uç noktası metni ayrıştırır, kesin eşikleri (<code>hard_rules</code>), alan ağırlıklarını ve <strong>24-Bayt werr tohumunu</strong> üretip <strong>SHA-256 Politika Mührü</strong> ile kilitler.
+      </p>
+    </div>
+
+    <div class="studio-grid">
+      <!-- Left Column: Prompt Input & Compilation -->
+      <div class="panel">
+        <h2>
+          <span>1. Doğal Dil Politika Tanımı</span>
+          <span class="pill">POST /v1/policies/compile</span>
+        </h2>
+
+        <div>
+          <label>Hazır Kurumsal Şablonlar (Tıklayın):</label>
+          <div class="template-chips" style="margin-top:6px;">
+            <button class="chip" onclick="loadTemplate('mcp')">🛡️ AI Ajan MCP Korkuluğu</button>
+            <button class="chip" onclick="loadTemplate('fintech')">💳 TR E-Ticaret & Kart Hızı</button>
+            <button class="chip" onclick="loadTemplate('waf')">🌐 Zero-Trust API Güvenliği</button>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div>
+            <label>Politika Kapı Kimliği (gate_id)</label>
+            <input type="text" id="gateIdInput" value="itouch_agent_guard_v1" />
+          </div>
+          <div>
+            <label>Hedef Etki Alanı (Domain Manifold)</label>
+            <select id="domainInput">
+              <option value="agent_mcp_guard">agent_mcp_guard (AI Ajan / MCP)</option>
+              <option value="fintech_payment_tr">fintech_payment_tr (TR Fintech / Fraud)</option>
+              <option value="api_zero_trust_waf">api_zero_trust_waf (API Güvenliği)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label>Doğal Dil Politika Metni (Türkçe veya İngilizce)</label>
+          <textarea id="promptInput">Otonom AI ajanı veritabanında drop, delete veya truncate aracı çağırmak isterse kesin olarak reddet (DENY). İşlem tutarı 5000 dolar üzerinde ise veya hatalı deneme sayısı 3 üstündeyse işlemi engelle. Bilinmeyen şema alanlarında ABSTAIN_REVIEW döndür.</textarea>
+        </div>
+
+        <button class="btn btn-primary" onclick="compilePolicy()" style="justify-content:center; padding:12px;">
+          ⚡ Sistem-2 ile Derle & SHA-256 Mührü Oluştur
+        </button>
+
+        <div>
+          <label>Derlenen Politika Özeti & SHA-256 Mührü</label>
+          <pre class="code-out" id="compiledSpecOut">Derleme bekleniyor...</pre>
+        </div>
+      </div>
+
+      <!-- Right Column: Live Gate Registration & SDK Code -->
+      <div class="panel">
+        <h2>
+          <span>2. Derlenen Kapıyı Test Et & SDK Kodunu Al</span>
+          <span class="pill" id="sealPill">SHA-256 SEAL READY</span>
+        </h2>
+
+        <div>
+          <label>Canlı Test Girdisi (JSON State)</label>
+          <textarea id="testStateInput" style="min-height:110px;">{
+  "tool_name": "delete_customer_ledger",
+  "amount_usd": 7200,
+  "failed_attempts": 1,
+  "auth_status": true
+}</textarea>
+        </div>
+
+        <button class="btn btn-outline" onclick="testCompiledGate()" style="justify-content:center; border-color:var(--emerald); color:var(--emerald);">
+          🔍 Derlenen Politika ile Karar Ver (System-1 &lt; 0.5 ms)
+        </button>
+
+        <div>
+          <label>Canlı Karar ve Denetim İzi (Decision Trace)</label>
+          <pre class="code-out" id="testResultOut">Test sonucu burada görünecek...</pre>
+        </div>
+
+        <div>
+          <label>Otomatik Üretilen Python / cURL Entegrasyon Kodu</label>
+          <pre class="code-out" id="sdkSnippetOut"></pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/werr-engine.js"></script>
+  <script>
+    const werrLocal = new WerrEngine();
+    let latestCompiledPolicy = null;
+
+    const TEMPLATES = {
+      mcp: {
+        gate_id: "itouch_agent_guard_v1",
+        domain: "agent_mcp_guard",
+        prompt: "Otonom AI ajanı veritabanında drop, delete veya truncate aracı çağırmak isterse kesin olarak reddet (DENY). İşlem tutarı 5000 dolar üzerinde ise veya hatalı deneme sayısı 3 üstündeyse işlemi engelle. Bilinmeyen şema alanlarında ABSTAIN_REVIEW döndür.",
+        testState: { tool_name: "delete_customer_ledger", amount_usd: 7200, failed_attempts: 1, auth_status: true }
+      },
+      fintech: {
+        gate_id: "tr_ecommerce_fraud_v1",
+        domain: "fintech_payment_tr",
+        prompt: "E-ticaret sepet tutarı 15000 TL üzerinde ise ve hatalı kart denemesi 3 üstündeyse ödemeyi reddet (DENY). Cihaz tanınmıyorsa ve fatura-teslimat adresi uyuşmuyorsa incelemeye al.",
+        testState: { amount_usd: 18500, failed_attempts: 4, known_device: false, shipping_billing_mismatch: true }
+      },
+      waf: {
+        gate_id: "api_zero_trust_v1",
+        domain: "api_zero_trust_waf",
+        prompt: "Saniyedeki istek hızı 50 üstündeyse veya hatalı giriş denemesi 5 üzerinde ise paketi düşür (DENY). Yalnızca doğrulanmış oturumlara izin ver.",
+        testState: { req_frequency: 85.0, failed_attempts: 6, user_role: "guest" }
+      }
+    };
+
+    function loadTemplate(key) {
+      const t = TEMPLATES[key];
+      document.getElementById('gateIdInput').value = t.gate_id;
+      document.getElementById('domainInput').value = t.domain;
+      document.getElementById('promptInput').value = t.prompt;
+      document.getElementById('testStateInput').value = JSON.stringify(t.testState, null, 2);
+      compilePolicy();
+    }
+
+    async function compilePolicy() {
+      const gate_id = document.getElementById('gateIdInput').value.trim() || "custom_gate";
+      const domain = document.getElementById('domainInput').value;
+      const prompt = document.getElementById('promptInput').value;
+
+      try {
+        const res = await fetch("https://api.answerr.me/v1/policies/compile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ gate_id, domain, prompt })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          latestCompiledPolicy = data.compiled_policy;
+          document.getElementById('compiledSpecOut').textContent = JSON.stringify(data.compiled_policy, null, 2);
+          document.getElementById('sealPill').textContent = `SEAL: ${(data.policy_seal || '').slice(0, 16)}...`;
+          document.getElementById('sdkSnippetOut').textContent = data.sdk_snippet_python + "\n\n# cURL:\n" + data.sdk_snippet_curl;
+          testCompiledGate();
+          return;
+        }
+      } catch (e) {
+        console.warn("API compile fallback:", e);
+      }
+    }
+
+    async function testCompiledGate() {
+      let stateObj = {};
+      try {
+        stateObj = JSON.parse(document.getElementById('testStateInput').value);
+      } catch (e) {
+        alert("Geçersiz JSON: " + e.message);
+        return;
+      }
+
+      const gate_id = document.getElementById('gateIdInput').value.trim() || "agent_mcp_guard";
+      try {
+        const res = await fetch("https://api.answerr.me/v1/decide", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            gate_id: gate_id,
+            strict_policy: true,
+            state: stateObj,
+            questions: {
+              allow_action: { type: "noul", text: "Should this action be permitted under the compiled policy?" }
+            }
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('testResultOut').textContent = JSON.stringify(data, null, 2);
+          return;
+        }
+      } catch (_) {}
+
+      const local = werrLocal.evaluate(stateObj, {
+        allow_action: { type: "noul", text: "Should this action be permitted?" }
+      }, { strictPolicy: true, policy: latestCompiledPolicy || { id: gate_id } });
+      document.getElementById('testResultOut').textContent = JSON.stringify(local, null, 2);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      compilePolicy();
+    });
+  </script>
+</body>
+</html>
