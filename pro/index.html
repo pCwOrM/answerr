@@ -3,649 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>answerr Enterprise — 24-Bayt Mühürlü Refleks Zekâsı & AI Ajan Korkuluğu | ITouch Bilişim</title>
+  <title>answerr Enterprise — WERR-24B™ Sovereign Vault | ITouch Bilişim</title>
   <meta name="description" content="Doğal dilde yazın, patentli WERR-24B™ çekirdeğiyle 24 Baytlık kriptografik tohuma mühürleyin. 0-Byte VRAM, <0.5ms deterministik refleks, sıfır halüsinasyon ve OOD sorumluluk kalkanı. ITouch Bilişim (Çukurova Teknokent) kurumsal ürünü." />
   <link rel="icon" type="image/svg+xml" href="../assets/answerr_logo_portal_fav_trans.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #05070b;
-      --bg-card: rgba(13, 18, 30, 0.78);
-      --bg-elevated: rgba(20, 28, 46, 0.85);
-      --border: rgba(148, 163, 184, 0.14);
-      --border-glow: rgba(16, 185, 129, 0.45);
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --emerald: #10b981;
-      --cyan: #06b6d4;
-      --amber: #f59e0b;
-      --rose: #f43f5e;
-      --purple: #a855f7;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      width: 100%;
-      max-width: 100vw;
-      overflow-x: hidden;
-      font-family: var(--font-sans);
-      background-color: var(--bg);
-      background-image:
-        radial-gradient(ellipse 80% 50% at 50% -15%, rgba(16, 185, 129, 0.16), transparent),
-        radial-gradient(ellipse 60% 40% at 85% 20%, rgba(6, 182, 212, 0.12), transparent),
-        radial-gradient(ellipse 50% 40% at 15% 60%, rgba(168, 85, 247, 0.07), transparent);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: inherit; text-decoration: none; }
-    .container {
-      width: 100%;
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    /* Corporate Ribbon */
-    .corp-ribbon {
-      background: rgba(5, 7, 11, 0.92);
-      border-bottom: 1px solid var(--border);
-      font-size: 12px;
-      padding: 8px 0;
-      color: var(--text-muted);
-    }
-    .corp-ribbon .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .corp-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--font-mono);
-      flex-wrap: wrap;
-    }
-    .corp-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 10px var(--emerald);
-      flex-shrink: 0;
-    }
-    .corp-link { color: var(--emerald); font-weight: 600; }
-    .corp-link:hover { text-decoration: underline; }
-
-    /* Navbar */
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: rgba(5, 7, 11, 0.84);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 0;
-    }
-    .navbar .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 22px;
-      letter-spacing: -0.03em;
-      flex-shrink: 0;
-    }
-    .brand-answe { color: #ffffff; }
-    .brand-r1 { color: var(--cyan); }
-    .brand-r2 { color: var(--emerald); }
-    .brand-tag {
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.14);
-      color: var(--emerald);
-      border: 1px solid var(--border-glow);
-      white-space: nowrap;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-muted);
-    }
-    .nav-links a { transition: color 0.15s; white-space: nowrap; }
-    .nav-links a:hover { color: var(--text); }
-    .nav-links a.active { color: var(--emerald); font-weight: 600; }
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .mobile-toggle {
-      display: none;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 8px;
-      padding: 8px 11px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .mobile-drawer {
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-      padding: 16px 20px;
-      background: rgba(10, 14, 24, 0.98);
-      border-bottom: 1px solid var(--border);
-    }
-    .mobile-drawer.open { display: flex; }
-    .mobile-drawer a {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--text-muted);
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.08);
-    }
-    .mobile-drawer a.active { color: var(--emerald); font-weight: 700; }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 9px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
-      white-space: nowrap;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--emerald), var(--cyan));
-      color: #03110c;
-      font-weight: 700;
-      box-shadow: 0 0 24px rgba(16, 185, 129, 0.25);
-    }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 32px rgba(6, 182, 212, 0.4); }
-    .btn-outline {
-      background: rgba(255, 255, 255, 0.03);
-      border-color: var(--border);
-      color: var(--text);
-    }
-    .btn-outline:hover { border-color: var(--emerald); color: var(--emerald); }
-
-    /* Hero & Magical Vault Orb */
-    .hero {
-      padding: 56px 0 44px;
-      text-align: center;
-      position: relative;
-    }
-    .vault-orb-wrap {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 22px;
-    }
-    .vault-orb {
-      position: relative;
-      width: 88px;
-      height: 88px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(6, 182, 212, 0.45), rgba(16, 185, 129, 0.15) 60%, rgba(5, 7, 11, 0.9));
-      border: 1px solid rgba(16, 185, 129, 0.5);
-      box-shadow: 0 0 40px rgba(16, 185, 129, 0.3), inset 0 0 20px rgba(6, 182, 212, 0.35);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      animation: orbPulse 4s ease-in-out infinite;
-    }
-    .vault-orb::after {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: 1px dashed rgba(6, 182, 212, 0.35);
-      animation: orbSpin 18s linear infinite;
-    }
-    @keyframes orbPulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 36px rgba(16, 185, 129, 0.28); }
-      50% { transform: scale(1.04); box-shadow: 0 0 54px rgba(6, 182, 212, 0.48); }
-    }
-    @keyframes orbSpin {
-      to { transform: rotate(360deg); }
-    }
-    .orb-bytes { font-size: 18px; font-weight: 800; color: #fff; line-height: 1.1; }
-    .orb-sub { font-size: 9px; color: var(--emerald); letter-spacing: 0.08em; }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.09);
-      border: 1px solid rgba(16, 185, 129, 0.32);
-      color: var(--emerald);
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      margin-bottom: 18px;
-      max-width: 100%;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .hero h1 {
-      font-size: clamp(28px, 4.8vw, 54px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.14;
-      max-width: 960px;
-      margin: 0 auto 18px;
-    }
-    .hero h1 .grad {
-      background: linear-gradient(90deg, #34d399, #22d3ee, #a855f7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .hero p.lead {
-      font-size: clamp(15px, 2vw, 18px);
-      color: var(--text-muted);
-      max-width: 820px;
-      margin: 0 auto 28px;
-    }
-    .hero-ctas {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 36px;
-    }
-
-    /* Prestige Proof Strip (arXiv + HuggingFace + Benchmarks) */
-    .prestige-bar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 44px;
-    }
-    .prestige-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid var(--border);
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      color: #cbd5e1;
-      transition: all 0.15s;
-    }
-    .prestige-pill:hover {
-      border-color: var(--cyan);
-      color: #fff;
-      transform: translateY(-1px);
-    }
-    .prestige-pill .tag-arxiv { color: #f87171; font-weight: 700; }
-    .prestige-pill .tag-hf { color: #facc15; font-weight: 700; }
-    .prestige-pill .tag-bench { color: var(--emerald); font-weight: 700; }
-
-    /* Metric Strip */
-    .metric-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 48px;
-    }
-    .metric-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px;
-      text-align: left;
-      min-width: 0;
-      backdrop-filter: blur(10px);
-    }
-    .metric-val {
-      font-family: var(--font-mono);
-      font-size: clamp(20px, 2.4vw, 25px);
-      font-weight: 800;
-      color: var(--emerald);
-      margin-bottom: 4px;
-    }
-    .metric-label { font-size: 12.5px; color: var(--text-muted); }
-
-    /* Sections */
-    .section { padding: 52px 0; border-top: 1px solid var(--border); }
-    .section-header { margin-bottom: 32px; }
-    .section-tag {
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      color: var(--emerald);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-    }
-    .section-title { font-size: clamp(24px, 3.5vw, 32px); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
-    .section-desc { color: var(--text-muted); max-width: 780px; font-size: 15px; }
-
-    /* Secret Formula / Vault Callout */
-    .vault-banner {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.08), rgba(168, 85, 247, 0.08));
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      border-radius: 16px;
-      padding: 24px 28px;
-      margin-bottom: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .vault-banner-text { max-width: 780px; }
-    .vault-banner h3 { font-size: 18px; margin-bottom: 6px; color: #fff; }
-    .vault-banner p { font-size: 14px; color: #cbd5e1; }
-    .vault-seal-stamp {
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      padding: 10px 16px;
-      border-radius: 10px;
-      background: rgba(5, 7, 11, 0.85);
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
-      text-align: center;
-      flex-shrink: 0;
-    }
-
-    /* Live Sandbox Grid */
-    .sandbox-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-      gap: 22px;
-      align-items: stretch;
-    }
-    .panel {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      min-width: 0;
-      max-width: 100%;
-      overflow: hidden;
-    }
-    .panel-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      font-weight: 700;
-      font-size: 14.5px;
-    }
-    .gate-tabs {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-    .gate-tab {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 10px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.15s;
-      min-width: 0;
-    }
-    .gate-tab.active {
-      border-color: var(--emerald);
-      background: rgba(16, 185, 129, 0.12);
-      color: var(--text);
-    }
-    .gate-tab small {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--cyan);
-      margin-top: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    textarea.code-input {
-      width: 100%;
-      min-height: 175px;
-      background: #030508;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      color: #e2e8f0;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      resize: vertical;
-      line-height: 1.5;
-    }
-    .verdict-banner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 14px 16px;
-      border-radius: 10px;
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      font-weight: 700;
-    }
-    .verdict-allow {
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.45);
-      color: var(--emerald);
-    }
-    .verdict-deny {
-      background: rgba(244, 63, 94, 0.12);
-      border: 1px solid rgba(244, 63, 94, 0.45);
-      color: var(--rose);
-    }
-    .verdict-abstain {
-      background: rgba(245, 158, 11, 0.14);
-      border: 1px solid rgba(245, 158, 11, 0.48);
-      color: var(--amber);
-    }
-    .trace-kv {
-      display: grid;
-      grid-template-columns: 165px minmax(0, 1fr);
-      gap: 8px 12px;
-      font-size: 12px;
-      background: rgba(3, 5, 8, 0.6);
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-    }
-    .trace-k { color: var(--text-muted); font-weight: 500; }
-    .trace-v {
-      color: var(--text);
-      font-family: var(--font-mono);
-      word-break: break-word;
-      overflow-wrap: anywhere;
-    }
-    .trace-box {
-      background: #030508;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      color: #cbd5e1;
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow-wrap: anywhere;
-      max-height: 220px;
-      overflow-y: auto;
-    }
-    .code-pill {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      color: var(--cyan);
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* 3-Column Cards */
-    .cards-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-    }
-    .card, .pricing-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .card h3 { font-size: 17px; margin-bottom: 8px; }
-    .card p { font-size: 13.5px; color: var(--text-muted); margin-bottom: 14px; }
-    .pricing-card.featured {
-      border-color: var(--emerald);
-      box-shadow: 0 0 35px rgba(16, 185, 129, 0.12);
-    }
-    .price-amount {
-      font-family: var(--font-mono);
-      font-size: 30px;
-      font-weight: 800;
-      margin: 10px 0 4px;
-    }
-    .price-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
-    .feature-list { list-style: none; margin-bottom: 20px; }
-    .feature-list li {
-      font-size: 13px;
-      color: var(--text-muted);
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.08);
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .feature-list li span.check { color: var(--emerald); font-weight: bold; flex-shrink: 0; }
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 36px 0;
-      margin-top: 48px;
-      font-size: 12.5px;
-      color: var(--text-muted);
-    }
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    /* Responsive Breakpoints */
-    @media (max-width: 980px) {
-      .nav-links { display: none; }
-      .mobile-toggle { display: inline-flex; }
-      .metric-strip { grid-template-columns: repeat(2, 1fr); }
-      .sandbox-grid { grid-template-columns: 1fr; }
-      .cards-3 { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 600px) {
-      .container { padding: 0 14px; }
-      .metric-strip { grid-template-columns: 1fr; }
-      .gate-tabs { grid-template-columns: 1fr; }
-      .trace-kv { grid-template-columns: 1fr; gap: 4px; }
-      .trace-k { color: var(--cyan); font-size: 11px; margin-top: 4px; }
-      .hero { padding: 36px 0 28px; }
-      .panel { padding: 16px; }
-      .vault-banner { padding: 18px; }
-      .nav-actions .btn-primary { display: none; }
-    }
-  </style>
+  <link rel="stylesheet" href="pro.css" />
 </head>
 <body>
 
-  <!-- Corporate Authority Ribbon -->
+  <!-- Top Cybernetic Telemetry Ribbon -->
   <div class="corp-ribbon">
     <div class="container">
       <div class="corp-badge">
         <span class="corp-dot"></span>
-        <span>Resmi Kurumsal Ürün: <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="corp-link">ITouch Bilişim Sistemleri Ltd. Şti.</a> (Çukurova Teknokent)</span>
+        <span data-i18n="ribbonCorp">Resmi Kurumsal Ürün: <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="corp-link">ITouch Bilişim Sistemleri Ltd. Şti.</a> (Çukurova Teknokent)</span>
       </div>
       <div class="corp-badge">
-        <span>Kasa: <strong style="color:var(--emerald)">WERR-24B™ SOVEREIGN CORE</strong></span>
+        <span data-i18n="ribbonVault">Kasa: <strong style="color:var(--emerald-bright)">WERR-24B™ EGEMEN ÇEKİRDEK</strong></span>
         <span>•</span>
-        <span>API: <strong style="color:var(--cyan)">api.answerr.me (:443)</strong></span>
+        <span data-i18n="ribbonApi">API: <strong style="color:var(--cyan-bright)">api.answerr.me (:443)</strong></span>
+        <span>•</span>
+        <span data-i18n="ribbonStatus" style="color:var(--emerald-bright)">DURUM: AKTİF • SIFIR VRAM</span>
       </div>
     </div>
   </div>
 
-  <!-- Navbar -->
+  <!-- Sticky Command Deck Navbar -->
   <nav class="navbar">
     <div class="container">
       <a href="index.html" class="brand">
         <span><span class="brand-answe">answe</span><span class="brand-r1">r</span><span class="brand-r2">r</span></span>
-        <span class="brand-tag">WERR-24B™ VAULT</span>
+        <span class="brand-tag" data-i18n="brandTag">WERR-24B™ KASA</span>
       </a>
       <div class="nav-links">
-        <a href="index.html" class="active">Ürün & Canlı Kasa</a>
-        <a href="studio.html">Politika Stüdyosu</a>
-        <a href="research.html">arXiv, HuggingFace & Patentler</a>
-        <a href="https://api.answerr.me/docs" target="_blank" rel="noopener">REST API</a>
-        <a href="../chat.html">Klasik Konsol</a>
+        <a href="index.html" class="active" data-i18n="navProduct">Ürün & Canlı Kasa</a>
+        <a href="studio.html" data-i18n="navStudio">Politika Stüdyosu</a>
+        <a href="research.html" data-i18n="navResearch">arXiv, HuggingFace & Patentler</a>
+        <a href="https://api.answerr.me/docs" target="_blank" rel="noopener" data-i18n="navApi">REST API (/docs)</a>
+        <a href="../chat.html" data-i18n="navClassic">Klasik Konsol</a>
       </div>
       <div class="nav-actions">
-        <button class="btn btn-outline" onclick="toggleLang()">EN / TR</button>
-        <a href="studio.html" class="btn btn-primary">Politika Mühürle →</a>
-        <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Menü">☰</button>
+        <button class="lang-switch-btn" id="langSwitchBtn" aria-label="Dil Değiştir">
+          <span>TR</span> <span class="lang-active">EN</span>
+        </button>
+        <a href="studio.html" class="btn btn-primary btn-cta-desktop" data-i18n="btnSealPolicy">Politika Mühürle →</a>
+        <button class="mobile-toggle" onclick="document.getElementById('mobileDrawer').classList.toggle('open')" aria-label="Menü">☰</button>
       </div>
     </div>
     <div class="mobile-drawer" id="mobileDrawer">
-      <a href="index.html" class="active">⚡ Ürün & Canlı Kasa</a>
-      <a href="studio.html">🛡️ Politika Stüdyosu (System-2)</a>
-      <a href="research.html">📜 arXiv, HuggingFace & Patentler</a>
-      <a href="https://api.answerr.me/docs" target="_blank" rel="noopener">🔌 Canlı REST API (/docs)</a>
-      <a href="../chat.html">💬 Klasik Konsol</a>
+      <a href="index.html" class="active" data-i18n="navProduct">⚡ Ürün & Canlı Kasa</a>
+      <a href="studio.html" data-i18n="navStudio">🛡️ Politika Stüdyosu (System-2)</a>
+      <a href="research.html" data-i18n="navResearch">📜 arXiv, HuggingFace & Patentler</a>
+      <a href="https://api.answerr.me/docs" target="_blank" rel="noopener" data-i18n="navApi">🔌 Canlı REST API (/docs)</a>
+      <a href="../chat.html" data-i18n="navClassic">💬 Klasik Konsol</a>
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- Hero Section with Cryo-Reactor Orb -->
   <header class="hero">
     <div class="container">
       <div class="vault-orb-wrap">
@@ -655,32 +71,32 @@
         </div>
       </div>
 
-      <div class="hero-eyebrow">
+      <div class="hero-eyebrow" data-i18n="heroEyebrow">
         <span>🔒 PATENTLİ WERR-24B™ ÇEKİRDEĞİ • SİSTEM-2 DERLER, SİSTEM-1 MİKROSANİYEDE İNFAZ EDER</span>
       </div>
 
-      <h1 id="heroTitle">
+      <h1 data-i18n="heroTitle">
         Milyarlarca Parametre Değil.<br />
         <span class="grad">24 Baytlık Mühürlü Kesinlik.</span>
       </h1>
 
-      <p class="lead" id="heroLead">
+      <p class="lead" data-i18n="heroLead">
         Kurumsal kurallarınızı doğal dilde yazın; <strong>answerr</strong> bunları <strong>ITouch Bilişim</strong>'in patentli <strong>WERR-24B™ Sınır Rezonansı</strong> ile yalnızca <strong>24 Baytlık şifreli bir karara</strong> kristalleştirsin. GPU yok, ağırlık dosyası yok, çalışma anında halüsinasyon yok — her ortamda <strong>&lt; 0.5 ms</strong> içinde kriptografik denetim iziyle kesin karar.
       </p>
 
       <div class="hero-ctas">
-        <a href="studio.html" class="btn btn-primary" style="padding:12px 24px; font-size:14.5px;">
+        <a href="studio.html" class="btn btn-primary" data-i18n="heroBtnStudio" style="padding:12px 24px; font-size:14.5px;">
           ✨ Doğal Dilden 24B Politika Mühürle
         </a>
-        <a href="#live-sandbox" class="btn btn-outline" style="padding:12px 24px; font-size:14.5px;">
+        <a href="#live-sandbox" class="btn btn-outline" data-i18n="heroBtnSandbox" style="padding:12px 24px; font-size:14.5px;">
           🛡️ Canlı Kasa Testi (Sandbox)
         </a>
-        <a href="research.html" class="btn btn-outline" style="padding:12px 24px; font-size:14.5px;">
+        <a href="research.html" class="btn btn-outline" data-i18n="heroBtnResearch" style="padding:12px 24px; font-size:14.5px;">
           📄 5 arXiv Makalesi & HuggingFace
         </a>
       </div>
 
-      <!-- Prestige Proof Bar (arXiv + HuggingFace + Independent Benchmarks) -->
+      <!-- Prestige Proof Bar -->
       <div class="prestige-bar">
         <a href="https://arxiv.org/abs/2609.25498" target="_blank" rel="noopener" class="prestige-pill">
           <span class="tag-arxiv">arXiv:2609.25498</span> <span>WERR Reflex Core</span>
@@ -698,27 +114,27 @@
           <span class="tag-bench">WindTunnel WebMCP</span> <span>100% (49/49)</span>
         </a>
         <a href="https://github.com/mmastrac/jevenator2/issues/1" target="_blank" rel="noopener" class="prestige-pill">
-          <span class="tag-bench">Jevenator 2</span> <span>53.0× Daha Hızlı</span>
+          <span class="tag-bench">Jevenator 2</span> <span>53.0× Faster</span>
         </a>
       </div>
 
       <!-- Metric Strip -->
       <div class="metric-strip">
         <div class="metric-card">
-          <div class="metric-val">&lt; 0.5 ms</div>
-          <div class="metric-label">Omurilik Refleksi Gecikmesi (Çalışma Anında LLM Yok)</div>
+          <div class="metric-val" data-i18n="metric1Val">&lt; 0.5 ms</div>
+          <div class="metric-label" data-i18n="metric1Label">Omurilik Refleksi Gecikmesi (Çalışma Anında LLM Yok)</div>
         </div>
         <div class="metric-card">
-          <div class="metric-val">0-Byte VRAM</div>
-          <div class="metric-label">GPU & Tensör Ağırlığı Yok • 24-Bayt Mühürlü Tohum</div>
+          <div class="metric-val" data-i18n="metric2Val">0-Byte VRAM</div>
+          <div class="metric-label" data-i18n="metric2Label">GPU & Tensör Ağırlığı Yok • 24-Bayt Mühürlü Tohum</div>
         </div>
         <div class="metric-card">
-          <div class="metric-val">SHA-256 Seal</div>
-          <div class="metric-label">Değiştirilemez Kriptografik Politika Mührü & Denetim İzi</div>
+          <div class="metric-val" data-i18n="metric3Val">SHA-256 Seal</div>
+          <div class="metric-label" data-i18n="metric3Label">Değiştirilemez Kriptografik Politika Mührü & Denetim İzi</div>
         </div>
         <div class="metric-card">
-          <div class="metric-val">ABSTAIN_REVIEW</div>
-          <div class="metric-label">Tanınmayan Şema (OOD) Kalkanı — Sıfır Kör Tahmin</div>
+          <div class="metric-val" data-i18n="metric4Val">ABSTAIN_REVIEW</div>
+          <div class="metric-label" data-i18n="metric4Label">Tanınmayan Şema (OOD) Kalkanı — Sıfır Kör Tahmin</div>
         </div>
       </div>
     </div>
@@ -730,23 +146,23 @@
       <!-- Secret Formula Callout -->
       <div class="vault-banner">
         <div class="vault-banner-text">
-          <h3>🧪 "Sihri Göster, Formülü Kasada Mühürle" — WERR-24B™ Kara Kutu Güvencesi</h3>
-          <p>
-            Tıpkı gizli bir endüstriyel formül gibi, <strong>WERR-24B™</strong> çekirdeğinin içsel sınır matematiği ve çok ölçekli rezonans katsayıları <strong>ITouch Bilişim</strong> kasasında (`TR 2026/016285` & `TR 2026/016633`) korunur. Sisteminize yalnızca <strong>mikrosaniyelik deterministik karar</strong>, <strong>SHA-256 denetim mührü</strong> ve <strong>OOD güvenlik kalkanı</strong> döner.
+          <h3 data-i18n="vaultCalloutTitle">🧪 "Sihri Göster, Formülü Kasada Mühürle" — WERR-24B™ Kara Kutu Güvencesi</h3>
+          <p data-i18n="vaultCalloutDesc">
+            Tıpkı gizli bir endüstriyel formül gibi, <strong>WERR-24B™</strong> çekirdeğinin içsel sınır matematiği ve çok ölçekli rezonans katsayıları <strong>ITouch Bilişim</strong> kasasında (TR 2026/016285 & TR 2026/016633) korunur. Sisteminize yalnızca <strong>mikrosaniyelik deterministik karar</strong>, <strong>SHA-256 denetim mührü</strong> ve <strong>OOD güvenlik kalkanı</strong> döner.
           </p>
         </div>
         <div class="vault-seal-stamp">
-          <div>FORMULA STATUS</div>
-          <strong style="color:var(--emerald); font-size:13px;">🔒 VAULT-SEALED 24B</strong>
-          <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">TÜRKPATENT KORUMALI</div>
+          <div data-i18n="vaultStampStatus">FORMÜL DURUMU</div>
+          <strong style="color:var(--emerald-bright); font-size:12.5px;" data-i18n="vaultStampLocked">🔒 KASADA MÜHÜRLÜ 24B</strong>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:2px;" data-i18n="vaultStampPatent">TÜRKPATENT KORUMALI</div>
         </div>
       </div>
 
       <div class="section-header">
-        <div class="section-tag">CANLI KURUMSAL KARAR KASASI (INTERACTIVE SANDBOX)</div>
-        <h2 class="section-title">Milisaniye Altı Refleksi ve OOD Kalkanını Canlı Deneyin</h2>
-        <p class="section-desc">
-          Aşağıdaki 4 kurumsal kapıdan birini seçin veya JSON verisini değiştirin. Kasa, içsel formülü ifşa etmeden kriptografik karar mührünü ve sorumluluk kalkanını (`ABSTAIN_REVIEW`) canlı üretir.
+        <div class="section-tag" data-i18n="sandboxTag">CANLI KURUMSAL KARAR KASASI (INTERACTIVE SANDBOX)</div>
+        <h2 class="section-title" data-i18n="sandboxTitle">Milisaniye Altı Refleksi ve OOD Kalkanını Canlı Deneyin</h2>
+        <p class="section-desc" data-i18n="sandboxDesc">
+          Aşağıdaki 4 kurumsal kapıdan birini seçin veya JSON verisini değiştirin. Kasa, içsel formülü ifşa etmeden kriptografik karar mührünü ve sorumluluk kalkanını (ABSTAIN_REVIEW) canlı üretir.
         </p>
       </div>
 
@@ -754,39 +170,48 @@
         <!-- Left: Gate Selector & JSON State -->
         <div class="panel">
           <div class="panel-title">
-            <span>1. Kurumsal Koruma Kapısı Seçin</span>
+            <span data-i18n="step1Title">1. Kurumsal Koruma Kapısı Seçin</span>
             <span class="code-pill" id="selectedGateBadge">gate: agent_mcp_guard</span>
           </div>
           <div class="gate-tabs">
             <button class="gate-tab active" onclick="selectScenario('agent_block', this)">
-              🛡️ AI Ajan / MCP Korkuluğu (Blok)
-              <small>Yıkıcı SQL & Yüksek Tutar</small>
+              <span data-i18n="tabAgentBlockTitle">🛡️ AI Ajan / MCP Korkuluğu (Blok)</span>
+              <small data-i18n="tabAgentBlockSub">Yıkıcı SQL & Yüksek Tutar</small>
             </button>
             <button class="gate-tab" onclick="selectScenario('agent_safe', this)">
-              ✅ AI Ajan / MCP Korkuluğu (Onay)
-              <small>Salt-Okunur Güvenli Araç</small>
+              <span data-i18n="tabAgentSafeTitle">✅ AI Ajan / MCP Korkuluğu (Onay)</span>
+              <small data-i18n="tabAgentSafeSub">Salt-Okunur Güvenli Araç</small>
             </button>
             <button class="gate-tab" onclick="selectScenario('fintech_tr', this)">
-              💳 TR Fintech & Fraud Kapısı
-              <small>Kart Hızı & Anomali (KVKK)</small>
+              <span data-i18n="tabFintechTitle">💳 TR Fintech & Fraud Kapısı</span>
+              <small data-i18n="tabFintechSub">Kart Hızı & Anomali (KVKK)</small>
             </button>
             <button class="gate-tab" onclick="selectScenario('ood_guard', this)">
-              ⚠️ Şema Dışı (OOD) Kalkanı
-              <small>Tanınmayan Veri → ABSTAIN_REVIEW</small>
+              <span data-i18n="tabOodTitle">⚠️ Şema Dışı (OOD) Kalkanı</span>
+              <small data-i18n="tabOodSub">Tanınmayan Veri → ABSTAIN_REVIEW</small>
             </button>
           </div>
 
           <div class="panel-title" style="margin-top:4px;">
-            <span>2. Operasyonel Sinyal Paketi (JSON)</span>
-            <button class="btn btn-primary" onclick="runLiveEvaluation()" id="runBtn">⚡ Kasaya Sor</button>
+            <span data-i18n="step2Title">2. Operasyonel Sinyal Paketi (JSON)</span>
+            <button class="btn btn-primary" onclick="runLiveEvaluation()" id="runBtn" data-i18n="btnQueryVault">⚡ Kasaya Sor</button>
           </div>
           <textarea class="code-input" id="stateInput" spellcheck="false"></textarea>
+
+          <!-- Sci-Fi Tripod Resonance Oscilloscope HUD -->
+          <div class="oscilloscope-box">
+            <div class="osc-header">
+              <span data-i18n="oscTitle">TRIPOD REZONANS DALGA HUD (0.60x • 1.00x • 1.60x)</span>
+              <span style="color:var(--emerald-bright);" data-i18n="oscLive">● CANLI REZONANS AKTİF</span>
+            </div>
+            <canvas class="tripod-canvas" id="tripodOscilloscope"></canvas>
+          </div>
         </div>
 
         <!-- Right: Sealed Decision Output -->
         <div class="panel">
           <div class="panel-title">
-            <span>3. Mühürlü Karar & Kurumsal Denetim Özeti</span>
+            <span data-i18n="step3Title">3. Mühürlü Karar & Kurumsal Denetim Özeti</span>
             <span class="code-pill" id="latencyBadge">0.14 ms</span>
           </div>
 
@@ -796,19 +221,19 @@
           </div>
 
           <div class="trace-kv">
-            <div class="trace-k">Aktif Politika Kapısı:</div>
+            <div class="trace-k" data-i18n="trPolicyKey">Aktif Politika Kapısı:</div>
             <div class="trace-v" id="trPolicy">agent_mcp_guard (v1.2.0)</div>
-            <div class="trace-k">Kriptografik Mühür:</div>
+            <div class="trace-k" data-i18n="trSealKey">Kriptografik Mühür:</div>
             <div class="trace-v" id="trSeal">sha256:19555316c44e8dc33...</div>
-            <div class="trace-k">Karar Gerekçesi:</div>
+            <div class="trace-k" data-i18n="trRulesKey">Karar Gerekçesi:</div>
             <div class="trace-v" id="trRules">Sovereign Guardrail: Destructive Agent Action Blocked</div>
-            <div class="trace-k">Şema Doğrulaması:</div>
+            <div class="trace-k" data-i18n="trFieldsKey">Şema Doğrulaması:</div>
             <div class="trace-v" id="trFields">5 Doğrulanmış Sinyal • 0 Şema Dışı Alan</div>
-            <div class="trace-k">24-Bayt Çekirdek:</div>
-            <div class="trace-v" id="trSeed" style="color:var(--emerald);">🔒 WERR-24B™ [PROPRIETARY SEALED • 0-VRAM]</div>
+            <div class="trace-k" data-i18n="trSeedKey">24-Bayt Çekirdek:</div>
+            <div class="trace-v" id="trSeed" style="color:var(--emerald-bright);">🔒 WERR-24B™ [PROPRIETARY SEALED • 0-VRAM]</div>
           </div>
 
-          <div style="font-size:11.5px; color:var(--text-muted); font-family:var(--font-mono);">
+          <div style="font-size:11.5px; color:var(--text-muted); font-family:var(--font-mono);" data-i18n="publicEnvelopeTitle">
             Mühürlü Denetim Çıktısı (Public Audit Envelope):
           </div>
           <pre class="trace-box" id="rawTraceJson">Yükleniyor...</pre>
@@ -821,9 +246,9 @@
   <section class="section" id="pricing">
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">KURUMSAL LİSANSLAMA — ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ.</div>
-        <h2 class="section-title">Geliştirici Çekirdeğinden Egemen Kurumsal Kasaya</h2>
-        <p class="section-desc">
+        <div class="section-tag" data-i18n="pricingTag">KURUMSAL LİSANSLAMA — ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ.</div>
+        <h2 class="section-title" data-i18n="pricingTitle">Geliştirici Çekirdeğinden Egemen Kurumsal Kasaya</h2>
+        <p class="section-desc" data-i18n="pricingDesc">
           <strong>answerr.me</strong>, Çukurova Teknokent bünyesindeki <strong>ITouch Bilişim Sistemleri Mühendislik Danışmanlık San. ve Tic. Ltd. Şti.</strong> tarafından geliştirilmekte ve BSL 1.1 ticari lisansıyla sunulmaktadır.
         </p>
       </div>
@@ -831,52 +256,52 @@
       <div class="cards-3">
         <div class="pricing-card">
           <div>
-            <span class="code-pill">DEVELOPER RUNTIME</span>
-            <h3 style="margin-top:12px; font-size:20px;">werr Open SDK</h3>
-            <div class="price-amount">Ücretsiz</div>
-            <div class="price-sub">Akademik araştırma, değerlendirme ve hızlı prototipleme</div>
+            <span class="code-pill" data-i18n="tier1Badge">DEVELOPER RUNTIME</span>
+            <h3 style="margin-top:12px; font-size:20px;" data-i18n="tier1Title">werr Open SDK</h3>
+            <div class="price-amount" data-i18n="tier1Price">Ücretsiz</div>
+            <div class="price-sub" data-i18n="tier1Sub">Akademik araştırma, değerlendirme ve hızlı prototipleme</div>
             <ul class="feature-list">
-              <li><span class="check">✓</span> <code>pip install werr</code> & Tarayıcı SDK</li>
-              <li><span class="check">✓</span> <code>noul</code>, <code>choice</code>, <code>score</code> karar tipleri</li>
-              <li><span class="check">✓</span> 0-Byte VRAM yerel refleks çalışma zamanı</li>
-              <li><span class="check">✓</span> OOD <code>ABSTAIN_REVIEW</code> şema koruması</li>
+              <li><span class="check">✓</span> <span data-i18n="tier1F1"><code>pip install werr</code> & Tarayıcı SDK</span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier1F2"><code>noul</code>, <code>choice</code>, <code>score</code> karar tipleri</span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier1F3">0-Byte VRAM yerel refleks çalışma zamanı</span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier1F4">OOD <code>ABSTAIN_REVIEW</code> şema koruması</span></li>
             </ul>
           </div>
-          <a href="https://pypi.org/project/werr/" target="_blank" rel="noopener" class="btn btn-outline">pip install werr</a>
+          <a href="https://pypi.org/project/werr/" target="_blank" rel="noopener" class="btn btn-outline" data-i18n="tier1Btn">pip install werr</a>
         </div>
 
         <div class="pricing-card featured">
           <div>
-            <span class="code-pill" style="border-color:var(--emerald); color:var(--emerald);">KURUMSAL BULUT KAPISI</span>
-            <h3 style="margin-top:12px; font-size:20px;">answerr Pro & Agent Gate</h3>
-            <div class="price-amount">$149 <span style="font-size:14px; font-weight:500; color:var(--text-muted)">/ ay</span></div>
-            <div class="price-sub">Fintech, E-Ticaret, SaaS ve AI Ajan (MCP) ekipleri</div>
+            <span class="code-pill" style="border-color:var(--emerald-bright); color:var(--emerald-bright);" data-i18n="tier2Badge">KURUMSAL BULUT KAPISI</span>
+            <h3 style="margin-top:12px; font-size:20px;" data-i18n="tier2Title">answerr Pro & Agent Gate</h3>
+            <div class="price-amount" data-i18n="tier2Price">$149 <span style="font-size:14px; font-weight:500; color:var(--text-muted)">/ ay</span></div>
+            <div class="price-sub" data-i18n="tier2Sub">Fintech, E-Ticaret, SaaS ve AI Ajan (MCP) ekipleri</div>
             <ul class="feature-list">
-              <li><span class="check">✓</span> <strong>Doğal Dilden 24B Politika Stüdyosu</strong></li>
-              <li><span class="check">✓</span> Özel Mühürlü Kapılar (<code>/v1/gates/{id}/decide</code>)</li>
-              <li><span class="check">✓</span> SHA-256 Kriptografik Denetim İzi</li>
-              <li><span class="check">✓</span> AI Ajan MCP & TR E-Ticaret Fraud Kalkanları</li>
-              <li><span class="check">✓</span> Aylık 5 Milyon Milisaniye Altı Karar</li>
+              <li><span class="check">✓</span> <span data-i18n="tier2F1"><strong>Doğal Dilden 24B Politika Stüdyosu</strong></span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier2F2">Özel Mühürlü Kapılar (<code>/v1/gates/{id}/decide</code>)</span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier2F3">SHA-256 Kriptografik Denetim İzi</span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier2F4">AI Ajan MCP & TR E-Ticaret Fraud Kalkanları</span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier2F5">Aylık 5 Milyon Milisaniye Altı Karar</span></li>
             </ul>
           </div>
-          <a href="studio.html" class="btn btn-primary">Politika Stüdyosunda Başla →</a>
+          <a href="studio.html" class="btn btn-primary" data-i18n="tier2Btn">Politika Stüdyosunda Başla →</a>
         </div>
 
         <div class="pricing-card">
           <div>
-            <span class="code-pill">ON-PREMISE & SOVEREIGN</span>
-            <h3 style="margin-top:12px; font-size:20px;">answerr Sovereign Vault</h3>
-            <div class="price-amount">Kurumsal Lisans</div>
-            <div class="price-sub">Bankacılık, Savunma, Siber Güvenlik ve Kritik Altyapılar</div>
+            <span class="code-pill" data-i18n="tier3Badge">ON-PREMISE & SOVEREIGN</span>
+            <h3 style="margin-top:12px; font-size:20px;" data-i18n="tier3Title">answerr Sovereign Vault</h3>
+            <div class="price-amount" data-i18n="tier3Price">Kurumsal Lisans</div>
+            <div class="price-sub" data-i18n="tier3Sub">Bankacılık, Savunma, Siber Güvenlik ve Kritik Altyapılar</div>
             <ul class="feature-list">
-              <li><span class="check">✓</span> <strong>ITouch Bilişim BSL 1.1 Ticari Üretim Lisansı</strong></li>
-              <li><span class="check">✓</span> On-Premise / Air-Gapped Kapalı Devre Kasa</li>
-              <li><span class="check">✓</span> Gölge Mod (Shadow Mode) & Champion/Challenger</li>
-              <li><span class="check">✓</span> Donanım / Edge & WerrSoma Nöromorfik Refleks</li>
-              <li><span class="check">✓</span> 99.99% Kurumsal SLA & 7/24 Mühendislik Desteği</li>
+              <li><span class="check">✓</span> <span data-i18n="tier3F1"><strong>ITouch Bilişim BSL 1.1 Ticari Üretim Lisansı</strong></span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier3F2">On-Premise / Air-Gapped Kapalı Devre Kasa</span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier3F3">Gölge Mod (Shadow Mode) & Champion/Challenger</span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier3F4">Donanım / Edge & WerrSoma Nöromorfik Refleks</span></li>
+              <li><span class="check">✓</span> <span data-i18n="tier3F5">99.99% Kurumsal SLA & 7/24 Mühendislik Desteği</span></li>
             </ul>
           </div>
-          <a href="mailto:info@itouch.com.tr" class="btn btn-outline">info@itouch.com.tr ile İletişime Geçin</a>
+          <a href="mailto:info@itouch.com.tr" class="btn btn-outline" data-i18n="tier3Btn">info@itouch.com.tr ile İletişime Geçin</a>
         </div>
       </div>
     </div>
@@ -886,29 +311,27 @@
     <div class="container">
       <div class="footer-row">
         <div>
-          <strong>answerr.me</strong> — Resmi Ticari Sağlayıcı: <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="corp-link">ITouch Bilişim Sistemleri Mühendislik Danışmanlık San. ve Tic. Ltd. Şti.</a>
-          <div style="margin-top:4px;">
+          <span data-i18n="footerCorp"><strong>answerr.me</strong> — Resmi Ticari Sağlayıcı: <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="corp-link">ITouch Bilişim Sistemleri Mühendislik Danışmanlık San. ve Tic. Ltd. Şti.</a></span>
+          <div style="margin-top:4px;" data-i18n="footerLegal">
             Çukurova Teknokent (Adana) • MERSİS: <code>0469094455800001</code> • Patentler: <code>TR 2026/016285</code> & <code>TR 2026/016633</code>
           </div>
         </div>
         <div style="display:flex; gap:16px; flex-wrap:wrap;">
-          <a href="studio.html">Politika Stüdyosu</a>
-          <a href="research.html">arXiv & HuggingFace</a>
-          <a href="https://api.answerr.me/docs" target="_blank" rel="noopener">OpenAPI / Swagger</a>
-          <a href="../index.html">Klasik Vitrin</a>
+          <a href="studio.html" data-i18n="navStudio">Politika Stüdyosu</a>
+          <a href="research.html" data-i18n="navResearch">arXiv & HuggingFace</a>
+          <a href="https://api.answerr.me/docs" target="_blank" rel="noopener" data-i18n="navApi">OpenAPI / Swagger</a>
+          <a href="../index.html" data-i18n="navClassic">Klasik Vitrin</a>
         </div>
       </div>
     </div>
   </footer>
 
   <script src="../js/werr-engine.js"></script>
+  <script src="i18n.js"></script>
   <script>
     const werrClient = new WerrEngine();
 
-    function toggleMobileMenu() {
-      document.getElementById('mobileDrawer').classList.toggle('open');
-    }
-
+    // Bilingual Scenarios
     const SCENARIOS = {
       agent_block: {
         gate_id: "agent_mcp_guard",
@@ -921,9 +344,17 @@
           failed_attempts: 0
         },
         questions: {
-          allow_tool_call: {
-            type: "noul",
-            text: "Should this autonomous AI agent tool call be permitted without human approval?"
+          tr: {
+            allow_tool_call: {
+              type: "noul",
+              text: "Bu otonom AI ajanı kritik silme aracını doğrudan çalıştırabilir mi?"
+            }
+          },
+          en: {
+            allow_tool_call: {
+              type: "noul",
+              text: "Should this autonomous AI agent tool call be permitted without human approval?"
+            }
           }
         }
       },
@@ -938,9 +369,17 @@
           failed_attempts: 0
         },
         questions: {
-          allow_tool_call: {
-            type: "noul",
-            text: "Should this read-only AI agent tool call be permitted?"
+          tr: {
+            allow_tool_call: {
+              type: "noul",
+              text: "Bu salt-okunur AI ajanı rapor sorgulama işlemine izin verilmeli mi?"
+            }
+          },
+          en: {
+            allow_tool_call: {
+              type: "noul",
+              text: "Should this read-only AI agent tool call be permitted?"
+            }
           }
         }
       },
@@ -955,9 +394,17 @@
           shipping_billing_mismatch: true
         },
         questions: {
-          approve_payment: {
-            type: "noul",
-            text: "Bu e-ticaret ödemesi doğrudan onaylanmalı mı?"
+          tr: {
+            approve_payment: {
+              type: "noul",
+              text: "Bu e-ticaret ödemesi doğrudan onaylanmalı mı?"
+            }
+          },
+          en: {
+            approve_payment: {
+              type: "noul",
+              text: "Should this e-commerce transaction be approved directly?"
+            }
           }
         }
       },
@@ -970,20 +417,42 @@
           roast_level: "medium_light"
         },
         questions: {
-          deploy_friday: {
-            type: "noul",
-            text: "Cuma akşamı canlı ortama yeni sürüm çıkalım mı?"
+          tr: {
+            deploy_friday: {
+              type: "noul",
+              text: "Cuma akşamı canlı ortama yeni sürüm çıkalım mı?"
+            }
+          },
+          en: {
+            deploy_friday: {
+              type: "noul",
+              text: "Should we deploy this release on Friday night?"
+            }
           }
         }
       }
     };
 
+    let activeScenarioKey = "agent_block";
+
     function selectScenario(key, btnEl) {
+      activeScenarioKey = key;
       document.querySelectorAll('.gate-tab').forEach(b => b.classList.remove('active'));
       if (btnEl) btnEl.classList.add('active');
+
       const sc = SCENARIOS[key];
+      const curLang = window.ProI18n ? window.ProI18n.lang : 'tr';
+      const qObj = sc.questions[curLang] || sc.questions.tr;
+
+      const payload = {
+        gate_id: sc.gate_id,
+        strict_policy: sc.strict_policy,
+        state: sc.state,
+        questions: qObj
+      };
+
       document.getElementById('selectedGateBadge').textContent = `gate: ${sc.gate_id}`;
-      document.getElementById('stateInput').value = JSON.stringify(sc, null, 2);
+      document.getElementById('stateInput').value = JSON.stringify(payload, null, 2);
       runLiveEvaluation();
     }
 
@@ -996,7 +465,11 @@
         return;
       }
 
-      const localRes = werrClient.evaluate(payload.state || {}, payload.questions || {}, {
+      const curLang = window.ProI18n ? window.ProI18n.lang : 'tr';
+      const isEn = curLang === 'en';
+
+      const evaluateFn = (werrClient.evaluate || werrClient.decide).bind(werrClient);
+      const localRes = evaluateFn(payload.state || {}, payload.questions || {}, {
         strictPolicy: Boolean(payload.strict_policy),
         policy: { id: payload.gate_id || "universal_default", version: "1.2.0" }
       });
@@ -1031,15 +504,21 @@
 
       if (ood || recMode === "ABSTAIN_REVIEW" || firstAns.decision === null) {
         banner.className = "verdict-banner verdict-abstain";
-        document.getElementById('verdictTitle').textContent = `⚠️ KARAR: ABSTAIN_REVIEW (ŞEMA DIŞI KORUMA)`;
+        document.getElementById('verdictTitle').textContent = isEn
+          ? `⚠️ VERDICT: ABSTAIN_REVIEW (OOD SHIELD ENGAGED)`
+          : `⚠️ KARAR: ABSTAIN_REVIEW (ŞEMA DIŞI KORUMA)`;
         document.getElementById('verdictMode').textContent = `MODE: ${recMode}`;
       } else if (firstAns.decision === true) {
         banner.className = "verdict-banner verdict-allow";
-        document.getElementById('verdictTitle').textContent = `✅ KARAR: ALLOW / ONAY (NOUL: ${noulVal})`;
+        document.getElementById('verdictTitle').textContent = isEn
+          ? `✅ VERDICT: ALLOW (NOUL: ${noulVal})`
+          : `✅ KARAR: ALLOW / ONAY (NOUL: ${noulVal})`;
         document.getElementById('verdictMode').textContent = `MODE: ${recMode}`;
       } else {
         banner.className = "verdict-banner verdict-deny";
-        document.getElementById('verdictTitle').textContent = `🛑 KARAR: DENY / BLOK (NOUL: ${noulVal})`;
+        document.getElementById('verdictTitle').textContent = isEn
+          ? `🛑 VERDICT: DENY / BLOCK (NOUL: ${noulVal})`
+          : `🛑 KARAR: DENY / BLOK (NOUL: ${noulVal})`;
         document.getElementById('verdictMode').textContent = `MODE: ${recMode}`;
       }
 
@@ -1048,19 +527,24 @@
 
       const hardHit = trace.hard_rule_hit || trace.hardRuleHit;
       if (ood) {
-        document.getElementById('trRules').textContent = "OOD Shield: Tanınmayan şema algılandı; yanlış özgüven engellendi.";
+        document.getElementById('trRules').textContent = isEn
+          ? "OOD Shield: Unrecognized input schema; false confidence neutralized."
+          : "OOD Shield: Tanınmayan şema algılandı; yanlış özgüven engellendi.";
       } else if (hardHit) {
-        document.getElementById('trRules').textContent = `${hardHit.rule_id} → ${hardHit.effect} (${hardHit.reason || 'Kesin Politika Kuralı'})`;
+        document.getElementById('trRules').textContent = `${hardHit.rule_id} → ${hardHit.effect} (${hardHit.reason || (isEn ? 'Strict Hard Rule' : 'Kesin Politika Kuralı')})`;
       } else {
-        document.getElementById('trRules').textContent = "WERR-24B™ Çok Ölçekli Sınır Rezonansı (Tripod-3X Verified)";
+        document.getElementById('trRules').textContent = isEn
+          ? "WERR-24B™ Multi-Scale Boundary Resonance (Tripod-3X Verified)"
+          : "WERR-24B™ Çok Ölçekli Sınır Rezonansı (Tripod-3X Verified)";
       }
 
       const recF = trace.recognized_fields || trace.recognizedFields || [];
       const unrecF = trace.unrecognized_fields || trace.unrecognizedFields || [];
-      document.getElementById('trFields').textContent = `Doğrulanan Sinyal: ${recF.length} | Şema Dışı (OOD): ${unrecF.length}`;
+      document.getElementById('trFields').textContent = isEn
+        ? `Verified Signals: ${recF.length} | Out-of-Domain: ${unrecF.length}`
+        : `Doğrulanan Sinyal: ${recF.length} | Şema Dışı (OOD): ${unrecF.length}`;
       document.getElementById('trSeed').textContent = `🔒 WERR-24B™ [VAULT-SEALED • ${seal.slice(0, 15)}... • 0-VRAM]`;
 
-      // Sanitized public envelope: keeps the secret formula sealed!
       const publicEnvelope = {
         status: (finalData && finalData.status) || (ood ? "abstain_review" : "success"),
         verdict: firstAns.label || (firstAns.decision ? "ALLOWED" : "DENIED"),
@@ -1082,21 +566,65 @@
       document.getElementById('rawTraceJson').textContent = JSON.stringify(publicEnvelope, null, 2);
     }
 
-    function toggleLang() {
-      const h1 = document.getElementById('heroTitle');
-      const lead = document.getElementById('heroLead');
-      if (document.documentElement.lang === 'tr') {
-        document.documentElement.lang = 'en';
-        h1.innerHTML = 'Not Billions of Parameters.<br /><span class="grad">24 Bytes of Sealed Certainty.</span>';
-        lead.innerHTML = 'Write your enterprise policies in natural language; <strong>answerr</strong> crystallizes them via <strong>ITouch Systems</strong>\' patented <strong>WERR-24B™ Boundary Resonance</strong> into a <strong>24-Byte sealed reflex seed</strong>. Zero GPU, zero weight files, zero runtime hallucination — deterministic verdicts in <strong>&lt; 0.5 ms</strong>.';
-      } else {
-        document.documentElement.lang = 'tr';
-        h1.innerHTML = 'Milyarlarca Parametre Değil.<br /><span class="grad">24 Baytlık Mühürlü Kesinlik.</span>';
-        lead.innerHTML = 'Kurumsal kurallarınızı doğal dilde yazın; <strong>answerr</strong> bunları <strong>ITouch Bilişim</strong>\'in patentli <strong>WERR-24B™ Sınır Rezonansı</strong> ile yalnızca <strong>24 Baytlık şifreli bir karara</strong> kristalleştirsin. GPU yok, ağırlık dosyası yok, çalışma anında halüsinasyon yok — her ortamda <strong>&lt; 0.5 ms</strong> içinde kriptografik denetim iziyle kesin karar.';
+    // Tripod Oscilloscope Animated Wave Canvas
+    function initTripodOscilloscope() {
+      const canvas = document.getElementById('tripodOscilloscope');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let t = 0;
+
+      function resize() {
+        canvas.width = canvas.parentElement.clientWidth || 320;
+        canvas.height = 54;
       }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function draw() {
+        t += 0.045;
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        // Center line
+        ctx.strokeStyle = "rgba(6, 182, 212, 0.15)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, h / 2);
+        ctx.lineTo(w, h / 2);
+        ctx.stroke();
+
+        // 3 Harmonics for Tripod: 0.60x, 1.00x, 1.60x
+        const harmonics = [
+          { freq: 0.025, amp: 14, scale: 0.60, color: "rgba(16, 185, 129, 0.85)" },
+          { freq: 0.040, amp: 18, scale: 1.00, color: "rgba(6, 182, 212, 0.95)" },
+          { freq: 0.065, amp: 10, scale: 1.60, color: "rgba(168, 85, 247, 0.75)" }
+        ];
+
+        harmonics.forEach(harm => {
+          ctx.strokeStyle = harm.color;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          for (let x = 0; x < w; x += 2) {
+            const y = (h / 2) + Math.sin(x * harm.freq + t * harm.scale) * harm.amp * Math.cos(t * 0.3);
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        });
+
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
     }
 
+    // Language Change Event Listener
+    window.addEventListener('proLanguageChanged', (e) => {
+      selectScenario(activeScenarioKey, document.querySelector('.gate-tab.active'));
+    });
+
     window.addEventListener('DOMContentLoaded', () => {
+      initTripodOscilloscope();
       selectScenario('agent_block', document.querySelector('.gate-tab'));
     });
   </script>

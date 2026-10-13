@@ -799,6 +799,11 @@ WerrEngine.SEEDS = {
   agent_mcp_guard: { cx: -0.7436438870371587, cy: 0.1318259042053119, zoom: 95.0 }
 };
 
+// Universal method alias for evaluate -> decide
+WerrEngine.prototype.evaluate = function(state, questions, options) {
+  return this.decide(state, questions, options);
+};
+
 // Backward compatibility aliases
 const WevvEngine = WerrEngine;
 WevvEngine.SEEDS = WerrEngine.SEEDS;
