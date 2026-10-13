@@ -361,7 +361,7 @@ app.add_middleware(
     allow_origin_regex=r"https://.*\.answerr\.me",
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "Accept", "X-Requested-With", "X-API-Key"],
+    allow_headers=["Content-Type", "Authorization", "Accept", "X-Requested-With", "X-API-Key", "X-Recaptcha-Token"],
     expose_headers=["X-RateLimit-Limit", "X-RateLimit-Remaining", "Retry-After", "X-Answerr-Policy-Seal", "X-Answerr-Mode"],
     max_age=86400,
 )
@@ -466,6 +466,10 @@ class DecisionRequest(BaseModel):
     prompt: Optional[str] = Field(
         None,
         description="Natural language prompt containing both context and question"
+    )
+    recaptcha_token: Optional[str] = Field(
+        None,
+        description="Google reCAPTCHA v3 verification token"
     )
     cx: Optional[float] = None
     cy: Optional[float] = None
@@ -1135,6 +1139,7 @@ def post_decide(req: DecisionRequest):
             "vram_bytes": 0,
             "memory_seed_bytes": 24,
             "policy_seal": audit_trace["policy_seal"],
+            "recaptcha_shield": "active" if req.recaptcha_token else "open_sandbox",
             "engine": f"werr-reflex-{getattr(werr, '__version__', '0.5.1')}"
         },
         "werr_telemetry": {
@@ -1143,6 +1148,7 @@ def post_decide(req: DecisionRequest):
             "vram_bytes": 0,
             "memory_seed_bytes": 24,
             "policy_seal": audit_trace["policy_seal"],
+            "recaptcha_shield": "active" if req.recaptcha_token else "open_sandbox",
             "engine": f"werr-reflex-{getattr(werr, '__version__', '0.5.1')}"
         }
     }
