@@ -34,6 +34,8 @@
         <a href="#evreler" data-i18n="navHow">Nasıl çalışır</a>
         <a href="#kara-kutu" data-i18n="navConsole">Kara Kutu</a>
         <a href="studio.html" data-i18n="navStudio">Derleyici</a>
+        <a href="vision.html" data-i18n="navVision">Werr Evreni</a>
+        <a href="pricing.html" data-i18n="navPricing">Fiyatlar</a>
         <a href="research.html" data-i18n="navResearch">Araştırma</a>
         <a href="https://api.answerr.me/docs" rel="noopener" data-i18n="navApi">API belgeleri</a>
         <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>
@@ -43,12 +45,15 @@
   </nav>
 
   <main id="main">
-    <header class="hero">
+    <header class="hero" data-horizon>
       <picture>
         <source media="(max-width: 760px)" srcset="../assets/pro/horizon-800.jpg">
         <img class="hero-bg" src="../assets/pro/horizon.jpg" alt="" aria-hidden="true" fetchpriority="high">
       </picture>
+      <canvas class="horizon" aria-hidden="true"></canvas>
+      <div class="scanlines" aria-hidden="true"></div>
       <div class="hero-scrim"></div>
+      <svg class="reticle" viewBox="0 0 132 132" aria-hidden="true"><circle cx="66" cy="66" r="60" fill="none" stroke="rgba(255,176,72,0.55)" stroke-width="1" stroke-dasharray="2 10"/><circle cx="66" cy="66" r="40" fill="none" stroke="rgba(140,222,236,0.6)" stroke-width="1" stroke-dasharray="14 8"/><path d="M66 0v18M66 114v18M0 66h18M114 66h18" stroke="rgba(140,222,236,0.6)"/></svg>
       <div class="wrap">
         <div class="hero-copy">
           <div class="eyebrow" data-i18n="heroEyebrow">◇ Olay ufku protokolü · karar kapısı</div>
@@ -58,6 +63,7 @@
             <a class="btn-primary" href="#kara-kutu"><span data-i18n="heroCta1">Kara Kutuyu aç</span> <span aria-hidden="true">→</span></a>
             <a class="btn-ghost" href="studio.html" data-i18n="heroCta2">Bir politika derle</a>
           </div>
+          <div class="motto" data-i18n="heroMotto">“Lafı uzatma, <b>karar werr</b>.” · Werr is the point?</div>
         </div>
         <aside class="triad" aria-label="Üç hüküm">
           <div class="label" data-i18n="triadTitle">Üç hüküm, üçüncü yok</div>
@@ -75,6 +81,12 @@
           </div>
         </aside>
       </div>
+      <div class="tele-hud" data-tele aria-label="Canlı ufuk telemetrisi">
+        <span data-i18n="hzSeed">TOHUM c</span><b>−0.7436438870 + 0.1318259042i</b>
+        <span data-i18n="hzZoom">BÜYÜTME</span><b data-k="zoom">×1.00</b>
+        <span data-i18n="hzIter">YİNELEME ≤</span><b data-k="iter">160</b>
+        <span data-i18n="hzEsc">KAÇIŞ</span><b>|Z| &gt; 2</b>
+      </div>
     </header>
 
     <section class="tele" aria-label="Temel özellikler">
@@ -83,6 +95,28 @@
         <div class="tele-item"><div class="k">T-02</div><b data-i18n="t2t">Çalışma anında model yok</b><p data-i18n="t2d">Dil yalnız politikayı yazarken taslağa çevrilir.</p></div>
         <div class="tele-item"><div class="k">T-03</div><b data-i18n="t3t">Bilinmeyen → insana</b><p data-i18n="t3d">Tanınmayan tek bir alan bile kararı incelemeye gönderir.</p></div>
         <div class="tele-item"><div class="k">T-04</div><b data-i18n="t4t">Her kararın izi</b><p data-i18n="t4d">Kural, aday hükümler, alan katkıları ve politika mührü (SHA-256).</p></div>
+      </div>
+    </section>
+
+    <!-- live decision stream -->
+    <section class="section" id="akis" aria-labelledby="ak-title" data-live-stream>
+      <div class="wrap stream-wrap">
+        <div class="stream-copy rv">
+          <div class="eyebrow"><span class="pulse-dot"></span><span data-i18n="akEyebrow">Canlı karar akışı</span></div>
+          <h2 id="ak-title" data-i18n="akTitle">Her saniye bir ajan bir araç ister. Kapı her seferinde aynı hükmü werr.</h2>
+          <p class="muted" style="margin:0" data-i18n="akLead">Aşağıdaki çağrılar sentetik; hükümler gerçek. Her satır tarayıcınızdaki politika çekirdeği ve agent_mcp_guard kapısıyla değerlendirilir, süre de burada ölçülür.</p>
+          <div class="counts">
+            <div><small data-i18n="akAll">TOPLAM</small><b data-c="ALL">0</b></div>
+            <div><small class="v-allow" data-i18n="vAllow">GEÇ</small><b data-c="ALLOW">0</b></div>
+            <div><small class="v-review" data-i18n="akRev">İNSANA</small><b data-c="REVIEW">0</b></div>
+            <div><small class="v-deny" data-i18n="vDeny">DUR</small><b data-c="DENY">0</b></div>
+          </div>
+          <div class="mix" data-mix aria-hidden="true"></div>
+        </div>
+        <div class="stream rv d1">
+          <div class="stream-head"><span>agent_mcp_guard · v2.0.0 · strict</span><span data-i18n="akLocal">TARAYICI ÇEKİRDEĞİ · AĞ YOK</span></div>
+          <ol data-stream aria-live="off"></ol>
+        </div>
       </div>
     </section>
 
@@ -220,9 +254,21 @@ hüküm + kural + iz + politika mührü</div>
       <div class="wrap">
         <div class="section-head"><h2 id="yo-title" data-i18n="yoTitle">Üç yörünge</h2></div>
         <div class="grid-3">
-          <article class="card accent"><div class="eyebrow" data-i18n="yo1k">Ana yörünge</div><h3 data-i18n="yo1t">AI ajan aksiyon kapısı</h3><p data-i18n="yo1d">Ajan bir aracı çalıştırmadan önce sorar. Silme ve yetki araçları durur, yazma ve para hareketleri insana gider, okuma geçer.</p></article>
-          <article class="card"><div class="eyebrow" style="color:var(--ice)" data-i18n="yo2k">Yörünge 2</div><h3 data-i18n="yo2t">Ödeme ve sipariş riski</h3><p data-i18n="yo2d">Türkçe kurallar, mevcut kurallarınızın yanında gölge modda deneme, KVKK'ya uygun barındırma seçeneği.</p></article>
-          <article class="card"><div class="eyebrow" style="color:var(--ice)" data-i18n="yo3k">Yörünge 3</div><h3 data-i18n="yo3t">API kötüye kullanım</h3><p data-i18n="yo3d">Hata, hız ve kimlik sinyallerinden gerekçeli erişim kararı.</p></article>
+          <article class="card accent glow"><div class="eyebrow" data-i18n="yo1k">Ana yörünge</div><h3 data-i18n="yo1t">AI ajan aksiyon kapısı</h3><p data-i18n="yo1d">Ajan bir aracı çalıştırmadan önce sorar. Silme ve yetki araçları durur, yazma ve para hareketleri insana gider, okuma geçer.</p></article>
+          <article class="card glow"><div class="eyebrow" style="color:var(--ice)" data-i18n="yo2k">Yörünge 2</div><h3 data-i18n="yo2t">Ödeme ve sipariş riski</h3><p data-i18n="yo2d">Türkçe kurallar, mevcut kurallarınızın yanında gölge modda deneme, KVKK'ya uygun barındırma seçeneği.</p></article>
+          <article class="card glow"><div class="eyebrow" style="color:var(--ice)" data-i18n="yo3k">Yörünge 3</div><h3 data-i18n="yo3t">API kötüye kullanım</h3><p data-i18n="yo3d">Hata, hız ve kimlik sinyallerinden gerekçeli erişim kararı.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="tz-title">
+      <div class="wrap">
+        <div class="section-head rv"><div><div class="eyebrow" data-i18n="tzK">Ötesi</div><h2 id="tz-title" data-i18n="tzTitle">Bir karar kapısından fazlası: Werr Evreni.</h2></div>
+          <p data-i18n="tzLead">Aynı fikir — kararı ağırlıkta saklamak yerine geometride üretmek — zincir üstü kahinden sinek beyni konnektomuna uzanıyor. Hangisi ürün, hangisi araştırma, açıkça işaretli.</p></div>
+        <div class="grid-3">
+          <a class="card glow rv" href="vision.html" style="text-decoration:none;color:inherit"><div class="eyebrow" data-i18n="tz1k">Vizyon</div><h3 data-i18n="tz1t">Werr Evreni haritası</h3><p data-i18n="tz1d">answerr, werr, Werracle, WerreduR, WerrSoma, Güneş Dili ve Lean 4 kanıt katmanı tek yörüngede.</p></a>
+          <a class="card glow rv d1" href="pricing.html" style="text-decoration:none;color:inherit"><div class="eyebrow" data-i18n="tz2k">Fiyatlar</div><h3 data-i18n="tz2t">Ücretsiz başlayın, karar başına ödeyin</h3><p data-i18n="tz2d">Keşif $0 · Geliştirici $29 · Pro $99 · Kurumsal yıllık sözleşme. Token yok, GPU yok; yalnızca karar.</p></a>
+          <a class="card glow rv d2" href="research.html" style="text-decoration:none;color:inherit"><div class="eyebrow" data-i18n="tz3k">Kümülatif kayıt</div><h3 data-i18n="tz3t">Külliyat: 14 kayıt</h3><p data-i18n="tz3d">arXiv ön baskıları, Zenodo arşivleri, Lean 4 doğrulamaları ve bekleyen patent başvuruları.</p></a>
         </div>
       </div>
     </section>
@@ -232,7 +278,7 @@ hüküm + kural + iz + politika mührü</div>
         <div style="flex:1 1 460px; display:flex; flex-direction:column; gap:16px">
           <div class="eyebrow" data-i18n="erK">Tasarım ortaklığı · 5 koltuk</div>
           <h2 id="er-title" data-i18n="erTitle">Mevcut kurallarınızın yanında, gölge modda başlayalım.</h2>
-          <p class="muted" style="margin:0" data-i18n="erLead">Pilot ücretsizdir. Fiyatlandırma pilot sonuçlarıyla birlikte açıklanacak.</p>
+          <p class="muted" style="margin:0" data-i18n="erLead2">Pilot 60 gün ücretsizdir. Sonrasında <a href="pricing.html">yayımlanan fiyatlar</a> geçerlidir; kurucu müşteriler fiyatı 12 ay sabit tutar.</p>
         </div>
         <form id="accessForm">
           <div class="field">
@@ -253,6 +299,8 @@ hüküm + kural + iz + politika mührü</div>
       <nav aria-label="Alt bağlantılar">
         <a href="https://api.answerr.me/docs" rel="noopener" data-i18n="fApi">API belgeleri</a>
         <a href="research.html" data-i18n="fResearch">Araştırma arşivi</a>
+        <a href="pricing.html" data-i18n="navPricing">Fiyatlar</a>
+        <a href="vision.html" data-i18n="navVision">Werr Evreni</a>
         <a href="../chat.html" data-i18n="fClassic">Klasik konsol</a>
         <a href="https://github.com/pCwOrM/answerr" rel="noopener">GitHub</a>
       </nav>
@@ -262,7 +310,9 @@ hüküm + kural + iz + politika mührü</div>
 
   <script src="../js/policy-kernel.js"></script>
   <script src="i18n.js"></script>
+  <script src="i18n-plus.js"></script>
   <script src="app.js"></script>
   <script src="console.js"></script>
+  <script src="fx.js"></script>
 </body>
 </html>

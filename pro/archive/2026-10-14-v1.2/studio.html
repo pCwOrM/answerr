@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>answerr Pro — Derleyici</title>
+  <meta name="description" content="Doğal dilde yazılan politikayı kurallara derleyin; her kuralın hangi cümleden geldiğini, açık soruları, otomatik testleri ve çalıştırılan denetimleri görün.">
+  <meta name="theme-color" content="#05060A">
+  <link rel="icon" href="../../../assets/answerr_logo_portal_fav_trans.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="pro.css">
+  <script src="https://www.google.com/recaptcha/api.js?render=6LdP-JgqAAAAAJLdy_W8uowqstSa4XKlJTOkVAux" async defer></script>
+</head>
+<body>
+  <a class="sr-only" href="#main">İçeriğe geç</a>
+  <div class="hud">
+    <div class="wrap">
+      <div id="hudStatus"><span class="dot"></span>…</div>
+      <div data-i18n="stHud">TASLAK HİÇBİR ZAMAN OTOMATİK KAYDEDİLMEZ</div>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Ana gezinme">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="answerr Pro ana sayfa">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="#FFB048" stroke-width="1.5"/><circle cx="17" cy="17" r="8" fill="none" stroke="#8CDEEC" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="25" cy="10" r="2.5" fill="#FFB048"/></svg>
+        <b>answerr</b><span class="tag">PRO</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Menü" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h9" stroke="currentColor" stroke-width="1.6"/></svg></button>
+      <div class="nav-links">
+        <a href="index.html#kara-kutu" data-i18n="navConsole">Kara Kutu</a>
+        <a href="studio.html" aria-current="page" data-i18n="navStudio">Derleyici</a>
+        <a href="research.html" data-i18n="navResearch">Araştırma</a>
+        <a href="https://api.answerr.me/docs" rel="noopener" data-i18n="navApi">API belgeleri</a>
+        <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main" class="section" style="padding-top:40px">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px">
+        <div>
+          <div class="eyebrow" data-i18n="stEyebrow">Derleyici · doğal dilden kurala</div>
+          <h1 style="font-size:clamp(32px,4.4vw,46px)" data-i18n="stTitle">Cümleden kurala. Kurala insan imzası.</h1>
+        </div>
+        <p data-i18n="stLead">Her kural hangi cümleden geldiğini gösterir. Derleyicinin tahmin etmek zorunda kaldığı her yer size soru olarak döner. Taslak kaydedilmez; kaydetmek için API anahtarı gerekir.</p>
+      </div>
+
+      <div class="studio">
+        <section class="panel" aria-labelledby="s1">
+          <h2 id="s1" class="label" data-i18n="st1">01 · Politika metni</h2>
+          <div class="tpl-row" role="group" aria-label="Şablonlar">
+            <button type="button" class="scn btn-sm" data-tpl="agent" data-i18n="tplAgent">AI ajan kapısı</button>
+            <button type="button" class="scn btn-sm" data-tpl="pay" data-i18n="tplPay">Ödeme riski</button>
+            <button type="button" class="scn btn-sm" data-tpl="api" data-i18n="tplApi">API kötüye kullanım</button>
+          </div>
+          <div class="field">
+            <label for="gateId" data-i18n="stGate">Kapı kimliği</label>
+            <input id="gateId" type="text" value="studio_draft" pattern="[a-z0-9][a-z0-9_\-]{2,63}" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="nl" data-i18n="stNl">Politika (Türkçe ya da İngilizce)</label>
+            <textarea id="nl" class="prose" rows="7"></textarea>
+          </div>
+          <div class="field">
+            <label for="sample" data-i18n="stSample">Örnek durum (JSON) — alan adları buradan seçilir</label>
+            <textarea id="sample" rows="6" spellcheck="false"></textarea>
+          </div>
+          <button class="btn-primary" id="compileBtn" type="button" data-i18n="stCompile">Derle ve sına</button>
+          <div class="small-mono" id="compileMsg"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="s2" aria-live="polite">
+          <h2 id="s2" class="label" data-i18n="st2">02 · Derlenen kurallar</h2>
+          <div id="rules" class="scn-list"><div class="empty" data-i18n="stEmpty">Henüz derlenmedi.</div></div>
+          <div id="questions"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="s3">
+          <h2 id="s3" class="label" data-i18n="st3">03 · Testler, denetimler, mühür</h2>
+          <div class="scroll-x"><table class="tests" id="tests"><caption class="sr-only">Test vektörleri</caption></table></div>
+          <div id="checks"></div>
+          <div class="small-mono" id="seal"></div>
+          <div class="tpl-row">
+            <button class="btn-ghost btn-sm" id="tryBtn" type="button" disabled data-i18n="stTry">Örnek durumla dene</button>
+            <button class="btn-ghost btn-sm" id="dlBtn" type="button" disabled data-i18n="stDl">Taslağı indir (JSON)</button>
+            <button class="btn-ghost btn-sm" id="cpBtn" type="button" disabled data-i18n="stCp">Kayıt komutunu kopyala</button>
+          </div>
+          <div class="note" id="tryOut" hidden></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span><a href="https://itouch.com.tr" rel="noopener">ITouch Bilişim</a> · Çukurova Teknokent · Adana · <a href="mailto:ask@answerr.me">ask@answerr.me</a></span>
+      <span style="flex-basis:100%; font-size:11px" data-i18n="fRecaptcha">Bu site reCAPTCHA ile korunur; Google <a href="https://policies.google.com/privacy">Gizlilik Politikası</a> ve <a href="https://policies.google.com/terms">Hizmet Şartları</a> geçerlidir.</span>
+    </div>
+  </footer>
+
+  <script src="../../../js/policy-kernel.js"></script>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+  <script src="studio.js"></script>
+</body>
+</html>
