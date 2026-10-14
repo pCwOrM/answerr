@@ -121,6 +121,6 @@
     window.ProApp.apiOnline = Boolean(h);
   }
 
-  window.ProApp = { API, api, localDecide, VERDICT, esc, t, lang, fmtNum, shortSeal, health, apiOnline: null };
+  window.ProApp = { API, api, recaptchaToken, localDecide, VERDICT, esc, t, lang, fmtNum, shortSeal, health, apiOnline: null };
   document.addEventListener('DOMContentLoaded', () => { setupNav(); setupHud(); });
 })();
