@@ -40,7 +40,7 @@
       yo3k: 'Yörünge 3', yo3t: 'API kötüye kullanım', yo3d: 'Hata, hız ve kimlik sinyallerinden gerekçeli erişim kararı.',
       erK: 'Tasarım ortaklığı · 5 koltuk', erTitle: 'Mevcut kurallarınızın yanında, gölge modda başlayalım.',
       erLead: 'Pilot ücretsizdir. Fiyatlandırma pilot sonuçlarıyla birlikte açıklanacak.', erMail: 'İş e-postası', erPh: 'ad@sirket.com', erBtn: 'Koltuk iste', erSending: 'Gönderiliyor…', erOk: 'Talebiniz alındı; onay e-postası gönderdik. İki iş günü içinde dönüş yapacağız.', erBad: 'Lütfen geçerli bir iş e-postası girin.', erFallback: 'Sunucuya ulaşılamadı; e-posta programınız açılıyor.',
-      fApi: 'API belgeleri', fResearch: 'Araştırma arşivi', fClassic: 'Klasik konsol',
+      fApi: 'API belgeleri', fResearch: 'Araştırma arşivi', fClassic: 'Klasik konsol', fArchive: 'Önceki sürüm (13 Ekim)',
       fRecaptcha: 'Bu site reCAPTCHA ile korunur; Google <a href="https://policies.google.com/privacy">Gizlilik Politikası</a> ve <a href="https://policies.google.com/terms">Hizmet Şartları</a> geçerlidir.',
       stHud: 'TASLAK HİÇBİR ZAMAN OTOMATİK KAYDEDİLMEZ', stEyebrow: 'Derleyici · doğal dilden kurala', stTitle: 'Cümleden kurala. Kurala insan imzası.',
       stLead: 'Her kural hangi cümleden geldiğini gösterir. Derleyicinin tahmin etmek zorunda kaldığı her yer size soru olarak döner. Taslak kaydedilmez; kaydetmek için API anahtarı gerekir.',
@@ -62,7 +62,8 @@
       rsP5: 'Ağ ağırlıklarının saklanmak yerine karmaşık ikinci derece dönüşümden üretilmesi; Two-Moons’ta %77,7 (gradyanla eğitilen temel model %85,7).',
       rsData: 'Veri ve kıyaslamalar', rsD1: '1.205 karar kaydı ve 3.200’den fazla değerlendirme sorusu (JSONL).', rsOpen: 'Veri setini aç',
       rsD2: 'Topluluk kıyaslamasına gönderilen sonuç kaydı.', rsOpen2: 'Kaydı aç', rsD3t: 'Karşılaştırmalı çalıştırma', rsD3: 'Bağımsız depoda açılan karşılaştırma kaydı.',
-      rsNote: 'Ön baskılar hakem değerlendirmesinden geçmemiş olabilir. Topluluk kıyaslamalarındaki kayıtlar gönderim kaydıdır, bağımsız doğrulama değildir.'
+      rsP6: 'Tamsayı çarpımı sınırları üzerine tensör taşıyıcı sıkıştırması (W = 176M); CrocSwap/integer-mult-bounds deposuna katkı olarak eklendi.', rsD4: 'Araştırma motorunun Python paketi: <code>pip install werr</code>.', rsOpen3: 'Paketi aç', rsCorpus: 'Kümülatif külliyat', rsIp: 'Fikri mülkiyet başvuruları', rsPending: 'beklemede', rsIp1: 'Prosedürel ve matematiksel sentez algoritmaları (werr; werracle ve WerreduR kayıtlarında öncelik olarak anılır).', rsIp2: 'Konnektom entegrasyonu (WerrSoma).', rsOrg: 'Kuruluş', rcTitle: 'Araştırma kayıtları', rcNote: 'werr araştırma motoruna ait; ürün kararları politika çekirdeğinden gelir.',
+      rsNote: 'Ön baskılar hakem değerlendirmesinden geçmemiş olabilir. Topluluk kıyaslamalarındaki kayıtlar gönderim kaydıdır, bağımsız doğrulama değildir. Patent başvuruları incelemededir; tescil edilmiş patent değildir.'
     },
     en: {
       hudRight: 'NO MODEL AT DECISION TIME · EVERY DECISION HAS A TRACE',
@@ -102,7 +103,7 @@
       yo3k: 'Orbit 3', yo3t: 'API abuse', yo3d: 'Access decisions with reasons, from error, rate and identity signals.',
       erK: 'Design partnership · 5 seats', erTitle: 'Let’s start in shadow mode, next to your current rules.',
       erLead: 'The pilot is free. Pricing will be announced with the pilot results.', erMail: 'Work e-mail', erPh: 'name@company.com', erBtn: 'Request a seat', erSending: 'Sending…', erOk: 'Request received; a confirmation is on its way. We will reply within two working days.', erBad: 'Please enter a valid work e-mail address.', erFallback: 'The server is unreachable; opening your mail client.',
-      fApi: 'API docs', fResearch: 'Research archive', fClassic: 'Classic console',
+      fApi: 'API docs', fResearch: 'Research archive', fClassic: 'Classic console', fArchive: 'Previous version (13 Oct)',
       fRecaptcha: 'This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.',
       stHud: 'DRAFTS ARE NEVER SAVED AUTOMATICALLY', stEyebrow: 'Compiler · from language to rules', stTitle: 'From sentence to rule. A human signs the rule.',
       stLead: 'Every rule shows the sentence it came from. Wherever the compiler had to guess, you get a question. Drafts are not stored; registering a gate needs an API key.',
@@ -124,7 +125,8 @@
       rsP5: 'Network weights generated from a complex quadratic map instead of stored; 77.7% on Two-Moons (gradient-trained baseline 85.7%).',
       rsData: 'Data and benchmarks', rsD1: '1,205 decision records and more than 3,200 evaluation questions (JSONL).', rsOpen: 'Open the dataset',
       rsD2: 'Result record submitted to a community benchmark.', rsOpen2: 'Open the record', rsD3t: 'Comparative run', rsD3: 'Comparison record opened in an independent repository.',
-      rsNote: 'Preprints may not be peer reviewed. Records in community benchmarks are submissions, not independent verification.'
+      rsP6: 'Tensor carrier compression for integer-multiplication bounds (W = 176M); incorporated into CrocSwap/integer-mult-bounds.', rsD4: 'Python package of the research engine: <code>pip install werr</code>.', rsOpen3: 'Open the package', rsCorpus: 'Cumulative corpus', rsIp: 'Intellectual-property applications', rsPending: 'pending', rsIp1: 'Procedural and mathematical synthesis algorithms (werr; cited as priority in the werracle and WerreduR records).', rsIp2: 'Connectome integration (WerrSoma).', rsOrg: 'Organisation', rcTitle: 'Research records', rcNote: 'These belong to the werr research engine; product decisions come from the policy kernel.',
+      rsNote: 'Preprints may not be peer reviewed. Records in community benchmarks are submissions, not independent verification. Patent applications are pending, not granted patents.'
     }
   };
 
