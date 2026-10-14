@@ -1,5 +1,5 @@
 """
-answerr REST API (v1.2.0)
+answerr REST API (v1.3.0)
 ITouch Bilişim Sistemleri Ltd. Şti. — https://answerr.me
 
 Endpoints
@@ -14,6 +14,8 @@ Endpoints
   POST   /v1/policies/compile        natural language -> draft policy, tests and checks (never registers)
   POST   /v1/systemone               JevBench wire format (research)
   POST   /v1/chat/completions        OpenAI-compatible adapter (research)
+  …      /v1/auth, /v1/account, /v1/reviews, /v1/backtest, /v1/plans, /v1/admin   commercial layer (commerce/router.py)
+  GET    /v1/docs, /v1/redoc, /v1/openapi.json   interactive reference (under /v1 because only /v1 is proxied)
 
 Verdicts for gated / strict / agent-tool requests come from policy_kernel.py, which is
 mirrored by js/policy-kernel.js and checked for parity in tests/.
@@ -27,6 +29,10 @@ Configuration (environment, e.g. /etc/answerr/answerr.env):
   RECAPTCHA_MIN_SCORE       default 0.5
   RECAPTCHA_HOSTNAMES       default answerr.me,www.answerr.me
   ANSWERR_WERR_PATH         path of the werr research package (default /home/pcworm/werr)
+  ANSWERR_COMMERCE_DB       accounts, keys, usage, decision log, reviews (default /var/lib/answerr/commerce.sqlite)
+  ANSWERR_ADMIN_KEY         ITouch operations key for /v1/admin/* (>= 24 chars; unset = admin API off)
+  ANSWERR_CONSOLE_URL       console address used in sign-in e-mails (default https://answerr.me/pro/console/)
+  ANSWERR_PAYMENT_PROVIDER  manual (default) | iyzico (see docs/commerce/IYZICO_ENTEGRASYONU.md)
 """
 import hashlib
 import hmac
@@ -59,8 +65,12 @@ import access_mailer  # noqa: E402
 import policy_checks  # noqa: E402
 import policy_compiler  # noqa: E402
 import policy_kernel as PK  # noqa: E402
+from commerce import mail as CMAIL  # noqa: E402
+from commerce import router as CROUTER  # noqa: E402
+from commerce import store as CS  # noqa: E402
+from commerce import webhooks as CHOOKS  # noqa: E402
 
-API_VERSION = "1.2.0"
+API_VERSION = "1.3.0"
 START_TIME = time.time()
 
 
@@ -94,18 +104,37 @@ MAX_RULES = 100
 MAX_REQUEST_BODY_BYTES = 65536
 
 
-def authenticate(request: Request) -> Optional[str]:
-    """Returns the tenant name for a valid API key, else None."""
+def _bearer(request: Request) -> str:
     key = request.headers.get("x-api-key") or ""
     auth = request.headers.get("authorization") or ""
     if not key and auth.lower().startswith("bearer "):
         key = auth[7:].strip()
+    return key
+
+
+def authenticate_principal(request: Request) -> Tuple[Optional[str], Optional[Dict[str, Any]]]:
+    """(tenant, principal). Internal keys from ANSWERR_API_KEYS give a tenant without a principal
+    (no metering). Customer API keys (ans_live_) and console sessions (ans_sess_) give tenant
+    'acct:<id>' and a principal with account, role and channel."""
+    key = _bearer(request)
     if not key:
-        return None
+        return None, None
+    if key.startswith("ans_live_") or key.startswith("ans_sess_"):
+        try:
+            p = CS.resolve_api_key(key) if key.startswith("ans_live_") else CS.resolve_session(key)
+        except Exception as e:  # commerce store unavailable: treat as anonymous, never 500
+            print("[answerr] commerce auth unavailable:", e, file=sys.stderr)
+            p = None
+        return ("acct:" + p["account_id"], p) if p else (None, None)
     for k, tenant in API_KEYS.items():
         if hmac.compare_digest(k.encode(), key.encode()):
-            return tenant
-    return None
+            return tenant, None
+    return None, None
+
+
+def authenticate(request: Request) -> Optional[str]:
+    """Returns the tenant name for a valid key or session, else None."""
+    return authenticate_principal(request)[0]
 
 
 def _strip_port(entry: str) -> str:
@@ -377,6 +406,18 @@ class GateStore:
             self.gates[gate["gate_id"]] = gate
             self._save()
 
+    def drop_tenant(self, tenant: str) -> int:
+        if not self.available:
+            return 0
+        with self.lock, self._locked():
+            self._reload(force=True)
+            ids = [k for k, g in self.gates.items() if g.get("tenant") == tenant]
+            for k in ids:
+                del self.gates[k]
+            if ids:
+                self._save()
+            return len(ids)
+
     def delete(self, gate_id: str, tenant: str) -> bool:
         if not self.available:
             raise HTTPException(503, "Gate store is unavailable.")
@@ -551,10 +592,25 @@ async def lifespan(app: FastAPI):
     t0 = time.perf_counter()
     DEFAULT_ROUTER.decide(state={"warmup": True}, questions={"ready": werr.NoulQuestion("System ready?")})
     PK.evaluate({"tool_name": "read_status"}, BUILTIN_GATES["agent_mcp_guard"])
+    try:
+        CS.init()
+        threading.Thread(target=_housekeeping, daemon=True).start()
+    except Exception as e:
+        print("[answerr] commerce store unavailable:", e, file=sys.stderr)
     print("[answerr] API {} ready in {:.1f} ms; {} built-in gates, {} tenant gates, {} API keys, reCAPTCHA {}".format(
         API_VERSION, (time.perf_counter() - t0) * 1000, len(BUILTIN_GATES), GATE_STORE.count(),
         len(API_KEYS), "on" if RECAPTCHA_SECRET else "off"))
     yield
+
+
+def _housekeeping():
+    """Hourly retention purge (idempotent; every worker may run it)."""
+    while True:
+        time.sleep(3600)
+        try:
+            CS.purge()
+        except Exception as e:
+            print("[answerr] purge failed:", e, file=sys.stderr)
 
 
 app = FastAPI(
@@ -563,7 +619,15 @@ app = FastAPI(
                 "executed with a full trace. ITouch Bilişim Sistemleri Ltd. Şti.",
     version=API_VERSION,
     lifespan=lifespan,
+    docs_url="/v1/docs",
+    redoc_url="/v1/redoc",
+    openapi_url="/v1/openapi.json",
 )
+
+
+@app.exception_handler(CS.CommerceError)
+async def _commerce_error(request: Request, exc: CS.CommerceError):
+    return CROUTER.error_response(exc)
 
 app.add_middleware(
     CORSMiddleware,
@@ -572,9 +636,10 @@ app.add_middleware(
                    "http://127.0.0.1:8000", "http://127.0.0.1:5500"],
     allow_origin_regex=r"https://([a-z0-9-]+\.)?answerr\.me",
     allow_credentials=False,
-    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "Accept", "X-Requested-With", "X-API-Key", "X-Recaptcha-Token"],
-    expose_headers=["X-RateLimit-Limit", "X-RateLimit-Remaining", "Retry-After", "X-Answerr-Verdict", "X-Answerr-Policy-Seal"],
+    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept", "X-Requested-With", "X-API-Key", "X-Recaptcha-Token", "X-Admin-Key"],
+    expose_headers=["X-RateLimit-Limit", "X-RateLimit-Remaining", "Retry-After", "X-Answerr-Verdict", "X-Answerr-Policy-Seal",
+                    "X-Answerr-Decision-Id", "X-Answerr-Quota-Remaining", "Content-Disposition"],
     max_age=86400,
 )
 
@@ -599,7 +664,7 @@ async def security_middleware(request: Request, call_next):
             return JSONResponse(status_code=400, content={"status": "error", "error": "Bad Content-Length"})
 
     ip = client_ip(request)
-    tenant = authenticate(request)
+    tenant, principal = await run_in_threadpool(authenticate_principal, request)
     recaptcha = "absent"
     if tenant:
         tier, ident = "api_key", "tenant:" + tenant
@@ -609,11 +674,11 @@ async def security_middleware(request: Request, call_next):
             recaptcha = await run_in_threadpool(verify_recaptcha, token, ip)
         tier = "verified" if recaptcha == "verified" else "anonymous"
         ident = "ip:" + ip
-    request.state.security = {"tenant": tenant, "rate_tier": tier, "recaptcha": recaptcha}
+    request.state.security = {"tenant": tenant, "rate_tier": tier, "recaptcha": recaptcha, "principal": principal}
 
     remaining = None
     limit = SlidingWindowLimiter.TIERS[tier][0]
-    if request.url.path not in ("/health", "/v1/health"):
+    if request.url.path not in ("/health", "/v1/health", "/v1/docs", "/v1/redoc", "/v1/openapi.json"):
         ok, limit, remaining, retry = LIMITER.check(ident, tier)
         if ok and not tenant and not via_iis(request) and (request.client and request.client.host in TRUSTED_PROXIES):
             ok, _, _, retry = LIMITER.check("direct", "direct_shared")
@@ -632,13 +697,14 @@ async def security_middleware(request: Request, call_next):
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"] = "geolocation=(), camera=(), microphone=()"
-    response.headers["Cache-Control"] = "no-store"
+    if not request.url.path.startswith(("/v1/docs", "/v1/redoc")):
+        response.headers["Cache-Control"] = "no-store"
     response.headers["Server"] = "answerr"
     return response
 
 
 def _security(request: Request) -> Dict[str, Any]:
-    return getattr(request.state, "security", {"tenant": None, "rate_tier": "anonymous", "recaptcha": "absent"})
+    return getattr(request.state, "security", {"tenant": None, "rate_tier": "anonymous", "recaptcha": "absent", "principal": None})
 
 
 # -----------------------------------------------------------------------------
@@ -670,6 +736,10 @@ class DecisionRequest(BaseModel):
     question: Optional[str] = None
     prompt: Optional[str] = None
     recaptcha_token: Optional[str] = None
+    mode: Optional[str] = Field(None, description="'live' (default) or 'shadow': logged and metered, never queued for review")
+    observed_outcome: Optional[Any] = Field(None, description="Your own decision for this case (ALLOW/REVIEW/DENY or true/false), for shadow reports")
+    external_id: Optional[str] = Field(None, max_length=120, description="Your reference (order id, tool-call id); echoed in logs, reviews and webhooks")
+    enqueue_review: Optional[bool] = Field(True, description="REVIEW verdicts go to the human-review queue (Pro and above)")
     cx: Optional[float] = None
     cy: Optional[float] = None
     zoom: Optional[float] = None
@@ -832,7 +902,7 @@ def get_root():
         "provider": "ITouch Bilişim Sistemleri Ltd. Şti. (https://itouch.com.tr)",
         "description": "Policies written in Turkish or English are compiled to explicit rules; every decision "
                        "returns its verdict, the rule behind it and a trace. No model runs at decision time.",
-        "docs_url": "/docs",
+        "docs_url": "/v1/docs",
         "endpoints": {
             "decide": "POST /v1/decide",
             "gates": "GET|POST /v1/gates, DELETE /v1/gates/{gate_id}",
@@ -892,9 +962,18 @@ def list_gates(request: Request):
 
 @app.post("/v1/gates", tags=["Policy Gates"])
 def register_gate(req: PolicyGateCreateRequest, request: Request):
-    tenant = _security(request)["tenant"]
+    sec = _security(request)
+    tenant = sec["tenant"]
     if not tenant:
         raise HTTPException(401, "An API key is required to register gates.")
+    principal = sec.get("principal")
+    if principal:
+        if principal["role"] not in ("owner", "admin"):
+            raise CS.CommerceError(403, "forbidden", "Reviewers cannot register gates.")
+        limit = CS.plan_of(CS.get_account(principal["account_id"]))["custom_gates"]
+        own = [g for g in GATE_STORE.owned_by(tenant) if g["gate_id"] != req.gate_id]
+        if len(own) >= limit:
+            raise CS.CommerceError(403, "gate_limit", "Your plan allows {} custom gate(s).".format(limit), limit=limit)
     if not GATE_ID_RE.match(req.gate_id):
         raise HTTPException(400, "gate_id must match ^[a-z0-9][a-z0-9_-]{2,63}$")
     if req.gate_id in BUILTIN_GATES:
@@ -949,6 +1028,16 @@ def decide_with_gate(gate_id: str, req: DecisionRequest, request: Request):
 def post_decide(req: DecisionRequest, request: Request):
     t0 = time.perf_counter()
     sec = _security(request)
+    principal = sec.get("principal")
+    mode = (req.mode or "live").strip().lower()
+    if mode not in ("live", "shadow"):
+        raise HTTPException(400, "mode must be 'live' or 'shadow'.")
+    if principal:
+        CS.quota_check(principal["account_id"])          # 429 quota_exceeded / 403 suspended
+        if mode == "shadow":
+            CROUTER.feature(principal["account_id"], "shadow")
+    if req.observed_outcome is not None:
+        CS.normalize_outcome(req.observed_outcome)        # 400 on an unknown label
     state = dict(req.state) if req.state else {}
     if req.prompt and not state:
         state = parse_prompt_to_state(req.prompt)
@@ -1067,8 +1156,38 @@ def post_decide(req: DecisionRequest, request: Request):
             "kernel_version": PK.KERNEL_VERSION,
         },
     }
-    return JSONResponse(content=body, headers={"X-Answerr-Verdict": body["verdict"] or "",
-                                               "X-Answerr-Policy-Seal": trace["policy_seal"] or ""})
+    headers = {"X-Answerr-Verdict": body["verdict"] or "", "X-Answerr-Policy-Seal": trace["policy_seal"] or ""}
+    if principal:
+        _meter(principal, req, body, kernel, policy, trace, state, mode, total_ms, headers)
+    return JSONResponse(content=body, headers=headers)
+
+
+def _meter(principal, req, body, kernel, policy, trace, state, mode, total_ms, headers):
+    """Usage, decision log, review queue, webhooks and quota warnings for customer accounts."""
+    rec = CS.record_decision(
+        principal["account_id"], key_prefix=principal.get("prefix"),
+        gate_id=(policy or {}).get("gate_id") or req.gate_id, verdict=body["verdict"] or kernel["verdict"],
+        rule_id=kernel.get("rule_id"), reason=kernel.get("reason"), latency_ms=total_ms, mode=mode,
+        observed=req.observed_outcome, policy_seal=trace.get("policy_seal"), state=state,
+        external_id=req.external_id, enqueue_review=bool(req.enqueue_review if req.enqueue_review is not None else True))
+    body["decision_id"] = rec["decision_id"]
+    body["mode"] = mode
+    body["usage"] = rec["usage"]
+    headers["X-Answerr-Decision-Id"] = rec["decision_id"]
+    if rec["usage"]["quota"] is not None:
+        headers["X-Answerr-Quota-Remaining"] = str(max(0, rec["usage"]["quota"] - rec["usage"]["decisions"]))
+    acc = None
+    if rec["review_id"]:
+        body["review"] = {"id": rec["review_id"], "status": "pending", "poll": "/v1/reviews/" + rec["review_id"]}
+        acc = CS.get_account(principal["account_id"])
+        CHOOKS.send(acc, "review.created", {"id": rec["review_id"], "decision_id": rec["decision_id"],
+                                            "gate_id": (policy or {}).get("gate_id") or req.gate_id,
+                                            "rule_id": kernel.get("rule_id"), "reason": kernel.get("reason"),
+                                            "external_id": req.external_id, "console": CMAIL.console_url() + "#reviews"})
+    if rec["warn"]:
+        acc = acc or CS.get_account(principal["account_id"])
+        CMAIL.quota_warning(acc, rec["warn"], rec["usage"]["decisions"], rec["usage"]["quota"])
+        CHOOKS.send(acc, "quota.warning", {"percent": rec["warn"], **rec["usage"]})
 
 
 class AccessRequest(BaseModel):
@@ -1292,6 +1411,39 @@ def chat_completions(req: ChatCompletionRequest):
             "zero_memory": True
         }
     }
+
+
+# -----------------------------------------------------------------------------
+# Commercial layer
+# -----------------------------------------------------------------------------
+SIGNUP_LIMITER = SlidingWindowLimiter(window_seconds=3600, name="signup")
+
+
+def _limit_form(request: Request) -> None:
+    ok, _, _, retry = SIGNUP_LIMITER.check("ip:" + client_ip(request), "access_form")
+    if not ok:
+        raise CS.CommerceError(429, "too_many_requests", "Too many requests from this address; try again later.")
+
+
+def _require_human(request: Request) -> None:
+    sec = _security(request)
+    if RECAPTCHA_SECRET and sec["recaptcha"] != "verified" and not sec["tenant"]:
+        raise CS.CommerceError(403, "recaptcha_failed", "reCAPTCHA verification failed; reload the page and try again.")
+
+
+def _load_policy(gate_id: Optional[str], inline: Optional[Dict[str, Any]], tenant: str) -> Optional[Dict[str, Any]]:
+    if inline is not None:
+        pol = validate_policy(inline)
+        pol["policy_seal"] = PK.policy_seal(pol)
+        return pol
+    if not gate_id:
+        raise CS.CommerceError(400, "policy_required", "Send gate_id or policy.")
+    return resolve_gate(gate_id, tenant)
+
+
+CROUTER.configure(client_ip=client_ip, limit_form=_limit_form, require_human=_require_human,
+                  load_policy=_load_policy, evaluate=PK.evaluate, drop_tenant_gates=GATE_STORE.drop_tenant)
+app.include_router(CROUTER.router)
 
 
 if __name__ == "__main__":

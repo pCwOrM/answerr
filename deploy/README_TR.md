@@ -59,3 +59,18 @@ Betik:
 | Mühür | tam SHA-256, kanonik JSON |
 | /pro | Karar Gözlemevi tasarımı, canlı Kara Kutu, derleyici, araştırma arşivi; doğrulanamayan iddialar kaldırıldı |
 | Testler | 71 test (çekirdek, Python/JS eşitliği, derleyici, API); CI'da Node ve werr ile |
+
+---
+
+# answerr 1.3.0 — ticari katman (15 Ekim 2026)
+
+Ayrıntı: `docs/commerce/MIMARI.md`, `docs/commerce/OPERASYON.md`, `docs/commerce/YOL_HARITASI.md`.
+
+```bash
+# mechsrv'de, paketin açıldığı klasörde
+sudo bash deploy/deploy_mechsrv_v130.sh             # yedek (+commerce.sqlite kopyası) → aşama testleri → kanarya :8561 → geçiş → smoke (24)
+sudo bash deploy/deploy_mechsrv_v130.sh --rollback  # yalnızca kodu döndürür; müşteri DB'si korunur
+```
+
+- `/etc/answerr/answerr.env` dosyasına bir kez şunlar eklenir: `ANSWERR_ADMIN_KEY`, `ANSWERR_COMMERCE_DB`, `ANSWERR_CONSOLE_URL`, `ANSWERR_PAYMENT_PROVIDER=manual`. Var olan değerlere dokunulmaz.
+- API belgeleri artık `https://api.answerr.me/v1/docs` adresinde, çünkü Apache yalnızca `/v1` yolunu iletiyor.
