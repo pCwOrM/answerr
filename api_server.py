@@ -244,7 +244,9 @@ class GateStore:
         if not self.available:
             return
         try:
-            m = os.stat(self.path).st_mtime_ns
+            st = os.stat(self.path)
+            # inode changes on every atomic replace; mtime alone can repeat within one clock tick
+            m = (st.st_ino, st.st_mtime_ns, st.st_size)
         except FileNotFoundError:
             self.gates, self._mtime = {}, None
             return
@@ -282,7 +284,8 @@ class GateStore:
             json.dump(self.gates, f, ensure_ascii=False, indent=1, sort_keys=True)
         os.chmod(tmp, 0o600)
         os.replace(tmp, self.path)
-        self._mtime = os.stat(self.path).st_mtime_ns
+        st = os.stat(self.path)
+        self._mtime = (st.st_ino, st.st_mtime_ns, st.st_size)
 
     def get(self, gate_id: str) -> Optional[Dict[str, Any]]:
         self._reload()
