@@ -17,6 +17,7 @@ def client(monkeypatch):
     tmp = tempfile.mkdtemp()
     monkeypatch.setenv("ANSWERR_API_KEYS", "acme:{},globex:{}".format(KEY_A, KEY_B))
     monkeypatch.setenv("ANSWERR_GATES_PATH", os.path.join(tmp, "gates.json"))
+    monkeypatch.setenv("ANSWERR_RATELIMIT_DB", os.path.join(tmp, "rl.sqlite"))
     monkeypatch.setenv("ANSWERR_WERR_PATH", os.environ.get("ANSWERR_WERR_PATH", os.path.join(ROOT, "..", "werr")))
     monkeypatch.delenv("RECAPTCHA_SECRET", raising=False)
     sys.path.insert(0, ROOT)
@@ -185,3 +186,16 @@ def test_gate_store_rapid_alternation(client):
         assert b.get("g%d" % i) is not None
         b.delete("g%d" % i, "acme")
         assert a.get("g%d" % i) is None
+
+
+def test_rate_limit_shared_between_workers(client):
+    w1 = client.mod.SlidingWindowLimiter(name="t")
+    w2 = client.mod.SlidingWindowLimiter(name="t")
+    assert w1.shared and w2.shared
+    seen = []
+    for i in range(6):
+        ok, lim, rem, _ = (w1 if i % 2 else w2).check("ip:192.0.2.50", "verified")
+        seen.append(rem)
+    assert seen == [119, 118, 117, 116, 115, 114]   # one bucket across both "workers"
+    ok, _, rem, _ = w1.check("ip:192.0.2.51", "verified")
+    assert rem == 119

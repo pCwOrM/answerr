@@ -117,6 +117,7 @@ systemctl reset-failed answerr-canary 2>/dev/null || true
 systemd-run --unit=answerr-canary --uid="$OWNER" --gid="$OWNER" --working-directory="$STAGE" \
   -p EnvironmentFile="$ENVF" -p Environment=ANSWERR_GATES_PATH=/tmp/answerr_canary_gates.json \
   -p Environment=ANSWERR_ACCESS_LOG=/tmp/answerr_canary_access.jsonl -p Environment=SMTP_PASSWORD= \
+  -p Environment=ANSWERR_RATELIMIT_DB=/tmp/answerr_canary_rl.sqlite \
   -p PrivateTmp=true \
   "$VENV/bin/uvicorn" server:app --host 127.0.0.1 --port "$CANARY_PORT" --workers 1 --no-proxy-headers >/dev/null
 ok=0; for i in $(seq 1 20); do sleep 1; curl -fsS "http://127.0.0.1:$CANARY_PORT/v1/health" 2>/dev/null | grep -q '"api_version":"1.2.0"' && { ok=1; break; }; done
