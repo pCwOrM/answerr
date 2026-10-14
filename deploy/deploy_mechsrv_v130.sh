@@ -144,13 +144,15 @@ fi
 systemctl stop answerr-canary
 log "canary passed"
 
-# ---------------------------------------------------------------- 5. swap
+# ---------------------------------------------------------------- 5. swap (any error from here on restores the backup)
+trap 'log "error during swap"; restore_from "$BK"' ERR
 install -o "$OWNER" -g "$OWNER" -m 0644 "$STAGE/server.py" "$APP/server.py"
 for f in api_server.py policy_kernel.py policy_checks.py policy_compiler.py access_mailer.py; do
   install -o "$OWNER" -g "$OWNER" -m 0644 "$STAGE/$f" "$APP/$f"
 done
 install -d -o "$OWNER" -g "$OWNER" "$APP/commerce"
-for f in "$STAGE"/commerce/*; do install -o "$OWNER" -g "$OWNER" -m 0644 "$f" "$APP/commerce/"; done
+for f in "$STAGE"/commerce/*.py "$STAGE"/commerce/*.json; do install -o "$OWNER" -g "$OWNER" -m 0644 "$f" "$APP/commerce/"; done
+[ -f "$APP/commerce/router.py" ] && [ -f "$APP/commerce/store.py" ] || { restore_from "$BK"; die "commerce package incomplete after install; rolled back"; }
 install -d -o "$OWNER" -g "$OWNER" "$APP/policies"
 install -o "$OWNER" -g "$OWNER" -m 0644 "$STAGE/policies/builtin_gates.json" "$APP/policies/builtin_gates.json"
 find "$APP/__pycache__" -name '*.pyc' -delete 2>/dev/null || true
