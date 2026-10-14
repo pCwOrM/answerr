@@ -195,7 +195,7 @@ hüküm + kural + iz + politika mührü</div>
         <div class="grid-4">
           <div class="metric"><b id="mLat">—</b><span data-i18n="m1">Bu oturumda ölçülen API yanıtı (ortanca, ağ dahil)</span><small id="mLatN" data-i18n="m1n">Kara Kutu'yu çalıştırın</small></div>
           <div class="metric"><b>0</b><span data-i18n="m2">Karar anında çalışan model ağırlığı (bayt)</span><small data-i18n="m2n">kaynak kodda doğrulanabilir</small></div>
-          <div class="metric"><b id="mTests">68</b><span data-i18n="m3">Çekirdek, eşitlik ve API testi (CI)</span><small data-i18n="m3n">Python ve JS aynı vektörlerle</small></div>
+          <div class="metric"><b id="mTests">69</b><span data-i18n="m3">Çekirdek, eşitlik ve API testi (CI)</span><small data-i18n="m3n">Python ve JS aynı vektörlerle</small></div>
           <div class="metric pending"><b data-i18n="m4b">Henüz yok</b><span data-i18n="m4">Gölge mod pilotu: yakalanan / kaçan</span><small data-i18n="m4n">tasarım ortağı pilotundan sonra yayımlanacak</small></div>
         </div>
       </div>
@@ -224,7 +224,9 @@ hüküm + kural + iz + politika mührü</div>
             <label for="eposta" data-i18n="erMail">İş e-postası</label>
             <input id="eposta" type="email" required autocomplete="email" placeholder="ad@sirket.com" data-i18n-placeholder="erPh">
           </div>
+          <div class="sr-only" aria-hidden="true"><label for="erWeb">Website</label><input id="erWeb" type="text" tabindex="-1" autocomplete="off"></div>
           <button type="submit" class="btn-primary" data-i18n="erBtn">Koltuk iste</button>
+          <p class="small-mono" id="erStatus" role="status" aria-live="polite" style="flex-basis:100%; margin:0"></p>
         </form>
       </div>
     </section>

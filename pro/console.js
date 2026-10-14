@@ -177,11 +177,25 @@
     sel.addEventListener('change', () => { current.gate = sel.value; current.scenario = SCENARIOS[sel.value][0].id; loadScenario(); run(); });
     document.getElementById('runBtn').addEventListener('click', run);
     const form = document.getElementById('accessForm');
-    if (form) form.addEventListener('submit', (e) => {
+    if (form) form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const mail = document.getElementById('eposta').value.trim();
+      const status = document.getElementById('erStatus');
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      status.textContent = A().t('erSending');
+      const res = await A().api('/v1/access-request', {
+        email: mail, lang: A().lang(), source: 'answerr.me/pro',
+        website: (document.getElementById('erWeb') || {}).value || ''
+      }, 'access');
+      btn.disabled = false;
+      if (res.ok) { status.textContent = A().t('erOk'); form.reset(); return; }
+      if (res.status === 400) { status.textContent = A().t('erBad'); return; }
+      if (res.status === 429) { status.textContent = A().t('kk429'); return; }
+      // API unavailable or older than 1.2.0: hand over to the visitor's mail client
       const subject = encodeURIComponent('answerr Pro — tasarım ortaklığı / design partner');
       const bodyTxt = encodeURIComponent((A().lang() === 'en' ? 'Work e-mail: ' : 'İş e-postası: ') + mail);
+      status.textContent = A().t('erFallback');
       window.location.href = `mailto:ask@answerr.me?subject=${subject}&body=${bodyTxt}`;
     });
     window.addEventListener('proLanguageChanged', () => { renderScenarios(); render(); renderMetrics(); });
