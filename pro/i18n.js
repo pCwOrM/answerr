@@ -1,460 +1,171 @@
-/**
- * answerr.me/pro — WERR-24B™ Cybernetic Sovereign i18n Engine
- * Complete Bilingual (Turkish & English) Translation Dictionary & Controller
- * Official Corporate Architecture by ITouch Bilişim Sistemleri Ltd. Şti.
- */
-
+/* answerr.me/pro — TR / EN dictionary and switcher */
 (function () {
-  const I18N_DICT = {
+  'use strict';
+  const D = {
     tr: {
-      // Top Ribbon
-      ribbonCorp: "Resmi Kurumsal Ürün: <a href=\"https://itouch.com.tr\" target=\"_blank\" rel=\"noopener\" class=\"corp-link\">ITouch Bilişim Sistemleri Ltd. Şti.</a> (Çukurova Teknokent)",
-      ribbonVault: "Kasa: <strong style=\"color:var(--emerald-bright)\">WERR-24B™ EGEMEN ÇEKİRDEK</strong>",
-      ribbonApi: "API: <strong style=\"color:var(--cyan-bright)\">api.answerr.me (:443)</strong>",
-      ribbonStatus: "DURUM: AKTİF • SIFIR VRAM",
-
-      // Nav
-      brandTag: "WERR-24B™ KASA",
-      navProduct: "Ürün & Canlı Kasa",
-      navStudio: "Politika Stüdyosu",
-      navResearch: "arXiv, HuggingFace & Patentler",
-      navApi: "REST API (/docs)",
-      navClassic: "Klasik Konsol",
-      btnSealPolicy: "Politika Mühürle →",
-      btnCorpContact: "ITouch Bilişim",
-
-      // Hero
-      heroEyebrow: "🔒 PATENTLİ WERR-24B™ ÇEKİRDEĞİ • SİSTEM-2 DERLER, SİSTEM-1 MİKROSANİYEDE İNFAZ EDER",
-      heroTitle: "Milyarlarca Parametre Değil.<br /><span class=\"grad\">24 Baytlık Mühürlü Kesinlik.</span>",
-      heroLead: "Kurumsal kurallarınızı doğal dilde yazın; <strong>answerr</strong> bunları <strong>ITouch Bilişim</strong>'in patentli <strong>WERR-24B™ Sınır Rezonansı</strong> ile yalnızca <strong>24 Baytlık şifreli bir karara</strong> kristalleştirsin. GPU yok, ağırlık dosyası yok, çalışma anında halüsinasyon yok — her ortamda <strong>&lt; 0.5 ms</strong> içinde kriptografik denetim iziyle kesin karar.",
-      heroBtnStudio: "✨ Doğal Dilden 24B Politika Mühürle",
-      heroBtnSandbox: "🛡️ Canlı Kasa Testi (Sandbox)",
-      heroBtnResearch: "📄 5 arXiv Makalesi & HuggingFace",
-
-      // Metrics
-      metric1Val: "< 0.5 ms",
-      metric1Label: "Omurilik Refleksi Gecikmesi (Çalışma Anında LLM Yok)",
-      metric2Val: "0-Byte VRAM",
-      metric2Label: "GPU & Tensör Ağırlığı Yok • 24-Bayt Mühürlü Tohum",
-      metric3Val: "SHA-256 Seal",
-      metric3Label: "Değiştirilemez Kriptografik Politika Mührü & Denetim İzi",
-      metric4Val: "ABSTAIN_REVIEW",
-      metric4Label: "Tanınmayan Şema (OOD) Kalkanı — Sıfır Kör Tahmin",
-
-      // Vault Secret Formula Callout
-      vaultCalloutTitle: "🧪 \"Sihri Göster, Formülü Kasada Mühürle\" — WERR-24B™ Kara Kutu Güvencesi",
-      vaultCalloutDesc: "Tıpkı gizli bir endüstriyel formül gibi, <strong>WERR-24B™</strong> çekirdeğinin içsel sınır matematiği ve çok ölçekli rezonans katsayıları <strong>ITouch Bilişim</strong> kasasında (TR 2026/016285 & TR 2026/016633) korunur. Sisteminize yalnızca <strong>mikrosaniyelik deterministik karar</strong>, <strong>SHA-256 denetim mührü</strong> ve <strong>OOD güvenlik kalkanı</strong> döner.",
-      vaultStampStatus: "FORMÜL DURUMU",
-      vaultStampLocked: "🔒 KASADA MÜHÜRLÜ 24B",
-      vaultStampPatent: "TÜRKPATENT KORUMALI",
-
-      // Sandbox
-      sandboxTag: "CANLI KURUMSAL KARAR KASASI (INTERACTIVE SANDBOX)",
-      sandboxTitle: "Milisaniye Altı Refleksi ve OOD Kalkanını Canlı Deneyin",
-      sandboxDesc: "Aşağıdaki 4 kurumsal kapıdan birini seçin veya JSON verisini değiştirin. Kasa, içsel formülü ifşa etmeden kriptografik karar mührünü ve sorumluluk kalkanını (ABSTAIN_REVIEW) canlı üretir.",
-      step1Title: "1. Kurumsal Koruma Kapısı Seçin",
-      step2Title: "2. Operasyonel Sinyal Paketi (JSON)",
-      btnQueryVault: "⚡ Kasaya Sor",
-      securityPill: "🛡️ reCAPTCHA v3 & Rate Shield",
-      trSecurityKey: "Güvenlik & Bot Kalkanı:",
-      trSecurityVal: "🛡️ Google reCAPTCHA v3 • 120 req/dk Sliding Rate-Gate",
-      step3Title: "3. Mühürlü Karar & Kurumsal Denetim Özeti",
-      oscTitle: "TRIPOD REZONANS DALGA HUD (0.60x • 1.00x • 1.60x)",
-      oscLive: "CANLI REZONANS AKTİF",
-      publicEnvelopeTitle: "Mühürlü Denetim Çıktısı (Public Audit Envelope):",
-
-      // Gate Tabs
-      tabAgentBlockTitle: "🛡️ AI Ajan / MCP Korkuluğu (Blok)",
-      tabAgentBlockSub: "Yıkıcı SQL & Yüksek Tutar",
-      tabAgentSafeTitle: "✅ AI Ajan / MCP Korkuluğu (Onay)",
-      tabAgentSafeSub: "Salt-Okunur Güvenli Araç",
-      tabFintechTitle: "💳 TR Fintech & Fraud Kapısı",
-      tabFintechSub: "Kart Hızı & Anomali (KVKK)",
-      tabOodTitle: "⚠️ Şema Dışı (OOD) Kalkanı",
-      tabOodSub: "Tanınmayan Veri → ABSTAIN_REVIEW",
-
-      // Trace Labels
-      trPolicyKey: "Aktif Politika Kapısı:",
-      trSealKey: "Kriptografik Mühür:",
-      trRulesKey: "Karar Gerekçesi:",
-      trFieldsKey: "Şema Doğrulaması:",
-      trSeedKey: "24-Bayt Çekirdek:",
-
-      // Pricing Section
-      pricingTag: "KURUMSAL LİSANSLAMA — ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ.",
-      pricingTitle: "Geliştirici Çekirdeğinden Egemen Kurumsal Kasaya",
-      pricingDesc: "<strong>answerr.me</strong>, Çukurova Teknokent bünyesindeki <strong>ITouch Bilişim Sistemleri Mühendislik Danışmanlık San. ve Tic. Ltd. Şti.</strong> tarafından geliştirilmekte ve BSL 1.1 ticari lisansıyla sunulmaktadır.",
-      tier1Badge: "DEVELOPER RUNTIME",
-      tier1Title: "werr Open SDK",
-      tier1Price: "Ücretsiz",
-      tier1Sub: "Akademik araştırma, değerlendirme ve hızlı prototipleme",
-      tier1F1: "<code>pip install werr</code> & Tarayıcı SDK",
-      tier1F2: "<code>noul</code>, <code>choice</code>, <code>score</code> karar tipleri",
-      tier1F3: "0-Byte VRAM yerel refleks çalışma zamanı",
-      tier1F4: "OOD <code>ABSTAIN_REVIEW</code> şema koruması",
-      tier1Btn: "pip install werr",
-
-      tier2Badge: "KURUMSAL BULUT KAPISI",
-      tier2Title: "answerr Pro & Agent Gate",
-      tier2Price: "$149 <span style=\"font-size:14px; font-weight:500; color:var(--text-muted)\">/ ay</span>",
-      tier2Sub: "Fintech, E-Ticaret, SaaS ve AI Ajan (MCP) ekipleri",
-      tier2F1: "<strong>Doğal Dilden 24B Politika Stüdyosu</strong>",
-      tier2F2: "Özel Mühürlü Kapılar (<code>/v1/gates/{id}/decide</code>)",
-      tier2F3: "SHA-256 Kriptografik Denetim İzi",
-      tier2F4: "AI Ajan MCP & TR E-Ticaret Fraud Kalkanları",
-      tier2F5: "Aylık 5 Milyon Milisaniye Altı Karar",
-      tier2Btn: "Politika Stüdyosunda Başla →",
-
-      tier3Badge: "ON-PREMISE & SOVEREIGN",
-      tier3Title: "answerr Sovereign Vault",
-      tier3Price: "Kurumsal Lisans",
-      tier3Sub: "Bankacılık, Savunma, Siber Güvenlik ve Kritik Altyapılar",
-      tier3F1: "<strong>ITouch Bilişim BSL 1.1 Ticari Üretim Lisansı</strong>",
-      tier3F2: "On-Premise / Air-Gapped Kapalı Devre Kasa",
-      tier3F3: "Gölge Mod (Shadow Mode) & Champion/Challenger",
-      tier3F4: "Donanım / Edge & WerrSoma Nöromorfik Refleks",
-      tier3F5: "99.99% Kurumsal SLA & 7/24 Mühendislik Desteği",
-      tier3Btn: "info@itouch.com.tr ile İletişime Geçin",
-
-      // Footer
-      footerCorp: "<strong>answerr.me</strong> — Resmi Ticari Sağlayıcı: <a href=\"https://itouch.com.tr\" target=\"_blank\" rel=\"noopener\" class=\"corp-link\">ITouch Bilişim Sistemleri Mühendislik Danışmanlık San. ve Tic. Ltd. Şti.</a>",
-      footerLegal: "Çukurova Teknokent (Adana) • MERSİS: <code>0469094455800001</code> • Patentler: <code>TR 2026/016285</code> & <code>TR 2026/016633</code>",
-
-      // Studio Page
-      studioTitle: "Doğal Dilden WERR-24B™ Mühürlü Karar Kapısına",
-      studioDesc: "Kurallarınızı Türkçe veya İngilizce yazın. <strong>Sistem-2 Derleyici</strong>, içsel matematiksel formülü kasada gizli tutarak politikanızı <strong>24 Baytlık bir tohuma</strong> ve <strong>SHA-256 Kriptografik Mührüne</strong> dönüştürür.",
-      studioStep1: "1. Doğal Dil Politika Tanımı",
-      studioTemplatesLabel: "Hazır Kurumsal Şablonlar (Tıklayın):",
-      tplMcp: "🛡️ AI Ajan MCP Korkuluğu",
-      tplFintech: "💳 TR E-Ticaret & Kart Hızı",
-      tplWaf: "🌐 Zero-Trust API Güvenliği",
-      lblGateId: "Politika Kapı Kimliği (gate_id)",
-      lblDomain: "Koruma Alanı (Manifold)",
-      lblPrompt: "Doğal Dil Politika Metni (Türkçe veya İngilizce)",
-      btnCompile: "✨ WERR-24B™ Kasasında Derle & SHA-256 Mührü Üret",
-      lblCertBox: "Mühürlenen 24-Bayt Kasa Sertifikası (Sovereign Policy Certificate)",
-      certEndpointLbl: "Kapı uç noktası:",
-      certSealLbl: "SHA-256 Politika Mührü:",
-      certFormulaLbl: "Çekirdek Formülü:",
-      certRulesLbl: "Derlenen Kesin Kurallar:",
-      studioStep2: "2. Mühürlü Kapıyı Test Et & Entegre Et",
-      lblTestInput: "Canlı Test Girdisi (JSON State)",
-      btnTestGate: "⚡ Mühürlü Kapıya Sor (System-1 < 0.5 ms)",
-      lblTestResult: "Canlı Karar ve Mühürlü Denetim Zarfı",
-      lblSdkSnippet: "Üretim Entegrasyon Kodu (Python & cURL)",
-      btnCopy: "📋 Kopyala",
-      btnCopied: "✅ Kopyalandı!",
-
-      // Research Page
-      researchTag: "AÇIK BİLİM KANITLARI & KAPALI KASA TİCARİ SIRRI",
-      researchTitle: "arXiv Makaleleri, Hugging Face Veri Setleri ve TÜRKPATENT Başvuruları",
-      researchDesc: "<strong>answerr</strong>, dünyada hem <strong>arXiv</strong> ve <strong>Hugging Face</strong> üzerinde bağımsız kıyaslamalarla doğrulanmış matematiksel temellere sahip olan, hem de üretimdeki <strong>WERR-24B™ Kalibrasyon Formülünü</strong> ticari sır ve patent koruması altında tutan çift katmanlı bir derin teknoloji (Deep-Tech) ürünüdür.",
-      secArxivTitle: "1. Resmi arXiv Yayınlarımız & Hugging Face Makale/Veri Seti Kayıtları",
-      secBenchTitle: "2. Bağımsız Uluslararası Kıyaslamalar (Benchmarks)",
-      secMatrixTitle: "3. Kurumsal Mimari Katmanları",
-      btnReadArxiv: "arXiv'de Oku →",
-      btnHfDataset: "HuggingFace Veri Seti →",
-      btnHfPaper: "HuggingFace Sayfası →",
-      btnViewGh: "GitHub Kaydını Gör →",
-      btnInspectDataset: "Veri Setini İncele →",
-      btnCorpContactLink: "ITouch Bilişim Kurumsal →",
-      p1Title: "Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains",
-      p1Desc: "Sıfır GPU belleği (0-Byte VRAM) ile doğal dil karar uzaylarını milisaniye altında sınıflandıran çekirdek WERR mimarisi ve açık karar veri seti.",
-      p2Title: "Zero-Storage Procedural Neural Synthesis via Boundary Dynamics: Formal Verification in Lean 4",
-      p2Desc: "Tensör ağırlıkları depolamak yerine çalışma zamanında 24-Bayt tohumdan deterministik sınır sentezi ve Lean 4 (0 sorry) biçimsel doğrulaması.",
-      p3Title: "Orbital Error Dynamics (OED): Self-Organized Criticality & Ephemeral Parameter Resonance",
-      p3Desc: "Çok ölçekli yörünge hata dinamikleri ve sınır rezonansı ile aşırı öğrenme (overfitting) olmadan deterministik karar ayrımı.",
-      p4Title: "Werracle: Sub-Cent Intra-Block AI Reflex Oracles & Flash-Loan Circuit Breakers for EVM",
-      p4Desc: "Akıllı sözleşmeler ve otonom finansal ajanlar için blok içi milisaniye altı güvenlik kesicisi ve tek slot (32-Bayt) karar kahini.",
-      p5Title: "Machine-Checked Computational Group Theory in Lean 4 (35 Formal Theorems, 0 sorry)",
-      p5Desc: "Schreier-Sims sabitleyici zincirleri, BSGS eleme ve ayrık cebirsel değişmezlerin Lean 4 ile makine tarafından doğrulanmış kanıtları.",
-      patentCardTitle: "Endüstriyel Patent Koruması & ITouch Bilişim Ticari Sır Kasası",
-      patentCardDesc: "Teorik çerçeve akademik şeffaflıkla paylaşılırken; üretimdeki <strong>WERR-24B™</strong> kalibrasyon katsayıları ve derleyici dönüşüm matrisleri <strong>ITouch Bilişim Sistemleri Ltd. Şti.</strong> ticari sırrı ve patent başvuruları kapsamında korunmaktadır.",
-      b1Title: "%100 Doğruluk (49 / 49)",
-      b1Desc: "Otonom WebMCP ajan yönlendirme ve araç seçimi kıyaslamasında 0-Byte VRAM ile 49 senaryonun tamamında kusursuz isabet.",
-      b2Title: "53.0× Daha Hızlı (1,389 karar/sn)",
-      b2Desc: "8 GB GPU VRAM tüketen Diffusion-Gemma (761.8 ms) karşısında 0-Byte VRAM ile kare başına 14.37 ms gecikme ve %0 yanlış pozitif.",
-      b3Title: "Tekrarlanabilir Karar Veri Seti",
-      b3Desc: "Deterministik karar izleri (noul, choice, score) ve çoklu etki alanı doğrulama paketleri Hugging Face üzerinde açık erişimde.",
-      thLayer: "Katman / Modül",
-      thFunc: "Fonksiyonu",
-      thStatus: "Erişim / Koruma Statüsü",
-      row1Desc: "Doğal dilden 24-Bayt mühürlü politikaya derleme ve REST karar kapıları (api.answerr.me)",
-      row1Status: "ITouch Bilişim Ticari Ürün",
-      row2Desc: "Sıfır bellekli sınır rezonansı ve çok ölçekli Tripod karar çekirdeği",
-      row2Status: "Patent & Ticari Sır Korumalı",
-      row3Desc: "Şema dışı (OOD) bilinmeyen girdilerde yanlış özgüveni sıfırlayan kurumsal sorumluluk kalkanı",
-      row3Status: "Üretim Standart Kalkanı",
-      row4Desc: "158K nöronlu konnektom refleksi (werrsoma.answerr.me) ve EVM blok içi kahini (arXiv:2609.30719)",
-      row4Status: "İleri Ar-Ge & Dikey Çözümler"
+      hudRight: 'ÇALIŞMA ANINDA MODEL YOK · HER KARARIN İZİ VAR',
+      hudOnline: 'API ÇEVRİMİÇİ', hudOffline: 'API’YE ULAŞILAMADI · TARAYICIDAKİ ÇEKİRDEK KULLANILIYOR', hudKernel: 'çekirdek',
+      navHow: 'Nasıl çalışır', navConsole: 'Kara Kutu', navStudio: 'Derleyici', navResearch: 'Araştırma', navApi: 'API belgeleri', navAccess: 'Erken erişim',
+      heroEyebrow: '◇ Olay ufku protokolü · karar kapısı',
+      heroTitle: 'Ajanınız harekete geçmeden önce, son söz <em>deterministik</em>.',
+      heroLead: 'Kurallarınızı Türkçe ya da İngilizce yazın. answerr onları açık, sürümlenmiş kurallara derler; aynı girdiye her seferinde aynı kararı verir ve nedenini kaydeder. Tanımadığı bir durumda tahmin etmez, insana devreder.',
+      heroCta1: 'Kara Kutuyu aç', heroCta2: 'Bir politika derle',
+      triadTitle: 'Üç hüküm, üçüncü yok', vAllow: 'GEÇ', vReview: 'İNSANA DEVRET', vDeny: 'DUR',
+      triadAllow: 'Kural açık, sinyaller tanıdık.', triadReview: 'Bilinmeyen alan, eksik bilgi ya da eşik.', triadDeny: 'Kural tetiklendi; gerekçe kayıtta.',
+      t1t: 'Aynı girdi, aynı karar', t1d: 'Sunucu, tarayıcı ve Node aynı çekirdeği çalıştırır; testlerle eşitliği denetlenir.',
+      t2t: 'Çalışma anında model yok', t2d: 'Dil yalnız politikayı yazarken taslağa çevrilir.',
+      t3t: 'Bilinmeyen → insana', t3d: 'Tanınmayan tek bir alan bile kararı incelemeye gönderir.',
+      t4t: 'Her kararın izi', t4d: 'Kural, aday hükümler, alan katkıları ve politika mührü (SHA-256).',
+      kkEyebrow: 'Kara kutu · canlı', kkTitle: 'Bir durum gönderin, hükmü ve gerekçesini görün.',
+      kkLead: 'Kararlar api.answerr.me üzerindeki yerleşik kapılardan gelir. API’ye ulaşılamazsa aynı çekirdek tarayıcıda çalışır ve bu açıkça belirtilir.',
+      kkIn: '01 · Kapı ve senaryo', kkGate: 'Kapı', kkState: 'Durum vektörü (düzenlenebilir JSON)', kkRun: 'Kapıya sor',
+      kkOut: '02 · Hüküm', kkConf: 'GÜVEN', kkRule: 'KURAL', kkLat: 'GECİKME',
+      kkTrace: '03 · Uçuş kaydı', kkCand: 'Aday hükümler (en ağır olan kazanır)', kkContrib: 'Alan katkıları (risk puanı)',
+      kkRisk: 'toplam risk puanı', kkUnk: 'TANINMAYAN ALANLAR ·', kkNone: 'yok', kkMissing: 'EKSİK ZORUNLU ALANLAR ·',
+      kkPolicy: 'politika', kkSeal: 'mühür',
+      kkSrcApi: 'kaynak: api.answerr.me (ağ dahil gidiş-dönüş)', kkSrvMs: 'sunucu içi', kkSrcLocal: 'kaynak: tarayıcıdaki çekirdek (API kullanılamadı ya da eski sürüm)',
+      kkBadJson: 'Durum geçerli bir JSON nesnesi olmalı.', kk429: 'İstek sınırı doldu; birkaç saniye sonra yeniden deneyin.', kkNoApi: 'API’ye ulaşılamadı ve yerel çekirdek yüklenemedi.',
+      evTitle: 'Üç evre. Sistem-2 yazar, Sistem-1 infaz eder.', evLead: 'Düşünme işi politikayı yazarken bir kez yapılır. Karar anında yalnızca derlenmiş, onaylanmış kurallar çalışır.',
+      ev1k: 'EVRE 01', ev1s: 'YAZ', ev1t: 'Kuralı kendi dilinizde yazın', ev1c: '“Ajan silme ya da para transferi aracı çağırırsa reddet. 5.000 doları aşan işlemi insana gönder.”',
+      ev2k: 'EVRE 02', ev2s: 'DERLE', ev2t: 'Her cümle bir kurala bağlanır', ev2c: 'testler ve denetimler çalıştırılır; belirsizlikler soru olarak döner',
+      ev3k: 'EVRE 03', ev3s: 'İNFAZ', ev3t: 'Her yerde aynı hüküm', ev3c: 'REST API · tarayıcı · Node · Python\nhüküm + kural + iz + politika mührü',
+      olTitle: 'Ölçüm, iddia değil.', olLead: 'Bu sayfadaki rakamlar ya şu an tarayıcınızda ölçülür ya da henüz yoktur ve öyle yazılır.',
+      m1: 'Bu oturumda ölçülen API yanıtı (ortanca, ağ dahil)', m1n: 'Kara Kutu’yu çalıştırın',
+      m2: 'Karar anında çalışan model ağırlığı (bayt)', m2n: 'kaynak kodda doğrulanabilir',
+      m3: 'Çekirdek, eşitlik, derleyici ve API testi (CI)', m3n: 'Python ve JS aynı vektörlerle',
+      m4b: 'Henüz yok', m4: 'Gölge mod pilotu: yakalanan / kaçan', m4n: 'tasarım ortağı pilotundan sonra yayımlanacak',
+      yoTitle: 'Üç yörünge', yo1k: 'Ana yörünge', yo1t: 'AI ajan aksiyon kapısı',
+      yo1d: 'Ajan bir aracı çalıştırmadan önce sorar. Silme ve yetki araçları durur, yazma ve para hareketleri insana gider, okuma geçer.',
+      yo2k: 'Yörünge 2', yo2t: 'Ödeme ve sipariş riski', yo2d: 'Türkçe kurallar, mevcut kurallarınızın yanında gölge modda deneme, KVKK’ya uygun barındırma seçeneği.',
+      yo3k: 'Yörünge 3', yo3t: 'API kötüye kullanım', yo3d: 'Hata, hız ve kimlik sinyallerinden gerekçeli erişim kararı.',
+      erK: 'Tasarım ortaklığı · 5 koltuk', erTitle: 'Mevcut kurallarınızın yanında, gölge modda başlayalım.',
+      erLead: 'Pilot ücretsizdir. Fiyatlandırma pilot sonuçlarıyla birlikte açıklanacak.', erMail: 'İş e-postası', erPh: 'ad@sirket.com', erBtn: 'Koltuk iste',
+      fApi: 'API belgeleri', fResearch: 'Araştırma arşivi', fClassic: 'Klasik konsol',
+      fRecaptcha: 'Bu site reCAPTCHA ile korunur; Google <a href="https://policies.google.com/privacy">Gizlilik Politikası</a> ve <a href="https://policies.google.com/terms">Hizmet Şartları</a> geçerlidir.',
+      stHud: 'TASLAK HİÇBİR ZAMAN OTOMATİK KAYDEDİLMEZ', stEyebrow: 'Derleyici · doğal dilden kurala', stTitle: 'Cümleden kurala. Kurala insan imzası.',
+      stLead: 'Her kural hangi cümleden geldiğini gösterir. Derleyicinin tahmin etmek zorunda kaldığı her yer size soru olarak döner. Taslak kaydedilmez; kaydetmek için API anahtarı gerekir.',
+      st1: '01 · Politika metni', tplAgent: 'AI ajan kapısı', tplPay: 'Ödeme riski', tplApi: 'API kötüye kullanım',
+      stGate: 'Kapı kimliği', stNl: 'Politika (Türkçe ya da İngilizce)', stSample: 'Örnek durum (JSON) — alan adları buradan seçilir', stCompile: 'Derle ve sına',
+      st2: '02 · Derlenen kurallar', stEmpty: 'Henüz derlenmedi.', st3: '03 · Testler, denetimler, mühür',
+      stTry: 'Örnek durumla dene', stDl: 'Taslağı indir (JSON)', stCp: 'Kayıt komutunu kopyala',
+      stWorking: 'Derleniyor…', stDone: 'Derlendi', stOldApi: 'Sunucudaki API henüz derleyicinin yeni sürümünü çalıştırmıyor (1.2.0 gerekli).', stNoApi: 'Derleyici API’sine ulaşılamadı.',
+      stNoRules: 'Hiçbir cümle kurala dönüşmedi.', stAsks: 'DERLEYİCİ SORUYOR', stNoQ: 'Açık soru yok.',
+      thInput: 'GİRDİ', thExpect: 'BEKLENEN', thGot: 'ÇIKAN', stChecks: 'Çalıştırılan denetimler', stTestsOk: 'test geçti',
+      stStatus: 'durum:', stReady: 'incelemeye hazır', stNeeds: 'yanıt bekleyen sorular var',
+      stNeedSample: 'Önce bir örnek durum girin.', stTryOut: 'ÖRNEK DURUMUN HÜKMÜ ·', stCopied: 'Kayıt komutu panoya kopyalandı (API anahtarı gerekir).',
+      rsHud: 'ARAŞTIRMA ARŞİVİ · ÜRÜN KARARLARINDAN AYRI', rsEyebrow: 'Araştırma arşivi', rsTitle: 'werr araştırma motoru: makaleler, veri, kıyaslamalar',
+      rsLead: 'Bu çalışmalar Mandelbrot sınırı üzerine kurulu werr araştırma motoruna aittir. answerr Pro’daki kapı kararları ise açık kurallardan oluşan politika çekirdeğinden gelir; ikisi ayrı tutulur.',
+      rsPapers: 'Ön baskılar', rsP1: 'Heterojen alanlarda gerçek zamanlı karar sınıflandırması.',
+      rsP2: 'Mandelbrot sınırına yakın bir koordinat tohumundan karar sınırı üretimi; özelliklerin Lean 4 ile biçimselleştirilmesi ve CPU sunucuda ölçümler.',
+      rsP3: 'Sabit noktalı aritmetikle zincir üstü karar kâhini; Uniswap v4 ücret ayarı örneği.',
+      rsP4: 'GAP permütasyon grubu algoritmalarının (Schreier-Sims, BSGS, bölüntü inceltme) Lean 4 ile doğrulanması.',
+      rsP5: 'Ağ ağırlıklarının saklanmak yerine karmaşık ikinci derece dönüşümden üretilmesi; Two-Moons’ta %77,7 (gradyanla eğitilen temel model %85,7).',
+      rsData: 'Veri ve kıyaslamalar', rsD1: '1.205 karar kaydı ve 3.200’den fazla değerlendirme sorusu (JSONL).', rsOpen: 'Veri setini aç',
+      rsD2: 'Topluluk kıyaslamasına gönderilen sonuç kaydı.', rsOpen2: 'Kaydı aç', rsD3t: 'Karşılaştırmalı çalıştırma', rsD3: 'Bağımsız depoda açılan karşılaştırma kaydı.',
+      rsNote: 'Ön baskılar hakem değerlendirmesinden geçmemiş olabilir. Topluluk kıyaslamalarındaki kayıtlar gönderim kaydıdır, bağımsız doğrulama değildir.'
     },
-
     en: {
-      // Top Ribbon
-      ribbonCorp: "Official Corporate Product: <a href=\"https://itouch.com.tr\" target=\"_blank\" rel=\"noopener\" class=\"corp-link\">ITouch Information Systems Ltd.</a> (Cukurova Technopark)",
-      ribbonVault: "Vault: <strong style=\"color:var(--emerald-bright)\">WERR-24B™ SOVEREIGN CORE</strong>",
-      ribbonApi: "API: <strong style=\"color:var(--cyan-bright)\">api.answerr.me (:443)</strong>",
-      ribbonStatus: "STATUS: ACTIVE • ZERO VRAM",
-
-      // Nav
-      brandTag: "WERR-24B™ VAULT",
-      navProduct: "Product & Live Vault",
-      navStudio: "Policy Studio",
-      navResearch: "arXiv, HuggingFace & Patents",
-      navApi: "REST API (/docs)",
-      navClassic: "Classic Console",
-      btnSealPolicy: "Seal Policy →",
-      btnCorpContact: "ITouch Systems",
-
-      // Hero
-      heroEyebrow: "🔒 PATENTED WERR-24B™ CORE • SYSTEM-2 DELIBERATES, SYSTEM-1 EXECUTES IN MICROSECONDS",
-      heroTitle: "Not Billions of Parameters.<br /><span class=\"grad\">24 Bytes of Sealed Certainty.</span>",
-      heroLead: "Write your enterprise policies in natural language; <strong>answerr</strong> crystallizes them via <strong>ITouch Systems</strong>' patented <strong>WERR-24B™ Boundary Resonance</strong> into a <strong>24-Byte encrypted decision seed</strong>. Zero GPU, zero weights file, zero runtime hallucination — deterministic decisions with cryptographic audit trace in <strong>&lt; 0.5 ms</strong>.",
-      heroBtnStudio: "✨ Seal 24B Policy from Natural Language",
-      heroBtnSandbox: "🛡️ Live Vault Sandbox",
-      heroBtnResearch: "📄 5 arXiv Papers & HuggingFace",
-
-      // Metrics
-      metric1Val: "< 0.5 ms",
-      metric1Label: "Spinal Reflex Latency (Zero Runtime LLM)",
-      metric2Val: "0-Byte VRAM",
-      metric2Label: "Zero GPU & Tensor Weights • 24-Byte Sealed Seed",
-      metric3Val: "SHA-256 Seal",
-      metric3Label: "Immutable Cryptographic Policy Seal & Audit Trace",
-      metric4Val: "ABSTAIN_REVIEW",
-      metric4Label: "Out-of-Domain (OOD) Shield — Zero Blind Guessing",
-
-      // Vault Secret Formula Callout
-      vaultCalloutTitle: "🧪 \"Show the Magic, Seal the Formula in the Vault\" — WERR-24B™ Black Box Guarantee",
-      vaultCalloutDesc: "Just like a secret industrial formula, the internal boundary mathematics and multi-scale resonance constants of the <strong>WERR-24B™</strong> core are protected in the <strong>ITouch Systems</strong> vault (Patents Pending TR 2026/016285 & TR 2026/016633). Your operational pipelines receive only <strong>sub-millisecond deterministic verdicts</strong>, <strong>SHA-256 audit seals</strong>, and <strong>OOD safety shields</strong>.",
-      vaultStampStatus: "FORMULA STATUS",
-      vaultStampLocked: "🔒 VAULT-SEALED 24B",
-      vaultStampPatent: "PATENT PROTECTED",
-
-      // Sandbox
-      sandboxTag: "LIVE ENTERPRISE DECISION VAULT (INTERACTIVE SANDBOX)",
-      sandboxTitle: "Experience Sub-Millisecond Reflex & OOD Shield Live",
-      sandboxDesc: "Select one of the 4 enterprise gates below or modify the JSON payload. The vault outputs cryptographic seals and liability shields (ABSTAIN_REVIEW) live without exposing internal formula secrets.",
-      step1Title: "1. Select Sovereign Gate",
-      step2Title: "2. Operational Telemetry Signal (JSON)",
-      btnQueryVault: "⚡ Query Vault",
-      securityPill: "🛡️ reCAPTCHA v3 & Rate Shield",
-      trSecurityKey: "Security & Bot Shield:",
-      trSecurityVal: "🛡️ Google reCAPTCHA v3 • 120 req/min Sliding Rate-Gate",
-      step3Title: "3. Sealed Verdict & Public Audit Envelope",
-      oscTitle: "TRIPOD RESONANCE OSCILLOSCOPE HUD (0.60x • 1.00x • 1.60x)",
-      oscLive: "LIVE RESONANCE ENGAGED",
-      publicEnvelopeTitle: "Sealed Audit Output (Public Audit Envelope):",
-
-      // Gate Tabs
-      tabAgentBlockTitle: "🛡️ AI Agent / MCP Guardrail (Block)",
-      tabAgentBlockSub: "Destructive SQL & High Amount",
-      tabAgentSafeTitle: "✅ AI Agent / MCP Guardrail (Allow)",
-      tabAgentSafeSub: "Read-Only Safe Action",
-      tabFintechTitle: "💳 Fintech & Payment Fraud Gate",
-      tabFintechSub: "Velocity & Device Anomaly",
-      tabOodTitle: "⚠️ Out-of-Domain (OOD) Shield",
-      tabOodSub: "Unrecognized Signals → ABSTAIN_REVIEW",
-
-      // Trace Labels
-      trPolicyKey: "Active Policy Gate:",
-      trSealKey: "Cryptographic Seal:",
-      trRulesKey: "Decision Rationale:",
-      trFieldsKey: "Schema Verification:",
-      trSeedKey: "24-Byte Kernel:",
-
-      // Pricing Section
-      pricingTag: "ENTERPRISE LICENSING — ITOUCH INFORMATION SYSTEMS LTD.",
-      pricingTitle: "From Developer Runtime to Sovereign Air-Gapped Vault",
-      pricingDesc: "<strong>answerr.me</strong> is engineered by <strong>ITouch Information Systems Engineering Consulting Industry & Trade Ltd.</strong> (Cukurova Technopark) and licensed under the BSL 1.1 commercial license.",
-      tier1Badge: "DEVELOPER RUNTIME",
-      tier1Title: "werr Open SDK",
-      tier1Price: "Free",
-      tier1Sub: "Academic research, benchmarking and rapid prototyping",
-      tier1F1: "<code>pip install werr</code> & Browser SDK",
-      tier1F2: "<code>noul</code>, <code>choice</code>, <code>score</code> typed answers",
-      tier1F3: "0-Byte VRAM local reflex runtime",
-      tier1F4: "OOD <code>ABSTAIN_REVIEW</code> schema protection",
-      tier1Btn: "pip install werr",
-
-      tier2Badge: "ENTERPRISE CLOUD GATE",
-      tier2Title: "answerr Pro & Agent Gate",
-      tier2Price: "$149 <span style=\"font-size:14px; font-weight:500; color:var(--text-muted)\">/ mo</span>",
-      tier2Sub: "Fintech, E-Commerce, SaaS & AI Agent (MCP) teams",
-      tier2F1: "<strong>Natural Language to 24B Policy Studio</strong>",
-      tier2F2: "Custom Sealed Gates (<code>/v1/gates/{id}/decide</code>)",
-      tier2F3: "SHA-256 Cryptographic Audit Trace",
-      tier2F4: "AI Agent MCP & Fintech Fraud Shields",
-      tier2F5: "5 Million Sub-Millisecond Decisions / Month",
-      tier2Btn: "Start in Policy Studio →",
-
-      tier3Badge: "ON-PREMISE & SOVEREIGN",
-      tier3Title: "answerr Sovereign Vault",
-      tier3Price: "Enterprise License",
-      tier3Sub: "Banking, Defense, Cybersecurity & Mission-Critical Systems",
-      tier3F1: "<strong>ITouch Systems BSL 1.1 Production License</strong>",
-      tier3F2: "On-Premise / Air-Gapped Closed Vault",
-      tier3F3: "Shadow Mode & Champion/Challenger A/B",
-      tier3F4: "Hardware / Edge & WerrSoma Neuromorphic Reflex",
-      tier3F5: "99.99% Enterprise SLA & 24/7 Engineering Support",
-      tier3Btn: "Contact info@itouch.com.tr",
-
-      // Footer
-      footerCorp: "<strong>answerr.me</strong> — Official Commercial Entity: <a href=\"https://itouch.com.tr\" target=\"_blank\" rel=\"noopener\" class=\"corp-link\">ITouch Information Systems Ltd.</a>",
-      footerLegal: "Cukurova Technopark (Adana, Turkiye) • MERSIS: <code>0469094455800001</code> • Patents: <code>TR 2026/016285</code> & <code>TR 2026/016633</code>",
-
-      // Studio Page
-      studioTitle: "From Natural Language to WERR-24B™ Sealed Gate",
-      studioDesc: "Define your rules in English or Turkish. The <strong>System-2 Compiler</strong> transforms your rules into a <strong>24-Byte seed</strong> and <strong>SHA-256 Cryptographic Seal</strong> while guarding the internal formula within the vault.",
-      studioStep1: "1. Natural Language Policy Definition",
-      studioTemplatesLabel: "Enterprise Presets (Click to load):",
-      tplMcp: "🛡️ AI Agent MCP Guardrail",
-      tplFintech: "💳 E-Commerce & Card Velocity",
-      tplWaf: "🌐 Zero-Trust API Security",
-      lblGateId: "Policy Gate ID (gate_id)",
-      lblDomain: "Protection Domain (Manifold)",
-      lblPrompt: "Natural Language Policy Text (English or Turkish)",
-      btnCompile: "✨ Compile in WERR-24B™ Vault & Generate Seal",
-      lblCertBox: "Sealed 24-Byte Policy Certificate (Sovereign Policy Certificate)",
-      certEndpointLbl: "Gate Endpoint:",
-      certSealLbl: "SHA-256 Policy Seal:",
-      certFormulaLbl: "Kernel Formula:",
-      certRulesLbl: "Compiled Hard Rules:",
-      studioStep2: "2. Test Sealed Gate & Integrate",
-      lblTestInput: "Live Test State (JSON)",
-      btnTestGate: "⚡ Query Sealed Gate (System-1 < 0.5 ms)",
-      lblTestResult: "Live Decision & Sealed Audit Envelope",
-      lblSdkSnippet: "Production Integration Snippet (Python & cURL)",
-      btnCopy: "📋 Copy",
-      btnCopied: "✅ Copied!",
-
-      // Research Page
-      researchTag: "OPEN SCIENCE EVIDENCE & SEALED VAULT TRADE SECRETS",
-      researchTitle: "arXiv Preprints, Hugging Face Repositories & Patent Filings",
-      researchDesc: "<strong>answerr</strong> operates as a dual-layer Deep-Tech platform: theoretical foundations are verified openly on <strong>arXiv</strong> and <strong>Hugging Face</strong> with independent benchmarks, while production <strong>WERR-24B™ calibration kernels</strong> remain protected trade secrets and patented IP.",
-      secArxivTitle: "1. Official arXiv Papers & Hugging Face Records",
-      secBenchTitle: "2. Independent International Benchmarks",
-      secMatrixTitle: "3. Enterprise Architecture Layers",
-      btnReadArxiv: "Read on arXiv →",
-      btnHfDataset: "HuggingFace Dataset →",
-      btnHfPaper: "HuggingFace Page →",
-      btnViewGh: "View on GitHub →",
-      btnInspectDataset: "Inspect Dataset →",
-      btnCorpContactLink: "ITouch Systems Corporate →",
-      p1Title: "Universal Fractal Natural Language Decision Map: Real-Time Edge Triage Across Heterogeneous Domains",
-      p1Desc: "Core WERR architecture classifying natural language decision spaces in sub-milliseconds with 0-Byte VRAM, and open decisions dataset.",
-      p2Title: "Zero-Storage Procedural Neural Synthesis via Boundary Dynamics: Formal Verification in Lean 4",
-      p2Desc: "Zero-storage runtime deterministic boundary synthesis from a 24-Byte seed with machine-checked Lean 4 formal verification (0 sorry).",
-      p3Title: "Orbital Error Dynamics (OED): Self-Organized Criticality & Ephemeral Parameter Resonance",
-      p3Desc: "Multi-scale orbital error dynamics and boundary resonance enabling deterministic decision separation without overfitting.",
-      p4Title: "Werracle: Sub-Cent Intra-Block AI Reflex Oracles & Flash-Loan Circuit Breakers for EVM",
-      p4Desc: "Sub-cent intra-block security circuit breaker and single 32-byte storage slot decision oracle for smart contracts & autonomous agents.",
-      p5Title: "Machine-Checked Computational Group Theory in Lean 4 (35 Formal Theorems, 0 sorry)",
-      p5Desc: "Machine-checked Lean 4 proofs for Schreier-Sims stabilizer chains, BSGS sifting, and discrete algebraic invariants.",
-      patentCardTitle: "Industrial Patent Protection & ITouch Systems Trade Secret Vault",
-      patentCardDesc: "While theoretical foundations are shared with academic transparency, production <strong>WERR-24B™</strong> calibration kernels and compiler matrices remain protected trade secrets and patented IP of <strong>ITouch Information Systems Ltd.</strong>",
-      b1Title: "100% Accuracy (49 / 49)",
-      b1Desc: "Flawless score across all 49 scenarios in autonomous WebMCP agent routing and tool selection with 0-Byte VRAM.",
-      b2Title: "53.0× Faster (1,389 decisions/sec)",
-      b2Desc: "14.37 ms per frame latency and 0% false positives with 0-Byte VRAM, versus 8 GB GPU VRAM Diffusion-Gemma (761.8 ms).",
-      b3Title: "Reproducible Decisions Dataset",
-      b3Desc: "Deterministic decision traces (noul, choice, score) and multi-domain evaluation suites hosted openly on Hugging Face.",
-      thLayer: "Layer / Module",
-      thFunc: "Function",
-      thStatus: "Access / Protection Status",
-      row1Desc: "Natural language compilation to 24-Byte sealed policies and REST decision gates (api.answerr.me)",
-      row1Status: "ITouch Systems Commercial Product",
-      row2Desc: "Zero-memory boundary resonance and multi-scale Tripod decision kernel",
-      row2Status: "Patented & Trade Secret Protected",
-      row3Desc: "Enterprise liability shield neutralizing false confidence on out-of-domain (OOD) inputs",
-      row3Status: "Production Standard Shield",
-      row4Desc: "158K-neuron connectome reflex (werrsoma.answerr.me) and EVM intra-block oracle (arXiv:2609.30719)",
-      row4Status: "Deep R&D & Vertical Solutions"
+      hudRight: 'NO MODEL AT DECISION TIME · EVERY DECISION HAS A TRACE',
+      hudOnline: 'API ONLINE', hudOffline: 'API UNREACHABLE · USING THE IN-BROWSER KERNEL', hudKernel: 'kernel',
+      navHow: 'How it works', navConsole: 'Black Box', navStudio: 'Compiler', navResearch: 'Research', navApi: 'API docs', navAccess: 'Early access',
+      heroEyebrow: '◇ Event horizon protocol · decision gate',
+      heroTitle: 'Before your agent acts, the last word is <em>deterministic</em>.',
+      heroLead: 'Write your rules in Turkish or English. answerr compiles them into explicit, versioned rules; the same input always gets the same decision, with its reason recorded. When it does not recognise a situation it does not guess — it hands it to a human.',
+      heroCta1: 'Open the Black Box', heroCta2: 'Compile a policy',
+      triadTitle: 'Three verdicts, no fourth', vAllow: 'ALLOW', vReview: 'HAND TO HUMAN', vDeny: 'DENY',
+      triadAllow: 'Explicit rule, familiar signals.', triadReview: 'Unknown field, missing data or a threshold.', triadDeny: 'A rule fired; the reason is recorded.',
+      t1t: 'Same input, same decision', t1d: 'Server, browser and Node run the same kernel; parity is enforced by tests.',
+      t2t: 'No model at decision time', t2d: 'Language is only used to draft the policy.',
+      t3t: 'Unknown → human', t3d: 'A single unrecognised field sends the decision to review.',
+      t4t: 'A trace for every decision', t4d: 'Rule, candidate verdicts, field contributions and policy seal (SHA-256).',
+      kkEyebrow: 'Black box · live', kkTitle: 'Send a state, see the verdict and its reason.',
+      kkLead: 'Decisions come from the built-in gates on api.answerr.me. If the API is unreachable, the same kernel runs in your browser and the page says so.',
+      kkIn: '01 · Gate and scenario', kkGate: 'Gate', kkState: 'State vector (editable JSON)', kkRun: 'Ask the gate',
+      kkOut: '02 · Verdict', kkConf: 'CONFIDENCE', kkRule: 'RULE', kkLat: 'LATENCY',
+      kkTrace: '03 · Flight record', kkCand: 'Candidate verdicts (most severe wins)', kkContrib: 'Field contributions (risk score)',
+      kkRisk: 'total risk score', kkUnk: 'UNRECOGNISED FIELDS ·', kkNone: 'none', kkMissing: 'MISSING REQUIRED FIELDS ·',
+      kkPolicy: 'policy', kkSeal: 'seal',
+      kkSrcApi: 'source: api.answerr.me (network round trip)', kkSrvMs: 'server-side', kkSrcLocal: 'source: in-browser kernel (API unavailable or older version)',
+      kkBadJson: 'The state must be a valid JSON object.', kk429: 'Rate limit reached; try again in a few seconds.', kkNoApi: 'The API is unreachable and the local kernel could not load.',
+      evTitle: 'Three phases. System 2 writes, System 1 executes.', evLead: 'The thinking happens once, while the policy is written. At decision time only compiled, approved rules run.',
+      ev1k: 'PHASE 01', ev1s: 'WRITE', ev1t: 'Write the rule in your own words', ev1c: '“Deny the agent any delete or money-transfer tool. Send anything above 5,000 dollars to a human.”',
+      ev2k: 'PHASE 02', ev2s: 'COMPILE', ev2t: 'Every sentence maps to a rule', ev2c: 'tests and checks run; anything ambiguous comes back as a question',
+      ev3k: 'PHASE 03', ev3s: 'EXECUTE', ev3t: 'The same verdict everywhere', ev3c: 'REST API · browser · Node · Python\nverdict + rule + trace + policy seal',
+      olTitle: 'Measurements, not claims.', olLead: 'Numbers on this page are either measured in your browser right now, or they do not exist yet and say so.',
+      m1: 'API response measured this session (median, network included)', m1n: 'Run the Black Box',
+      m2: 'Model weights running at decision time (bytes)', m2n: 'verifiable in the source',
+      m3: 'Kernel, parity, compiler and API tests (CI)', m3n: 'Python and JS on the same vectors',
+      m4b: 'Not yet', m4: 'Shadow-mode pilot: caught / missed', m4n: 'published after the design-partner pilot',
+      yoTitle: 'Three orbits', yo1k: 'Main orbit', yo1t: 'AI agent action gate',
+      yo1d: 'The agent asks before it runs a tool. Delete and privilege tools stop, writes and money movements go to a human, reads pass.',
+      yo2k: 'Orbit 2', yo2t: 'Payment and order risk', yo2d: 'Rules in Turkish, shadow-mode trials next to your current rules, KVKK-compliant hosting option.',
+      yo3k: 'Orbit 3', yo3t: 'API abuse', yo3d: 'Access decisions with reasons, from error, rate and identity signals.',
+      erK: 'Design partnership · 5 seats', erTitle: 'Let’s start in shadow mode, next to your current rules.',
+      erLead: 'The pilot is free. Pricing will be announced with the pilot results.', erMail: 'Work e-mail', erPh: 'name@company.com', erBtn: 'Request a seat',
+      fApi: 'API docs', fResearch: 'Research archive', fClassic: 'Classic console',
+      fRecaptcha: 'This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.',
+      stHud: 'DRAFTS ARE NEVER SAVED AUTOMATICALLY', stEyebrow: 'Compiler · from language to rules', stTitle: 'From sentence to rule. A human signs the rule.',
+      stLead: 'Every rule shows the sentence it came from. Wherever the compiler had to guess, you get a question. Drafts are not stored; registering a gate needs an API key.',
+      st1: '01 · Policy text', tplAgent: 'AI agent gate', tplPay: 'Payment risk', tplApi: 'API abuse',
+      stGate: 'Gate id', stNl: 'Policy (Turkish or English)', stSample: 'Sample state (JSON) — field names are taken from here', stCompile: 'Compile and test',
+      st2: '02 · Compiled rules', stEmpty: 'Nothing compiled yet.', st3: '03 · Tests, checks, seal',
+      stTry: 'Try with the sample state', stDl: 'Download draft (JSON)', stCp: 'Copy register command',
+      stWorking: 'Compiling…', stDone: 'Compiled', stOldApi: 'The server API does not run the new compiler yet (needs 1.2.0).', stNoApi: 'The compiler API is unreachable.',
+      stNoRules: 'No sentence became a rule.', stAsks: 'THE COMPILER ASKS', stNoQ: 'No open questions.',
+      thInput: 'INPUT', thExpect: 'EXPECTED', thGot: 'GOT', stChecks: 'Executed checks', stTestsOk: 'tests passed',
+      stStatus: 'status:', stReady: 'ready for review', stNeeds: 'questions need answers',
+      stNeedSample: 'Enter a sample state first.', stTryOut: 'VERDICT FOR THE SAMPLE ·', stCopied: 'Register command copied (needs an API key).',
+      rsHud: 'RESEARCH ARCHIVE · SEPARATE FROM PRODUCT DECISIONS', rsEyebrow: 'Research archive', rsTitle: 'The werr research engine: papers, data, benchmarks',
+      rsLead: 'These works belong to the werr research engine built on the Mandelbrot boundary. Gate decisions in answerr Pro come from the policy kernel of explicit rules; the two are kept apart.',
+      rsPapers: 'Preprints', rsP1: 'Real-time decision triage across heterogeneous domains.',
+      rsP2: 'Decision boundaries generated from a coordinate seed near the Mandelbrot boundary; properties formalised in Lean 4, measured on a CPU server.',
+      rsP3: 'Fixed-point on-chain decision oracle; Uniswap v4 fee adjustment example.',
+      rsP4: 'Lean 4 verification of GAP permutation-group algorithms (Schreier-Sims, BSGS, partition refinement).',
+      rsP5: 'Network weights generated from a complex quadratic map instead of stored; 77.7% on Two-Moons (gradient-trained baseline 85.7%).',
+      rsData: 'Data and benchmarks', rsD1: '1,205 decision records and more than 3,200 evaluation questions (JSONL).', rsOpen: 'Open the dataset',
+      rsD2: 'Result record submitted to a community benchmark.', rsOpen2: 'Open the record', rsD3t: 'Comparative run', rsD3: 'Comparison record opened in an independent repository.',
+      rsNote: 'Preprints may not be peer reviewed. Records in community benchmarks are submissions, not independent verification.'
     }
   };
 
   class ProI18n {
     constructor() {
-      this.lang = localStorage.getItem('answerr_pro_lang') || 'tr';
-      if (!['tr', 'en'].includes(this.lang)) {
-        this.lang = 'tr';
-      }
+      let saved = null;
+      try { saved = localStorage.getItem('answerr_pro_lang'); } catch (e) { saved = null; }
+      const nav = (navigator.language || 'tr').toLowerCase();
+      this.lang = saved === 'en' || saved === 'tr' ? saved : (nav.startsWith('tr') ? 'tr' : 'en');
     }
-
-    t(key) {
-      const dict = I18N_DICT[this.lang] || I18N_DICT.tr;
-      return dict[key] || I18N_DICT.en[key] || key;
+    t(key) { return (D[this.lang] && D[this.lang][key]) || D.tr[key] || key; }
+    setLanguage(l) {
+      if (l !== 'tr' && l !== 'en') return;
+      this.lang = l;
+      try { localStorage.setItem('answerr_pro_lang', l); } catch (e) { /* private mode */ }
+      this.apply();
+      window.dispatchEvent(new CustomEvent('proLanguageChanged', { detail: { lang: l } }));
     }
-
-    setLanguage(newLang) {
-      if (!['tr', 'en'].includes(newLang)) return;
-      this.lang = newLang;
-      localStorage.setItem('answerr_pro_lang', newLang);
-      document.documentElement.lang = newLang;
-      this.applyTranslations();
-      this.updateSwitcherButtons();
-      window.dispatchEvent(new CustomEvent('proLanguageChanged', { detail: { lang: newLang } }));
-    }
-
-    toggle() {
-      this.setLanguage(this.lang === 'tr' ? 'en' : 'tr');
-    }
-
-    updateSwitcherButtons() {
-      document.querySelectorAll('.lang-switch-btn').forEach(btn => {
-        if (this.lang === 'tr') {
-          btn.innerHTML = `<span>TR</span> <span class="lang-active">EN</span>`;
-          btn.setAttribute('title', 'Switch to English');
-        } else {
-          btn.innerHTML = `<span class="lang-active">TR</span> <span>EN</span>`;
-          btn.setAttribute('title', 'Türkçeye geç');
-        }
-      });
-    }
-
-    applyTranslations() {
+    apply() {
       document.documentElement.lang = this.lang;
-
-      // 1. Plain text / safe innerHTML translation
       document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        const val = this.t(key);
-        if (val) {
-          el.innerHTML = val;
-        }
+        const v = this.t(el.getAttribute('data-i18n'));
+        // dictionary values are static strings owned by this file
+        if (v.indexOf('<') >= 0) el.innerHTML = v; else el.textContent = v;
       });
-
-      // 2. Attributes
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        const val = this.t(key);
-        if (val) el.setAttribute('placeholder', val);
-      });
-
-      document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.getAttribute('data-i18n-title');
-        const val = this.t(key);
-        if (val) el.setAttribute('title', val);
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.setAttribute('placeholder', this.t(el.getAttribute('data-i18n-placeholder'))));
+      document.querySelectorAll('.lang-switch-btn').forEach(btn => {
+        btn.innerHTML = this.lang === 'tr' ? '<span class="lang-active">TR</span> <span>EN</span>' : '<span>TR</span> <span class="lang-active">EN</span>';
+        btn.setAttribute('title', this.lang === 'tr' ? 'Switch to English' : 'Türkçeye geç');
+        btn.setAttribute('aria-label', this.lang === 'tr' ? 'Switch to English' : 'Türkçeye geç');
       });
     }
-
     init() {
-      document.documentElement.lang = this.lang;
-      this.applyTranslations();
-      this.updateSwitcherButtons();
-
-      document.querySelectorAll('.lang-switch-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          this.toggle();
-        });
-      });
+      this.apply();
+      document.querySelectorAll('.lang-switch-btn').forEach(btn => btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.setLanguage(this.lang === 'tr' ? 'en' : 'tr');
+      }));
     }
   }
 
   window.ProI18n = new ProI18n();
-
-  document.addEventListener('DOMContentLoaded', () => {
-    window.ProI18n.init();
-  });
+  document.addEventListener('DOMContentLoaded', () => window.ProI18n.init());
 })();

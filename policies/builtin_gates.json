@@ -1,0 +1,68 @@
+{
+  "agent_mcp_guard": {
+    "gate_id": "agent_mcp_guard",
+    "version": "2.0.0",
+    "title": "AI Agent Action Gate",
+    "title_tr": "AI Ajan Aksiyon Kapısı",
+    "category": "Agentic AI Security",
+    "owner": "ITouch Bilişim Sistemleri Ltd. Şti.",
+    "builtin": true,
+    "unknown_fallback": "abstain_review",
+    "fields": ["tool_name", "user_role", "auth_status", "failed_attempts", "amount_usd"],
+    "required_fields": ["tool_name"],
+    "field_aliases": {"amount": ["amount_usd", "cart_value", "transaction_amount"]},
+    "tool_policy": {"destructive": "DENY", "privileged": "DENY", "financial": "REVIEW", "write": "REVIEW", "read": "ALLOW", "unknown": "REVIEW"},
+    "hard_rules": [
+      {"id": "deny_secret_access", "field": "tool_name", "op": "has_token", "value": ["private", "secret", "secrets", "key", "keys", "mnemonic", "credential", "credentials"], "effect": "DENY", "reason": "Tools that touch keys, secrets or credentials are not available to agents."},
+      {"id": "deny_repeated_failures", "field": "failed_attempts", "op": ">=", "value": 3, "effect": "DENY", "reason": "Three or more failed attempts in this session."},
+      {"id": "review_high_value", "field": "amount", "op": ">", "value": 5000, "effect": "REVIEW", "reason": "Amounts above 5,000 need human approval."}
+    ],
+    "feature_weights": {}
+  },
+  "fintech_payment_tr": {
+    "gate_id": "fintech_payment_tr",
+    "version": "2.0.0",
+    "title": "Payment Risk Gate",
+    "title_tr": "Ödeme Risk Kapısı",
+    "category": "Fintech & Fraud",
+    "owner": "ITouch Bilişim Sistemleri Ltd. Şti.",
+    "builtin": true,
+    "unknown_fallback": "abstain_review",
+    "fields": ["amount", "velocity", "device_anomaly", "known_device", "biometric_cleared", "user_trust_score", "geo_velocity_kmh", "card_attempts"],
+    "required_fields": ["amount"],
+    "field_aliases": {"amount": ["amount_try", "amount_usd", "cart_value", "tutar"]},
+    "hard_rules": [
+      {"id": "deny_card_velocity", "field": "velocity", "op": ">=", "value": 15, "effect": "DENY", "reason": "15 or more attempts in the window looks like card testing."},
+      {"id": "review_impossible_travel", "field": "geo_velocity_kmh", "op": ">", "value": 900, "effect": "REVIEW", "reason": "Location change faster than 900 km/h."},
+      {"id": "review_high_amount", "field": "amount", "op": ">=", "value": 25000, "effect": "REVIEW", "reason": "Amounts of 25,000 or more go to 3-D Secure or manual review."}
+    ],
+    "feature_weights": {
+      "amount": {"weight": 1.1, "scale": 5000.0, "threshold": 1000.0},
+      "velocity": {"weight": 1.6, "scale": 5.0, "threshold": 1.0},
+      "device_anomaly": {"weight": 2.0},
+      "known_device": {"weight": -1.1},
+      "biometric_cleared": {"weight": -1.4}
+    }
+  },
+  "api_zero_trust_waf": {
+    "gate_id": "api_zero_trust_waf",
+    "version": "2.0.0",
+    "title": "API Abuse Gate",
+    "title_tr": "API Kötüye Kullanım Kapısı",
+    "category": "Cybersecurity",
+    "owner": "ITouch Bilişim Sistemleri Ltd. Şti.",
+    "builtin": true,
+    "unknown_fallback": "abstain_review",
+    "fields": ["user_role", "failed_attempts", "req_frequency", "authenticated"],
+    "required_fields": ["user_role"],
+    "hard_rules": [
+      {"id": "deny_brute_force", "field": "failed_attempts", "op": ">=", "value": 10, "effect": "DENY", "reason": "Brute-force threshold reached (10 failed attempts)."},
+      {"id": "deny_flood", "field": "req_frequency", "op": ">=", "value": 100, "effect": "DENY", "reason": "100 or more requests per second."}
+    ],
+    "feature_weights": {
+      "failed_attempts": {"weight": 1.5, "scale": 5.0, "threshold": 0.0},
+      "req_frequency": {"weight": 1.0, "scale": 50.0, "threshold": 5.0},
+      "authenticated": {"weight": -1.0}
+    }
+  }
+}

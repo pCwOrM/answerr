@@ -7,16 +7,22 @@ on:
     branches: [ main ]
 
 jobs:
-  lint-and-validate:
+  test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11"]
+        python-version: ["3.10", "3.12"]
 
     steps:
-      - name: Checkout Code
+      - name: Checkout answerr
         uses: actions/checkout@v4
+
+      - name: Checkout werr (research engine used by the API)
+        uses: actions/checkout@v4
+        with:
+          repository: pCwOrM/werr
+          path: _werr
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -24,20 +30,27 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
 
-      - name: Install Dependencies
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -r requirements.txt
           pip install httpx pytest flake8
 
-      - name: Byte-compile & Syntax Check
+      - name: Syntax check
         run: |
-          python -m compileall -q .
+          python -m compileall -q -x '_werr' .
+          node --check js/policy-kernel.js
+          node --check js/werr-engine.js
 
-      - name: Run Lint Check (Flake8)
-        run: |
-          flake8 server/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: Lint (errors only)
+        run: flake8 api_server.py policy_kernel.py policy_checks.py policy_compiler.py server/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
 
-      - name: Run Automated Unit Tests
-        run: |
-          python -m unittest discover tests -v
+      - name: Kernel, parity and API tests
+        env:
+          ANSWERR_WERR_PATH: ${{ github.workspace }}/_werr
+        run: python -m pytest -q tests/

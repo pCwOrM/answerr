@@ -1,12 +1,13 @@
 /**
- * werr-engine.js - Machine-Native Zero-Memory System-One Decision Engine (v0.6.0 Commercial Edition)
+ * werr-engine.js - Deterministic decision engine for answerr (v0.7.0)
  * (Wave & Error Reflex Resonator - A.N.S.W.E.R.R.)
  * Official Commercial Runtime by ITouch Bilişim Sistemleri Ltd. Şti. (itouch.com.tr)
  *
- * Computes deterministic, typed decisions (noul, choice, score) in < 2ms
- * with ZERO stored weight tensors (0 Bytes VRAM) from a 24-byte seed on dM,
- * combined with explicit PolicySpec contracts, OOD (Out-of-Domain) Abstain/Review
- * protection, and full audit-grade Decision Traceability (trace).
+ * Typed decisions (noul, choice, score) with no model weights. Whenever a policy,
+ * strict mode or an agent tool field is involved, the verdict comes from the shared
+ * policy kernel (js/policy-kernel.js, mirrored by policy_kernel.py): explicit rules,
+ * tool classes, unknown-field review, most-severe-wins. The Mandelbrot features are
+ * kept as research telemetry and for the legacy demo presets.
  */
 
 class WerrEngine {
@@ -39,6 +40,8 @@ class WerrEngine {
    * Deterministic FNV-1a 64-bit style hex digest for policy & trace sealing in browser/Node
    */
   computeSealHash(payload) {
+    const K = WerrEngine.kernel();
+    if (K) return 'sha256:' + K.sha256Hex(typeof payload === 'string' ? payload : K.canonicalJson(payload));
     const str = typeof payload === 'string' ? payload : JSON.stringify(payload);
     let h1 = 0xdeadbeef ^ str.length;
     let h2 = 0x41c6ce57 ^ str.length;
@@ -49,7 +52,7 @@ class WerrEngine {
     }
     h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
     h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-    return 'werr_seal_' + (h2 >>> 0).toString(16).padStart(8, '0') + (h1 >>> 0).toString(16).padStart(8, '0');
+    return 'fnv64:' + (h2 >>> 0).toString(16).padStart(8, '0') + (h1 >>> 0).toString(16).padStart(8, '0');
   }
 
   /**
@@ -405,7 +408,12 @@ class WerrEngine {
   decide(state = {}, questions = {}, options = {}) {
     const startTime = performance.now();
     const policySpec = options.policy || null;
-    const strictPolicy = Boolean(options.strictPolicy || (policySpec && policySpec.unknownFallback === 'abstain_review'));
+    const kPolicy = WerrEngine.toKernelPolicy(policySpec);
+    const strictPolicy = Boolean(options.strictPolicy || (kPolicy && kPolicy.unknown_fallback === 'abstain_review'));
+    const K = WerrEngine.kernel();
+    const kernel = K ? K.evaluate(state, kPolicy, strictPolicy) : null;
+    // The kernel decides whenever a policy, strict mode or an agent tool is involved.
+    const kernelGoverns = Boolean(kernel && (kPolicy || strictPolicy || kernel.tool || kernel.verdict === 'DENY'));
 
     // 1. State-to-Wave Modulation & Audit Feature Attribution
     const {
@@ -418,17 +426,16 @@ class WerrEngine {
       oodDetected
     } = this.stateToVector(state, policySpec);
 
-    const hardRuleHit = policySpec ? this.evaluateHardRules(state, policySpec.hardRules) : null;
-    if (hardRuleHit) {
-      matchedRules.unshift(`hard_rule:${hardRuleHit.ruleId}->${hardRuleHit.effect}`);
+    if (kernel) {
+      kernel.candidates.forEach(c => matchedRules.unshift(`${c.rule_id}->${c.effect}`));
     }
 
     const roleStr = this.normalizeText(state.user_role || state.role || '');
 
     // Allow overriding base coordinates per-decision (e.g. from PolicySpec, preset, or domain gate)
-    const seedKey = options.domain || options.presetId || (policySpec && policySpec.domain) || '';
+    const seedKey = options.domain || options.presetId || (policySpec && (policySpec.domain || policySpec.gate_id || policySpec.id)) || '';
     const presetSeed = (WerrEngine.SEEDS && WerrEngine.SEEDS[seedKey]) || {};
-    const policySeed = (policySpec && policySpec.seed24b) || {};
+    const policySeed = (policySpec && (policySpec.seed24b || policySpec.seed_24b)) || {};
     const baseCx = options.cx ?? policySeed.cx ?? presetSeed.cx ?? this.baseCx;
     const baseCy = options.cy ?? policySeed.cy ?? presetSeed.cy ?? this.baseCy;
     const baseZoom = options.zoom ?? policySeed.zoom ?? presetSeed.zoom ?? this.baseZoom;
@@ -492,32 +499,8 @@ class WerrEngine {
         const isCombatAssaultQ = /assault|attack|taarruz/i.test(qKey) || /taarruz|agresif|assault/i.test(instr);
         const isEvadeQ = /evade|sakinma|kacis/i.test(qKey) || /sakinma|evade/i.test(instr);
 
-        // Hard Rule short-circuit if PolicySpec matched
-        if (hardRuleHit) {
-          const isTrue = hardRuleHit.effect === 'ALLOW' ? isAllowQ : (hardRuleHit.effect === 'DENY' ? isDenyQ : false);
-          const status = hardRuleHit.effect === 'REVIEW' ? 'ABSTAIN_REVIEW' : (isTrue ? 'ALLOWED' : 'DENIED');
-          answers[qKey] = {
-            type: 'noul',
-            noul: hardRuleHit.effect === 'REVIEW' ? 0.5 : (isTrue ? 0.99 : 0.01),
-            decision: hardRuleHit.effect === 'REVIEW' ? null : isTrue,
-            confidence: hardRuleHit.effect === 'REVIEW' ? 0.0 : 0.99,
-            status,
-            matchedRule: hardRuleHit.ruleId,
-            reason: hardRuleHit.reason
-          };
-          continue;
-        }
-
-        // OOD / Unrecognized Schema Safeguard (Prevents false confidence on unrelated/unknown inputs)
-        if (oodDetected && strictPolicy) {
-          answers[qKey] = {
-            type: 'noul',
-            noul: 0.5,
-            decision: null,
-            confidence: 0.0,
-            status: 'ABSTAIN_REVIEW',
-            reason: 'OUT_OF_POLICY_SCHEMA: Input fields do not match any calibrated policy signal; human review required.'
-          };
+        if (kernelGoverns) {
+          answers[qKey] = K.answerQuestion(kernel, qObj.instructions || qObj.text || qKey);
           continue;
         }
 
@@ -584,7 +567,7 @@ class WerrEngine {
           const stRes = (vec[i % vec.length] || 0) * (qRes - 0.5) * 4.0;
           let score = qRes * 2.5 + stRes + (1.0 - avgEscape) * 0.5;
 
-          if (oodDetected && /review|inceleme|audit|sandbox|human|onay_bekle|manuel/i.test(optLower)) {
+          if ((kernelGoverns ? kernel.verdict !== 'ALLOW' : oodDetected) && /review|inceleme|audit|sandbox|human|onay_bekle|manuel/i.test(optLower)) {
             score += 4.0; // Route unknown OOD inputs safely to human review/audit
           } else if (isNetworkRouteChoice) {
             if (/direct|prod|fast|primary|ana|dogrudan|normal/i.test(optLower)) {
@@ -674,28 +657,33 @@ class WerrEngine {
     }
 
     const elapsedMs = performance.now() - startTime;
-    const policyId = (policySpec && policySpec.id) || seedKey || 'universal_default';
-    const policyVersion = (policySpec && policySpec.version) || '0.6.0';
-    const traceSeal = this.computeSealHash({
+    const policyId = (kPolicy && kPolicy.gate_id) || seedKey || 'universal_default';
+    const policyVersion = (kPolicy && kPolicy.version) || WerrEngine.VERSION;
+    // policySeal identifies the policy text; decisionDigest identifies this decision record.
+    const policySealValue = kPolicy ? (kPolicy.policy_seal || (K ? K.policySeal(kPolicy) : null)) : null;
+    const decisionDigest = this.computeSealHash({
       policyId,
       policyVersion,
+      policySeal: policySealValue,
       state,
-      netRisk,
-      effCx: Math.round(effCx * 1e8) / 1e8,
-      effCy: Math.round(effCy * 1e8) / 1e8
+      verdict: kernel ? kernel.verdict : null
     });
+    const traceSeal = policySealValue || decisionDigest;
 
     const trace = {
       policyId,
       policyVersion,
       policySeal: traceSeal,
-      netRiskScore: netRisk,
+      decisionDigest,
+      kernel,
+      verdict: kernel ? kernel.verdict : null,
+      netRiskScore: kernel ? kernel.risk_score : netRisk,
       matchedRules,
       featureContributions,
-      recognizedFields,
-      unrecognizedFields,
-      oodDetected,
-      recommendedMode: oodDetected ? 'ABSTAIN_REVIEW' : 'DETERMINISTIC_EXECUTE',
+      recognizedFields: kernel ? kernel.recognized_fields : recognizedFields,
+      unrecognizedFields: kernel ? kernel.unrecognized_fields : unrecognizedFields,
+      oodDetected: kernel ? kernel.ood_detected : oodDetected,
+      recommendedMode: kernel && kernel.verdict === 'REVIEW' ? 'ABSTAIN_REVIEW' : 'DETERMINISTIC_EXECUTE',
       fractalManifold: {
         tripodActive: this.tripod,
         seed24b: { cx: effCx, cy: effCy, zoom: effZoom },
@@ -706,7 +694,7 @@ class WerrEngine {
     };
 
     return {
-      model: 'werr-0.6.0-commercial',
+      model: 'werr-' + WerrEngine.VERSION,
       answers,
       trace,
       latencyMs: Math.round(elapsedMs * 100) / 100,
@@ -799,6 +787,34 @@ WerrEngine.SEEDS = {
   agent_mcp_guard: { cx: -0.7436438870371587, cy: 0.1318259042053119, zoom: 95.0 }
 };
 
+// Shared policy kernel (js/policy-kernel.js must be loaded first in the browser)
+WerrEngine.kernel = function () {
+  if (typeof AnswerrPolicyKernel !== 'undefined') return AnswerrPolicyKernel;
+  if (typeof require === 'function') {
+    try { return require('./policy-kernel.js'); } catch (e) { return null; }
+  }
+  return null;
+};
+
+// Accepts both the camelCase PolicySpec and the API's snake_case gate format.
+WerrEngine.toKernelPolicy = function (p) {
+  if (!p) return null;
+  const out = {
+    gate_id: p.gate_id || p.id || 'inline_policy',
+    version: p.version || '1.0.0',
+    fields: p.fields || [],
+    required_fields: p.required_fields || p.requiredFields || [],
+    field_aliases: p.field_aliases || p.fieldAliases || {},
+    feature_weights: p.feature_weights || p.featureWeights || {},
+    hard_rules: p.hard_rules || p.hardRules || [],
+    tool_policy: p.tool_policy || p.toolPolicy || undefined,
+    unknown_fallback: p.unknown_fallback || p.unknownFallback || 'abstain_review',
+    policy_seal: p.policy_seal || undefined
+  };
+  Object.keys(out).forEach(k => { if (out[k] === undefined) delete out[k]; });
+  return out;
+};
+
 // Universal method alias for evaluate -> decide
 WerrEngine.prototype.evaluate = function(state, questions, options) {
   return this.decide(state, questions, options);
@@ -809,9 +825,10 @@ const WevvEngine = WerrEngine;
 WevvEngine.SEEDS = WerrEngine.SEEDS;
 
 // Engine metadata and formal verification status
-WerrEngine.VERSION = '0.6.0';
-WerrEngine.FORMAL_VERIFICATION = 'Lean 4 Boundary Halting & Policy Invariant Verified (0 sorry)';
-WevvEngine.VERSION = '0.6.0';
+WerrEngine.VERSION = '0.7.0';
+// Lean 4 work covers the Mandelbrot boundary arithmetic, not user policies.
+WerrEngine.FORMAL_VERIFICATION = 'Lean 4: boundary-iteration lemmas (research); policies are checked by executed invariant tests';
+WevvEngine.VERSION = '0.7.0';
 WevvEngine.FORMAL_VERIFICATION = WerrEngine.FORMAL_VERIFICATION;
 
 // Export for browser and ES modules
