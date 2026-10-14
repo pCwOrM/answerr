@@ -174,3 +174,14 @@ def test_access_request(client, monkeypatch):
     assert 429 in codes
     with open(os.path.join(client.tmp, "access.jsonl"), encoding="utf-8") as f:
         assert "ali@ornek.com.tr" in f.read()
+
+
+def test_gate_store_rapid_alternation(client):
+    path = os.path.join(client.tmp, "rapid.json")
+    w1, w2 = client.mod.GateStore(path), client.mod.GateStore(path)
+    for i in range(50):
+        a, b = (w1, w2) if i % 2 else (w2, w1)
+        a.put({"gate_id": "g%d" % i, "tenant": "acme", "hard_rules": []}, "acme")
+        assert b.get("g%d" % i) is not None
+        b.delete("g%d" % i, "acme")
+        assert a.get("g%d" % i) is None
