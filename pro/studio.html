@@ -1,385 +1,110 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>answerr Politika Stüdyosu — WERR-24B™ Mühürlü Kasaya | ITouch Bilişim</title>
-  <meta name="description" content="Kurumsal kurallarınızı doğal dilde yazın; answerr Sistem-2 derleyicisi içsel formülü ifşa etmeden 24-Baytlık SHA-256 mühürlü karar kapısına dönüştürsün." />
-  <link rel="icon" type="image/svg+xml" href="../assets/answerr_logo_portal_fav_trans.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="pro.css" />
-  <!-- Google reCAPTCHA v3 for Automated Bot Defense & Rate Shield -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>answerr Pro — Derleyici</title>
+  <meta name="description" content="Doğal dilde yazılan politikayı kurallara derleyin; her kuralın hangi cümleden geldiğini, açık soruları, otomatik testleri ve çalıştırılan denetimleri görün.">
+  <meta name="theme-color" content="#05060A">
+  <link rel="icon" href="../assets/answerr_logo_portal_fav_trans.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="pro.css">
   <script src="https://www.google.com/recaptcha/api.js?render=6LdP-JgqAAAAAJLdy_W8uowqstSa4XKlJTOkVAux" async defer></script>
 </head>
 <body>
-
-  <!-- Top Cybernetic Telemetry Ribbon -->
-  <div class="corp-ribbon">
-    <div class="container">
-      <div class="corp-badge">
-        <span class="corp-dot"></span>
-        <span data-i18n="ribbonCorp">Resmi Kurumsal Ürün: <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="corp-link">ITouch Bilişim Sistemleri Ltd. Şti.</a> (Çukurova Teknokent)</span>
-      </div>
-      <div class="corp-badge">
-        <span data-i18n="ribbonVault">Kasa: <strong style="color:var(--emerald-bright)">WERR-24B™ EGEMEN ÇEKİRDEK</strong></span>
-        <span>•</span>
-        <span data-i18n="ribbonApi">API: <strong style="color:var(--cyan-bright)">api.answerr.me (:443)</strong></span>
-        <span>•</span>
-        <span data-i18n="ribbonStatus" style="color:var(--emerald-bright)">DURUM: AKTİF • SIFIR VRAM</span>
-      </div>
+  <a class="sr-only" href="#main">İçeriğe geç</a>
+  <div class="hud">
+    <div class="wrap">
+      <div id="hudStatus"><span class="dot"></span>…</div>
+      <div data-i18n="stHud">TASLAK HİÇBİR ZAMAN OTOMATİK KAYDEDİLMEZ</div>
     </div>
   </div>
 
-  <!-- Sticky Command Deck Navbar -->
-  <nav class="navbar">
-    <div class="container">
-      <a href="index.html" class="brand">
-        <span>answe<span class="brand-r1">r</span><span class="brand-r2">r</span></span>
-        <span class="brand-tag">24B POLICY STUDIO</span>
+  <nav class="nav" aria-label="Ana gezinme">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="answerr Pro ana sayfa">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="#FFB048" stroke-width="1.5"/><circle cx="17" cy="17" r="8" fill="none" stroke="#8CDEEC" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="25" cy="10" r="2.5" fill="#FFB048"/></svg>
+        <b>answerr</b><span class="tag">PRO</span>
       </a>
+      <button class="nav-toggle" type="button" aria-label="Menü" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h9" stroke="currentColor" stroke-width="1.6"/></svg></button>
       <div class="nav-links">
-        <a href="index.html" data-i18n="navProduct">Ürün & Canlı Kasa</a>
-        <a href="studio.html" class="active" data-i18n="navStudio">Politika Stüdyosu</a>
-        <a href="research.html" data-i18n="navResearch">arXiv, HuggingFace & Patentler</a>
-        <a href="https://api.answerr.me/docs" target="_blank" rel="noopener" data-i18n="navApi">REST API (/docs)</a>
-        <a href="../chat.html" data-i18n="navClassic">Klasik Konsol</a>
+        <a href="index.html#kara-kutu" data-i18n="navConsole">Kara Kutu</a>
+        <a href="studio.html" aria-current="page" data-i18n="navStudio">Derleyici</a>
+        <a href="research.html" data-i18n="navResearch">Araştırma</a>
+        <a href="https://api.answerr.me/docs" rel="noopener" data-i18n="navApi">API belgeleri</a>
+        <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>
       </div>
-      <div class="nav-actions">
-        <button class="lang-switch-btn" id="langSwitchBtn" aria-label="Dil Değiştir">
-          <span>TR</span> <span class="lang-active">EN</span>
-        </button>
-        <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="btn btn-outline" data-i18n="btnCorpContact">ITouch Bilişim</a>
-        <button class="mobile-toggle" onclick="document.getElementById('mobileDrawer').classList.toggle('open')" aria-label="Menü">☰</button>
-      </div>
-    </div>
-    <div class="mobile-drawer" id="mobileDrawer">
-      <a href="index.html" data-i18n="navProduct">⚡ Ürün & Canlı Kasa</a>
-      <a href="studio.html" class="active" data-i18n="navStudio">🛡️ Politika Stüdyosu (System-2)</a>
-      <a href="research.html" data-i18n="navResearch">📜 arXiv, HuggingFace & Patentler</a>
-      <a href="https://api.answerr.me/docs" target="_blank" rel="noopener" data-i18n="navApi">🔌 Canlı REST API (/docs)</a>
-      <a href="../chat.html" data-i18n="navClassic">💬 Klasik Konsol</a>
     </div>
   </nav>
 
-  <main class="container">
-    <div style="padding:32px 0 16px;">
-      <h1 data-i18n="studioTitle">Doğal Dilden WERR-24B™ Mühürlü Karar Kapısına</h1>
-      <p style="color:var(--text-secondary); max-width:820px; font-size:15px; margin-top:6px;" data-i18n="studioDesc">
-        Kurallarınızı Türkçe veya İngilizce yazın. <strong>Sistem-2 Derleyici</strong>, içsel matematiksel formülü kasada gizli tutarak politikanızı <strong>24 Baytlık bir tohuma</strong> ve <strong>SHA-256 Kriptografik Mührüne</strong> dönüştürür.
-      </p>
-    </div>
-
-    <div class="studio-grid">
-      <!-- Left Column: Natural Language Definition -->
-      <div class="panel">
-        <h2>
-          <span data-i18n="studioStep1">1. Doğal Dil Politika Tanımı</span>
-          <span class="pill">SYSTEM-2 COMPILER</span>
-        </h2>
-
+  <main id="main" class="section" style="padding-top:40px">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px">
         <div>
-          <label data-i18n="studioTemplatesLabel">Hazır Kurumsal Şablonlar (Tıklayın):</label>
-          <div class="template-chips">
-            <button class="chip" onclick="loadTemplate('mcp')" data-i18n="tplMcp">🛡️ AI Ajan MCP Korkuluğu</button>
-            <button class="chip" onclick="loadTemplate('fintech')" data-i18n="tplFintech">💳 TR E-Ticaret & Kart Hızı</button>
-            <button class="chip" onclick="loadTemplate('waf')" data-i18n="tplWaf">🌐 Zero-Trust API Güvenliği</button>
-          </div>
+          <div class="eyebrow" data-i18n="stEyebrow">Derleyici · doğal dilden kurala</div>
+          <h1 style="font-size:clamp(32px,4.4vw,46px)" data-i18n="stTitle">Cümleden kurala. Kurala insan imzası.</h1>
         </div>
-
-        <div class="form-row-2">
-          <div>
-            <label data-i18n="lblGateId">Politika Kapı Kimliği (gate_id)</label>
-            <input type="text" id="gateIdInput" value="itouch_agent_guard_v1" />
-          </div>
-          <div>
-            <label data-i18n="lblDomain">Koruma Alanı (Manifold)</label>
-            <select id="domainInput">
-              <option value="agent_mcp_guard">agent_mcp_guard (AI Ajan / MCP)</option>
-              <option value="fintech_payment_tr">fintech_payment_tr (TR Fintech / Fraud)</option>
-              <option value="api_zero_trust_waf">api_zero_trust_waf (API Güvenliği)</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label data-i18n="lblPrompt">Doğal Dil Politika Metni (Türkçe veya İngilizce)</label>
-          <textarea id="promptInput">Otonom AI ajanı veritabanında drop, delete veya truncate aracı çağırmak isterse kesin olarak reddet (DENY). İşlem tutarı 5000 dolar üzerinde ise veya hatalı deneme sayısı 3 üstündeyse işlemi engelle. Bilinmeyen şema alanlarında ABSTAIN_REVIEW döndür.</textarea>
-        </div>
-
-        <button class="btn btn-primary" onclick="compilePolicy()" style="padding:12px;" data-i18n="btnCompile">
-          ✨ WERR-24B™ Kasasında Derle & SHA-256 Mührü Üret
-        </button>
-
-        <div>
-          <label data-i18n="lblCertBox">Mühürlenen 24-Bayt Kasa Sertifikası (Sovereign Policy Certificate)</label>
-          <div class="seal-cert">
-            <div class="seal-row">
-              <span class="seal-k" data-i18n="certEndpointLbl">Kapı uç noktası:</span>
-              <span class="seal-v" id="certEndpoint">/v1/gates/itouch_agent_guard_v1/decide</span>
-            </div>
-            <div class="seal-row">
-              <span class="seal-k" data-i18n="certSealLbl">SHA-256 Politika Mührü:</span>
-              <span class="seal-v" id="certSeal">Hesaplanıyor...</span>
-            </div>
-            <div class="seal-row">
-              <span class="seal-k" data-i18n="certFormulaLbl">Çekirdek Formülü:</span>
-              <span class="seal-v" style="color:var(--cyan-bright);">🔒 WERR-24B™ [PROPRIETARY VAULT SEALED]</span>
-            </div>
-            <div class="seal-row">
-              <span class="seal-k" data-i18n="certRulesLbl">Derlenen Kesin Kurallar:</span>
-              <span class="seal-v" id="certRulesCount">2 Aktif Kalkan + OOD ABSTAIN_REVIEW</span>
-            </div>
-          </div>
-        </div>
+        <p data-i18n="stLead">Her kural hangi cümleden geldiğini gösterir. Derleyicinin tahmin etmek zorunda kaldığı her yer size soru olarak döner. Taslak kaydedilmez; kaydetmek için API anahtarı gerekir.</p>
       </div>
 
-      <!-- Right Column: Live Execution & SDK Code -->
-      <div class="panel">
-        <h2>
-          <span data-i18n="studioStep2">2. Mühürlü Kapıyı Test Et & Entegre Et</span>
-          <span class="pill" id="sealPill">0-BYTE VRAM READY</span>
-        </h2>
-
-        <div>
-          <label data-i18n="lblTestInput">Canlı Test Girdisi (JSON State)</label>
-          <textarea id="testStateInput" style="min-height:110px;">{
-  "tool_name": "delete_customer_ledger",
-  "amount_usd": 7200,
-  "failed_attempts": 1,
-  "auth_status": true
-}</textarea>
-        </div>
-
-        <button class="btn btn-outline" onclick="testCompiledGate()" style="border-color:var(--emerald-bright); color:var(--emerald-bright); padding:11px;" data-i18n="btnTestGate">
-          ⚡ Mühürlü Kapıya Sor (System-1 &lt; 0.5 ms)
-        </button>
-
-        <div>
-          <label data-i18n="lblTestResult">Canlı Karar ve Mühürlü Denetim Zarfı</label>
-          <pre class="code-out" id="testResultOut">Test sonucu burada görünecek...</pre>
-        </div>
-
-        <div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-            <label style="margin-bottom:0;" data-i18n="lblSdkSnippet">Üretim Entegrasyon Kodu (Python & cURL)</label>
-            <button class="chip" onclick="copySdkCode()" id="copyBtn" data-i18n="btnCopy">📋 Kopyala</button>
+      <div class="studio">
+        <section class="panel" aria-labelledby="s1">
+          <h2 id="s1" class="label" data-i18n="st1">01 · Politika metni</h2>
+          <div class="tpl-row" role="group" aria-label="Şablonlar">
+            <button type="button" class="scn btn-sm" data-tpl="agent" data-i18n="tplAgent">AI ajan kapısı</button>
+            <button type="button" class="scn btn-sm" data-tpl="pay" data-i18n="tplPay">Ödeme riski</button>
+            <button type="button" class="scn btn-sm" data-tpl="api" data-i18n="tplApi">API kötüye kullanım</button>
           </div>
-          <pre class="code-out" id="sdkSnippetOut"></pre>
-        </div>
+          <div class="field">
+            <label for="gateId" data-i18n="stGate">Kapı kimliği</label>
+            <input id="gateId" type="text" value="studio_draft" pattern="[a-z0-9][a-z0-9_\-]{2,63}" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="nl" data-i18n="stNl">Politika (Türkçe ya da İngilizce)</label>
+            <textarea id="nl" class="prose" rows="7"></textarea>
+          </div>
+          <div class="field">
+            <label for="sample" data-i18n="stSample">Örnek durum (JSON) — alan adları buradan seçilir</label>
+            <textarea id="sample" rows="6" spellcheck="false"></textarea>
+          </div>
+          <button class="btn-primary" id="compileBtn" type="button" data-i18n="stCompile">Derle ve sına</button>
+          <div class="small-mono" id="compileMsg"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="s2" aria-live="polite">
+          <h2 id="s2" class="label" data-i18n="st2">02 · Derlenen kurallar</h2>
+          <div id="rules" class="scn-list"><div class="empty" data-i18n="stEmpty">Henüz derlenmedi.</div></div>
+          <div id="questions"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="s3">
+          <h2 id="s3" class="label" data-i18n="st3">03 · Testler, denetimler, mühür</h2>
+          <div class="scroll-x"><table class="tests" id="tests"><caption class="sr-only">Test vektörleri</caption></table></div>
+          <div id="checks"></div>
+          <div class="small-mono" id="seal"></div>
+          <div class="tpl-row">
+            <button class="btn-ghost btn-sm" id="tryBtn" type="button" disabled data-i18n="stTry">Örnek durumla dene</button>
+            <button class="btn-ghost btn-sm" id="dlBtn" type="button" disabled data-i18n="stDl">Taslağı indir (JSON)</button>
+            <button class="btn-ghost btn-sm" id="cpBtn" type="button" disabled data-i18n="stCp">Kayıt komutunu kopyala</button>
+          </div>
+          <div class="note" id="tryOut" hidden></div>
+        </section>
       </div>
     </div>
   </main>
 
   <footer>
-    <div class="container">
-      <div class="footer-row">
-        <div>
-          <span data-i18n="footerCorp"><strong>answerr.me</strong> — Resmi Ticari Sağlayıcı: <a href="https://itouch.com.tr" target="_blank" rel="noopener" class="corp-link">ITouch Bilişim Sistemleri Mühendislik Danışmanlık San. ve Tic. Ltd. Şti.</a></span>
-          <div style="margin-top:4px;" data-i18n="footerLegal">
-            Çukurova Teknokent (Adana) • MERSİS: <code>0469094455800001</code> • Patentler: <code>TR 2026/016285</code> & <code>TR 2026/016633</code>
-          </div>
-        </div>
-        <div style="display:flex; gap:16px; flex-wrap:wrap;">
-          <a href="index.html" data-i18n="navProduct">Ürün & Canlı Kasa</a>
-          <a href="research.html" data-i18n="navResearch">arXiv & HuggingFace</a>
-          <a href="https://api.answerr.me/docs" target="_blank" rel="noopener" data-i18n="navApi">OpenAPI / Swagger</a>
-          <a href="../chat.html" data-i18n="navClassic">Klasik Konsol</a>
-        </div>
-      </div>
+    <div class="wrap">
+      <span>ITouch Bilişim · Çukurova Teknokent · Adana · <a href="mailto:ask@answerr.me">ask@answerr.me</a></span>
+      <span style="flex-basis:100%; font-size:11px" data-i18n="fRecaptcha">Bu site reCAPTCHA ile korunur; Google <a href="https://policies.google.com/privacy">Gizlilik Politikası</a> ve <a href="https://policies.google.com/terms">Hizmet Şartları</a> geçerlidir.</span>
     </div>
   </footer>
 
-  <script src="../js/werr-engine.js"></script>
+  <script src="../js/policy-kernel.js"></script>
   <script src="i18n.js"></script>
-  <script>
-    const werrLocal = new WerrEngine();
-    let latestCompiledPolicy = null;
-
-    const TEMPLATES = {
-      mcp: {
-        gate_id: "itouch_agent_guard_v1",
-        domain: "agent_mcp_guard",
-        prompt: {
-          tr: "Otonom AI ajanı veritabanında drop, delete veya truncate aracı çağırmak isterse kesin olarak reddet (DENY). İşlem tutarı 5000 dolar üzerinde ise veya hatalı deneme sayısı 3 üstündeyse işlemi engelle. Bilinmeyen şema alanlarında ABSTAIN_REVIEW döndür.",
-          en: "If the autonomous AI agent attempts to invoke drop, delete, or truncate tool operations, strictly reject (DENY). If transaction amount is above 5000 USD or failed attempts exceed 3, block execution. For unknown schema fields, default to ABSTAIN_REVIEW."
-        },
-        testState: { tool_name: "delete_customer_ledger", amount_usd: 7200, failed_attempts: 1, auth_status: true }
-      },
-      fintech: {
-        gate_id: "tr_ecommerce_fraud_v1",
-        domain: "fintech_payment_tr",
-        prompt: {
-          tr: "E-ticaret sepet tutarı 15000 TL üzerinde ise ve hatalı kart denemesi 3 üstündeyse ödemeyi reddet (DENY). Cihaz tanınmıyorsa ve fatura-teslimat adresi uyuşmuyorsa incelemeye al.",
-          en: "If e-commerce cart value exceeds 15000 and failed card attempts exceed 3, deny payment (DENY). If device is unknown and shipping/billing mismatch occurs, route to review."
-        },
-        testState: { amount_usd: 18500, failed_attempts: 4, known_device: false, shipping_billing_mismatch: true }
-      },
-      waf: {
-        gate_id: "api_zero_trust_v1",
-        domain: "api_zero_trust_waf",
-        prompt: {
-          tr: "Saniyedeki istek hızı 50 üstündeyse veya hatalı giriş denemesi 5 üzerinde ise paketi düşür (DENY). Yalnızca doğrulanmış oturumlara izin ver.",
-          en: "If request frequency exceeds 50 req/s or failed login attempts exceed 5, drop packet (DENY). Only permit authenticated valid sessions."
-        },
-        testState: { req_frequency: 85.0, failed_attempts: 6, user_role: "guest" }
-      }
-    };
-
-    let activeTemplateKey = 'mcp';
-
-    function loadTemplate(key) {
-      activeTemplateKey = key;
-      const t = TEMPLATES[key];
-      const curLang = window.ProI18n ? window.ProI18n.lang : 'tr';
-      document.getElementById('gateIdInput').value = t.gate_id;
-      document.getElementById('domainInput').value = t.domain;
-      document.getElementById('promptInput').value = t.prompt[curLang] || t.prompt.tr;
-      document.getElementById('testStateInput').value = JSON.stringify(t.testState, null, 2);
-      compilePolicy();
-    }
-
-    async function compilePolicy() {
-      const gate_id = document.getElementById('gateIdInput').value.trim() || "custom_gate";
-      const domain = document.getElementById('domainInput').value;
-      const prompt = document.getElementById('promptInput').value;
-
-      document.getElementById('certEndpoint').textContent = `/v1/gates/${gate_id}/decide`;
-
-      const defaultPy = `import requests\nres = requests.post("https://api.answerr.me/v1/gates/${gate_id}/decide", json={\n    "state": {"tool_name": "delete_customer_ledger", "amount_usd": 7200},\n    "question": "Allow action under policy ${gate_id}?"\n}).json()\nprint(res["decision"], res["trace"]["policy_seal"])`;
-      const defaultCurl = `curl -X POST https://api.answerr.me/v1/gates/${gate_id}/decide \\\n  -H "Content-Type: application/json" \\\n  -d '{"state":{"tool_name":"delete_customer_ledger","amount_usd":7200},"question":"Allow?"}'`;
-      document.getElementById('sdkSnippetOut').textContent = `# Python SDK / REST:\n${defaultPy}\n\n# Terminal cURL:\n${defaultCurl}`;
-
-      try {
-        const res = await fetch("https://api.answerr.me/v1/policies/compile", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ gate_id, domain, prompt })
-        });
-        if (res.ok) {
-          const data = await res.json();
-          const spec = data.compiled_policy || data.policy_spec || {};
-          latestCompiledPolicy = spec;
-          const seal = data.policy_seal || spec.policy_seal || "sha256:19555316c44e8dc33";
-          const ruleCount = (spec.hard_rules || []).length;
-
-          document.getElementById('certSeal').textContent = seal;
-          const curLang = window.ProI18n ? window.ProI18n.lang : 'tr';
-          document.getElementById('certRulesCount').textContent = curLang === 'en'
-            ? `${ruleCount} Active Rules + OOD ABSTAIN_REVIEW Shield`
-            : `${ruleCount} Mühürlü Kural + OOD ABSTAIN_REVIEW Kalkanı`;
-          document.getElementById('sealPill').textContent = `SEAL: ${seal.slice(0, 18)}...`;
-
-          const pyCode = data.sdk_snippet_python || defaultPy;
-          const curlCode = data.sdk_snippet_curl || defaultCurl;
-          document.getElementById('sdkSnippetOut').textContent = `# Python SDK / REST:\n${pyCode}\n\n# Terminal cURL:\n${curlCode}`;
-
-          testCompiledGate();
-          return;
-        }
-      } catch (e) {
-        console.warn("API compile fallback:", e);
-      }
-      document.getElementById('certSeal').textContent = "sha256:19555316c44e8dc33b92f0a1";
-      document.getElementById('sealPill').textContent = "SEAL: sha256:19555316c44...";
-      testCompiledGate();
-    }
-
-    async function testCompiledGate() {
-      let stateObj = {};
-      try {
-        stateObj = JSON.parse(document.getElementById('testStateInput').value);
-      } catch (e) {
-        alert("Geçersiz JSON: " + e.message);
-        return;
-      }
-
-      const gate_id = document.getElementById('gateIdInput').value.trim() || "agent_mcp_guard";
-      try {
-        const res = await fetch("https://api.answerr.me/v1/decide", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            gate_id: gate_id,
-            strict_policy: true,
-            state: stateObj,
-            questions: {
-              allow_action: { type: "noul", text: "Should this action be permitted under the sealed policy?" }
-            }
-          })
-        });
-        if (res.ok) {
-          const data = await res.json();
-          const tr = data.trace || {};
-          const ans = (data.results && data.results.allow_action) || {};
-          const sealedAudit = {
-            status: data.status,
-            verdict: data.label,
-            decision: data.decision,
-            noul_confidence: ans.noul,
-            latency_ms: data.latency_ms,
-            vram_bytes: 0,
-            vault_audit: {
-              policy_id: tr.policy_id,
-              policy_seal: tr.policy_seal,
-              execution_mode: tr.recommended_mode,
-              ood_detected: tr.ood_detected,
-              triggered_guardrail: tr.hard_rule_hit ? `${tr.hard_rule_hit.rule_id} (${tr.hard_rule_hit.effect})` : "WERR-24B™ Boundary Resonance",
-              core_formula: "PROPRIETARY WERR-24B™ SEED [SEALED BY ITOUCH VAULT]"
-            }
-          };
-          document.getElementById('testResultOut').textContent = JSON.stringify(sealedAudit, null, 2);
-          return;
-        }
-      } catch (_) {}
-
-      const local = werrLocal.evaluate(stateObj, {
-        allow_action: { type: "noul", text: "Should this action be permitted?" }
-      }, { strictPolicy: true, policy: latestCompiledPolicy || { id: gate_id } });
-      const lAns = (local.answers && local.answers.allow_action) || {};
-      const lTr = local.trace || {};
-      document.getElementById('testResultOut').textContent = JSON.stringify({
-        status: lTr.oodDetected ? "abstain_review" : "success",
-        verdict: lAns.label || (lAns.decision ? "ALLOWED" : "DENIED"),
-        decision: lAns.decision,
-        noul_confidence: lAns.noul || lAns.confidence,
-        latency_ms: local.latencyMs,
-        vram_bytes: 0,
-        vault_audit: {
-          policy_id: gate_id,
-          policy_seal: lTr.policySeal || "sha256:19555316c44e8dc33",
-          execution_mode: lTr.recommendedMode || "DETERMINISTIC_EXECUTE",
-          ood_detected: Boolean(lTr.oodDetected),
-          triggered_guardrail: "WERR-24B™ Boundary Resonance",
-          core_formula: "PROPRIETARY WERR-24B™ SEED [SEALED BY ITOUCH VAULT]"
-        }
-      }, null, 2);
-    }
-
-    function copySdkCode() {
-      const txt = document.getElementById('sdkSnippetOut').textContent;
-      navigator.clipboard.writeText(txt).then(() => {
-        const b = document.getElementById('copyBtn');
-        const isEn = window.ProI18n && window.ProI18n.lang === 'en';
-        b.textContent = isEn ? "✅ Copied!" : "✅ Kopyalandı!";
-        setTimeout(() => { b.textContent = isEn ? "📋 Copy" : "📋 Kopyala"; }, 1800);
-      });
-    }
-
-    // Dynamic prompt update on language change
-    window.addEventListener('proLanguageChanged', (e) => {
-      const curLang = e.detail.lang;
-      const t = TEMPLATES[activeTemplateKey];
-      if (t) {
-        document.getElementById('promptInput').value = t.prompt[curLang] || t.prompt.tr;
-      }
-      compilePolicy();
-    });
-
-    window.addEventListener('DOMContentLoaded', () => {
-      compilePolicy();
-    });
-  </script>
+  <script src="app.js"></script>
+  <script src="studio.js"></script>
 </body>
 </html>

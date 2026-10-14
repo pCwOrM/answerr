@@ -1,6 +1,6 @@
 [Unit]
-Description=Answerr Reflex Decision Engine Production REST API (werr 0-VRAM)
-Documentation=https://answerr.me/docs
+Description=answerr Decision API (policy kernel + werr research engine)
+Documentation=https://api.answerr.me/docs
 After=network.target
 
 [Service]
@@ -8,15 +8,20 @@ Type=simple
 User=pcworm
 Group=pcworm
 WorkingDirectory=/opt/apps/answerr/api
-ExecStart=/opt/apps/answerr/venv/bin/uvicorn server:app --host 127.0.0.1 --port 8560 --workers 2 --log-level info
+EnvironmentFile=-/etc/answerr/answerr.env
+ExecStart=/opt/apps/answerr/venv/bin/uvicorn server:app --host 127.0.0.1 --port 8560 --workers 2 --log-level info --no-proxy-headers
 Restart=always
 RestartSec=3
 
-# --- 1. Linux Kernel Sandboxing & Privilege Containment ---
+# Tenant gate store (ANSWERR_GATES_PATH defaults to /var/lib/answerr/gates.json)
+StateDirectory=answerr
+StateDirectoryMode=0750
+
+# Sandboxing
 NoNewPrivileges=true
 ProtectSystem=strict
 ProtectHome=true
-ReadWritePaths=/opt/apps/answerr/api /opt/apps/answerr/logs
+ReadWritePaths=/opt/apps/answerr/api /opt/apps/answerr/logs /var/lib/answerr
 PrivateTmp=true
 PrivateDevices=true
 ProtectKernelTunables=true
@@ -29,7 +34,7 @@ RestrictSUIDSGID=true
 LockPersonality=true
 UMask=0027
 
-# --- 2. Linux cgroup Resource Ceilings (Guarantees 0-Impact on Host) ---
+# Resource ceilings
 MemoryHigh=200M
 MemoryMax=256M
 CPUQuota=25%
