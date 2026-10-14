@@ -1,0 +1,342 @@
+"""Commercial layer (API 1.3.0): accounts, keys, metering, quotas, reviews, shadow mode, backtest,
+members, plan requests, statements, admin, webhooks, retention and docs."""
+import importlib
+import json
+import os
+import re
+import sys
+import tempfile
+import time
+
+import pytest
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ADMIN = "adm_" + "z" * 30
+H_ADMIN = {"X-Admin-Key": ADMIN}
+
+
+@pytest.fixture()
+def client(monkeypatch):
+    tmp = tempfile.mkdtemp()
+    monkeypatch.setenv("ANSWERR_API_KEYS", "itouch:" + "i" * 32)
+    monkeypatch.setenv("ANSWERR_GATES_PATH", os.path.join(tmp, "gates.json"))
+    monkeypatch.setenv("ANSWERR_RATELIMIT_DB", os.path.join(tmp, "rl.sqlite"))
+    monkeypatch.setenv("ANSWERR_COMMERCE_DB", os.path.join(tmp, "commerce.sqlite"))
+    monkeypatch.setenv("ANSWERR_ADMIN_KEY", ADMIN)
+    monkeypatch.setenv("ANSWERR_WERR_PATH", os.environ.get("ANSWERR_WERR_PATH", os.path.join(ROOT, "..", "werr")))
+    monkeypatch.delenv("RECAPTCHA_SECRET", raising=False)
+    monkeypatch.delenv("SMTP_PASSWORD", raising=False)
+    sys.path.insert(0, ROOT)
+    import api_server
+    api_server = importlib.reload(api_server)
+    from commerce import mail, store
+    store._key_cache.clear()
+    mail.OUTBOX.clear()
+    from fastapi.testclient import TestClient
+    with TestClient(api_server.app) as c:
+        c.mod, c.store, c.mail = api_server, store, mail
+        yield c
+
+
+def last_token(c):
+    body = c.mail.OUTBOX[-1].get_content()
+    return re.search(r"#login=(ans_link_[A-Za-z0-9_\-]+)", body).group(1)
+
+
+def signup(c, email="founder@example.com", company="Örnek A.Ş."):
+    r = c.post("/v1/auth/signup", json={"email": email, "company": company, "accept_terms": True, "kvkk_ack": True})
+    assert r.status_code == 200, r.text
+    v = c.post("/v1/auth/verify", json={"token": last_token(c)})
+    assert v.status_code == 200, v.text
+    b = v.json()
+    return b["session"], b.get("api_key"), b["account_id"]
+
+
+def auth(t):
+    return {"Authorization": "Bearer " + t}
+
+
+def decide(c, key, tool="read_invoice_summary", **extra):
+    body = {"gate_id": "agent_mcp_guard", "state": {"tool_name": tool, "user_role": "member", "auth_status": True},
+            "questions": {"allow": {"type": "noul", "text": "Allow?"}}}
+    body.update(extra)
+    return c.post("/v1/decide", json=body, headers=auth(key) if key else {})
+
+
+def set_plan(c, acc, plan, **kw):
+    r = c.post("/v1/admin/accounts/{}/plan".format(acc), json={"plan": plan, **kw}, headers=H_ADMIN)
+    assert r.status_code == 200, r.text
+    return r.json()["account"]
+
+
+# ----------------------------------------------------------------------------- docs & catalog
+def test_docs_live_under_v1(client):
+    assert client.get("/v1/docs").status_code == 200
+    spec = client.get("/v1/openapi.json").json()
+    assert spec["info"]["version"] == "1.3.0"
+    assert "/v1/account" in spec["paths"] and "/v1/backtest" in spec["paths"]
+    assert client.get("/").json()["docs_url"] == "/v1/docs"
+
+
+def test_plan_catalog_matches_pricing_page(client):
+    plans = client.get("/v1/plans").json()["plans"]
+    assert list(plans) == ["kesif", "gelistirici", "pro", "kurumsal"]
+    html = open(os.path.join(ROOT, "pro", "pricing.html"), encoding="utf-8").read()
+    for pid in ("gelistirici", "pro"):
+        p = plans[pid]
+        assert 'data-price-m="${}" data-price-y="${}"'.format(p["price_monthly"], p["price_yearly_per_month"]) in html
+    assert "10.000 karar" in html and "250.000 karar" in html and "1.000.000 karar" in html
+    assert "$0,15" in html and "$0,10" in html
+
+
+# ----------------------------------------------------------------------------- sign-up / login
+def test_signup_requires_consent_and_creates_owner_with_key(client):
+    r = client.post("/v1/auth/signup", json={"email": "x@example.com", "accept_terms": True, "kvkk_ack": False})
+    assert r.status_code == 400 and r.json()["error"] == "consent_required"
+    sess, key, acc = signup(client)
+    assert sess.startswith("ans_sess_") and key.startswith("ans_live_") and acc.startswith("acc_")
+    me = client.get("/v1/account", headers=auth(sess)).json()["account"]
+    assert me["plan"] == "kesif" and me["me"]["role"] == "owner" and me["usage"]["quota"] == 10000
+    assert client.get("/v1/account", headers=auth(key)).json()["account"]["me"]["via"] == "api_key"
+
+
+def test_link_is_single_use_and_login_does_not_enumerate(client):
+    client.post("/v1/auth/signup", json={"email": "a@example.com", "accept_terms": True, "kvkk_ack": True})
+    tok = last_token(client)
+    assert client.post("/v1/auth/verify", json={"token": tok}).status_code == 200
+    assert client.post("/v1/auth/verify", json={"token": tok}).json()["error"] == "invalid_link"
+    n = len(client.mail.OUTBOX)
+    r1 = client.post("/v1/auth/login", json={"email": "nobody@example.com"})
+    r2 = client.post("/v1/auth/login", json={"email": "a@example.com"})
+    assert r1.json() == r2.json() and len(client.mail.OUTBOX) == n + 1
+    sess = client.post("/v1/auth/verify", json={"token": last_token(client)}).json()["session"]
+    assert client.post("/v1/auth/logout", headers=auth(sess)).status_code == 200
+    assert client.get("/v1/account", headers=auth(sess)).status_code == 401
+
+
+# ----------------------------------------------------------------------------- metering & quota
+def test_decisions_are_metered_and_logged(client):
+    sess, key, acc = signup(client)
+    r = decide(client, key, "send_payment", external_id="order-42")
+    b = r.json()
+    assert r.status_code == 200 and b["verdict"] == "REVIEW" and b["decision_id"].startswith("dec_")
+    assert b["usage"]["decisions"] == 1 and r.headers["X-Answerr-Quota-Remaining"] == "9999"
+    assert "review" not in b                                 # Keşif has no review queue
+    decide(client, None)                                     # anonymous demo calls are not metered
+    log = client.get("/v1/account/decisions", headers=auth(sess)).json()["decisions"]
+    assert len(log) == 1 and log[0]["external_id"] == "order-42" and log[0]["state_fields"] == ["auth_status", "tool_name", "user_role"]
+    series = client.get("/v1/account/usage?days=7", headers=auth(key)).json()
+    assert series["usage"]["decisions"] == 1 and series["series"][-1]["review"] == 1
+
+
+def test_quota_exceeded_returns_429_and_overage_rules(client, monkeypatch):
+    from commerce import plans
+    monkeypatch.setitem(plans.PLANS["kesif"], "quota", 2)
+    sess, key, acc = signup(client)
+    assert decide(client, key).status_code == 200
+    assert decide(client, key).status_code == 200
+    r = decide(client, key)
+    assert r.status_code == 429 and r.json()["error"] == "quota_exceeded" and r.headers["Retry-After"]
+    assert client.patch("/v1/account", json={"overage_enabled": True}, headers=auth(sess)).json()["error"] == "no_overage"
+    monkeypatch.setitem(plans.PLANS["gelistirici"], "quota", 2)
+    set_plan(client, acc, "gelistirici")
+    assert decide(client, key).status_code == 429
+    assert client.patch("/v1/account", json={"overage_enabled": True}, headers=auth(sess)).status_code == 200
+    assert decide(client, key).status_code == 200
+
+
+def test_quota_warning_mail_at_80_percent(client, monkeypatch):
+    from commerce import plans
+    monkeypatch.setitem(plans.PLANS["kesif"], "quota", 5)
+    sess, key, acc = signup(client)
+    for _ in range(4):
+        decide(client, key)
+    assert any("%80" in (m["Subject"] or "") for m in client.mail.OUTBOX)
+
+
+# ----------------------------------------------------------------------------- reviews, shadow, backtest
+def test_review_queue_and_resolution_on_pro(client):
+    sess, key, acc = signup(client)
+    set_plan(client, acc, "pro")
+    b = decide(client, key, "send_payment", external_id="pay-7").json()
+    rid = b["review"]["id"]
+    q = client.get("/v1/reviews", headers=auth(sess)).json()["reviews"]
+    assert q[0]["id"] == rid and q[0]["state"]["tool_name"] == "send_payment" and q[0]["external_id"] == "pay-7"
+    r = client.post("/v1/reviews/{}/resolve".format(rid), json={"action": "approve", "note": "known customer"}, headers=auth(key))
+    assert r.json()["review"]["status"] == "approved"
+    assert client.post("/v1/reviews/{}/resolve".format(rid), json={"action": "reject"}, headers=auth(key)).status_code == 409
+    assert client.get("/v1/reviews/" + rid, headers=auth(key)).json()["review"]["status"] == "approved"
+    log = client.get("/v1/account/decisions", headers=auth(sess)).json()["decisions"]
+    assert log[0]["observed"] == "ALLOW"
+    assert "review" not in decide(client, key, "send_payment", enqueue_review=False).json()
+
+
+def test_shadow_mode_is_a_paid_feature_and_reports_agreement(client):
+    sess, key, acc = signup(client)
+    assert decide(client, key, mode="shadow").json()["error"] == "feature_unavailable"
+    set_plan(client, acc, "pro")
+    decide(client, key, "read_invoice_summary", mode="shadow", observed_outcome="ALLOW")
+    decide(client, key, "bulk_delete_users", mode="shadow", observed_outcome=True)
+    d = decide(client, key, "send_payment", mode="shadow").json()
+    assert "review" not in d                                  # shadow never queues
+    client.post("/v1/decisions/{}/outcome".format(d["decision_id"]), json={"observed_outcome": "approved"}, headers=auth(key))
+    rep = client.get("/v1/account/shadow-report", headers=auth(sess)).json()["report"]
+    assert rep["decisions"] == 3 and rep["labelled"] == 3 and rep["agreement"] == round(1 / 3, 4)
+    assert rep["stricter_than_you"] == 2 and rep["matrix"]["DENY"]["ALLOW"] == 1
+    assert decide(client, key, observed_outcome="maybe").status_code == 400
+
+
+def test_backtest_counts_records(client):
+    sess, key, acc = signup(client)
+    body = {"gate_id": "agent_mcp_guard", "records": [
+        {"state": {"tool_name": "drop_table"}, "observed_outcome": "ALLOW", "id": "a"},
+        {"state": {"tool_name": "list_orders", "user_role": "member"}, "observed_outcome": "ALLOW"},
+        {"state": {"tool_name": "send_payment"}}]}
+    assert client.post("/v1/backtest", json=body, headers=auth(key)).json()["error"] == "feature_unavailable"
+    set_plan(client, acc, "pro")
+    r = client.post("/v1/backtest", json=body, headers=auth(key)).json()
+    assert r["records"] == 3 and r["agreement"] == 0.5 and r["differences"][0]["id"] == "a"
+    assert r["matrix"]["REVIEW"]["unknown"] == 1
+    assert client.get("/v1/account", headers=auth(key)).json()["account"]["usage"]["decisions"] == 3
+
+
+# ----------------------------------------------------------------------------- keys, members, gates
+def test_key_management_is_console_only_and_revocation_works(client):
+    sess, key, acc = signup(client)
+    assert client.post("/v1/account/keys", json={"label": "ci"}, headers=auth(key)).json()["error"] == "session_required"
+    new = client.post("/v1/account/keys", json={"label": "ci"}, headers=auth(sess)).json()
+    assert new["api_key"].startswith("ans_live_")
+    r = client.post("/v1/account/keys", json={"label": "third"}, headers=auth(sess))
+    assert r.status_code == 403 and r.json()["error"] == "key_limit"      # Keşif: 2 active keys
+    assert client.delete("/v1/account/keys/" + new["key"]["id"], headers=auth(sess)).status_code == 200
+    assert decide(client, new["api_key"]).json()["governed_by"] and "decision_id" not in decide(client, new["api_key"]).json()
+
+
+def test_members_seats_and_reviewer_role(client):
+    sess, key, acc = signup(client)
+    r = client.post("/v1/account/members", json={"email": "rev@example.com", "role": "reviewer"}, headers=auth(sess))
+    assert r.status_code == 403 and r.json()["error"] == "seat_limit"
+    set_plan(client, acc, "pro")
+    assert client.post("/v1/account/members", json={"email": "rev@example.com", "role": "reviewer"}, headers=auth(sess)).status_code == 200
+    rsess = client.post("/v1/auth/verify", json={"token": last_token(client)}).json()["session"]
+    me = client.get("/v1/account", headers=auth(rsess)).json()["account"]
+    assert me["id"] == acc and me["me"]["role"] == "reviewer"
+    assert client.get("/v1/account/keys", headers=auth(rsess)).status_code == 403
+    assert client.get("/v1/reviews", headers=auth(rsess)).status_code == 200
+    assert client.delete("/v1/account/members/rev@example.com", headers=auth(sess)).status_code == 200
+    assert client.get("/v1/account", headers=auth(rsess)).status_code == 401
+
+
+def test_custom_gate_limit_follows_plan(client):
+    sess, key, acc = signup(client)
+    gate = {"version": "1.0.0", "fields": ["amount"], "hard_rules": [
+        {"id": "big", "field": "amount", "op": ">", "value": 1000, "effect": "REVIEW"}]}
+    assert client.post("/v1/gates", json=dict(gate, gate_id="acme_one"), headers=auth(key)).status_code == 200
+    r = client.post("/v1/gates", json=dict(gate, gate_id="acme_two"), headers=auth(key))
+    assert r.status_code == 403 and r.json()["error"] == "gate_limit"
+    b = client.post("/v1/gates/acme_one/decide", json={"state": {"amount": 5000}}, headers=auth(key)).json()
+    assert b["verdict"] == "REVIEW" and b["decision_id"]
+
+
+# ----------------------------------------------------------------------------- plans, statements, admin
+def test_admin_requires_key(client):
+    assert client.get("/v1/admin/metrics").status_code == 401
+    assert client.get("/v1/admin/metrics", headers={"X-Admin-Key": "wrong" * 6}).status_code == 401
+
+
+def test_plan_request_approval_statement_and_einvoice(client):
+    sess, key, acc = signup(client)
+    r = client.post("/v1/account/plan-request", json={"plan": "pro", "cycle": "monthly", "note": "200k/ay"}, headers=auth(sess)).json()
+    assert r["status"] == "requested" and r["payment"]["provider"] == "manual"
+    assert any("Plan talebi" in (m["Subject"] or "") for m in client.mail.OUTBOX)
+    pend = client.get("/v1/admin/plan-requests", headers=H_ADMIN).json()["requests"]
+    assert pend[0]["account_id"] == acc
+    client.post("/v1/admin/plan-requests/{}/approve".format(pend[0]["id"]), headers=H_ADMIN)
+    assert client.get("/v1/account", headers=auth(key)).json()["account"]["plan"] == "pro"
+    m = client.get("/v1/admin/metrics", headers=H_ADMIN).json()["metrics"]
+    assert m["mrr_cents"] == 9900 and m["accounts_by_plan"]["pro"] == 1
+    period = client.store.period_of()
+    st = client.post("/v1/admin/statements/generate", json={"period": period}, headers=H_ADMIN).json()["statements"]
+    assert st[0]["total_cents"] == 9900 and st[0]["currency"] == "USD"
+    marked = client.post("/v1/admin/statements/{}/mark".format(st[0]["id"]),
+                         json={"status": "issued", "e_invoice_no": "GIB2026000000123"}, headers=H_ADMIN).json()["statement"]
+    assert marked["status"] == "issued" and marked["e_invoice_no"] == "GIB2026000000123"
+    mine = client.get("/v1/account/statements", headers=auth(sess)).json()
+    assert mine["statements"][0]["e_invoice_no"] == "GIB2026000000123" and mine["current_period_estimate"]["base_cents"] == 9900
+
+
+def test_overage_billing_per_started_thousand():
+    sys.path.insert(0, ROOT)
+    from commerce import plans
+    assert plans.overage_cents("pro", 1) == 10 and plans.overage_cents("pro", 1000) == 10 and plans.overage_cents("pro", 1001) == 20
+    assert plans.overage_cents("kesif", 5000) == 0
+    assert plans.monthly_base_cents("pro", "yearly") == 8200 and plans.monthly_base_cents("gelistirici", "monthly") == 2900
+
+
+def test_pilot_expires_to_kesif_and_suspension_blocks(client):
+    sess, key, acc = signup(client)
+    set_plan(client, acc, "pilot")
+    assert client.get("/v1/account", headers=auth(key)).json()["account"]["plan"] == "pilot"
+    with client.store.tx() as c:
+        c.execute("UPDATE accounts SET plan_expires_at = ? WHERE id = ?", (time.time() - 1, acc))
+    assert client.get("/v1/account", headers=auth(key)).json()["account"]["plan"] == "kesif"
+    client.post("/v1/admin/accounts/{}/status".format(acc), json={"status": "suspended"}, headers=H_ADMIN)
+    assert decide(client, key).json()["error"] == "account_suspended"
+
+
+def test_admin_create_and_delete_account(client):
+    r = client.post("/v1/admin/accounts", json={"email": "smoke@example.com", "plan": "pro"}, headers=H_ADMIN).json()
+    key, acc = r["api_key"], r["account"]["id"]
+    assert r["account"]["plan"] == "pro" and decide(client, key).status_code == 200
+    assert client.delete("/v1/admin/accounts/" + acc, headers=H_ADMIN).status_code == 200
+    assert client.get("/v1/account", headers=auth(key)).status_code == 401
+
+
+def test_csv_export_is_plan_gated(client):
+    sess, key, acc = signup(client)
+    decide(client, key, "drop_table")
+    assert client.get("/v1/account/decisions.csv", headers=auth(sess)).status_code == 403
+    set_plan(client, acc, "pro")
+    r = client.get("/v1/account/decisions.csv", headers=auth(sess))
+    assert r.status_code == 200 and r.text.splitlines()[0].startswith("id,ts_iso,gate_id,verdict")
+    assert ",DENY,tool_class:destructive," in r.text
+
+
+def test_retention_purge(client):
+    sess, key, acc = signup(client)
+    decide(client, key)
+    with client.store.tx() as c:
+        c.execute("UPDATE decisions SET ts = ? WHERE account_id = ?", (time.time() - 8 * 86400, acc))
+    assert client.post("/v1/admin/purge", headers=H_ADMIN).json()["removed"]["decisions"] == 1
+
+
+# ----------------------------------------------------------------------------- webhooks
+def test_webhook_url_rules_and_signature():
+    sys.path.insert(0, ROOT)
+    from commerce import store, webhooks
+    for bad in ("http://example.com/h", "https://127.0.0.1/h", "https://10.0.2.2/h", "https://localhost/h"):
+        with pytest.raises(store.CommerceError):
+            webhooks.validate_url(bad)
+    body = json.dumps({"event": "ping"}).encode()
+    hdr = webhooks.sign("whsec_x", body, int(time.time()))
+    assert webhooks.verify("whsec_x", body, hdr) and not webhooks.verify("whsec_y", body, hdr)
+    assert not webhooks.verify("whsec_x", body, webhooks.sign("whsec_x", body, int(time.time()) - 900))
+
+
+def test_webhooks_are_a_pro_feature(client):
+    sess, key, acc = signup(client)
+    r = client.patch("/v1/account", json={"webhook_url": "https://example.com/hook"}, headers=auth(sess))
+    assert r.status_code == 403 and r.json()["feature"] == "webhooks"
+
+
+def test_docs_compile_register_decide_flow(client):
+    """The three-step example on pro/docs.html works as written."""
+    sess, key, acc = signup(client)
+    spec = client.post("/v1/policies/compile", json={"gate_id": "acme_payments",
+                       "prompt": "5.000 doları aşan ödemeyi insana gönder. Başarısız deneme sayısı 3’ten fazlaysa reddet."}).json()["policy_spec"]
+    r = client.post("/v1/gates", json=spec, headers=auth(key))
+    assert r.status_code == 200, r.text
+    b = client.post("/v1/gates/acme_payments/decide", json={"state": {"amount": 9200, "failed_attempts": 0}}, headers=auth(key)).json()
+    assert b["verdict"] == "REVIEW" and b["trace"]["rule_id"] == "r1_amount_gt"
+    b = client.post("/v1/gates/acme_payments/decide", json={"state": {"amount": 100, "failed_attempts": 5}}, headers=auth(key)).json()
+    assert b["verdict"] == "DENY"

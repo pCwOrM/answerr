@@ -5,13 +5,16 @@
 Uses only the standard library.
 """
 import json
+import os
 import sys
 import time
 import urllib.error
 import urllib.request
 
 BASE = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8560").rstrip("/")
-UA = {"User-Agent": "answerr-smoke/1.2.0"}
+EXPECT = os.environ.get("ANSWERR_EXPECT_VERSION", "1.3.0")
+ADMIN = os.environ.get("ANSWERR_ADMIN_KEY", "")
+UA = {"User-Agent": "answerr-smoke/" + EXPECT}
 results = []
 
 
@@ -40,7 +43,7 @@ def check(name, cond, detail=""):
 Q = {"q": {"type": "noul", "text": "Should this tool call be permitted?"}}
 
 st, h, _ = call("GET", "/v1/health")
-check("health 1.2.0", st == 200 and h and h.get("api_version") == "1.2.0", h and h.get("api_version"))
+check("health " + EXPECT, st == 200 and h and h.get("api_version") == EXPECT, h and h.get("api_version"))
 
 cases = [
     ("bulk_delete_users", {"tool_name": "bulk_delete_users", "user_role": "admin", "auth_status": True}, "DENY"),
@@ -84,6 +87,41 @@ check("chat/completions still answers", st == 200 and b and b.get("choices"), st
 
 st, b, _ = call("POST", "/v1/decide", {"domain": "robotics_industrial"})
 check("legacy preset still answers", st == 200 and b and "continue_operation" in (b.get("answers") or {}), st)
+
+# ---------------------------------------------------------------- 1.3.0 commercial layer
+if EXPECT >= "1.3.0":
+    st, b, _ = call("GET", "/v1/openapi.json")
+    check("openapi under /v1", st == 200 and b and "/v1/account" in (b.get("paths") or {}), st)
+    st, b, _ = call("GET", "/v1/plans")
+    check("plan catalog", st == 200 and b and list((b.get("plans") or {}))[:3] == ["kesif", "gelistirici", "pro"], st)
+    st, b, _ = call("GET", "/v1/account")
+    check("account needs auth", st == 401, st)
+    if ADMIN:
+        AH = {"X-Admin-Key": ADMIN}
+        email = "smoke+{}@answerr.me".format(int(time.time()))
+        st, b, _ = call("POST", "/v1/admin/accounts", {"email": email, "company": "smoke", "plan": "pro"}, AH)
+        key, acc = (b or {}).get("api_key"), ((b or {}).get("account") or {}).get("id")
+        check("admin onboards a Pro account", st == 200 and key and acc, st)
+        if key:
+            KH = {"Authorization": "Bearer " + key}
+            st, d, hd = call("POST", "/v1/gates/agent_mcp_guard/decide", {"state": {"tool_name": "send_payment", "user_role": "member"},
+                                                                          "external_id": "smoke"}, KH)
+            rid = ((d or {}).get("review") or {}).get("id")
+            check("metered decision + review queued", st == 200 and d.get("decision_id") and rid and d["usage"]["decisions"] == 1,
+                  (d or {}).get("usage"))
+            st, r, _ = call("POST", "/v1/reviews/{}/resolve".format(rid), {"action": "approve", "note": "smoke"}, KH)
+            check("review resolved by API key", st == 200 and r["review"]["status"] == "approved", st)
+            st, d, _ = call("POST", "/v1/decide", {"gate_id": "agent_mcp_guard", "mode": "shadow", "observed_outcome": "ALLOW",
+                                                   "state": {"tool_name": "drop_table"}}, KH)
+            st, r, _ = call("GET", "/v1/account/shadow-report?days=1", None, KH)
+            check("shadow report", st == 200 and r["report"]["stricter_than_you"] >= 1, st)
+            st, r, _ = call("POST", "/v1/account/keys", {"label": "x"}, KH)
+            check("key management is console-only", st == 403, st)
+        if acc:
+            st, _, _ = call("DELETE", "/v1/admin/accounts/" + acc, None, AH)
+            check("smoke account removed", st == 200, st)
+            st, _, _ = call("GET", "/v1/account", None, {"Authorization": "Bearer " + (key or "")})
+            check("deleted account's key is dead", st == 401, st)
 
 width = max(len(n) for n, _, _ in results)
 for n, ok, d in results:
