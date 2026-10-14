@@ -23,6 +23,7 @@
   <a href="https://arxiv.org/abs/2609.30719"><img src="https://img.shields.io/badge/arXiv-2609.30719%20(Werracle)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.30719"></a>
   <a href="https://arxiv.org/abs/2609.38492"><img src="https://img.shields.io/badge/arXiv-2609.38492%20(GAP%20Lean4)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.38492"></a>
   <a href="https://github.com/CrocSwap/integer-mult-bounds/blob/50d768818f579d4e165b4c257c6ee25bca300802/docs/research/community-reconciliation-next100-review.md"><img src="https://img.shields.io/badge/CrocSwap%20Main-PR%20%23226%20Incorporated%20(50d76881)-brightgreen.svg?style=for-the-badge" alt="CrocSwap PR #226 Incorporated"></a>
+  <a href="https://arxiv.org/abs/2610.14263"><img src="https://img.shields.io/badge/arXiv-2610.14263%20(Sch%C3%B6nhage%20Tensor)-b31b1b.svg?style=for-the-badge" alt="arXiv 2610.14263"></a>
   <a href="https://doi.org/10.5281/zenodo.22983889"><img src="https://img.shields.io/badge/Lean%204%20Proofs-v2%20(10%20Theorems)-024dad.svg?style=for-the-badge" alt="Lean 4 Verification"></a>
   <a href="https://doi.org/10.5281/zenodo.22978460"><img src="https://img.shields.io/badge/Black%20Hole-Zenodo%20Record%2022978460-7c3aed.svg?style=for-the-badge" alt="Black Hole Page Curve"></a>
   <a href="https://epats.turkpatent.gov.tr"><img src="https://img.shields.io/badge/Patent%20Pending-TR%202026%2F016633%20(Connectome)-red.svg?style=for-the-badge" alt="TÜRKPATENT TR 2026/016633"></a>
