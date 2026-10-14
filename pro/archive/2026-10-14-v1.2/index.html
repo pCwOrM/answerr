@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>answerr Pro — Karar Gözlemevi</title>
+  <meta name="description" content="Türkçe ya da İngilizce yazılan karar politikaları açık kurallara derlenir; her karar gerekçesi ve iziyle döner. AI ajan aksiyon kapısı, ödeme riski, API kötüye kullanım.">
+  <meta name="theme-color" content="#05060A">
+  <link rel="icon" href="../../../assets/answerr_logo_portal_fav_trans.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="pro.css">
+  <script src="https://www.google.com/recaptcha/api.js?render=6LdP-JgqAAAAAJLdy_W8uowqstSa4XKlJTOkVAux" async defer></script>
+</head>
+<body>
+  <a class="sr-only" href="#main">İçeriğe geç</a>
+
+  <div class="hud">
+    <div class="wrap">
+      <div id="hudStatus"><span class="dot"></span>…</div>
+      <div data-i18n="hudRight">ÇALIŞMA ANINDA MODEL YOK · HER KARARIN İZİ VAR</div>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Ana gezinme">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="answerr Pro ana sayfa">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="#FFB048" stroke-width="1.5"/><circle cx="17" cy="17" r="8" fill="none" stroke="#8CDEEC" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="25" cy="10" r="2.5" fill="#FFB048"/></svg>
+        <b>answerr</b><span class="tag">PRO</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Menü" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h9" stroke="currentColor" stroke-width="1.6"/></svg></button>
+      <div class="nav-links">
+        <a href="#evreler" data-i18n="navHow">Nasıl çalışır</a>
+        <a href="#kara-kutu" data-i18n="navConsole">Kara Kutu</a>
+        <a href="studio.html" data-i18n="navStudio">Derleyici</a>
+        <a href="research.html" data-i18n="navResearch">Araştırma</a>
+        <a href="https://api.answerr.me/docs" rel="noopener" data-i18n="navApi">API belgeleri</a>
+        <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>
+        <a class="btn-ghost btn-sm" href="#erisim" data-i18n="navAccess">Erken erişim</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <header class="hero">
+      <picture>
+        <source media="(max-width: 760px)" srcset="../../../assets/pro/horizon-800.jpg">
+        <img class="hero-bg" src="../../../assets/pro/horizon.jpg" alt="" aria-hidden="true" fetchpriority="high">
+      </picture>
+      <div class="hero-scrim"></div>
+      <div class="wrap">
+        <div class="hero-copy">
+          <div class="eyebrow" data-i18n="heroEyebrow">◇ Olay ufku protokolü · karar kapısı</div>
+          <h1 data-i18n="heroTitle">Ajanınız harekete geçmeden önce, son söz <em>deterministik</em>.</h1>
+          <p data-i18n="heroLead">Kurallarınızı Türkçe ya da İngilizce yazın. answerr onları açık, sürümlenmiş kurallara derler; aynı girdiye her seferinde aynı kararı verir ve nedenini kaydeder. Tanımadığı bir durumda tahmin etmez, insana devreder.</p>
+          <div class="hero-ctas">
+            <a class="btn-primary" href="#kara-kutu"><span data-i18n="heroCta1">Kara Kutuyu aç</span> <span aria-hidden="true">→</span></a>
+            <a class="btn-ghost" href="studio.html" data-i18n="heroCta2">Bir politika derle</a>
+          </div>
+        </div>
+        <aside class="triad" aria-label="Üç hüküm">
+          <div class="label" data-i18n="triadTitle">Üç hüküm, üçüncü yok</div>
+          <div class="triad-row">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="none" stroke="#8CDEEC" stroke-width="2"/><path d="M12 20l6 6 10-12" fill="none" stroke="#8CDEEC" stroke-width="2.5"/></svg>
+            <div><b class="v-allow" data-i18n="vAllow">GEÇ</b><span data-i18n="triadAllow">Kural açık, sinyaller tanıdık.</span></div>
+          </div>
+          <div class="triad-row">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="none" stroke="#FFB048" stroke-width="2" stroke-dasharray="4 4"/><circle cx="20" cy="15" r="4" fill="none" stroke="#FFB048" stroke-width="2"/><path d="M12 29c2-5 14-5 16 0" fill="none" stroke="#FFB048" stroke-width="2"/></svg>
+            <div><b class="v-review" data-i18n="vReview">İNSANA DEVRET</b><span data-i18n="triadReview">Bilinmeyen alan, eksik bilgi ya da eşik.</span></div>
+          </div>
+          <div class="triad-row">
+            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="8" y="8" width="24" height="24" fill="none" stroke="#FF6B5B" stroke-width="2" transform="rotate(45 20 20)"/><path d="M15 15l10 10M25 15L15 25" stroke="#FF6B5B" stroke-width="2.5"/></svg>
+            <div><b class="v-deny" data-i18n="vDeny">DUR</b><span data-i18n="triadDeny">Kural tetiklendi; gerekçe kayıtta.</span></div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section class="tele" aria-label="Temel özellikler">
+      <div class="wrap">
+        <div class="tele-item"><div class="k">T-01</div><b data-i18n="t1t">Aynı girdi, aynı karar</b><p data-i18n="t1d">Sunucu, tarayıcı ve Node aynı çekirdeği çalıştırır; testlerle eşitliği denetlenir.</p></div>
+        <div class="tele-item"><div class="k">T-02</div><b data-i18n="t2t">Çalışma anında model yok</b><p data-i18n="t2d">Dil yalnız politikayı yazarken taslağa çevrilir.</p></div>
+        <div class="tele-item"><div class="k">T-03</div><b data-i18n="t3t">Bilinmeyen → insana</b><p data-i18n="t3d">Tanınmayan tek bir alan bile kararı incelemeye gönderir.</p></div>
+        <div class="tele-item"><div class="k">T-04</div><b data-i18n="t4t">Her kararın izi</b><p data-i18n="t4d">Kural, aday hükümler, alan katkıları ve politika mührü (SHA-256).</p></div>
+      </div>
+    </section>
+
+    <!-- Kara Kutu: live console -->
+    <section class="section" id="kara-kutu" aria-labelledby="kk-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow" data-i18n="kkEyebrow">Kara kutu · canlı</div>
+            <h2 id="kk-title" data-i18n="kkTitle">Bir durum gönderin, hükmü ve gerekçesini görün.</h2>
+          </div>
+          <p data-i18n="kkLead">Kararlar api.answerr.me üzerindeki yerleşik kapılardan gelir. API'ye ulaşılamazsa aynı çekirdek tarayıcıda çalışır ve bu açıkça belirtilir.</p>
+        </div>
+
+        <div class="console">
+          <section class="panel" aria-labelledby="in-title">
+            <h3 id="in-title" class="label" data-i18n="kkIn">01 · Kapı ve senaryo</h3>
+            <div class="field">
+              <label for="gateSel" data-i18n="kkGate">Kapı</label>
+              <select id="gateSel">
+                <option value="agent_mcp_guard">agent_mcp_guard — AI ajan</option>
+                <option value="fintech_payment_tr">fintech_payment_tr — ödeme</option>
+                <option value="api_zero_trust_waf">api_zero_trust_waf — API</option>
+              </select>
+            </div>
+            <div class="scn-list" id="scnList" role="group" aria-label="Senaryolar"></div>
+            <div class="field">
+              <label for="stateBox" data-i18n="kkState">Durum vektörü (düzenlenebilir JSON)</label>
+              <textarea id="stateBox" rows="8" spellcheck="false"></textarea>
+            </div>
+            <button class="btn-primary" id="runBtn" type="button" data-i18n="kkRun">Kapıya sor</button>
+            <div class="small-mono" id="qLine"></div>
+          </section>
+
+          <section class="panel center" aria-labelledby="out-title" aria-live="polite">
+            <h3 id="out-title" class="label" data-i18n="kkOut">02 · Hüküm</h3>
+            <div class="reactor" id="reactor">
+              <svg viewBox="0 0 320 320" aria-hidden="true">
+                <circle cx="160" cy="160" r="150" fill="none" stroke="rgba(140,222,236,0.14)" stroke-width="1"/>
+                <circle class="ring-a" id="ringA" cx="160" cy="160" r="128" fill="none" stroke="#9AA3B2" stroke-width="2" stroke-dasharray="6 10"/>
+                <circle id="ringB" cx="160" cy="160" r="104" fill="none" stroke="#9AA3B2" stroke-width="1" opacity="0.5"/>
+                <path d="M160 6v20M160 294v20M6 160h20M294 160h20" stroke="rgba(140,222,236,0.4)" stroke-width="1"/>
+              </svg>
+              <div class="reactor-core">
+                <div class="code-line" id="vCode">—</div>
+                <div class="verdict" id="vWord">…</div>
+                <div class="sub" id="vSub"></div>
+              </div>
+            </div>
+            <div class="stats">
+              <div><small data-i18n="kkConf">GÜVEN</small><b id="sConf">—</b></div>
+              <div><small data-i18n="kkRule">KURAL</small><b id="sRule">—</b></div>
+              <div><small data-i18n="kkLat">GECİKME</small><b id="sLat">—</b></div>
+            </div>
+            <div class="small-mono" id="sSource"></div>
+          </section>
+
+          <section class="panel" aria-labelledby="tr-title">
+            <h3 id="tr-title" class="label" data-i18n="kkTrace">03 · Uçuş kaydı</h3>
+            <div>
+              <div class="label" style="margin-bottom:6px" data-i18n="kkCand">Aday hükümler (en ağır olan kazanır)</div>
+              <div class="trace-list" id="candList"></div>
+            </div>
+            <div>
+              <div class="label" style="margin-bottom:10px" data-i18n="kkContrib">Alan katkıları (risk puanı)</div>
+              <div class="bars" id="barList"></div>
+            </div>
+            <div class="note" id="unkNote"></div>
+            <div class="small-mono" id="sealLine"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="evreler" aria-labelledby="ev-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="ev-title" data-i18n="evTitle">Üç evre. Sistem-2 yazar, Sistem-1 infaz eder.</h2>
+          <p data-i18n="evLead">Düşünme işi politikayı yazarken bir kez yapılır. Karar anında yalnızca derlenmiş, onaylanmış kurallar çalışır.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <div class="row"><span style="color:var(--amber)" data-i18n="ev1k">EVRE 01</span><span class="muted" data-i18n="ev1s">YAZ</span></div>
+            <h3 data-i18n="ev1t">Kuralı kendi dilinizde yazın</h3>
+            <div class="code" data-i18n="ev1c">“Ajan silme ya da para transferi aracı çağırırsa reddet. 5.000 doları aşan işlemi insana gönder.”</div>
+          </article>
+          <article class="card">
+            <div class="row"><span style="color:var(--amber)" data-i18n="ev2k">EVRE 02</span><span class="muted" data-i18n="ev2s">DERLE</span></div>
+            <h3 data-i18n="ev2t">Her cümle bir kurala bağlanır</h3>
+            <div class="code">r1 tool_name has_token [delete, transfer] → <span class="v-deny">DENY</span>
+r2 amount_usd &gt; 5000 → <span class="v-review">REVIEW</span>
+<span data-i18n="ev2c">testler ve denetimler çalıştırılır; belirsizlikler soru olarak döner</span></div>
+          </article>
+          <article class="card">
+            <div class="row"><span style="color:var(--amber)" data-i18n="ev3k">EVRE 03</span><span class="muted" data-i18n="ev3s">İNFAZ</span></div>
+            <h3 data-i18n="ev3t">Her yerde aynı hüküm</h3>
+            <div class="code" data-i18n="ev3c">REST API · tarayıcı · Node · Python
+hüküm + kural + iz + politika mührü</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="ol-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="ol-title" data-i18n="olTitle">Ölçüm, iddia değil.</h2>
+          <p data-i18n="olLead">Bu sayfadaki rakamlar ya şu an tarayıcınızda ölçülür ya da henüz yoktur ve öyle yazılır.</p>
+        </div>
+        <div class="grid-4">
+          <div class="metric"><b id="mLat">—</b><span data-i18n="m1">Bu oturumda ölçülen API yanıtı (ortanca, ağ dahil)</span><small id="mLatN" data-i18n="m1n">Kara Kutu'yu çalıştırın</small></div>
+          <div class="metric"><b>0</b><span data-i18n="m2">Karar anında çalışan model ağırlığı (bayt)</span><small data-i18n="m2n">kaynak kodda doğrulanabilir</small></div>
+          <div class="metric"><b id="mTests">71</b><span data-i18n="m3">Çekirdek, eşitlik ve API testi (CI)</span><small data-i18n="m3n">Python ve JS aynı vektörlerle</small></div>
+          <div class="metric pending"><b data-i18n="m4b">Henüz yok</b><span data-i18n="m4">Gölge mod pilotu: yakalanan / kaçan</span><small data-i18n="m4n">tasarım ortağı pilotundan sonra yayımlanacak</small></div>
+        </div>
+      
+        <div style="margin-top:48px">
+          <div class="label" style="margin-bottom:12px"><span data-i18n="rcTitle">Araştırma kayıtları</span> · <span class="muted" style="text-transform:none;letter-spacing:0" data-i18n="rcNote">werr araştırma motoruna ait; ürün kararları politika çekirdeğinden gelir.</span></div>
+          <div class="tpl-row">
+            <a class="scn btn-sm" href="https://arxiv.org/abs/2609.25498" rel="noopener">arXiv:2609.25498 · werr</a>
+            <a class="scn btn-sm" href="https://arxiv.org/abs/2609.33066" rel="noopener">arXiv:2609.33066 · Lean 4</a>
+            <a class="scn btn-sm" href="https://arxiv.org/abs/2609.30719" rel="noopener">arXiv:2609.30719 · Werracle</a>
+            <a class="scn btn-sm" href="https://arxiv.org/abs/2610.14263" rel="noopener">arXiv:2610.14263 · Schönhage</a>
+            <a class="scn btn-sm" href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions" rel="noopener">HF · werr_open_decisions</a>
+            <a class="scn btn-sm" href="https://pypi.org/project/werr/" rel="noopener">PyPI · werr</a>
+            <a class="scn btn-sm" href="https://github.com/nekuda-ai/WindTunnel/issues/25" rel="noopener">WindTunnel WebMCP 49/49</a>
+            <a class="scn btn-sm" href="https://github.com/mmastrac/jevenator2/issues/1" rel="noopener">Jevenator 2</a>
+            <a class="scn btn-sm" href="research.html" data-i18n="fResearch">Araştırma arşivi</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" aria-labelledby="yo-title">
+      <div class="wrap">
+        <div class="section-head"><h2 id="yo-title" data-i18n="yoTitle">Üç yörünge</h2></div>
+        <div class="grid-3">
+          <article class="card accent"><div class="eyebrow" data-i18n="yo1k">Ana yörünge</div><h3 data-i18n="yo1t">AI ajan aksiyon kapısı</h3><p data-i18n="yo1d">Ajan bir aracı çalıştırmadan önce sorar. Silme ve yetki araçları durur, yazma ve para hareketleri insana gider, okuma geçer.</p></article>
+          <article class="card"><div class="eyebrow" style="color:var(--ice)" data-i18n="yo2k">Yörünge 2</div><h3 data-i18n="yo2t">Ödeme ve sipariş riski</h3><p data-i18n="yo2d">Türkçe kurallar, mevcut kurallarınızın yanında gölge modda deneme, KVKK'ya uygun barındırma seçeneği.</p></article>
+          <article class="card"><div class="eyebrow" style="color:var(--ice)" data-i18n="yo3k">Yörünge 3</div><h3 data-i18n="yo3t">API kötüye kullanım</h3><p data-i18n="yo3d">Hata, hız ve kimlik sinyallerinden gerekçeli erişim kararı.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="erisim" aria-labelledby="er-title">
+      <div class="wrap access">
+        <div style="flex:1 1 460px; display:flex; flex-direction:column; gap:16px">
+          <div class="eyebrow" data-i18n="erK">Tasarım ortaklığı · 5 koltuk</div>
+          <h2 id="er-title" data-i18n="erTitle">Mevcut kurallarınızın yanında, gölge modda başlayalım.</h2>
+          <p class="muted" style="margin:0" data-i18n="erLead">Pilot ücretsizdir. Fiyatlandırma pilot sonuçlarıyla birlikte açıklanacak.</p>
+        </div>
+        <form id="accessForm">
+          <div class="field">
+            <label for="eposta" data-i18n="erMail">İş e-postası</label>
+            <input id="eposta" type="email" required autocomplete="email" placeholder="ad@sirket.com" data-i18n-placeholder="erPh">
+          </div>
+          <div class="sr-only" aria-hidden="true"><label for="erWeb">Website</label><input id="erWeb" type="text" tabindex="-1" autocomplete="off"></div>
+          <button type="submit" class="btn-primary" data-i18n="erBtn">Koltuk iste</button>
+          <p class="small-mono" id="erStatus" role="status" aria-live="polite" style="flex-basis:100%; margin:0"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span><a href="https://itouch.com.tr" rel="noopener">ITouch Bilişim</a> · Çukurova Teknokent · Adana · <a href="mailto:ask@answerr.me">ask@answerr.me</a></span>
+      <nav aria-label="Alt bağlantılar">
+        <a href="https://api.answerr.me/docs" rel="noopener" data-i18n="fApi">API belgeleri</a>
+        <a href="research.html" data-i18n="fResearch">Araştırma arşivi</a>
+        <a href="../../../chat.html" data-i18n="fClassic">Klasik konsol</a>
+        <a href="https://github.com/pCwOrM/answerr" rel="noopener">GitHub</a>
+      </nav>
+      <span style="flex-basis:100%; font-size:11px" data-i18n="fRecaptcha">Bu site reCAPTCHA ile korunur; Google <a href="https://policies.google.com/privacy">Gizlilik Politikası</a> ve <a href="https://policies.google.com/terms">Hizmet Şartları</a> geçerlidir.</span>
+    </div>
+  </footer>
+
+  <script src="../../../js/policy-kernel.js"></script>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+  <script src="console.js"></script>
+</body>
+</html>

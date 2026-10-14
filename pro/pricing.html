@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>answerr Pro — Fiyatlar</title>
+  <meta name="description" content="answerr Pro fiyatları: Keşif ücretsiz, Geliştirici $29/ay, Pro $99/ay, Kurumsal yıllık sözleşme. Karar başına ödeme; token ve GPU yok. 60 günlük ücretsiz tasarım ortağı pilotu.">
+  <meta name="theme-color" content="#05060A">
+  <link rel="icon" href="../assets/answerr_logo_portal_fav_trans.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="pro.css">
+  <script src="https://www.google.com/recaptcha/api.js?render=6LdP-JgqAAAAAJLdy_W8uowqstSa4XKlJTOkVAux" async defer></script>
+</head>
+<body>
+  <a class="sr-only" href="#main">İçeriğe geç</a>
+  <div class="hud">
+    <div class="wrap">
+      <div id="hudStatus"><span class="dot"></span>…</div>
+      <div data-i18n="prHud">TOKEN YOK · GPU YOK · YALNIZCA KARAR</div>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Ana gezinme">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="answerr Pro ana sayfa">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="#FFB048" stroke-width="1.5"/><circle cx="17" cy="17" r="8" fill="none" stroke="#8CDEEC" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="25" cy="10" r="2.5" fill="#FFB048"/></svg>
+        <b>answerr</b><span class="tag">PRO</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Menü" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h9" stroke="currentColor" stroke-width="1.6"/></svg></button>
+      <div class="nav-links">
+        <a href="index.html#kara-kutu" data-i18n="navConsole">Kara Kutu</a>
+        <a href="studio.html" data-i18n="navStudio">Derleyici</a>
+        <a href="vision.html" data-i18n="navVision">Werr Evreni</a>
+        <a href="pricing.html" aria-current="page" data-i18n="navPricing">Fiyatlar</a>
+        <a href="research.html" data-i18n="navResearch">Araştırma</a>
+        <a href="https://api.answerr.me/docs" rel="noopener" data-i18n="navApi">API belgeleri</a>
+        <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="section" style="padding-top:56px">
+      <div class="wrap">
+        <div class="section-head rv">
+          <div>
+            <div class="eyebrow" data-i18n="prEyebrow">Fiyatlar · erken erişim 2026 Q4</div>
+            <h1 style="font-size:clamp(36px,5vw,60px)" data-i18n="prTitle">Token’a değil, <em style="font-style:normal;color:var(--amber)">karara</em> ödeyin.</h1>
+          </div>
+          <p data-i18n="prLead">Bir karar, bir kapı çağrısıdır. Politika derlemek, okumak ve tarayıcınızda ya da kendi sunucunuzda açık çekirdeği çalıştırmak sayılmaz. Fiyatlar KDV hariçtir; Türkiye’deki kurumlara TL fatura kesilir.</p>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;margin-bottom:28px" class="rv">
+          <div class="bill" role="group" aria-label="Faturalama dönemi">
+            <button type="button" data-bill="m" aria-pressed="true" data-i18n="prMonthly">AYLIK</button>
+            <button type="button" data-bill="y" aria-pressed="false" data-i18n="prYearly">YILLIK · 2 AY HEDİYE</button>
+          </div>
+          <span class="small-mono" data-bill-note hidden data-i18n="prYearNote">Yıllık ödemede aylık karşılık gösterilir; 12 ay için peşin faturalanır.</span>
+        </div>
+
+        <div class="plans">
+          <article class="plan glow rv">
+            <div class="pname" data-i18n="p0n">Keşif</div>
+            <div class="pfor" data-i18n="p0f">Denemek, öğrenmek ve yan projeler için.</div>
+            <div class="price"><span data-price-m="$0" data-price-y="$0">$0</span><small data-i18n="prPer">/ ay</small></div>
+            <div class="quota" data-i18n="p0q">10.000 karar / ay</div>
+            <ul>
+              <li data-i18n="p0a">3 yerleşik kapı + 1 özel kapı</li>
+              <li data-i18n="p0b">Kara Kutu ve Derleyici (TR / EN)</li>
+              <li data-i18n="p0c">Her kararda iz ve politika mührü</li>
+              <li data-i18n="p0d">Açık çekirdek: tarayıcı, Node, Python — sınırsız</li>
+              <li data-i18n="p0e">7 gün karar kaydı · topluluk desteği</li>
+            </ul>
+            <a class="btn-ghost" href="#plan-iste" data-plan-btn="kesif" data-i18n="p0btn">Ücretsiz başla</a>
+          </article>
+
+          <article class="plan glow rv d1">
+            <div class="pname" data-i18n="p1n">Geliştirici</div>
+            <div class="pfor" data-i18n="p1f">Ajanını ya da ürününü canlıya alan tek geliştirici ve küçük ekipler.</div>
+            <div class="price"><span data-price-m="$29" data-price-y="$24">$29</span><small data-i18n="prPer">/ ay</small></div>
+            <div class="quota" data-i18n="p1q">250.000 karar / ay · aşım $0,15 / 1.000</div>
+            <ul>
+              <li data-i18n="p1a">10 özel kapı, sürümlü politikalar</li>
+              <li data-i18n="p1b">API anahtarı ve kiracı ayrımı</li>
+              <li data-i18n="p1c">Derleyicide otomatik testler ve denetimler</li>
+              <li data-i18n="p1d">30 gün karar kaydı</li>
+              <li data-i18n="p1e">E-posta desteği · 2 iş günü</li>
+            </ul>
+            <a class="btn-ghost" href="#plan-iste" data-plan-btn="gelistirici" data-i18n="p1btn">Geliştirici planı</a>
+          </article>
+
+          <article class="plan hot glow rv d2">
+            <span class="ribbon" data-i18n="p2r">ÖNERİLEN</span>
+            <div class="pname" data-i18n="p2n">Pro</div>
+            <div class="pfor" data-i18n="p2f">Ödeme, erişim ya da ajan kararlarını üretimde yöneten ekipler.</div>
+            <div class="price"><span data-price-m="$99" data-price-y="$82">$99</span><small data-i18n="prPer">/ ay</small></div>
+            <div class="quota" data-i18n="p2q">1.000.000 karar / ay · aşım $0,10 / 1.000</div>
+            <ul>
+              <li data-i18n="p2a">Sınırsız kapı · 5 ekip koltuğu</li>
+              <li><span data-i18n="p2b">Gölge mod: mevcut kurallarınızın yanında, aksiyonsuz</span><span class="soon" data-i18n="soon">YAKINDA</span></li>
+              <li><span data-i18n="p2c">Geçmiş veriyle geri test (backtest)</span><span class="soon" data-i18n="soon">YAKINDA</span></li>
+              <li><span data-i18n="p2d">İnsan onayı kuyruğu: webhook ve e-posta</span><span class="soon" data-i18n="soon">YAKINDA</span></li>
+              <li><span data-i18n="p2e">90 gün karar kaydı ve dışa aktarım</span><span class="soon" data-i18n="soon">YAKINDA</span></li>
+            </ul>
+            <a class="btn-primary" href="#plan-iste" data-plan-btn="pro" data-i18n="p2btn">Pro’ya geç</a>
+          </article>
+
+          <article class="plan glow rv d3">
+            <div class="pname" data-i18n="p3n">Kurumsal</div>
+            <div class="pfor" data-i18n="p3f">Banka, sigorta, kamu ve hava boşluklu (air-gapped) ortamlar.</div>
+            <div class="price" style="font-size:36px"><span data-i18n="p3p">$24.000+</span><small data-i18n="prPerYear">/ yıl</small></div>
+            <div class="quota" data-i18n="p3q">Sözleşmeli hacim · kendi sunucunuzda</div>
+            <ul>
+              <li data-i18n="p3a">Kendi sunucunuzda ya da kapalı ağda çekirdek ve API</li>
+              <li data-i18n="p3b">KVKK, Türkiye’de barındırma, veri işleme sözleşmesi</li>
+              <li><span data-i18n="p3c">SSO / SAML, rol tabanlı yetki, denetçi rolü</span><span class="soon" data-i18n="soon">YAKINDA</span></li>
+              <li><span data-i18n="p3d">Politika özelliklerinin biçimsel doğrulaması (Lean 4)</span><span class="soon" data-i18n="soon">YAKINDA</span></li>
+              <li><span data-i18n="p3e">%99,9 SLA · özel kapı tasarımı · öncelikli destek</span><span class="soon" data-i18n="soon">YAKINDA</span></li>
+            </ul>
+            <a class="btn-ghost" href="#plan-iste" data-plan-btn="kurumsal" data-i18n="p3btn">Görüşme planla</a>
+          </article>
+        </div>
+        <p class="small-mono rv" style="margin-top:18px" data-i18n="prSoonNote">Bazı özellikler pilotlarla birlikte açılıyor; satın alma öncesinde hangi özelliğin hangi tarihte açılacağı yazılı olarak bildirilir. Kurucu müşteriler bu fiyatları 12 ay boyunca korur.</p>
+      </div>
+    </section>
+
+    <section class="section alt" aria-labelledby="pl-title">
+      <div class="wrap">
+        <div class="section-head rv">
+          <div><div class="eyebrow" data-i18n="plK">Tasarım ortağı pilotu · 5 koltuk</div><h2 id="pl-title" data-i18n="plTitle">60 gün ücretsiz, gölge modda, sizin verinizle.</h2></div>
+          <p data-i18n="plLead">answerr mevcut kurallarınızın yanında çalışır ama hiçbir aksiyon almaz. Her hafta yakalanan, kaçan ve insana gönderilen kararları birlikte ölçeriz. Sonuçları ancak sizin izninizle yayımlarız.</p>
+        </div>
+        <div class="horizons rv">
+          <div><div class="when st-now" data-i18n="pl1k">HAFTA 1–2</div><h3 data-i18n="pl1t">Politikayı yazın</h3><p class="muted" style="margin:0" data-i18n="pl1d">Kurallarınızı Türkçe ya da İngilizce yazarsınız; derleyici kurala çevirir, belirsizlikleri soru olarak döndürür.</p></div>
+          <div><div class="when st-pilot" data-i18n="pl2k">HAFTA 3–6</div><h3 data-i18n="pl2t">Gölgede çalıştırın</h3><p class="muted" style="margin:0" data-i18n="pl2d">Gerçek trafik, sıfır aksiyon. Haftalık rapor: aynı karar, farklı karar, insana devredilen.</p></div>
+          <div><div class="when st-proof" data-i18n="pl3k">HAFTA 7–8</div><h3 data-i18n="pl3t">Ölçüme göre karar verin</h3><p class="muted" style="margin:0" data-i18n="pl3d">Sayılar ikna ederse kurucu fiyatıyla canlıya geçersiniz; etmezse hiçbir şey ödemezsiniz.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="rl-title">
+      <div class="wrap">
+        <div class="section-head rv">
+          <div><div class="eyebrow" data-i18n="rlK">Lisans ve protokol</div><h2 id="rl-title" data-i18n="rlTitle">Ürünün ötesindeki gelir hatları</h2></div>
+          <p data-i18n="rlLead">Bunlar answerr Pro aboneliğinden ayrı, sözleşmeyle yürüyen hatlardır. Araştırma ve akademik kullanım her zaman ücretsizdir.</p>
+        </div>
+        <div class="grid-4">
+          <div class="card glow rv"><div class="row"><span class="st st-now" data-i18n="stNow">ŞİMDİ</span></div><h3 data-i18n="rl1t">werr ticari lisansı</h3><p data-i18n="rl1d">Açık kaynak çekirdek BSL 1.1 ile yayımlanır. Ürününüze gömmek ya da SaaS olarak sunmak için yazılı lisans gerekir.</p></div>
+          <div class="card glow rv d1"><div class="row"><span class="st st-pilot" data-i18n="stPilot">PİLOT</span></div><h3 data-i18n="rl2t">Werracle protokol ücreti</h3><p data-i18n="rl2d">Zincir üstü karar kahini: sorgu başına ayarlanabilir protokol ücreti ve protokole özel tohum kalibrasyonu.</p></div>
+          <div class="card glow rv d2"><div class="row"><span class="st st-pilot" data-i18n="stPilot">PİLOT</span></div><h3 data-i18n="rl3t">Kurum ve okul lisansı</h3><p data-i18n="rl3d">WerreduR: depolamasız öğrenme refleksleri. Okul ve platform başına yıllık lisans.</p></div>
+          <div class="card glow rv d3"><div class="row"><span class="st st-horizon" data-i18n="stHorizon">UFUK</span></div><h3 data-i18n="rl4t">Ar-Ge ortaklığı ve patent lisansı</h3><p data-i18n="rl4d">TR 2026/016285 ve TR 2026/016633 başvuruları (beklemede). Konnektom ve sentez algoritmaları için ortak araştırma.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" aria-labelledby="sss-title">
+      <div class="wrap">
+        <div class="section-head rv"><h2 id="sss-title" data-i18n="faqTitle">Sık sorulanlar</h2></div>
+        <div class="faq rv">
+          <details><summary data-i18n="q1">Neden karar başına? LLM’ler token başına ücret alıyor.</summary><p data-i18n="a1">Karar anında model çalışmaz. Bir karar mikro saniyeler süren deterministik bir kural değerlendirmesidir; maliyeti tahmin edilebilir, faturanız da öyle olmalı.</p></details>
+          <details><summary data-i18n="q2">Kota dolarsa ne olur?</summary><p data-i18n="a2">Aşım varsayılan olarak kapalıdır: kota dolunca API 429 döner, sürpriz fatura olmaz. Aşımı açarsanız yukarıdaki birim fiyatla faturalanır.</p></details>
+          <details><summary data-i18n="q3">Kendi sunucumda çalıştırabilir miyim?</summary><p data-i18n="a3">Çekirdek açık kaynaklıdır; tarayıcıda, Node’da ve Python’da çalışır ve bu kullanım sayılmaz. Kapı yönetimi, kayıt ve destekle birlikte kendi sunucunuzda kurulum Kurumsal plandadır.</p></details>
+          <details><summary data-i18n="q4">Verilerim nerede tutuluyor?</summary><p data-i18n="a4">Bulut API’si ITouch Bilişim’in yönettiği sunucularda çalışır. Kararlar için yalnızca gönderdiğiniz durum alanları işlenir; kayıt süresi planınıza göre sınırlıdır. Türkiye’de ya da kendi ağınızda barındırma Kurumsal plandadır; orada veri ağınızdan çıkmaz.</p></details>
+          <details><summary data-i18n="q5">Nasıl ödeme yapıyorum?</summary><p data-i18n="a5">Self-servis ödeme pilotlarla birlikte açılıyor. Şimdilik plan seçiminiz e-postayla onaylanır, fatura ITouch Bilişim (Çukurova Teknokent) tarafından kesilir; TL, USD ve EUR kabul edilir.</p></details>
+          <details><summary data-i18n="q6">Akademik kullanım ücretli mi?</summary><p data-i18n="a6">Hayır. Ticari olmayan araştırma, eğitim ve değerlendirme BSL 1.1 kapsamında ücretsizdir. Kullanırken lütfen ilgili makaleye atıf yapın.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="plan-iste" aria-labelledby="pi-title">
+      <div class="wrap" style="display:flex;flex-direction:column;gap:24px">
+        <div class="rv"><div class="eyebrow" data-i18n="piK">Plan iste</div><h2 id="pi-title" data-i18n="piTitle">Planınızı seçin; size e-postayla dönelim.</h2></div>
+        <form id="planForm" class="plan-form rv">
+          <div class="field"><label for="planSel" data-i18n="piPlan">Plan</label>
+            <select id="planSel">
+              <option value="kesif" data-i18n="p0n">Keşif</option>
+              <option value="gelistirici" data-i18n="p1n">Geliştirici</option>
+              <option value="pro" selected>Pro</option>
+              <option value="kurumsal" data-i18n="p3n">Kurumsal</option>
+              <option value="pilot" data-i18n="piPilot">Tasarım ortağı pilotu</option>
+            </select></div>
+          <div class="field"><label for="billSel" data-i18n="piBill">Dönem</label>
+            <select id="billSel"><option value="m" data-i18n="piM">Aylık</option><option value="y" data-i18n="piY">Yıllık</option></select></div>
+          <div class="field"><label for="planMail" data-i18n="erMail">İş e-postası</label><input id="planMail" type="email" required autocomplete="email" placeholder="ad@sirket.com" data-i18n-placeholder="erPh"></div>
+          <div class="field"><label for="planCo" data-i18n="piCo">Şirket</label><input id="planCo" type="text" autocomplete="organization" maxlength="120"></div>
+          <div class="field" style="grid-column:1/-1"><label for="planNote" data-i18n="piNote">Kullanım (isteğe bağlı)</label><input id="planNote" type="text" maxlength="600" placeholder="ör. ödeme kapısı, ayda ~300 bin karar" data-i18n-placeholder="piNotePh"></div>
+          <div class="sr-only" aria-hidden="true"><label for="planWeb">Website</label><input id="planWeb" type="text" tabindex="-1" autocomplete="off"></div>
+          <button type="submit" class="btn-primary" data-i18n="piBtn">Planı iste</button>
+          <p class="small-mono" id="planStatus" role="status" aria-live="polite" style="grid-column:1/-1;margin:0"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span><a href="https://itouch.com.tr" rel="noopener">ITouch Bilişim</a> · Çukurova Teknokent · Adana · <a href="mailto:ask@answerr.me">ask@answerr.me</a></span>
+      <nav aria-label="Alt bağlantılar">
+        <a href="index.html" data-i18n="fHome">answerr Pro</a>
+        <a href="vision.html" data-i18n="navVision">Werr Evreni</a>
+        <a href="research.html" data-i18n="fResearch">Araştırma arşivi</a>
+        <a href="https://github.com/pCwOrM/answerr/blob/main/LICENSE" rel="noopener" data-i18n="fLicense">Lisans (BSL 1.1)</a>
+      </nav>
+      <span style="flex-basis:100%; font-size:11px" data-i18n="fRecaptcha">Bu site reCAPTCHA ile korunur; Google <a href="https://policies.google.com/privacy">Gizlilik Politikası</a> ve <a href="https://policies.google.com/terms">Hizmet Şartları</a> geçerlidir.</span>
+    </div>
+  </footer>
+
+  <script src="../js/policy-kernel.js"></script>
+  <script src="i18n.js"></script>
+  <script src="i18n-plus.js"></script>
+  <script src="app.js"></script>
+  <script src="fx.js"></script>
+</body>
+</html>

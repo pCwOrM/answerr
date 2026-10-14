@@ -137,6 +137,7 @@
       const nav = (navigator.language || 'tr').toLowerCase();
       this.lang = saved === 'en' || saved === 'tr' ? saved : (nav.startsWith('tr') ? 'tr' : 'en');
     }
+    extend(dict) { Object.keys(dict).forEach(l => { D[l] = Object.assign(D[l] || {}, dict[l]); }); }
     t(key) { return (D[this.lang] && D[this.lang][key]) || D.tr[key] || key; }
     setLanguage(l) {
       if (l !== 'tr' && l !== 'en') return;
