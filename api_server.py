@@ -21,6 +21,7 @@ mirrored by js/policy-kernel.js and checked for parity in tests/.
 Configuration (environment, e.g. /etc/answerr/answerr.env):
   ANSWERR_API_KEYS          "tenant1:key1,tenant2:key2"
   ANSWERR_GATES_PATH        custom gate store (default /var/lib/answerr/gates.json)
+  ANSWERR_RATELIMIT_DB      shared rate-limit store for all workers (default /var/lib/answerr/ratelimit.sqlite)
   ANSWERR_TRUSTED_PROXIES   hops skipped in X-Forwarded-For (default 127.0.0.1,::1,10.0.2.2 = VirtualBox NAT)
   RECAPTCHA_SECRET          reCAPTCHA v3 secret for the answerr.me site key
   RECAPTCHA_MIN_SCORE       default 0.5
@@ -142,38 +143,99 @@ def via_iis(request: Request) -> bool:
 # Rate limiting (per client IP, or per tenant for API-key callers)
 # -----------------------------------------------------------------------------
 class SlidingWindowLimiter:
+    """Sliding-window limiter shared by all uvicorn workers through one SQLite file
+    (ANSWERR_RATELIMIT_DB). Falls back to per-process memory if the file is unusable."""
     TIERS = {
-        "anonymous": (60, 10),     # per minute, per second
+        "anonymous": (60, 10),     # per window, per second
         "verified": (120, 20),     # reCAPTCHA-verified browser
         "api_key": (600, 50),
         "direct_shared": (300, 30),   # all non-IIS (direct :4431) anonymous traffic together
         "access_form": (5, 5),        # early-access form: 5 per hour per IP (window set below)
     }
 
-    def __init__(self, window_seconds: int = 60):
+    def __init__(self, window_seconds: int = 60, name: str = "rl"):
         self.window = window_seconds
+        self.name = name
         self.lock = threading.Lock()
         self.hits: Dict[str, deque] = defaultdict(deque)
         self.last_cleanup = time.time()
+        self.db_path = os.environ.get("ANSWERR_RATELIMIT_DB", "/var/lib/answerr/ratelimit.sqlite")
+        self._local = threading.local()
+        self.shared = self._init_db()
+
+    def _conn(self):
+        import sqlite3
+        c = getattr(self._local, "conn", None)
+        if c is None:
+            c = sqlite3.connect(self.db_path, timeout=2.0, isolation_level=None)
+            c.execute("PRAGMA journal_mode=WAL")
+            c.execute("PRAGMA synchronous=OFF")
+            self._local.conn = c
+        return c
+
+    def _init_db(self) -> bool:
+        try:
+            os.makedirs(os.path.dirname(self.db_path) or ".", exist_ok=True)
+            c = self._conn()
+            c.execute("CREATE TABLE IF NOT EXISTS hits (k TEXT NOT NULL, ts REAL NOT NULL)")
+            c.execute("CREATE INDEX IF NOT EXISTS hits_k_ts ON hits (k, ts)")
+            return True
+        except Exception as e:
+            print("[answerr] shared rate limiter unavailable, using per-process memory:", e, file=sys.stderr)
+            return False
 
     def check(self, ident: str, tier: str) -> Tuple[bool, int, int, int]:
-        per_min, per_sec = self.TIERS[tier]
+        per_win, per_sec = self.TIERS[tier]
+        key = "{}:{}:{}".format(self.name, tier, ident)
         now = time.time()
+        if self.shared:
+            try:
+                return self._check_db(key, now, per_win, per_sec)
+            except Exception:
+                pass  # fall through to memory
+        return self._check_mem(key, now, per_win, per_sec)
+
+    def _check_db(self, key, now, per_win, per_sec):
+        c = self._conn()
+        c.execute("BEGIN IMMEDIATE")
+        try:
+            if now - self.last_cleanup > 300:
+                c.execute("DELETE FROM hits WHERE ts < ?", (now - 3600,))
+                self.last_cleanup = now
+            c.execute("DELETE FROM hits WHERE k = ? AND ts < ?", (key, now - self.window))
+            n_win, oldest, n_sec = c.execute(
+                "SELECT COUNT(*), MIN(ts), SUM(CASE WHEN ts >= ? THEN 1 ELSE 0 END) FROM hits WHERE k = ?",
+                (now - 1.0, key)).fetchone()
+            n_sec = n_sec or 0
+            if n_sec >= per_sec:
+                c.execute("COMMIT")
+                return False, per_win, 0, 1
+            if n_win >= per_win:
+                c.execute("COMMIT")
+                return False, per_win, 0, max(1, int(self.window - (now - (oldest or now))))
+            c.execute("INSERT INTO hits (k, ts) VALUES (?, ?)", (key, now))
+            c.execute("COMMIT")
+            return True, per_win, per_win - n_win - 1, 0
+        except Exception:
+            c.execute("ROLLBACK")
+            raise
+
+    def _check_mem(self, key, now, per_win, per_sec):
         with self.lock:
             if now - self.last_cleanup > 300:
                 cutoff = now - self.window
                 for k in [k for k, q in self.hits.items() if not q or q[-1] < cutoff]:
                     del self.hits[k]
                 self.last_cleanup = now
-            q = self.hits[tier + ":" + ident]
+            q = self.hits[key]
             while q and q[0] < now - self.window:
                 q.popleft()
             if sum(1 for t in q if t >= now - 1.0) >= per_sec:
-                return False, per_min, 0, 1
-            if len(q) >= per_min:
-                return False, per_min, 0, max(1, int(self.window - (now - q[0])))
+                return False, per_win, 0, 1
+            if len(q) >= per_win:
+                return False, per_win, 0, max(1, int(self.window - (now - q[0])))
             q.append(now)
-            return True, per_min, per_min - len(q), 0
+            return True, per_win, per_win - len(q), 0
 
 
 LIMITER = SlidingWindowLimiter()
@@ -1018,7 +1080,7 @@ class AccessRequest(BaseModel):
     website: Optional[str] = Field(None, max_length=200, description="honeypot, leave empty")
 
 
-ACCESS_LIMITER = SlidingWindowLimiter(window_seconds=3600)
+ACCESS_LIMITER = SlidingWindowLimiter(window_seconds=3600, name="access")
 
 
 @app.post("/v1/access-request", tags=["Early access"])
