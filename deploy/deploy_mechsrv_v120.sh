@@ -82,9 +82,9 @@ SMTP_HOST=mail.answerr.me
 SMTP_PORT=465
 SMTP_USER=ask@answerr.me
 SMTP_PASSWORD=${ANSWERR_SMTP_PASSWORD:-}
-MAIL_FROM_NAME=answerr · Werr Technology
+MAIL_FROM_NAME="answerr · Werr Technology"
 MAIL_NOTIFY_TO=ask@answerr.me
-MAIL_REPLY_TO=Volkan Dagli <ask@answerr.me>, pcworm@pcworm.net
+MAIL_REPLY_TO="Volkan Dagli <ask@answerr.me>, pcworm@pcworm.net"
 EOF
   log "created $ENVF (new API key for tenant 'itouch'; reCAPTCHA secret $( [ -n "$RSEC" ] && echo copied from werr-telemetry || echo empty))"
 fi

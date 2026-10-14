@@ -1029,6 +1029,8 @@ def access_request(req: AccessRequest, request: Request):
     ok, _, _, retry = ACCESS_LIMITER.check("ip:" + ip, "access_form")
     if not ok:
         raise HTTPException(429, "Too many requests from this address; try again later.")
+    if not access_mailer.valid_email((req.email or "").strip().lower()):
+        raise HTTPException(400, "Please enter a valid e-mail address.")
     if RECAPTCHA_SECRET and sec["recaptcha"] != "verified" and not sec["tenant"]:
         raise HTTPException(403, "reCAPTCHA verification failed.")
     out = access_mailer.handle(req.model_dump(), ip)
