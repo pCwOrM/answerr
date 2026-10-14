@@ -21,7 +21,7 @@ mirrored by js/policy-kernel.js and checked for parity in tests/.
 Configuration (environment, e.g. /etc/answerr/answerr.env):
   ANSWERR_API_KEYS          "tenant1:key1,tenant2:key2"
   ANSWERR_GATES_PATH        custom gate store (default /var/lib/answerr/gates.json)
-  ANSWERR_TRUSTED_PROXIES   proxies whose X-Real-IP / X-Forwarded-For are trusted (default 127.0.0.1,::1)
+  ANSWERR_TRUSTED_PROXIES   hops skipped in X-Forwarded-For (default 127.0.0.1,::1,10.0.2.2 = VirtualBox NAT)
   RECAPTCHA_SECRET          reCAPTCHA v3 secret for the answerr.me site key
   RECAPTCHA_MIN_SCORE       default 0.5
   RECAPTCHA_HOSTNAMES       default answerr.me,www.answerr.me
@@ -54,6 +54,7 @@ sys.path.insert(1, os.environ.get("ANSWERR_WERR_PATH", "/home/pcworm/werr"))
 import werr  # noqa: E402  (research engine: fractal telemetry, choice/score, legacy presets)
 import werr as wevv  # noqa: E402,F401  backward-compatibility alias
 
+import access_mailer  # noqa: E402
 import policy_checks  # noqa: E402
 import policy_compiler  # noqa: E402
 import policy_kernel as PK  # noqa: E402
@@ -79,11 +80,11 @@ def _parse_keys(raw: str) -> Dict[str, str]:
 
 API_KEYS = _parse_keys(os.environ.get("ANSWERR_API_KEYS", ""))
 GATES_PATH = os.environ.get("ANSWERR_GATES_PATH", "/var/lib/answerr/gates.json")
-TRUSTED_PROXIES = {p.strip() for p in os.environ.get("ANSWERR_TRUSTED_PROXIES", "127.0.0.1,::1").split(",") if p.strip()}
+TRUSTED_PROXIES = {p.strip() for p in os.environ.get("ANSWERR_TRUSTED_PROXIES", "127.0.0.1,::1,10.0.2.2").split(",") if p.strip()}
 RECAPTCHA_SECRET = os.environ.get("RECAPTCHA_SECRET", "").strip()
 RECAPTCHA_MIN_SCORE = float(os.environ.get("RECAPTCHA_MIN_SCORE", "0.5"))
 RECAPTCHA_HOSTNAMES = {h.strip() for h in os.environ.get("RECAPTCHA_HOSTNAMES", "answerr.me,www.answerr.me").split(",") if h.strip()}
-RECAPTCHA_ACTIONS = {"decide", "compile", "sandbox"}
+RECAPTCHA_ACTIONS = {"decide", "compile", "sandbox", "access"}
 
 GATE_ID_RE = re.compile(r"^[a-z0-9][a-z0-9_\-]{2,63}$")
 MAX_GATES_TOTAL = 1000
@@ -106,19 +107,35 @@ def authenticate(request: Request) -> Optional[str]:
     return None
 
 
+def _strip_port(entry: str) -> str:
+    e = entry.strip().strip('"')
+    if e.startswith("["):                      # [ipv6]:port
+        return e[1:e.index("]")] if "]" in e else e
+    if e.count(":") == 1:                      # ipv4:port (IIS ARR appends the client port)
+        return e.split(":", 1)[0]
+    return e
+
+
 def client_ip(request: Request) -> str:
-    """Proxy headers are trusted only when the direct peer is a configured proxy.
-    X-Real-IP (set by nginx to $remote_addr) is preferred; otherwise the right-most
-    X-Forwarded-For entry, which is the one the proxy itself appended."""
+    """Real client address behind IIS (ARR) -> VirtualBox NAT -> Apache -> uvicorn.
+
+    IIS appends "client:port" to X-Forwarded-For and Apache appends the NAT gateway
+    (10.0.2.2), so a request reaches us as  XFF="<anything the client sent>, client:port, 10.0.2.2"
+    from peer 127.0.0.1. Walking the chain from the right and skipping trusted hops
+    yields the address IIS saw; entries the client wrote itself are never reached."""
     peer = request.client.host if request.client else "0.0.0.0"
-    if peer in TRUSTED_PROXIES:
-        real = (request.headers.get("x-real-ip") or "").strip()
-        if real:
-            return real
-        xff = [p.strip() for p in (request.headers.get("x-forwarded-for") or "").split(",") if p.strip()]
-        if xff:
-            return xff[-1]
-    return peer
+    if peer not in TRUSTED_PROXIES:
+        return peer
+    chain = [_strip_port(p) for p in (request.headers.get("x-forwarded-for") or "").split(",") if p.strip()]
+    for hop in reversed(chain):
+        if hop and hop not in TRUSTED_PROXIES:
+            return hop
+    real = (request.headers.get("x-real-ip") or "").strip()
+    return real or peer
+
+
+def via_iis(request: Request) -> bool:
+    return bool(request.headers.get("x-arr-log-id"))
 
 
 # -----------------------------------------------------------------------------
@@ -129,6 +146,8 @@ class SlidingWindowLimiter:
         "anonymous": (60, 10),     # per minute, per second
         "verified": (120, 20),     # reCAPTCHA-verified browser
         "api_key": (600, 50),
+        "direct_shared": (300, 30),   # all non-IIS (direct :4431) anonymous traffic together
+        "access_form": (5, 5),        # early-access form: 5 per hour per IP (window set below)
     }
 
     def __init__(self, window_seconds: int = 60):
@@ -531,6 +550,8 @@ async def security_middleware(request: Request, call_next):
     limit = SlidingWindowLimiter.TIERS[tier][0]
     if request.url.path not in ("/health", "/v1/health"):
         ok, limit, remaining, retry = LIMITER.check(ident, tier)
+        if ok and not tenant and not via_iis(request) and (request.client and request.client.host in TRUSTED_PROXIES):
+            ok, _, _, retry = LIMITER.check("direct", "direct_shared")
         if not ok:
             return JSONResponse(status_code=429, headers={
                 "X-RateLimit-Limit": str(limit), "X-RateLimit-Remaining": "0", "Retry-After": str(retry)},
@@ -752,6 +773,7 @@ def get_root():
             "gates": "GET|POST /v1/gates, DELETE /v1/gates/{gate_id}",
             "gate_decide": "POST /v1/gates/{gate_id}/decide",
             "compile_policy": "POST /v1/policies/compile",
+            "access_request": "POST /v1/access-request",
             "systemone": "POST /v1/systemone (research)",
             "chat_completions": "POST /v1/chat/completions (research)",
             "health": "GET /v1/health",
@@ -982,6 +1004,34 @@ def post_decide(req: DecisionRequest, request: Request):
     }
     return JSONResponse(content=body, headers={"X-Answerr-Verdict": body["verdict"] or "",
                                                "X-Answerr-Policy-Seal": trace["policy_seal"] or ""})
+
+
+class AccessRequest(BaseModel):
+    email: str = Field(..., max_length=254)
+    company: Optional[str] = Field(None, max_length=120)
+    note: Optional[str] = Field(None, max_length=1000)
+    lang: Optional[str] = "tr"
+    source: Optional[str] = Field(None, max_length=80)
+    website: Optional[str] = Field(None, max_length=200, description="honeypot, leave empty")
+
+
+ACCESS_LIMITER = SlidingWindowLimiter(window_seconds=3600)
+
+
+@app.post("/v1/access-request", tags=["Early access"])
+def access_request(req: AccessRequest, request: Request):
+    """Design-partner / early-access form. Delivered to ask@answerr.me with a confirmation to the sender."""
+    sec = _security(request)
+    ip = client_ip(request)
+    ok, _, _, retry = ACCESS_LIMITER.check("ip:" + ip, "access_form")
+    if not ok:
+        raise HTTPException(429, "Too many requests from this address; try again later.")
+    if RECAPTCHA_SECRET and sec["recaptcha"] != "verified" and not sec["tenant"]:
+        raise HTTPException(403, "reCAPTCHA verification failed.")
+    out = access_mailer.handle(req.model_dump(), ip)
+    if not out["ok"]:
+        raise HTTPException(400, "Please enter a valid e-mail address.")
+    return {"status": "received", "mailed": out.get("mailed", False)}
 
 
 class SystemOneRequest(BaseModel):

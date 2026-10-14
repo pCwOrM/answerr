@@ -111,13 +111,19 @@ def test_compile_does_not_register_and_matches_schema(client):
 
 
 def test_forwarded_for_spoofing_is_ignored(client):
-    req = type("R", (), {})()
-    req.client = type("C", (), {"host": "203.0.113.9"})()
-    req.headers = {"x-forwarded-for": "1.2.3.4", "x-real-ip": "1.2.3.4"}
-    assert client.mod.client_ip(req) == "203.0.113.9"
-    req.client = type("C", (), {"host": "127.0.0.1"})()
-    req.headers = {"x-forwarded-for": "1.2.3.4, 198.51.100.7"}
-    assert client.mod.client_ip(req) == "198.51.100.7"
+    def req(peer, xff=None, real=None):
+        r = type("R", (), {})()
+        r.client = type("C", (), {"host": peer})()
+        r.headers = {k: v for k, v in (("x-forwarded-for", xff), ("x-real-ip", real)) if v}
+        return r
+    ip = client.mod.client_ip
+    # direct peer that is not a proxy: headers ignored
+    assert ip(req("203.0.113.9", "1.2.3.4", "1.2.3.4")) == "203.0.113.9"
+    # real chain observed on mechsrv: IIS appends client:port, Apache appends 10.0.2.2
+    assert ip(req("127.0.0.1", "160.79.106.133:49152, 10.0.2.2")) == "160.79.106.133"
+    # client-written XFF on the left is never used
+    assert ip(req("127.0.0.1", "203.0.113.77, 160.79.106.143:49152, 10.0.2.2")) == "160.79.106.143"
+    assert ip(req("127.0.0.1", "[2001:db8::5]:443, 10.0.2.2")) == "2001:db8::5"
 
 
 def test_recaptcha_not_marked_active_without_verification(client):
@@ -146,3 +152,25 @@ def test_gate_store_shared_between_workers(client):
     assert w2.get("shared_gate") is not None
     assert w2.delete("shared_gate", "acme") is True
     assert w1.get("shared_gate") is None
+
+
+def test_access_request(client, monkeypatch):
+    sent = []
+    monkeypatch.setenv("SMTP_PASSWORD", "x")
+    monkeypatch.setenv("ANSWERR_ACCESS_LOG", os.path.join(client.tmp, "access.jsonl"))
+    monkeypatch.setattr(client.mod.access_mailer, "_send", lambda msgs: sent.extend(msgs))
+    assert client.post("/v1/access-request", json={"email": "not-an-email"}).status_code == 400
+    r = client.post("/v1/access-request", json={"email": "ali@ornek.com.tr", "company": "Örnek A.Ş.", "lang": "tr"})
+    assert r.status_code == 200 and r.json()["mailed"] is True
+    assert sent[0]["To"] == "ask@answerr.me" and sent[0]["Reply-To"] == "ali@ornek.com.tr"
+    assert sent[1]["To"] == "ali@ornek.com.tr" and "answerr" in sent[1]["From"]
+    assert "\n" not in sent[0]["Subject"]
+    # honeypot: accepted silently, nothing sent
+    n = len(sent)
+    assert client.post("/v1/access-request", json={"email": "bot@spam.io", "website": "x"}).status_code == 200
+    assert len(sent) == n
+    # per-IP limit (5 per hour)
+    codes = [client.post("/v1/access-request", json={"email": "a@b.co"}).status_code for _ in range(3)]
+    assert 429 in codes
+    with open(os.path.join(client.tmp, "access.jsonl"), encoding="utf-8") as f:
+        assert "ali@ornek.com.tr" in f.read()

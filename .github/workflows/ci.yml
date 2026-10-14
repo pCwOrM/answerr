@@ -48,7 +48,7 @@ jobs:
           node --check js/werr-engine.js
 
       - name: Lint (errors only)
-        run: flake8 api_server.py policy_kernel.py policy_checks.py policy_compiler.py server/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        run: flake8 api_server.py policy_kernel.py policy_checks.py policy_compiler.py access_mailer.py deploy/smoke_checks.py server/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
 
       - name: Kernel, parity and API tests
         env:

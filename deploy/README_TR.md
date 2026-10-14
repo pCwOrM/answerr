@@ -58,4 +58,4 @@ Betik:
 | İstemci IP | proxy başlıkları yalnızca güvenilir proxy'den kabul edilir |
 | Mühür | tam SHA-256, kanonik JSON |
 | /pro | Karar Gözlemevi tasarımı, canlı Kara Kutu, derleyici, araştırma arşivi; doğrulanamayan iddialar kaldırıldı |
-| Testler | 68 test (çekirdek, Python/JS eşitliği, derleyici, API); CI'da Node ve werr ile |
+| Testler | 69 test (çekirdek, Python/JS eşitliği, derleyici, API); CI'da Node ve werr ile |
