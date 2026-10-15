@@ -29,16 +29,126 @@
     api_zero_trust_waf: { tr: 'Bu istek geçsin mi?', en: 'Let this request through?' }
   };
 
+  const WERR_PRESETS = {
+    smart_router: {
+      cx: -0.101096, cy: 0.956287, zoom: 45, max_iter: 36, cadence_lambda: 0.10, cadence_alpha: 0.50,
+      enable_domain: true, enable_lexical: true, enable_resonance: true, tripod: true,
+      tr: 'Optimal: AI ajan kapısı ve çok alanlı orkestrasyon için 4-kadran dengeli hibrit kurgu [1,1,1].',
+      en: 'Optimal: Balanced 4-quadrant hybrid setup [1,1,1] for AI agent gates and multi-domain routing.'
+    },
+    security_guard: {
+      cx: -0.743644, cy: 0.131826, zoom: 120, max_iter: 48, cadence_lambda: 0.08, cadence_alpha: 0.60,
+      enable_domain: true, enable_lexical: true, enable_resonance: true, tripod: true,
+      tr: 'Optimal: Sıfır güven API/WAF ve DDoS engelleme için Seahorse Vadisi keskin sınır kurgusu [1,1,1].',
+      en: 'Optimal: Seahorse Valley sharp boundary setup [1,1,1] for zero-trust API WAF & DDoS defense.'
+    },
+    risk_evaluator: {
+      cx: -0.750000, cy: 0.100000, zoom: 25, max_iter: 48, cadence_lambda: 0.12, cadence_alpha: 0.55,
+      enable_domain: true, enable_lexical: true, enable_resonance: true, tripod: true,
+      tr: 'Optimal: Ödeme ve finansal risk puanlaması (fintech_payment_tr) için yumuşak kaçış gradyanı [1,1,1].',
+      en: 'Optimal: Smooth escape gradient setup [1,1,1] for payment and checkout risk scoring.'
+    },
+    crown_core: {
+      cx: -0.122561, cy: 0.744862, zoom: 64, max_iter: 64, cadence_lambda: 0.10, cadence_alpha: 0.50,
+      enable_domain: true, enable_lexical: true, enable_resonance: true, tripod: true,
+      tr: 'Optimal: Endüstriyel robotik, IoT emniyet kilidi ve Werracle Z/9Z rezonans uyumlu üçayak kurgusu [1,1,1].',
+      en: 'Optimal: Period-3 tripod resonance setup [1,1,1] for robotics, IoT safety & Werracle Z/9Z.'
+    },
+    universal_cusp: {
+      cx: -0.743644, cy: 0.131826, zoom: 50, max_iter: 36, cadence_lambda: 0.10, cadence_alpha: 0.50,
+      enable_domain: false, enable_lexical: false, enable_resonance: false, tripod: true,
+      tr: 'Saf Fraktal: Alan sözlükleri kapalı [0,0,0]; yalnızca 24B Mandelbrot sınırı (∂M) geometrisi çalışır.',
+      en: 'Pure Fractal: Domain ontologies off [0,0,0]; evaluates pure 24B Mandelbrot boundary (∂M) geometry.'
+    }
+  };
+  const GATE_PROFILES = {
+    agent_mcp_guard: 'smart_router',
+    fintech_payment_tr: 'risk_evaluator',
+    api_zero_trust_waf: 'security_guard'
+  };
+
   let gates = null;
-  let current = { gate: 'agent_mcp_guard', scenario: 'del' };
+  let current = { gate: 'agent_mcp_guard', scenario: 'del', preset: 'auto' };
   let last = null;
   const latencies = [];
 
   async function loadGates() {
-    try {
-      const r = await fetch('../policies/builtin_gates.json', { cache: 'no-cache' });
-      gates = await r.json();
-    } catch (e) { gates = null; }
+    for (const url of ['../policies/builtin_gates.json', 'policies/builtin_gates.json']) {
+      try {
+        const r = await fetch(url, { cache: 'no-cache' });
+        if (r.ok) { gates = await r.json(); return; }
+      } catch (e) { /* try next */ }
+    }
+    gates = null;
+  }
+
+  function effectivePresetKey() {
+    return current.preset === 'auto' ? (GATE_PROFILES[current.gate] || 'smart_router') : current.preset;
+  }
+
+  function syncWerrInputsFromPreset() {
+    const pSel = document.getElementById('werrPresetSel');
+    if (!pSel) return;
+    const key = effectivePresetKey();
+    const p = WERR_PRESETS[key];
+    const desc = document.getElementById('werrPresetDesc');
+    const L = A().lang();
+    if (p) {
+      document.getElementById('wpDomain').checked = p.enable_domain;
+      document.getElementById('wpLexical').checked = p.enable_lexical;
+      document.getElementById('wpResonance').checked = p.enable_resonance;
+      document.getElementById('wpTripod').checked = p.tripod;
+      document.getElementById('wpCx').value = p.cx;
+      document.getElementById('wpCy').value = p.cy;
+      document.getElementById('wpZoom').value = p.zoom;
+      document.getElementById('wpIter').value = p.max_iter;
+      document.getElementById('wpLambda').value = p.cadence_lambda;
+      document.getElementById('wpAlpha').value = p.cadence_alpha;
+      if (desc) {
+        const autoTag = current.preset === 'auto' ? `[auto → ${key}] ` : '';
+        desc.textContent = autoTag + (p[L] || p.tr);
+      }
+    } else if (desc) {
+      desc.textContent = L === 'en'
+        ? 'Custom configuration: your manual 8-state cube and 24B seed parameters are active.'
+        : 'Özel kurgu: seçtiğiniz 8-durum küpü ve 24B tohum parametreleri doğrudan uygulanır.';
+    }
+  }
+
+  function readWerrParams() {
+    const pSel = document.getElementById('werrPresetSel');
+    if (!pSel) return { preset: 'auto' };
+    const enable_domain = document.getElementById('wpDomain').checked;
+    const enable_lexical = enable_domain ? document.getElementById('wpLexical').checked : false;
+    const enable_resonance = enable_domain ? document.getElementById('wpResonance').checked : false;
+    const tripod = document.getElementById('wpTripod').checked;
+    const cx = parseFloat(document.getElementById('wpCx').value);
+    const cy = parseFloat(document.getElementById('wpCy').value);
+    const zoom = parseFloat(document.getElementById('wpZoom').value);
+    const max_iter = parseInt(document.getElementById('wpIter').value, 10) || 36;
+    const cadence_lambda = parseFloat(document.getElementById('wpLambda').value);
+    const cadence_alpha = parseFloat(document.getElementById('wpAlpha').value);
+    let mode = 'pure_fractal';
+    if (enable_domain) {
+      if (enable_lexical && enable_resonance) mode = 'hybrid';
+      else if (enable_lexical) mode = 'lexical';
+      else if (enable_resonance) mode = 'resonance';
+    }
+    return {
+      preset: current.preset === 'custom' ? effectivePresetKey() : current.preset,
+      mode,
+      domain_mode: enable_domain ? 'multi' : 'none',
+      enable_domain,
+      enable_lexical,
+      enable_resonance,
+      tripod,
+      cx: Number.isFinite(cx) ? cx : -0.101096,
+      cy: Number.isFinite(cy) ? cy : 0.956287,
+      zoom: Number.isFinite(zoom) && zoom > 0 ? zoom : 45,
+      max_iter: Math.max(8, Math.min(256, max_iter)),
+      cadence_lambda: Number.isFinite(cadence_lambda) ? cadence_lambda : 0.10,
+      cadence_alpha: Number.isFinite(cadence_alpha) ? cadence_alpha : 0.50
+    };
   }
 
   function renderScenarios() {
@@ -75,7 +185,13 @@
     btn.disabled = true;
     reactor.classList.add('busy');
     const question = QUESTIONS[current.gate][A().lang()];
-    const body = { gate_id: current.gate, strict_policy: true, state, questions: { allow: { type: 'noul', text: question } } };
+    const wp = readWerrParams();
+    const body = {
+      gate_id: current.gate, strict_policy: true, state,
+      questions: { allow: { type: 'noul', text: question } },
+      werr_preset: current.preset === 'custom' ? null : current.preset,
+      werr_params: wp
+    };
     let res = await A().api('/v1/decide', body, 'decide');
     let source = 'api';
     // An API older than 1.2.0 has no kernel trace; fall back to the same kernel locally.
@@ -83,6 +199,14 @@
       if (res.status === 429) { renderError(A().t('kk429')); btn.disabled = false; reactor.classList.remove('busy'); return; }
       if (gates && gates[current.gate] && window.AnswerrPolicyKernel) {
         res = A().localDecide(state, gates[current.gate], true, question);
+        res.data.werr_config = {
+          selection_mode: current.preset === 'auto' ? 'auto_optimal' : 'user_custom',
+          preset: effectivePresetKey(),
+          state_cube: [wp.enable_domain ? 1 : 0, wp.enable_lexical ? 1 : 0, wp.enable_resonance ? 1 : 0],
+          mode: wp.mode, tripod: wp.tripod,
+          seed_24b: { cx: wp.cx, cy: wp.cy, zoom: wp.zoom },
+          max_iter: wp.max_iter, cadence_lambda: wp.cadence_lambda, cadence_alpha: wp.cadence_alpha
+        };
         source = 'local';
       } else {
         renderError(A().t('kkNoApi'));
@@ -92,7 +216,7 @@
       latencies.push(res.ms);
       renderMetrics();
     }
-    last = { data: res.data, ms: res.ms, source };
+    last = { data: res.data, ms: res.ms, source, wp };
     render();
     btn.disabled = false;
     reactor.classList.remove('busy');
@@ -166,6 +290,26 @@
     document.getElementById('unkNote').innerHTML =
       `<b>${esc(A().t('kkUnk'))}</b> ${unknown.length ? esc(unknown.join(', ')) : esc(A().t('kkNone'))}` +
       (missing.length ? `<br><b>${esc(A().t('kkMissing'))}</b> ${esc(missing.join(', '))}` : '');
+
+    const fm = tr.fractal_manifold || {};
+    const wc = d.werr_config || fm.werr_config || (last.wp ? {
+      preset: effectivePresetKey(),
+      state_cube: [last.wp.enable_domain ? 1 : 0, last.wp.enable_lexical ? 1 : 0, last.wp.enable_resonance ? 1 : 0],
+      mode: last.wp.mode, tripod: last.wp.tripod,
+      seed_24b: { cx: last.wp.cx, cy: last.wp.cy, zoom: last.wp.zoom }
+    } : null);
+    const mfEl = document.getElementById('werrManifoldLine');
+    if (mfEl && wc) {
+      const cube = Array.isArray(wc.state_cube) ? `[${wc.state_cube.join(',')}]` : '[1,1,1]';
+      const coords = fm.active_coordinates || wc.seed_24b || {};
+      const cxStr = coords.cx != null ? Number(coords.cx).toFixed(4) : '—';
+      const cyStr = coords.cy != null ? Number(coords.cy).toFixed(4) : '—';
+      const zmStr = coords.zoom != null ? Number(coords.zoom).toFixed(1) : '—';
+      const wr = fm.werr_reflex && (fm.werr_reflex.allow || Object.values(fm.werr_reflex)[0]);
+      const wrTxt = wr && wr.noul != null ? ` · noul=${Number(wr.noul).toFixed(3)}` : '';
+      mfEl.innerHTML = `werr: <b>${esc(wc.preset || 'auto')}</b> ${esc(cube)} (${esc(wc.mode || 'hybrid')}${wc.tripod ? '+tripod' : ''}) · c=(${esc(cxStr)}, ${esc(cyStr)}) ×${esc(zmStr)}${esc(wrTxt)}`;
+    }
+
     document.getElementById('sealLine').innerHTML =
       `${esc(A().t('kkPolicy'))} ${esc(tr.policy_id || '—')} v${esc(tr.policy_version || '—')}<br>` +
       `${esc(A().t('kkSeal'))} <span title="${esc(tr.policy_seal || '')}">${esc(A().shortSeal(tr.policy_seal))}</span>`;
@@ -174,7 +318,38 @@
   document.addEventListener('DOMContentLoaded', async () => {
     const sel = document.getElementById('gateSel');
     if (!sel) return;
-    sel.addEventListener('change', () => { current.gate = sel.value; current.scenario = SCENARIOS[sel.value][0].id; loadScenario(); run(); });
+    sel.addEventListener('change', () => {
+      current.gate = sel.value;
+      current.scenario = SCENARIOS[sel.value][0].id;
+      if (current.preset === 'auto') syncWerrInputsFromPreset();
+      loadScenario();
+      run();
+    });
+    const pSel = document.getElementById('werrPresetSel');
+    if (pSel) {
+      pSel.addEventListener('change', () => {
+        current.preset = pSel.value;
+        syncWerrInputsFromPreset();
+        if (current.preset === 'custom') {
+          const adv = document.getElementById('werrAdvBox');
+          if (adv) adv.open = true;
+        }
+        run();
+      });
+      ['wpDomain', 'wpLexical', 'wpResonance', 'wpTripod', 'wpCx', 'wpCy', 'wpZoom', 'wpIter', 'wpLambda', 'wpAlpha'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', () => {
+          if (id === 'wpDomain' && !el.checked) {
+            document.getElementById('wpLexical').checked = false;
+            document.getElementById('wpResonance').checked = false;
+          }
+          current.preset = 'custom';
+          pSel.value = 'custom';
+          syncWerrInputsFromPreset();
+          run();
+        });
+      });
+    }
     document.getElementById('runBtn').addEventListener('click', run);
     const form = document.getElementById('accessForm');
     if (form) form.addEventListener('submit', async (e) => {
@@ -198,8 +373,9 @@
       status.textContent = A().t('erFallback');
       window.location.href = `mailto:ask@answerr.me?subject=${subject}&body=${bodyTxt}`;
     });
-    window.addEventListener('proLanguageChanged', () => { renderScenarios(); render(); renderMetrics(); });
+    window.addEventListener('proLanguageChanged', () => { syncWerrInputsFromPreset(); renderScenarios(); render(); renderMetrics(); });
     await loadGates();
+    syncWerrInputsFromPreset();
     loadScenario();
     run();
   });

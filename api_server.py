@@ -726,6 +726,165 @@ class QuestionSpec(BaseModel):
         return (self.text or self.instructions or "Is the proposed operation safe and valid?").strip()
 
 
+class WerrParamsSpec(BaseModel):
+    """Full werr v0.5.1 parameter configuration (auto/preset or explicit overrides)."""
+    preset: Optional[str] = Field(
+        None,
+        description="'auto' (default, purpose-aligned by gate/domain), 'smart_router', 'security_guard', "
+                    "'risk_evaluator', 'crown_core', or 'universal_cusp'"
+    )
+    mode: Optional[str] = Field(None, description="'hybrid', 'lexical', 'resonance', or 'pure_fractal'")
+    domain_mode: Optional[str] = Field(None, description="'multi' or 'none'")
+    enable_domain: Optional[bool] = Field(None, description="Axis 1 of 8-state cube: Multi-Domain Gate routing")
+    enable_lexical: Optional[bool] = Field(None, description="Axis 2 of 8-state cube: Exact keyword anchoring")
+    enable_resonance: Optional[bool] = Field(None, description="Axis 3 of 8-state cube: 4-stem & Mandelbrot pole resonance")
+    tripod: Optional[bool] = Field(None, description="3-point triangular probe for dynamic fused escape velocity")
+    cadence_lambda: Optional[float] = Field(None, ge=0.0, le=2.0, description="Trajectory cadence coupling (lambda)")
+    cadence_beta: Optional[float] = Field(None, ge=0.0, le=2.0, description="Boundary damping factor (beta)")
+    cadence_alpha: Optional[float] = Field(None, ge=0.0, le=1.0, description="Resonance blending weight (alpha)")
+    temp_choice: Optional[float] = Field(None, ge=0.05, le=10.0, description="Softmax temperature for 4-quadrant choice")
+    resolution: Optional[int] = Field(None, ge=8, le=128, description="Manifold sampling resolution")
+    max_iter: Optional[int] = Field(None, ge=8, le=256, description="Mandelbrot escape iteration ceiling")
+    cx: Optional[float] = Field(None, ge=-5.0, le=5.0, description="24B seed real coordinate (c_x)")
+    cy: Optional[float] = Field(None, ge=-5.0, le=5.0, description="24B seed imaginary coordinate (c_y)")
+    zoom: Optional[float] = Field(None, ge=0.01, le=1000000.0, description="24B seed magnification factor (zoom)")
+    auto_route: Optional[bool] = Field(None, description="Force automatic domain routing on/off")
+    preferred_domain: Optional[str] = Field(None, description="Preferred domain gate key")
+    telemetry_opt_in: Optional[bool] = Field(None, description="Opt in/out of anonymous open-science telemetry")
+
+
+WERR_PRESETS: Dict[str, Dict[str, Any]] = {
+    "smart_router": {
+        "id": "smart_router",
+        "title_tr": "Akıllı Yönlendirici (Dengeli 4-Kadran · [1,1,1])",
+        "title_en": "Smart Router (Balanced 4-Quadrant · [1,1,1])",
+        "purpose_tr": "AI ajan araç kapıları (agent_mcp_guard) ve çok alanlı genel karar orkestrasyonu için en ideal kurgu.",
+        "purpose_en": "Optimal for AI agent action gates (agent_mcp_guard) and multi-domain decision orchestration.",
+        "cx": -0.10109636384562,
+        "cy": 0.95628651080914,
+        "zoom": 45.0,
+        "mode": "hybrid",
+        "domain_mode": "multi",
+        "enable_domain": True,
+        "enable_lexical": True,
+        "enable_resonance": True,
+        "tripod": True,
+        "cadence_lambda": 0.10,
+        "cadence_beta": 0.15,
+        "cadence_alpha": 0.50,
+        "temp_choice": 1.25,
+        "resolution": 36,
+        "max_iter": 36,
+        "preferred_domain": "api_security",
+    },
+    "security_guard": {
+        "id": "security_guard",
+        "title_tr": "Sıfır Güven Kalkanı (Seahorse Vadisi Keskin Sınır · [1,1,1])",
+        "title_en": "Zero-Trust Security Guard (Seahorse Valley Sharp Boundary · [1,1,1])",
+        "purpose_tr": "API güvenlik duvarı (api_zero_trust_waf), DDoS engelleme ve yüksek hassasiyetli erişim denetimi için en ideal kurgu.",
+        "purpose_en": "Optimal for zero-trust API WAF (api_zero_trust_waf), DDoS mitigation, and high-sensitivity access control.",
+        "cx": -0.7436438870371587,
+        "cy": 0.1318259042053119,
+        "zoom": 120.0,
+        "mode": "hybrid",
+        "domain_mode": "multi",
+        "enable_domain": True,
+        "enable_lexical": True,
+        "enable_resonance": True,
+        "tripod": True,
+        "cadence_lambda": 0.08,
+        "cadence_beta": 0.12,
+        "cadence_alpha": 0.60,
+        "temp_choice": 1.00,
+        "resolution": 36,
+        "max_iter": 48,
+        "preferred_domain": "api_security",
+    },
+    "risk_evaluator": {
+        "id": "risk_evaluator",
+        "title_tr": "Finansal Risk Değerlendirici (Yumuşak Gradyan · [1,1,1])",
+        "title_en": "Financial Risk Evaluator (Smooth Gradient · [1,1,1])",
+        "purpose_tr": "Ödeme, 3D Secure ve e-ticaret dolandırıcılık puanlaması (fintech_payment_tr) için sürekli kaçış gradyanlı kurgu.",
+        "purpose_en": "Optimal for payment risk, 3D Secure and checkout fraud scoring (fintech_payment_tr) with smooth escape gradients.",
+        "cx": -0.75,
+        "cy": 0.10,
+        "zoom": 25.0,
+        "mode": "hybrid",
+        "domain_mode": "multi",
+        "enable_domain": True,
+        "enable_lexical": True,
+        "enable_resonance": True,
+        "tripod": True,
+        "cadence_lambda": 0.12,
+        "cadence_beta": 0.18,
+        "cadence_alpha": 0.55,
+        "temp_choice": 1.10,
+        "resolution": 36,
+        "max_iter": 48,
+        "preferred_domain": "financial_risk",
+    },
+    "crown_core": {
+        "id": "crown_core",
+        "title_tr": "Crown Core · Periyot-3 Üçayak Rezonansı ([1,1,1])",
+        "title_en": "Crown Core · Period-3 Tripod Resonance ([1,1,1])",
+        "purpose_tr": "Endüstriyel robotik güvenlik, IoT emniyet kilidi ve Werracle Z/9Z rezonans uyumlu donanım refleksi.",
+        "purpose_en": "Optimal for industrial robotics safety, IoT interlocks, and Werracle Z/9Z resonant hardware reflexes.",
+        "cx": -0.1225611668766536,
+        "cy": 0.7448617666197442,
+        "zoom": 64.0,
+        "mode": "hybrid",
+        "domain_mode": "multi",
+        "enable_domain": True,
+        "enable_lexical": True,
+        "enable_resonance": True,
+        "tripod": True,
+        "cadence_lambda": 0.10,
+        "cadence_beta": 0.15,
+        "cadence_alpha": 0.50,
+        "temp_choice": 1.00,
+        "resolution": 48,
+        "max_iter": 64,
+        "preferred_domain": "iot_safety",
+    },
+    "universal_cusp": {
+        "id": "universal_cusp",
+        "title_tr": "Saf Fraktal · Evrensel Cusp ([0,0,0] · Sıfır Sözlük)",
+        "title_en": "Pure Fractal · Universal Cusp ([0,0,0] · Zero Ontology)",
+        "purpose_tr": "Alan sözlüklerini kapatarak yalnızca 16B durum vektörünün 24-bayt Mandelbrot sınırındaki (∂M) saf geometrik yörüngesini çalıştırır.",
+        "purpose_en": "Locks domain ontologies off and evaluates pure 16D state projection on the 24-byte Mandelbrot boundary (∂M).",
+        "cx": -0.7436438870371587,
+        "cy": 0.1318259042053119,
+        "zoom": 50.0,
+        "mode": "pure_fractal",
+        "domain_mode": "none",
+        "enable_domain": False,
+        "enable_lexical": False,
+        "enable_resonance": False,
+        "tripod": True,
+        "cadence_lambda": 0.10,
+        "cadence_beta": 0.15,
+        "cadence_alpha": 0.50,
+        "temp_choice": 1.25,
+        "resolution": 36,
+        "max_iter": 36,
+        "preferred_domain": None,
+    },
+}
+
+GATE_WERR_PROFILES: Dict[str, str] = {
+    "agent_mcp_guard": "smart_router",
+    "fintech_payment_tr": "risk_evaluator",
+    "api_zero_trust_waf": "security_guard",
+    "api_security": "security_guard",
+    "ddos_mitigation": "security_guard",
+    "financial_risk": "risk_evaluator",
+    "ecommerce_fraud": "risk_evaluator",
+    "robotics_industrial": "crown_core",
+    "iot_safety": "crown_core",
+    "game_combat": "smart_router",
+}
+
+
 class DecisionRequest(BaseModel):
     state: Optional[Dict[str, Any]] = Field(default_factory=dict)
     domain: Optional[str] = None
@@ -743,6 +902,8 @@ class DecisionRequest(BaseModel):
     cx: Optional[float] = None
     cy: Optional[float] = None
     zoom: Optional[float] = None
+    werr_preset: Optional[str] = Field(None, description="Pre-calibrated werr profile ('auto', 'smart_router', 'security_guard', 'risk_evaluator', 'crown_core', 'universal_cusp')")
+    werr_params: Optional[WerrParamsSpec] = Field(None, description="Full werr engine parameter overrides")
 
 
 class HardRuleSpec(BaseModel):
@@ -787,6 +948,10 @@ class ChatCompletionRequest(BaseModel):
     messages: List[ChatMessage]
     temperature: Optional[float] = 0.0
     max_tokens: Optional[int] = 512
+    domain: Optional[str] = None
+    state: Optional[Dict[str, Any]] = None
+    werr_preset: Optional[str] = None
+    werr_params: Optional[WerrParamsSpec] = None
 
 
 def validate_policy(p: Dict[str, Any]) -> Dict[str, Any]:
@@ -837,14 +1002,204 @@ def validate_policy(p: Dict[str, Any]) -> Dict[str, Any]:
 # -----------------------------------------------------------------------------
 # Helpers
 # -----------------------------------------------------------------------------
+def resolve_werr_engine(
+    cx: Optional[float] = None,
+    cy: Optional[float] = None,
+    zoom: Optional[float] = None,
+    domain: Optional[str] = None,
+    gate_id: Optional[str] = None,
+    policy: Optional[Dict[str, Any]] = None,
+    werr_preset: Optional[str] = None,
+    werr_params: Optional[WerrParamsSpec] = None,
+) -> Tuple[Any, Dict[str, Any]]:
+    """Resolves purpose-aligned optimal werr parameters and applies any explicit user overrides."""
+    wp = werr_params or WerrParamsSpec()
+    req_preset = (wp.preset or werr_preset or "auto").strip().lower()
+    target_key = domain or gate_id or (policy or {}).get("gate_id") or ""
+    if req_preset == "auto" or req_preset not in WERR_PRESETS:
+        base_preset_id = GATE_WERR_PROFILES.get(target_key, "smart_router")
+        selection_mode = "auto_optimal"
+    else:
+        base_preset_id = req_preset
+        selection_mode = "user_preset"
+
+    cfg = dict(WERR_PRESETS[base_preset_id])
+    policy_seed = (policy or {}).get("seed_24b") or {}
+    if selection_mode == "auto_optimal" and policy_seed:
+        if policy_seed.get("cx") is not None:
+            cfg["cx"] = float(policy_seed["cx"])
+        if policy_seed.get("cy") is not None:
+            cfg["cy"] = float(policy_seed["cy"])
+        if policy_seed.get("zoom") is not None:
+            cfg["zoom"] = float(policy_seed["zoom"])
+
+    # Explicit top-level or werr_params overrides
+    eff_cx = wp.cx if wp.cx is not None else cx
+    eff_cy = wp.cy if wp.cy is not None else cy
+    eff_zoom = wp.zoom if wp.zoom is not None else zoom
+    if eff_cx is not None:
+        cfg["cx"] = float(eff_cx)
+        selection_mode = "user_custom"
+    if eff_cy is not None:
+        cfg["cy"] = float(eff_cy)
+        selection_mode = "user_custom"
+    if eff_zoom is not None:
+        cfg["zoom"] = float(eff_zoom)
+        selection_mode = "user_custom"
+
+    # Legacy compatibility: if caller explicitly passed cx/cy/zoom without domain or werr_params or gate_id,
+    # preserve pure_fractal unless they specified enable_domain/mode.
+    if (cx is not None and cy is not None and zoom is not None
+            and not domain and not gate_id and not policy and werr_params is None and not werr_preset):
+        cfg["enable_domain"] = False
+        cfg["enable_lexical"] = False
+        cfg["enable_resonance"] = False
+        cfg["mode"] = "pure_fractal"
+        cfg["domain_mode"] = "none"
+
+    for k in ("mode", "domain_mode", "enable_domain", "enable_lexical", "enable_resonance",
+              "tripod", "cadence_lambda", "cadence_beta", "cadence_alpha", "temp_choice",
+              "resolution", "max_iter", "preferred_domain"):
+        val = getattr(wp, k, None)
+        if val is not None:
+            cfg[k] = val
+            selection_mode = "user_custom"
+
+    if domain and wp.preferred_domain is None:
+        domain_map = {
+            "ddos_mitigation": "api_security",
+            "robotics_industrial": "iot_safety",
+        }
+        cfg["preferred_domain"] = domain_map.get(domain, domain if domain in DOMAIN_GATES else cfg.get("preferred_domain"))
+
+    engine = werr.WerrEngine(
+        cx=cfg["cx"],
+        cy=cfg["cy"],
+        zoom=cfg["zoom"],
+        resolution=int(cfg["resolution"]),
+        max_iter=int(cfg["max_iter"]),
+        mode=cfg["mode"],
+        domain_mode=cfg["domain_mode"],
+        enable_domain=cfg["enable_domain"],
+        enable_lexical=cfg["enable_lexical"],
+        enable_resonance=cfg["enable_resonance"],
+        tripod=bool(cfg["tripod"]),
+        cadence_lambda=float(cfg["cadence_lambda"]),
+        cadence_beta=float(cfg["cadence_beta"]),
+        cadence_alpha=float(cfg["cadence_alpha"]),
+        temp_choice=float(cfg["temp_choice"]),
+    )
+    effective_meta = {
+        "selection_mode": selection_mode,
+        "preset": base_preset_id,
+        "state_cube": [
+            1 if getattr(engine, "enable_domain", False) else 0,
+            1 if getattr(engine, "enable_lexical", False) else 0,
+            1 if getattr(engine, "enable_resonance", False) else 0,
+        ],
+        "mode": getattr(engine, "mode", cfg["mode"]),
+        "domain_mode": getattr(engine, "domain_mode", cfg["domain_mode"]),
+        "enable_domain": bool(getattr(engine, "enable_domain", False)),
+        "enable_lexical": bool(getattr(engine, "enable_lexical", False)),
+        "enable_resonance": bool(getattr(engine, "enable_resonance", False)),
+        "tripod": bool(getattr(engine, "tripod", True)),
+        "cadence_lambda": float(getattr(engine, "cadence_lambda", 0.10)),
+        "cadence_beta": float(getattr(engine, "cadence_beta", 0.15)),
+        "cadence_alpha": float(getattr(engine, "cadence_alpha", 0.50)),
+        "temp_choice": float(getattr(engine, "temp_choice", 1.25)),
+        "resolution": int(getattr(engine, "resolution", 36)),
+        "max_iter": int(getattr(engine, "max_iter", 36)),
+        "seed_24b": {"cx": float(cfg["cx"]), "cy": float(cfg["cy"]), "zoom": float(cfg["zoom"])},
+        "preferred_domain": cfg.get("preferred_domain"),
+        "auto_route": wp.auto_route,
+    }
+    return engine, effective_meta
+
+
 def build_engine(cx=None, cy=None, zoom=None, domain=None):
-    if cx is not None and cy is not None and zoom is not None:
-        if domain:
-            return werr.WerrEngine(cx=cx, cy=cy, zoom=zoom, enable_domain=True, enable_lexical=True,
-                                   enable_resonance=True, mode="hybrid", domain_mode="multi", tripod=True)
-        return werr.WerrEngine(cx=cx, cy=cy, zoom=zoom, enable_domain=False, enable_lexical=False,
-                               enable_resonance=False, mode="pure_fractal", domain_mode="none", tripod=True)
-    return DEFAULT_ROUTER
+    eng, _ = resolve_werr_engine(cx=cx, cy=cy, zoom=zoom, domain=domain)
+    return eng
+
+
+TELEMETRY_INGEST_URL = os.environ.get("ANSWERR_TELEMETRY_INGEST_URL", "http://127.0.0.1:8550/v1/telemetry/ingest")
+PUBLIC_TELEMETRY_ENABLED = os.environ.get("ANSWERR_PUBLIC_TELEMETRY", "1").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _dispatch_public_telemetry(
+    state: Dict[str, Any],
+    werr_questions: Dict[str, Any],
+    result: Any,
+    werr_meta: Dict[str, Any],
+    source: str = "answerr_web",
+) -> None:
+    """Non-blocking privacy-filtered telemetry dispatch to local werr-telemetry daemon (port 8550).
+    Never called for authenticated customer API-key traffic unless explicitly opted in."""
+    if not PUBLIC_TELEMETRY_ENABLED or "PYTEST_CURRENT_TEST" in os.environ:
+        return
+    try:
+        from werr.telemetry import _sanitize_client_state, _sanitize_instruction
+        from datetime import datetime, timezone
+
+        q_list = []
+        for q_name, q_obj in list(werr_questions.items())[:10]:
+            ans = result.answers.get(q_name)
+            q_type = getattr(q_obj, "__class__", type(q_obj)).__name__.lower().replace("question", "")
+            if q_type not in ("noul", "choice", "score"):
+                q_type = "noul"
+            item: Dict[str, Any] = {
+                "name": str(q_name)[:64],
+                "type": q_type,
+                "instruction": _sanitize_instruction(getattr(q_obj, "instructions", "")),
+            }
+            if ans is not None:
+                if q_type == "noul":
+                    item["decision"] = bool(getattr(ans, "decision", False))
+                    item["probability"] = round(float(getattr(ans, "noul", 0.0)), 4)
+                    item["confidence"] = round(float(getattr(ans, "confidence", 0.0)), 4)
+                elif q_type == "choice":
+                    item["decision"] = str(getattr(ans, "choice", ""))[:64]
+                    item["probabilities"] = {str(k): round(float(v), 4) for k, v in getattr(ans, "probabilities", {}).items()}
+                    item["confidence"] = round(float(getattr(ans, "confidence", 0.0)), 4)
+                elif q_type == "score":
+                    item["decision"] = round(float(getattr(ans, "score", 0.0)), 3)
+                    item["probabilities"] = {str(k): round(float(v), 4) for k, v in getattr(ans, "probabilities", {}).items()}
+                    item["confidence"] = round(float(getattr(ans, "confidence", 0.0)), 4)
+            q_list.append(item)
+
+        coords = getattr(result, "active_coordinates", None) or werr_meta.get("seed_24b") or {}
+        state_summary = _sanitize_client_state(state if isinstance(state, dict) else {})
+        state_summary["_werr_preset"] = str(werr_meta.get("preset", "smart_router"))[:32]
+        state_summary["_werr_cube"] = "".join(str(x) for x in (werr_meta.get("state_cube") or [1, 1, 1]))
+        payload = json.dumps({
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "version": "werr-{}-{}".format(getattr(werr, "__version__", "0.5.1"), werr_meta.get("preset", "auto"))[:48],
+            "source": source[:32],
+            "seed": {
+                "cx": round(float(coords.get("cx", -0.10109636)), 8),
+                "cy": round(float(coords.get("cy", 0.95628651)), 8),
+                "zoom": round(float(coords.get("zoom", 45.0)), 4),
+            },
+            "state_summary": state_summary,
+            "questions": q_list,
+            "latency_ms": round(float(getattr(result, "latency_ms", 0.0)), 3),
+        }, ensure_ascii=False).encode("utf-8")
+
+        def _send():
+            try:
+                req = urllib.request.Request(
+                    TELEMETRY_INGEST_URL,
+                    data=payload,
+                    headers={"Content-Type": "application/json", "User-Agent": "answerr-api/" + API_VERSION},
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=1.5):
+                    pass
+            except Exception:
+                pass
+
+        threading.Thread(target=_send, daemon=True).start()
+    except Exception:
+        pass
 
 
 def parse_prompt_to_state(prompt: str) -> Dict[str, Any]:
@@ -908,6 +1263,7 @@ def get_root():
             "gates": "GET|POST /v1/gates, DELETE /v1/gates/{gate_id}",
             "gate_decide": "POST /v1/gates/{gate_id}/decide",
             "compile_policy": "POST /v1/policies/compile",
+            "werr_parameters": "GET /v1/werr/parameters",
             "access_request": "POST /v1/access-request",
             "systemone": "POST /v1/systemone (research)",
             "chat_completions": "POST /v1/chat/completions (research)",
@@ -942,14 +1298,46 @@ def get_health():
 
 @app.get("/v1/presets", tags=["Catalog"])
 def get_presets():
-    return {"status": "success", "presets": PRESETS}
+    return {"status": "success", "presets": PRESETS, "werr_presets": WERR_PRESETS, "gate_profiles": GATE_WERR_PROFILES}
+
+
+@app.get("/v1/werr/parameters", tags=["Catalog"])
+def get_werr_parameters():
+    """Returns the complete werr v0.5.1 parameter catalog, 8-state orthogonal cube, and purpose-aligned profiles."""
+    return {
+        "status": "success",
+        "werr_version": getattr(werr, "__version__", "0.5.1"),
+        "default_selection": "auto",
+        "gate_profiles": GATE_WERR_PROFILES,
+        "presets": WERR_PRESETS,
+        "orthogonal_cube_states": [
+            {"state": [1, 1, 1], "mode": "hybrid", "label_tr": "Tam Hibrit (Crown Core)", "label_en": "Full Hybrid (Crown Core)",
+             "description": "Domain Gate + Exact Lexical + 4-Stem & Mandelbrot Pole Resonance"},
+            {"state": [1, 1, 0], "mode": "lexical", "label_tr": "Alan + Sözlüksel Mühür", "label_en": "Domain + Lexical Only",
+             "description": "Domain Gate + Exact Lexical matching without morphological/pole resonance"},
+            {"state": [1, 0, 1], "mode": "resonance", "label_tr": "Alan + Kutup Rezonansı", "label_en": "Domain + Pole Resonance",
+             "description": "Domain Gate + Morphological 4-stem & Mandelbrot coordinate resonance"},
+            {"state": [0, 0, 0], "mode": "pure_fractal", "label_tr": "Saf Fraktal (Evrensel Cusp)", "label_en": "Pure Fractal (Universal Cusp)",
+             "description": "Zero ontology dictionaries; pure 16D state projection onto 24B Mandelbrot boundary (∂M)"},
+        ],
+        "hyperparameters": {
+            "tripod": {"type": "bool", "default": True, "description": "3-point triangular probe for dynamic fused escape velocity"},
+            "cadence_lambda": {"type": "float", "default": 0.10, "min": 0.0, "max": 2.0, "description": "Trajectory cadence coupling (λ)"},
+            "cadence_beta": {"type": "float", "default": 0.15, "min": 0.0, "max": 2.0, "description": "Boundary damping factor (β)"},
+            "cadence_alpha": {"type": "float", "default": 0.50, "min": 0.0, "max": 1.0, "description": "Resonance blending weight (α)"},
+            "temp_choice": {"type": "float", "default": 1.25, "min": 0.05, "max": 10.0, "description": "4-quadrant choice softmax temperature (τ)"},
+            "resolution": {"type": "int", "default": 36, "min": 8, "max": 128, "description": "Manifold sampling resolution (N)"},
+            "max_iter": {"type": "int", "default": 36, "min": 8, "max": 256, "description": "Mandelbrot escape iteration ceiling (K)"},
+        },
+    }
 
 
 @app.get("/v1/domains", tags=["Catalog"])
 def get_domains():
     return {"status": "success",
             "available_domains": list(DOMAIN_GATES.keys()) + ["ddos_mitigation", "robotics_industrial"],
-            "builtin_gates": list(BUILTIN_GATES.keys())}
+            "builtin_gates": list(BUILTIN_GATES.keys()),
+            "werr_presets": list(WERR_PRESETS.keys())}
 
 
 @app.get("/v1/gates", tags=["Policy Gates"])
@@ -1097,17 +1485,44 @@ def post_decide(req: DecisionRequest, request: Request):
     kernel = PK.evaluate(state, policy, bool(req.strict_policy))
     governs = bool(policy or req.strict_policy or kernel["tool"] or kernel["verdict"] == "DENY")
 
-    seed = (policy or {}).get("seed_24b") or {}
-    eff_cx = req.cx if req.cx is not None else seed.get("cx")
-    eff_cy = req.cy if req.cy is not None else seed.get("cy")
-    eff_zoom = req.zoom if req.zoom is not None else seed.get("zoom")
-    engine = build_engine(eff_cx, eff_cy, eff_zoom, domain=req.domain)
-    result = engine.decide(state=state, questions=werr_questions)
+    engine, werr_meta = resolve_werr_engine(
+        cx=req.cx, cy=req.cy, zoom=req.zoom, domain=req.domain,
+        gate_id=req.gate_id, policy=policy, werr_preset=req.werr_preset, werr_params=req.werr_params
+    )
+    result = engine.decide(
+        state=state,
+        questions=werr_questions,
+        auto_route=werr_meta.get("auto_route"),
+        preferred_domain=werr_meta.get("preferred_domain"),
+    )
+
+    werr_reflex_out: Dict[str, Any] = {}
+    for q_id, ans in result.answers.items():
+        if isinstance(ans, werr.NoulAnswer):
+            werr_reflex_out[q_id] = {
+                "type": "noul", "decision": ans.decision, "noul": round(ans.noul, 4),
+                "confidence": round(ans.confidence, 4), "label": "ALLOWED" if ans.decision else "DENIED",
+            }
+        elif isinstance(ans, werr.ChoiceAnswer):
+            werr_reflex_out[q_id] = {
+                "type": "choice", "choice": ans.choice,
+                "probabilities": {k: round(v, 4) for k, v in ans.probabilities.items()},
+                "confidence": round(ans.confidence, 4),
+            }
+        elif isinstance(ans, werr.ScoreAnswer):
+            werr_reflex_out[q_id] = {
+                "type": "score", "score": round(ans.score, 3), "level": ans.level,
+                "probabilities": {str(k): round(v, 4) for k, v in ans.probabilities.items()},
+                "confidence": round(ans.confidence, 4),
+            }
 
     fractal = {
-        "active_coordinates": getattr(result, "active_coordinates", None),
+        "active_coordinates": getattr(result, "active_coordinates", None) or werr_meta.get("seed_24b"),
         "escape_entropy": getattr(result, "escape_entropy", None),
         "quadrant_entropy": getattr(result, "quadrant_entropy", None),
+        "routed_domain": getattr(result, "domain", None) or werr_meta.get("preferred_domain"),
+        "werr_config": werr_meta,
+        "werr_reflex": werr_reflex_out,
         "note": "Research telemetry; does not decide gated, strict or agent-tool requests.",
     }
 
@@ -1146,6 +1561,7 @@ def post_decide(req: DecisionRequest, request: Request):
         "answers": answers,
         "results": answers,
         "trace": trace,
+        "werr_config": werr_meta,
         "security": {"rate_tier": sec["rate_tier"], "recaptcha": sec["recaptcha"],
                      "api_key": bool(sec["tenant"])},
         "telemetry": {
@@ -1154,11 +1570,16 @@ def post_decide(req: DecisionRequest, request: Request):
             "model_weights_bytes": 0,
             "policy_seal": trace["policy_seal"],
             "kernel_version": PK.KERNEL_VERSION,
+            "werr_preset": werr_meta.get("preset"),
+            "werr_state_cube": werr_meta.get("state_cube"),
         },
     }
     headers = {"X-Answerr-Verdict": body["verdict"] or "", "X-Answerr-Policy-Seal": trace["policy_seal"] or ""}
     if principal:
         _meter(principal, req, body, kernel, policy, trace, state, mode, total_ms, headers)
+    opt_in = req.werr_params.telemetry_opt_in if req.werr_params else None
+    if (not sec["tenant"] and opt_in is not False) or (sec["tenant"] and opt_in is True):
+        _dispatch_public_telemetry(state, werr_questions, result, werr_meta, source="answerr_decide")
     return JSONResponse(content=body, headers=headers)
 
 
@@ -1226,6 +1647,9 @@ class SystemOneRequest(BaseModel):
     state: Optional[Dict[str, Any]] = Field(default_factory=dict)
     questions: Optional[Dict[str, Any]] = Field(default_factory=dict)
     model: Optional[str] = "werr-system-one"
+    domain: Optional[str] = None
+    werr_preset: Optional[str] = None
+    werr_params: Optional[WerrParamsSpec] = None
 
 
 @app.post("/v1/systemone", tags=["Decision Engine"])
@@ -1271,7 +1695,14 @@ def post_systemone(req: SystemOneRequest):
     eval_state = dict(state)
     if req.task and "_task_id" not in eval_state:
         eval_state["_task_id"] = req.task
-    result = SYSTEMONE_ROUTER.decide(state=eval_state, questions=werr_questions)
+    if req.werr_params or req.werr_preset or req.domain:
+        eng, werr_meta = resolve_werr_engine(domain=req.domain, werr_preset=req.werr_preset, werr_params=req.werr_params)
+        result = eng.decide(state=eval_state, questions=werr_questions,
+                            auto_route=werr_meta.get("auto_route"), preferred_domain=werr_meta.get("preferred_domain"))
+    else:
+        werr_meta = {"selection_mode": "auto_optimal", "preset": "smart_router", "state_cube": [1, 1, 1],
+                     "seed_24b": {"cx": SYSTEMONE_ROUTER.cx, "cy": SYSTEMONE_ROUTER.cy, "zoom": SYSTEMONE_ROUTER.zoom}}
+        result = SYSTEMONE_ROUTER.decide(state=eval_state, questions=werr_questions)
     total_ms = (time.perf_counter() - t_start) * 1000.0
 
     answers_out = {}
@@ -1302,6 +1733,7 @@ def post_systemone(req: SystemOneRequest):
                 "confidence": round(ans.confidence, 4)
             }
 
+    _dispatch_public_telemetry(state, werr_questions, result, werr_meta, source="answerr_systemone")
     return {
         "status": "success",
         "task_id": req.task or "werr-systemone",
@@ -1312,6 +1744,7 @@ def post_systemone(req: SystemOneRequest):
         "model": req.model,
         "state": state,
         "result": answers_out,
+        "werr_config": werr_meta,
         "telemetry": {
             "engine_latency_ms": round(result.latency_ms, 3),
             "total_request_latency_ms": round(total_ms, 3),
@@ -1339,20 +1772,24 @@ def chat_completions(req: ChatCompletionRequest):
     if not user_content:
         user_content = "Evaluate system state"
 
-    state = parse_prompt_to_state(user_content)
+    state = dict(req.state) if req.state else parse_prompt_to_state(user_content)
+    eng, werr_meta = resolve_werr_engine(domain=req.domain, werr_preset=req.werr_preset, werr_params=req.werr_params)
 
-    result = DEFAULT_ROUTER.decide(
+    werr_questions = {
+        "permission": werr.NoulQuestion(instructions=f"Should request proceed: {user_content[:160]}?"),
+        "action": werr.ChoiceQuestion(instructions="Pipeline action", criteria={
+            "direct_api": "Fast Path API",
+            "rate_limit": "Queue Throttling",
+            "quarantine": "Audit Quarantine",
+            "block": "Block Access"
+        }),
+        "threat": werr.ScoreQuestion(instructions="Threat Score", criteria=["Nominal", "Minor", "Substantial", "Critical"])
+    }
+    result = eng.decide(
         state=state,
-        questions={
-            "permission": werr.NoulQuestion(instructions=f"Should request proceed: {user_content[:80]}?"),
-            "action": werr.ChoiceQuestion(instructions="Pipeline action", criteria={
-                "direct_api": "Fast Path API",
-                "rate_limit": "Queue Throttling",
-                "quarantine": "Audit Quarantine",
-                "block": "Block Access"
-            }),
-            "threat": werr.ScoreQuestion(instructions="Threat Score", criteria=["Nominal", "Minor", "Substantial", "Critical"])
-        }
+        questions=werr_questions,
+        auto_route=werr_meta.get("auto_route"),
+        preferred_domain=werr_meta.get("preferred_domain"),
     )
 
     total_ms = (time.perf_counter() - t_start) * 1000.0
@@ -1374,6 +1811,7 @@ def chat_completions(req: ChatCompletionRequest):
         f"• Engine: werr {werr_ver} (Wave & Error Reflex Resonator)"
     )
 
+    coords = getattr(result, "active_coordinates", None) or werr_meta.get("seed_24b") or {}
     return {
         "id": f"chatcmpl-answerr-{int(time.time()*1000)}",
         "object": "chat.completion",
@@ -1393,6 +1831,17 @@ def chat_completions(req: ChatCompletionRequest):
             "prompt_tokens": 0,
             "completion_tokens": 0,
             "total_tokens": 0
+        },
+        "werr_decision": {
+            "decision": bool(ans_noul.decision),
+            "noul": round(float(ans_noul.noul), 4),
+            "confidence": round(float(ans_noul.confidence), 4),
+            "action": ans_choice.choice,
+            "action_probabilities": {k: round(float(v), 4) for k, v in ans_choice.probabilities.items()},
+            "threat_score": round(float(ans_score.score), 3),
+            "threat_level": ans_score.level,
+            "active_coordinates": coords,
+            "werr_config": werr_meta,
         },
         "telemetry": {
             "latency_ms": round(total_ms, 3),

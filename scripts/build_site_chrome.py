@@ -90,6 +90,7 @@ def footer(r: str) -> str:
                                         ("https://github.com/pCwOrM/answerr/blob/main/LICENSE", "fLicense", "Lisans (BSL 1.1)")]),
         col("fcCompany", "Şirket", [("vision.html", "navVision", "Werr Evreni"), ("research.html", "navResearch", "Araştırma"),
                                     (CO["website"], None, "ITouch Bilişim"), ("mailto:" + CO["email"], None, CO["email"]),
+                                    ("../research/portal.html", "fPortal", "Araştırma Portalı · v4.1"),
                                     ("archive/2026-10-14-v1.2/index.html", "fArchive12", "Arşiv · v1.2"),
                                     ("archive/2026-10-13-v0.6/index.html", "fArchive06", "Arşiv · v0.6")]),
         col("fcLegal", "Yasal", [("legal/kullanim-sartlari.html", "lgTerms", "Kullanım şartları"),
@@ -268,6 +269,19 @@ def legal_pages():
     return out
 
 
+def root_index(pro_text: str) -> str:
+    def fix_attr(m):
+        attr, val = m.group(1), m.group(2)
+        if val.startswith(("http://", "https://", "mailto:", "data:", "#")):
+            return m.group(0)
+        if val.startswith("../"):
+            return '{}="{}"'.format(attr, val[3:])
+        if val == "index.html" or val.startswith("index.html#"):
+            return m.group(0)
+        return '{}="pro/{}"'.format(attr, val)
+    return re.sub(r'\b(href|src|srcset)="([^"]+)"', fix_attr, pro_text)
+
+
 def build(check: bool) -> int:
     stale = []
     for rel, (active, r) in PAGES.items():
@@ -281,6 +295,14 @@ def build(check: bool) -> int:
             stale.append(rel)
             if not check:
                 open(path, "w", encoding="utf-8").write(new)
+    pro_idx = open(os.path.join(PRO, "index.html"), encoding="utf-8").read()
+    root_idx_path = os.path.join(ROOT, "index.html")
+    want_root = root_index(pro_idx)
+    old_root = open(root_idx_path, encoding="utf-8").read() if os.path.exists(root_idx_path) else None
+    if old_root != want_root:
+        stale.append("../index.html")
+        if not check:
+            open(root_idx_path, "w", encoding="utf-8").write(want_root)
     for rel, page in legal_pages().items():
         path = os.path.join(PRO, rel)
         old = open(path, encoding="utf-8").read() if os.path.exists(path) else None

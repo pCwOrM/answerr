@@ -199,3 +199,51 @@ def test_rate_limit_shared_between_workers(client):
     assert seen == [119, 118, 117, 116, 115, 114]   # one bucket across both "workers"
     ok, _, rem, _ = w1.check("ip:192.0.2.51", "verified")
     assert rem == 119
+
+
+def test_werr_parameters_catalog_and_custom_decide(client):
+    cat = client.get("/v1/werr/parameters").json()
+    assert {"smart_router", "security_guard", "risk_evaluator", "crown_core", "universal_cusp"} <= set(cat["presets"].keys())
+    assert len(cat["orthogonal_cube_states"]) == 4
+    assert cat["gate_profiles"]["agent_mcp_guard"] == "smart_router"
+
+    # Decide with preset override
+    r1 = client.post("/v1/decide", json={
+        "gate_id": "agent_mcp_guard",
+        "state": {"tool_name": "read_invoice_summary", "user_role": "admin", "auth_status": True},
+        "werr_preset": "crown_core",
+        "questions": q()
+    }).json()
+    assert r1["verdict"] == "ALLOW"
+    assert r1["werr_config"]["preset"] == "crown_core"
+    assert r1["werr_config"]["tripod"] is True
+    assert r1["trace"]["fractal_manifold"]["werr_reflex"] is not None
+
+    # Decide with custom 8-state cube [0,0,0] and custom 24B seed
+    r2 = client.post("/v1/decide", json={
+        "gate_id": "fintech_payment_tr",
+        "state": {"amount_try": 1500, "three_ds_verified": True, "chargeback_count": 0, "velocity_1h": 1},
+        "werr_params": {
+            "enable_domain": False, "enable_lexical": False, "enable_resonance": False,
+            "tripod": True, "cx": -0.1011, "cy": 0.9563, "zoom": 60.0, "max_iter": 48
+        },
+        "questions": q()
+    }).json()
+    assert r2["werr_config"]["state_cube"] == [0, 0, 0]
+    assert r2["werr_config"]["tripod"] is True
+    assert r2["werr_config"]["max_iter"] == 48
+
+    # Chat completions returns real werr_decision with state & werr_preset
+    r3 = client.post("/v1/chat/completions", json={
+        "messages": [{"role": "user", "content": "Should we halt the robotic arm due to thermal spike?"}],
+        "domain": "robotics_industrial",
+        "state": {"joint_temp_c": 95.0, "collision_force_n": 180.0, "safety_curtain_broken": True},
+        "werr_preset": "security_guard"
+    }).json()
+    wd = r3["werr_decision"]
+    assert isinstance(wd["decision"], bool)
+    assert isinstance(wd["noul"], float)
+    assert isinstance(wd["confidence"], float)
+    assert wd["werr_config"]["preset"] == "security_guard"
+
+

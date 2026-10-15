@@ -3,6 +3,7 @@
 (function () {
   'use strict';
   if (!window.ProI18n || !window.ProI18n.extend) return;
+  const P = (typeof location !== 'undefined' && location.pathname.indexOf('/pro/') < 0) ? 'pro/' : '';
   window.ProI18n.extend({
     tr: {
       "navVision": "Werr Evreni",
@@ -30,7 +31,7 @@
       "tz3k": "Kümülatif kayıt",
       "tz3t": "Külliyat: 14 kayıt",
       "tz3d": "arXiv ön baskıları, Zenodo arşivleri, Lean 4 doğrulamaları ve bekleyen patent başvuruları.",
-      "erLead2": "Pilot 60 gün ücretsizdir. Sonrasında <a href=\"pricing.html\">yayımlanan fiyatlar</a> geçerlidir; kurucu müşteriler fiyatı 12 ay sabit tutar.",
+      "erLead2": "Pilot 60 gün ücretsizdir. Sonrasında <a href=\"" + P + "pricing.html\">yayımlanan fiyatlar</a> geçerlidir; kurucu müşteriler fiyatı 12 ay sabit tutar.",
       "prHud": "TOKEN YOK · GPU YOK · YALNIZCA KARAR",
       "prEyebrow": "Fiyatlar · erken erişim 2026 Q4",
       "prTitle": "Token’a değil, <em style=\"font-style:normal;color:var(--amber)\">karara</em> ödeyin.",
@@ -324,7 +325,26 @@
       "stsC4": "Hesap ve plan servisi",
       "stsUpS": "ÇALIŞIYOR",
       "stsDeg": "SORUNLU",
-      "stsAt": "Son ölçüm:"
+      "stsAt": "Son ölçüm:",
+      "kkWerrPreset": "Werr çekirdek kurgusu (24B + 8-durum küpü)",
+      "wpAuto": "Otomatik · Kapı amacına en uygun kurgu",
+      "wpSmart": "Smart Router · Dengeli 4-Kadran [1,1,1]",
+      "wpSec": "Security Guard · Seahorse Keskin Sınır [1,1,1]",
+      "wpRisk": "Risk Evaluator · Yumuşak Gradyan [1,1,1]",
+      "wpCrown": "Crown Core · Periyot-3 Üçayak [1,1,1]",
+      "wpCusp": "Universal Cusp · Saf 24B Fraktal [0,0,0]",
+      "wpCustom": "Özel Kurgu · Parametreleri kendin seç",
+      "kkWerrAdv": "İleri düzey Werr parametreleri (8-durum küpü, tohum, kadans)",
+      "wpDomLbl": "Alan kapısı (D)",
+      "wpLexLbl": "Sözlüksel (L)",
+      "wpResLbl": "Rezonans (R)",
+      "wpTriLbl": "Üçayak (Tripod)",
+      "stDeploy": "Konsola kapı olarak kaydet",
+      "fPortal": "Araştırma Portalı · v4.1",
+      "rsPortalEyebrow": "Klasik Araştırma Portalı · v4.1",
+      "rsPortalTitle": "Etkileşimli Çift-Biliş (Sistem-1 / Sistem-2) Laboratuvarı",
+      "rsPortalDesc": "Mandelbrot sınır dinamikleri, 40+ Lean 4 teoremi, 24B fraktal nörolojik sentez ve klasik konsol arayüzü (verisiz eksiltmesiz korundu).",
+      "rsPortalOpen": "Portalı aç →"
 },
     en: {
       "fArchive12": "Archive · v1.2",
@@ -353,7 +373,7 @@
       "tz3k": "Cumulative record",
       "tz3t": "Corpus: 14 records",
       "tz3d": "arXiv preprints, Zenodo archives, Lean 4 verifications and pending patent applications.",
-      "erLead2": "The pilot is free for 60 days. After that the <a href=\"pricing.html\">published prices</a> apply; founding customers keep their price fixed for 12 months.",
+      "erLead2": "The pilot is free for 60 days. After that the <a href=\"" + P + "pricing.html\">published prices</a> apply; founding customers keep their price fixed for 12 months.",
       "prHud": "NO TOKENS · NO GPU · JUST DECISIONS",
       "prEyebrow": "Pricing · early access 2026 Q4",
       "prTitle": "Pay for <em style=\"font-style:normal;color:var(--amber)\">decisions</em>, not tokens.",
@@ -646,7 +666,26 @@
       "stsC4": "Accounts & plans service",
       "stsUpS": "OPERATIONAL",
       "stsDeg": "DEGRADED",
-      "stsAt": "Last check:"
+      "stsAt": "Last check:",
+      "kkWerrPreset": "Werr engine configuration (24B + 8-state cube)",
+      "wpAuto": "Automatic · Optimal configuration for gate purpose",
+      "wpSmart": "Smart Router · Balanced 4-Quadrant [1,1,1]",
+      "wpSec": "Security Guard · Seahorse Sharp Boundary [1,1,1]",
+      "wpRisk": "Risk Evaluator · Smooth Gradient [1,1,1]",
+      "wpCrown": "Crown Core · Period-3 Tripod [1,1,1]",
+      "wpCusp": "Universal Cusp · Pure 24B Fractal [0,0,0]",
+      "wpCustom": "Custom Configuration · Choose your own parameters",
+      "kkWerrAdv": "Advanced Werr parameters (8-state cube, seed, cadence)",
+      "wpDomLbl": "Domain gate (D)",
+      "wpLexLbl": "Lexical (L)",
+      "wpResLbl": "Resonance (R)",
+      "wpTriLbl": "Tripod escape",
+      "stDeploy": "Save as gate in Console",
+      "fPortal": "Research Portal · v4.1",
+      "rsPortalEyebrow": "Classic Research Portal · v4.1",
+      "rsPortalTitle": "Interactive Dual-Cognition (System-1 / System-2) Lab",
+      "rsPortalDesc": "Mandelbrot boundary dynamics, 40+ Lean 4 theorems, 24B fractal neural synthesis, and the classic console interface (preserved with zero data loss).",
+      "rsPortalOpen": "Open portal →"
 }
   });
 })();
