@@ -237,6 +237,34 @@
     document.getElementById('vSub').textContent = msg;
   }
 
+  function localizeReason(s) {
+    if (!s || A().lang() !== 'tr') return s || '';
+    return String(s)
+      .replace(/^Tool '([^']+)' is in class 'destructive' -> DENY$/, "Araç '$1' yıkıcı ('destructive') sınıfında → DUR")
+      .replace(/^Tool '([^']+)' is in class 'privileged' -> DENY$/, "Araç '$1' ayrıcalıklı ('privileged') sınıfında → DUR")
+      .replace(/^Tool '([^']+)' is in class 'mutating' -> REVIEW$/, "Araç '$1' değiştirici ('mutating') sınıfında → İNSANA DEVRET")
+      .replace(/^Tool '([^']+)' is in class 'readonly' \(read-only\)\.$/, "Araç '$1' salt okunur ('readonly') sınıfında.")
+      .replace(/^Tool '([^']+)' is not in the known tool registry\.$/, "Araç '$1' bilinen araç kayıtlarında yer almıyor.")
+      .replace(/^Strict mode: unrecognized field\(s\): (.+)$/, 'Sıkı mod: tanınmayan alan(lar): $1')
+      .replace(/^Missing required field\(s\): (.+)$/, 'Eksik zorunlu alan(lar): $1')
+      .replace(/^All (\d+) fields recognized; risk score ([0-9.\-]+) within bounds\.$/, 'Tüm $1 alan tanındı; risk puanı ($2) güvenli sınırlar içinde.')
+      .replace(/^Risk score ([0-9.\-]+) >= deny threshold ([0-9.\-]+)\.$/, 'Risk puanı ($1) ≥ reddetme eşiği ($2).')
+      .replace(/^Risk score ([0-9.\-]+) >= review threshold ([0-9.\-]+)\.$/, 'Risk puanı ($1) ≥ inceleme eşiği ($2).')
+      .replace(/^Destructive tool class \(delete\/drop\/wipe\/shell\/truncate\)\.$/, 'Yıkıcı araç sınıfı (silme/drop/wipe/kabuk/truncate).')
+      .replace(/^Credential\/secret\/privilege tool requires explicit break-glass\.$/, 'Kimlik bilgisi/sır/yetki aracı açık acil durum (break-glass) onayı gerektirir.')
+      .replace(/^Unauthenticated caller cannot invoke agent tools\.$/, 'Kimliği doğrulanmamış çağrıcı ajan araçlarını çalıştıramaz.')
+      .replace(/^Repeated authentication or tool failures\.$/, 'Tekrarlayan kimlik doğrulama veya araç hataları.')
+      .replace(/^High-value transaction requires human approval\.$/, 'Yüksek tutarlı işlem insan onayı gerektirir.')
+      .replace(/^Impossible-travel velocity anomaly \(>800 km\/h\)\.$/, 'İmkânsız yolculuk hız anomalisi (>800 km/s).')
+      .replace(/^Card-testing velocity spike\.$/, 'Kart denemesi hız sıçraması.')
+      .replace(/^High-value payment requires 3DS \/ manual review\.$/, 'Yüksek tutarlı ödeme 3D Secure / insan incelemesi gerektirir.')
+      .replace(/^Device integrity anomaly requires step-up verification\.$/, 'Cihaz bütünlüğü anomalisi ek doğrulama gerektirir.')
+      .replace(/^Request frequency exceeds DDoS ceiling \(100 rps\)\.$/, 'İstek sıklığı DDoS tavanını aşıyor (100 istek/sn).')
+      .replace(/^Brute-force authentication threshold exceeded\.$/, 'Kaba kuvvet kimlik doğrulama eşiği aşıldı.')
+      .replace(/^Caller role flagged as adversarial\.$/, 'Çağrıcı rolü saldırgan olarak işaretlendi.')
+      .replace(/^Guest caller in elevated request regime\.$/, 'Misafir çağrıcı yüksek istek rejiminde.');
+  }
+
   function render() {
     if (!last) return;
     const d = last.data;
@@ -247,7 +275,7 @@
     document.getElementById('vCode').textContent = (A().lang() === 'en' ? 'VERDICT · ' : 'HÜKÜM · ') + meta.code;
     const w = document.getElementById('vWord');
     w.textContent = A().t(meta.key); w.className = 'verdict ' + meta.cls;
-    document.getElementById('vSub').textContent = tr.reason || '';
+    document.getElementById('vSub').textContent = localizeReason(tr.reason || '');
     document.getElementById('ringA').setAttribute('stroke', meta.color);
     document.getElementById('ringB').setAttribute('stroke', meta.color);
 
@@ -267,7 +295,7 @@
       const m = A().VERDICT[c.effect];
       return `<div class="trace-row${i === winIdx ? ' win' : ''}"><span class="${i === winIdx ? m.cls : ''}">${i === winIdx ? '▶' : '·'}</span>` +
         `<span>${esc(c.rule_id)}</span><span class="${m.cls}" style="text-align:right">${esc(c.effect)}</span>` +
-        `<span class="why">${esc(c.reason)}</span></div>`;
+        `<span class="why">${esc(localizeReason(c.reason))}</span></div>`;
     }).join('') || `<div class="empty">—</div>`;
 
     const contrib = tr.feature_contributions || {};

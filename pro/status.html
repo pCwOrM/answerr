@@ -87,7 +87,11 @@
   (function () {
     var t = function (k) { return window.ProI18n ? window.ProI18n.t(k) : k; };
     var last = null;
-    function fmtUp(s) { var d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60); return (d ? d + 'g ' : '') + h + 's ' + m + 'dk'; }
+    function fmtUp(s) {
+      var en = window.ProI18n && window.ProI18n.lang === 'en';
+      var d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+      return en ? ((d ? d + 'd ' : '') + h + 'h ' + m + 'm') : ((d ? d + 'g ' : '') + h + 's ' + m + 'dk');
+    }
     function render() {
       var ok = last && last.ok;
       document.getElementById('stDot').className = 'status-dot ' + (ok ? 'ok' : 'bad');

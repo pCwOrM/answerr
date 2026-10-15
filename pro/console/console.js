@@ -45,7 +45,8 @@
       webhook: 'Webhook adresi (https)', secret: 'İmza anahtarı', show: 'Göster', rotate: 'Yenile', test: 'Test gönder', deliveries: 'Son teslimler',
       storeState: 'İnsana devredilen kararların durum vektörünü inceleme kuyruğunda sakla', lang: 'Bildirim dili', events: 'Olay günlüğü',
       upgrade: 'Bu özellik planınızda yok.', seePlans: 'Planları gör', quotaFull: 'Aylık kota doldu; aşımı açın ya da planı yükseltin.',
-      err: 'Bir şey ters gitti', netErr: 'API’ye ulaşılamadı.', sessionEnded: 'Oturum sona erdi; yeniden giriş yapın.'
+      err: 'Bir şey ters gitti', netErr: 'API’ye ulaşılamadı.', sessionEnded: 'Oturum sona erdi; yeniden giriş yapın.',
+      prefix: 'Ön ek', version: 'Sürüm', seal: 'Mühür', rules: 'Kurallar', emailCol: 'E-posta', webhooksTitle: 'Webhook’lar'
     },
     en: {
       signin: 'Sign in', signup: 'Create account', email: 'Work e-mail', company: 'Company (optional)',
@@ -81,7 +82,8 @@
       webhook: 'Webhook URL (https)', secret: 'Signing secret', show: 'Show', rotate: 'Rotate', test: 'Send test', deliveries: 'Recent deliveries',
       storeState: 'Keep the state vector of REVIEW decisions in the review queue', lang: 'Notification language', events: 'Event log',
       upgrade: 'This feature is not in your plan.', seePlans: 'See plans', quotaFull: 'Monthly quota reached; enable overage or upgrade.',
-      err: 'Something went wrong', netErr: 'Could not reach the API.', sessionEnded: 'Session ended; please sign in again.'
+      err: 'Something went wrong', netErr: 'Could not reach the API.', sessionEnded: 'Session ended; please sign in again.',
+      prefix: 'Prefix', version: 'Version', seal: 'Seal', rules: 'Rules', emailCol: 'E-mail', webhooksTitle: 'Webhooks'
     }
   };
   const t = (k) => { const d = T[L()] || T.tr; return k.split('.').reduce((o, p) => (o && o[p] !== undefined ? o[p] : null), d) ?? k; };
@@ -126,6 +128,11 @@
   /* ------------------------------------------------------------------ auth */
   function renderAuth(tab) {
     tab = tab || 'signin';
+    const prevEmail = ($('#auEmail') || {}).value || '';
+    const prevCo = ($('#auCo') || {}).value || '';
+    const prevTerms = Boolean(($('#auTerms') || {}).checked);
+    const prevKvkk = Boolean(($('#auKvkk') || {}).checked);
+    const prevMkt = Boolean(($('#auMkt') || {}).checked);
     document.getElementById('csWho').textContent = '';
     root().innerHTML = `
       <div class="auth-box cs-card">
@@ -136,12 +143,12 @@
         <h1 style="font-size:32px">${esc(tab === 'signup' ? t('signup') : t('signin'))}</h1>
         <p class="muted" style="margin:0">${esc(tab === 'signup' ? t('signupLead') : t('authLead'))}</p>
         <form id="authForm" style="display:flex;flex-direction:column;gap:14px">
-          <div class="field"><label for="auEmail">${esc(t('email'))}</label><input id="auEmail" type="email" required autocomplete="email"></div>
+          <div class="field"><label for="auEmail">${esc(t('email'))}</label><input id="auEmail" type="email" required autocomplete="email" value="${esc(prevEmail)}"></div>
           ${tab === 'signup' ? `
-          <div class="field"><label for="auCo">${esc(t('company'))}</label><input id="auCo" type="text" maxlength="120" autocomplete="organization"></div>
-          <label class="check-line"><input type="checkbox" id="auTerms" required><span>${t('terms')}</span></label>
-          <label class="check-line"><input type="checkbox" id="auKvkk" required><span>${t('kvkk')}</span></label>
-          <label class="check-line"><input type="checkbox" id="auMkt"><span>${esc(t('marketing'))}</span></label>` : ''}
+          <div class="field"><label for="auCo">${esc(t('company'))}</label><input id="auCo" type="text" maxlength="120" autocomplete="organization" value="${esc(prevCo)}"></div>
+          <label class="check-line"><input type="checkbox" id="auTerms" required ${prevTerms ? 'checked' : ''}><span>${t('terms')}</span></label>
+          <label class="check-line"><input type="checkbox" id="auKvkk" required ${prevKvkk ? 'checked' : ''}><span>${t('kvkk')}</span></label>
+          <label class="check-line"><input type="checkbox" id="auMkt" ${prevMkt ? 'checked' : ''}><span>${esc(t('marketing'))}</span></label>` : ''}
           <div class="sr-only" aria-hidden="true"><label for="auWeb">Website</label><input id="auWeb" type="text" tabindex="-1" autocomplete="off"></div>
           <button class="btn-primary" type="submit">${esc(tab === 'signup' ? t('createAcc') : t('sendLink'))}</button>
           <p class="small-mono" id="auStatus" role="status"></p>
@@ -269,7 +276,7 @@
         <form id="kForm" class="cs-row"><div class="field"><label for="kLabel">${esc(t('label'))}</label><input id="kLabel" type="text" maxlength="60" value="production"></div>
           <button class="btn-primary btn-sm" type="submit">${esc(t('newKey'))}</button></form>
         <div id="kNew"></div>
-        <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('label'))}</th><th>Prefix</th><th>${esc(t('created'))}</th><th>${esc(t('lastUsed'))}</th><th>${esc(t('status'))}</th><th></th></tr></thead>
+        <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('label'))}</th><th>${esc(t('prefix'))}</th><th>${esc(t('created'))}</th><th>${esc(t('lastUsed'))}</th><th>${esc(t('status'))}</th><th></th></tr></thead>
         <tbody>${r.data.keys.map(k => `<tr><td>${esc(k.label)}</td><td><code>${esc(k.prefix)}…</code></td><td>${fmtT(k.created_at)}</td><td>${fmtT(k.last_used_at)}</td>
           <td>${k.revoked_at ? esc(t('revoked')) : `<span class="v-allow">${esc(t('active'))}</span>`}</td>
           <td>${k.revoked_at ? '' : `<button class="btn-ghost btn-sm" data-revoke="${esc(k.id)}">${esc(t('revoke'))}</button>`}</td></tr>`).join('')}</tbody></table></div></div>`;
@@ -298,7 +305,7 @@
     } catch (e) { draftJson = ''; }
     el.innerHTML = `
       <div class="cs-card"><h2>${esc(t('nav.gates'))}</h2><p class="muted" style="margin:0">${esc(t('gatesLead'))} · ${fmtN(own.length)} / ${fmtN(S.account.limits.custom_gates)}</p>
-        <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('gate'))}</th><th>Version</th><th>Seal</th><th>Rules</th><th></th></tr></thead>
+        <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('gate'))}</th><th>${esc(t('version'))}</th><th>${esc(t('seal'))}</th><th>${esc(t('rules'))}</th><th></th></tr></thead>
         <tbody>${own.length ? own.map(g => `<tr><td><code>${esc(g.gate_id)}</code><br><span class="muted">${esc(g.title || '')}</span></td><td>${esc(g.version)}</td>
           <td><code>${esc((g.policy_seal || '').slice(0, 19))}…</code></td><td>${(g.hard_rules || []).length}</td>
           <td><button class="btn-ghost btn-sm" data-editgate="${esc(g.gate_id)}">${esc(L() === 'en' ? 'Edit in compiler' : 'Derleyicide aç')}</button> <button class="btn-ghost btn-sm" data-delgate="${esc(g.gate_id)}">${esc(t('del'))}</button></td></tr>`).join('') : `<tr><td colspan="5" class="muted">${esc(t('none'))}</td></tr>`}</tbody></table></div>
@@ -436,10 +443,10 @@
     const r = await call('GET', '/v1/account/members');
     if (!r.ok) { el.innerHTML = `<p class="note">${esc(msg(r))}</p>`; return; }
     el.innerHTML = `<div class="cs-card"><h2>${esc(t('members'))} · ${r.data.members.length} / ${esc(r.data.seats)} ${esc(t('seats'))}</h2>
-      <table class="cs-table"><thead><tr><th>E-mail</th><th>${esc(t('role'))}</th><th>${esc(t('joined'))}</th><th></th></tr></thead>
+      <table class="cs-table"><thead><tr><th>${esc(t('emailCol'))}</th><th>${esc(t('role'))}</th><th>${esc(t('joined'))}</th><th></th></tr></thead>
       <tbody>${r.data.members.map(m => `<tr><td>${esc(m.email)}</td><td>${esc(t('roles.' + m.role))}</td><td>${m.joined_at ? fmtT(m.joined_at) : esc(t('invited'))}</td>
         <td>${m.role === 'owner' ? '' : `<button class="btn-ghost btn-sm" data-rm="${esc(m.email)}">${esc(t('remove'))}</button>`}</td></tr>`).join('')}</tbody></table>
-      <form id="invForm" class="cs-row"><div class="field"><label for="invE">E-mail</label><input id="invE" type="email" required></div>
+      <form id="invForm" class="cs-row"><div class="field"><label for="invE">${esc(t('emailCol'))}</label><input id="invE" type="email" required></div>
         <div class="field" style="flex:0 0 180px"><label for="invR">${esc(t('role'))}</label><select id="invR"><option value="reviewer">${esc(t('roles.reviewer'))}</option><option value="admin">${esc(t('roles.admin'))}</option></select></div>
         <button class="btn-primary btn-sm" type="submit">${esc(t('invite'))}</button></form></div>`;
     $('#invForm').addEventListener('submit', async (e) => {
@@ -516,7 +523,7 @@
           <div class="field"><label for="stLang">${esc(t('lang'))}</label><select id="stLang"><option value="tr" ${a.lang === 'tr' ? 'selected' : ''}>Türkçe</option><option value="en" ${a.lang === 'en' ? 'selected' : ''}>English</option></select></div>
           <label class="check-line" style="grid-column:1/-1"><input type="checkbox" id="stState" ${a.store_review_state ? 'checked' : ''}><span>${esc(t('storeState'))}</span></label>
           <button class="btn-primary btn-sm" type="submit" style="align-self:end">${esc(t('save'))}</button></form></div>
-      <div class="cs-card"><h2>Webhooks</h2>
+      <div class="cs-card"><h2>${esc(t('webhooksTitle'))}</h2>
         ${a.features.webhooks ? `
         <form id="whForm" class="cs-row"><div class="field" style="flex:3 1 320px"><label for="whUrl">${esc(t('webhook'))}</label><input id="whUrl" type="url" value="${esc(a.webhook_url || '')}" placeholder="https://"></div>
           <button class="btn-primary btn-sm" type="submit">${esc(t('save'))}</button><button class="btn-ghost btn-sm" type="button" id="whTest">${esc(t('test'))}</button></form>

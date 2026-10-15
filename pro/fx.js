@@ -27,11 +27,12 @@
   }
 
   /* ------------------------------------------------------------------ live horizon */
+  const IN_PRO = typeof location !== 'undefined' && location.pathname.indexOf('/pro/') >= 0;
   function Horizon(host) {
     const cvs = host.querySelector('canvas.horizon');
     if (!cvs || !window.Worker) return;
     let worker;
-    try { worker = new Worker('mandel-worker.js'); } catch (e) { return; }
+    try { worker = new Worker((IN_PRO ? '' : 'pro/') + 'mandel-worker.js'); } catch (e) { return; }
     const ctx = cvs.getContext('2d');
     const off = document.createElement('canvas');
     const octx = off.getContext('2d');
@@ -146,11 +147,20 @@
     const word = { ALLOW: 'vAllow', REVIEW: 'vReview', DENY: 'vDeny' };
     const cls = { ALLOW: 'v-allow', REVIEW: 'v-review', DENY: 'v-deny' };
 
-    fetch('../policies/builtin_gates.json', { cache: 'no-cache' }).then(r => r.json()).then(g => {
-      policy = g.agent_mcp_guard;
-      for (let i = 0; i < 4; i++) addRow();
-      tick();
-    }).catch(() => {});
+    (async () => {
+      for (const u of ['../policies/builtin_gates.json', 'policies/builtin_gates.json']) {
+        try {
+          const r = await fetch(u, { cache: 'no-cache' });
+          if (r.ok) {
+            const g = await r.json();
+            policy = g.agent_mcp_guard;
+            for (let i = 0; i < 4; i++) addRow();
+            tick();
+            return;
+          }
+        } catch (e) { /* try next */ }
+      }
+    })();
 
     function addRow() {
       const state = { tool_name: pick(TOOLS), user_role: pick(ROLES), auth_status: rnd() > 0.08 };

@@ -56,15 +56,22 @@ def corpus_rows():
 
 
 def render(rows) -> str:
-    head = ["Çalışma", "Konu", "Son sürüm DOI", "Kavram DOI", "arXiv / doğrulama / durum", "Depo"]
-    th = "".join("<th scope=\"col\">{}</th>".format(h) for h in head)
+    head = [
+        ("rsThWork", "Çalışma"),
+        ("rsThTopic", "Konu"),
+        ("rsThLatestDoi", "Son sürüm DOI"),
+        ("rsThConceptDoi", "Kavram DOI"),
+        ("rsThStatus", "arXiv / doğrulama / durum"),
+        ("rsThRepo", "Depo"),
+    ]
+    th = "".join('<th scope="col" data-i18n="{}">{}</th>'.format(k, h) for k, h in head)
     body = []
     for cells in rows:
         cells = (cells + [""] * 6)[:6]
         body.append("<tr>" + "".join("<td>{}</td>".format(md_inline(c)) for c in cells) + "</tr>")
-    return (START + "\n<div class=\"scroll-x\"><table class=\"tests corpus\"><caption class=\"sr-only\">Kümülatif külliyat</caption>"
+    return (START + "\n<div class=\"scroll-x\"><table class=\"tests corpus\"><caption class=\"sr-only\" data-i18n=\"rsCorpus\">Kümülatif külliyat</caption>"
             "<thead><tr>" + th + "</tr></thead><tbody>\n" + "\n".join(body) + "\n</tbody></table></div>\n"
-            "<p class=\"small-mono\" style=\"margin-top:10px\">Kaynak: README.md · {} kayıt · sıralama README ile aynı</p>\n".format(len(rows)) + END)
+            "<p class=\"small-mono\" style=\"margin-top:10px\" data-i18n=\"rsCorpusCap\">Kaynak: README.md · {} kayıt · sıralama README ile aynı</p>\n".format(len(rows)) + END)
 
 
 def main():

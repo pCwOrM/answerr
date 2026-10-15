@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  let currentLang = localStorage.getItem('answerr_lang') || 'tr';
+  let currentLang = localStorage.getItem('answerr_pro_lang') || localStorage.getItem('answerr_lang') || 'tr';
   let activeScenario = 'ddos';
 
   const SCENARIOS = {
@@ -73,11 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const LANDING_I18N = {
     tr: {
+      navProVault: "<span style='color:#06b6d4;'>PRO</span> Kasa &amp; Stüdyo",
       navFeatures: "Özellikler",
       navArchitecture: "4'lü Mimari",
-      navPapers: "Yayınlar & İspatlar",
+      navPapers: "Yayınlar &amp; İspatlar",
       navDocs: "API Docs",
       navEcosystem: "Ekosistem",
+      ddSomaDesc: "158K Nöron Biyonöromorfik Konnektom",
+      ddWerracleDesc: "Blok-İçi Flash-Loan Devre Kesicisi",
+      ddGauntletDesc: "Bare-Metal 27.8x Hız Doğrulaması",
+      ddGithubTitle: "GitHub Depoları (answerr &amp; werr)",
+      drwPlatformGroup: "Platform &amp; Karar",
+      drwProStudio: "PRO Kasa &amp; Politika Stüdyosu",
+      drwSomaLink: "WerrSoma 158K Canlı Portal",
       navLaunchApp: "Karar Motorunu Başlat",
       navLaunchAppMobile: "Karar Motoru",
       badgePill: "0-Byte VRAM • &lt; 0.5 ms Fraktal Refleks • Lean 4 Doğrulanmış (0 Sorry)",
@@ -96,36 +104,69 @@ document.addEventListener('DOMContentLoaded', () => {
       featuresEyebrow: "Neden answerr?",
       featuresTitle: "Geleneksel LLM'lerin Bittiği Yerde Başlayan Refleks",
       featuresDesc: "Geleneksel dil modelleri yavaş, pahalı ve olasılıksaldır. answerr, mikrosaniye hızında kesin kararlar alırken doğal diyalog ve formel güvence sağlar.",
-      p1Title: "< 0.5 ms Fraktal Refleks",
+      p1Title: "&lt; 0.5 ms Fraktal Refleks",
       p1Text: "Mandelbrot kaçış dinamikleriyle mikrosaniyelik Sistem-1 omurilik refleksleri. Ağ gecikmesi olmadan yerel tarayıcıda, edge cihazlarda veya sunucuda anında çalışır.",
       p2Title: "0-Byte Tensör VRAM",
       p2Text: "Ağır GPU matris çarpmalarına, devasa model ağırlıklarına ve sunucu maliyetlerine son. 0-Byte tensör belleği ile mikrodenetleyicide veya akıllı sözleşmede bile çalışır.",
-      p3Title: "Sıfır Halüsinasyon",
+      p3Title: "Sıfır Halüsinasyon (Lean 4)",
       p3Text: "Olasılıksal tahminler yerine fraktal sınır geometrisi ve formal matematiksel ispatlar. Her durum vektörü için %100 tekrarlanabilir ve Lean 4 ile doğrulanmış kararlar.",
-      p4Title: "Formel Doğrulama (Lean 4)",
-      p4Text: "Schreier-Sims BSGS süzgeçleme ve Hilbert uzayı sınır dinamikleri 35+ makine-denetimli teoremle (0 sorry) formel olarak mühürlenmiştir.",
-      archEyebrow: "Mimari",
-      archTitle: "4'lü Egemen Bilişsel Yığın (Quad-Cognitive Stack)",
+      p4Title: "Web3 Slot &amp; Biyo-Konnektom",
+      p4Text: "Ethereum EVM akıllı sözleşmelerinde tek 32-bayt depolama slotuyla blok-içi flash-loan savunması ve Princeton FlyWire 158K Drosophila konnektom biyo-refleks entegrasyonu.",
+      archEyebrow: "Egemen Mimari",
+      archTitle: "4'lü Bilişsel Egemen Yığın (Quad-Cognitive Stack)",
       archDesc: "Mikrosaniyelik omurilik reflekslerinden on-chain DeFi güvenliğine ve 158 bin nöronluk biyonöromorfik konnektoma uzanan tam spektrum.",
-      papersEyebrow: "Bilimsel Temel",
+      st1Badge: "SİSTEM-1: REFLEKS",
+      st1Sub: "Deterministik Fraktal Omurilik Çekirdeği",
+      st1Desc: "Mandelbrot sınır dinamikleri (&part;M) ile 0-Byte VRAM ve &lt; 0.5 ms icra. Olasılıksal tensörler yerine kesin geometrik karar bölgeleri.",
+      st1Link: "GitHub Çekirdeği →",
+      st2Badge: "SİSTEM-2: MÜZAKERE",
+      st2Sub: "Bilişsel Durum Derleyicisi &amp; Çalışma Alanı",
+      st2Desc: "Doğal dil senaryolarını yapılandırılmış durum vektörlerine dönüştürür. Gemini 2.5 Flash / Claude müzakeresini werr omurilik refleksiyle birleştirir.",
+      st2Link: "Çalışma Alanına Gir →",
+      st3Badge: "SİSTEM-WEB3: ZİNCİR-ÜSTÜ",
+      st3Sub: "EVM 32-Bayt Slot &amp; Flash-Loan Kalkanı",
+      st3Desc: "Ethereum ve EVM uyumlu blokzincirlerde tek bir 32-baytlık slotta (~20k gas) blok-içi milisaniye-altı yapay zekâ kararları ve MEV arbitraj savunması.",
+      st3Link: "Web3 Simülatörü →",
+      st4Badge: "SİSTEM-BİYO: KONNEKTOM",
+      st4Sub: "158K Nöron Biyo-Sentetik Uçuş Refleks Yayı",
+      st4Desc: "Princeton FlyWire Drosophila tüm-beyin konnektomunun (158.169 nöron, 3.99M sinaps) werr fraktal motoru ile in silico entegrasyonu. Sub-4ms biyo-refleks döngüsü.",
+      st4Link: "3D Canlı Portal →",
+      papersEyebrow: "Bilimsel Temeller",
       papersTitle: "Hakemli Yayınlar ve Formel Lean 4 İspatları",
-      papersDesc: "answerr ekosistemi spekülasyonlara değil, arXiv'de yayınlanmış 5 hakemli ön-baskıya ve CERN Zenodo kayıtlarına dayanır.",
+      papersDesc: "answerr ekosistemi spekülasyonlara değil, arXiv'de yayınlanmış hakemli ön-baskılara ve CERN Zenodo kayıtlarına dayanır.",
+      pp1Desc: "werr motorunun temelini oluşturan fraktal karar haritası, Euler eşikleri ve sıfır-VRAM mikroservis karar mimarisi.",
+      pp2Desc: "Mandelbrot sınır dinamiklerinin Lean 4 / Mathlib4 ortamında 0 sorry ile formel olarak doğrulanması ve 40 çekirdekli bare-metal telemetrisi.",
+      pp3Desc: "Ethereum akıllı sözleşmelerinde blok-içi milisaniyelik karar icrası, 32-bayt slot mimarisi ve ZK-ML'e kıyasla 1000x hızlanma.",
+      pp4Desc: "Yörünge hata dinamikleri, geçici parametre rezonansı ve fraktal nöron sentezinin teorik fizik ve karmaşık sistemler temeli.",
+      pp5Desc: "GAP cebir sisteminin çekirdek algoritmalarının Lean 4'te makine onaylı doğrulanması (35 teorem, 0 sorry, 0 admit).",
+      pp6Desc: "158.169 biyolojik nöron ve 3.99M sinapsın werr karar motoruyla birleşimi. Sub-4ms otonom uçuş kontrolü ve canlı 3D haritalama.",
+      ppArxivAbs: "arXiv Özeti ↗",
+      ppPdfBtn: "PDF İndir",
+      ppPortalBtn: "Canlı 3D Portal",
       devEyebrow: "Entegrasyon",
       devTitle: "3 Satırda Üretime Hazır Refleks",
-      devDesc: "Python veya doğrudan REST API ile sisteminize saniyeler içinde ekleyin.",
+      devDesc: "Python, REST API veya EVM akıllı sözleşmeleriyle sisteminize saniyeler içinde ekleyin.",
       ctaHeadline: "Karmaşık LLM Gecikmelerine Veda Edin.",
       ctaSubhead: "answerr ile anında karar almaya başlayın. Kayıt gerekmez, tamamen ücretsiz ve anahtarsız mod aktiftir.",
       ctaButton: "Karar Çalışma Alanını Aç ⚡",
       footerCredits: "© 2026 answerr.me • ITouch Systems. Tüm hakları saklıdır. • <a href='mailto:ask@answerr.me' style='color:#38bdf8;text-decoration:none;'>ask@answerr.me</a>",
       footerWorkspace: "Karar Çalışma Alanı",
-      footerApi: "API & Telemetri"
+      footerApi: "API Docs &amp; Telemetri"
     },
     en: {
+      navProVault: "<span style='color:#06b6d4;'>PRO</span> Vault &amp; Studio",
       navFeatures: "Features",
       navArchitecture: "4-Pillar Stack",
-      navPapers: "Papers & Proofs",
+      navPapers: "Papers &amp; Proofs",
       navDocs: "API Docs",
       navEcosystem: "Ecosystem",
+      ddSomaDesc: "158K Neuron Bioneuromorphic Connectome",
+      ddWerracleDesc: "Intra-Block Flash-Loan Circuit Breaker",
+      ddGauntletDesc: "Bare-Metal 27.8x Speed Validation",
+      ddGithubTitle: "GitHub Repositories (answerr &amp; werr)",
+      drwPlatformGroup: "Platform &amp; Decision",
+      drwProStudio: "PRO Vault &amp; Policy Studio",
+      drwSomaLink: "WerrSoma 158K Live Portal",
       navLaunchApp: "Launch Decision Engine",
       navLaunchAppMobile: "Decision Engine",
       badgePill: "0-Byte VRAM • &lt; 0.5 ms Fractal Reflex • Lean 4 Verified (0 Sorry)",
@@ -144,29 +185,54 @@ document.addEventListener('DOMContentLoaded', () => {
       featuresEyebrow: "Why answerr?",
       featuresTitle: "Reflex Decision Making Where Traditional LLMs Fall Short",
       featuresDesc: "LLMs are slow, expensive, and probabilistic. answerr delivers microsecond deterministic reflexes while maintaining rich dialogue and formal mathematical assurances.",
-      p1Title: "< 0.5 ms Fractal Reflex",
+      p1Title: "&lt; 0.5 ms Fractal Reflex",
       p1Text: "Microsecond System-1 spinal reflexes calculated via Mandelbrot escape dynamics. Runs locally in your browser, edge devices, or cloud servers with zero network delay.",
       p2Title: "0-Byte Tensor VRAM",
       p2Text: "No massive GPU matrix multiplications or costly inference servers. Operates with 0-byte tensor memory, even on microcontrollers or EVM smart contracts.",
-      p3Title: "Zero Hallucination",
+      p3Title: "Zero Hallucination (Lean 4)",
       p3Text: "Rooted in deterministic fractal boundary geometry rather than probabilistic tokens. 100% reproducible and formally machine-verified in Lean 4 for every state vector.",
-      p4Title: "Formal Verification (Lean 4)",
-      p4Text: "Schreier-Sims BSGS stabilizer sifting and boundary dynamics mathematically sealed with 35+ machine-checked theorems (0 sorry).",
-      archEyebrow: "Architecture",
+      p4Title: "Web3 Slot &amp; Bio-Connectome",
+      p4Text: "Intra-block flash-loan defense in a single 32-byte Ethereum EVM storage slot and bio-reflex integration with the Princeton FlyWire 158K Drosophila connectome.",
+      archEyebrow: "Sovereign Architecture",
       archTitle: "The Quad-Cognitive Sovereign Stack",
       archDesc: "From microsecond spinal reflexes to on-chain DeFi circuit breakers and 158K-neuron neuromorphic connectomes.",
+      st1Badge: "SYSTEM-1: REFLEX",
+      st1Sub: "Deterministic Fractal Spinal Kernel",
+      st1Desc: "0-Byte VRAM and &lt; 0.5 ms execution via Mandelbrot boundary dynamics (&part;M). Exact geometric decision regions instead of probabilistic tensors.",
+      st1Link: "GitHub Kernel →",
+      st2Badge: "SYSTEM-2: DELIBERATION",
+      st2Sub: "Cognitive State Compiler &amp; Workspace",
+      st2Desc: "Compiles natural language scenarios into structured state vectors. Bridges Gemini 2.5 Flash / Claude deliberation with the werr spinal reflex.",
+      st2Link: "Enter Workspace →",
+      st3Badge: "SYSTEM-WEB3: ON-CHAIN",
+      st3Sub: "EVM 32-Byte Slot &amp; Flash-Loan Shield",
+      st3Desc: "Sub-millisecond intra-block AI decisions and MEV arbitrage defense inside a single 32-byte slot (~20k gas) on Ethereum and EVM chains.",
+      st3Link: "Web3 Simulator →",
+      st4Badge: "SYSTEM-BIO: CONNECTOME",
+      st4Sub: "158K Neuron Bio-Synthetic Flight Reflex Arc",
+      st4Desc: "In silico integration of the Princeton FlyWire Drosophila whole-brain connectome (158,169 neurons, 3.99M synapses) with the werr fractal engine. Sub-4ms bio-reflex loop.",
+      st4Link: "3D Live Portal →",
       papersEyebrow: "Scientific Foundations",
       papersTitle: "Published Papers & Formal Lean 4 Proofs",
-      papersDesc: "The answerr ecosystem is grounded in peer-reviewed scientific literature, 5 published arXiv papers, and CERN Zenodo records.",
+      papersDesc: "The answerr ecosystem is grounded in peer-reviewed scientific literature, published arXiv papers, and CERN Zenodo records.",
+      pp1Desc: "The foundational fractal decision map of the werr engine, Euler thresholds, and zero-VRAM microservice decision architecture.",
+      pp2Desc: "Formal verification of Mandelbrot boundary dynamics in Lean 4 / Mathlib4 with 0 sorry and 40-core bare-metal gauntlet telemetry.",
+      pp3Desc: "Intra-block millisecond decision execution in Ethereum smart contracts, 32-byte slot architecture, and 1000x speedup over ZK-ML.",
+      pp4Desc: "Theoretical physics and complex systems foundations of orbital error dynamics, ephemeral parameter resonance, and fractal neural synthesis.",
+      pp5Desc: "Machine-checked formal verification of core GAP computational group theory algorithms in Lean 4 (35 theorems, 0 sorry, 0 admit).",
+      pp6Desc: "Integration of 158,169 biological neurons and 3.99M synapses with the werr decision engine. Sub-4ms autonomous flight control and live 3D mapping.",
+      ppArxivAbs: "arXiv Abstract ↗",
+      ppPdfBtn: "Download PDF",
+      ppPortalBtn: "Live 3D Portal",
       devEyebrow: "Integration",
       devTitle: "Production-Ready in 3 Lines of Code",
-      devDesc: "Seamlessly integrate via Python or direct REST API in seconds.",
+      devDesc: "Seamlessly integrate via Python, REST API, or EVM smart contracts in seconds.",
       ctaHeadline: "Say Goodbye to Sluggish LLM Latencies.",
       ctaSubhead: "Start making instant, typed decisions with answerr right now. No sign-up, no API key required.",
       ctaButton: "Open Decision Workspace ⚡",
       footerCredits: "© 2026 answerr.me • ITouch Systems. All rights reserved. • <a href='mailto:ask@answerr.me' style='color:#38bdf8;text-decoration:none;'>ask@answerr.me</a>",
       footerWorkspace: "Decision Workspace",
-      footerApi: "API & Telemetry"
+      footerApi: "API Docs &amp; Telemetry"
     }
   };
 
@@ -246,6 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnLangToggleEl.addEventListener('click', () => {
       currentLang = currentLang === 'tr' ? 'en' : 'tr';
       localStorage.setItem('answerr_lang', currentLang);
+      localStorage.setItem('answerr_pro_lang', currentLang);
       applyLanguage(currentLang);
     });
   }
@@ -270,19 +337,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const codeTabs = document.querySelectorAll('.code-tab');
   const codeSnippetPython = document.getElementById('snippet-python');
   const codeSnippetCurl = document.getElementById('snippet-curl');
+  const codeSnippetSolidity = document.getElementById('snippet-solidity');
 
   codeTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       codeTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       const lang = tab.getAttribute('data-tab');
-      if (lang === 'python') {
-        if (codeSnippetPython) codeSnippetPython.style.display = 'block';
-        if (codeSnippetCurl) codeSnippetCurl.style.display = 'none';
-      } else {
-        if (codeSnippetPython) codeSnippetPython.style.display = 'none';
-        if (codeSnippetCurl) codeSnippetCurl.style.display = 'block';
-      }
+      if (codeSnippetPython) codeSnippetPython.style.display = lang === 'python' ? 'block' : 'none';
+      if (codeSnippetCurl) codeSnippetCurl.style.display = lang === 'curl' ? 'block' : 'none';
+      if (codeSnippetSolidity) codeSnippetSolidity.style.display = lang === 'solidity' ? 'block' : 'none';
     });
   });
 

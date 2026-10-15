@@ -139,9 +139,9 @@
             <div class="field">
               <label for="gateSel" data-i18n="kkGate">Kapı</label>
               <select id="gateSel">
-                <option value="agent_mcp_guard">agent_mcp_guard — AI ajan</option>
-                <option value="fintech_payment_tr">fintech_payment_tr — ödeme</option>
-                <option value="api_zero_trust_waf">api_zero_trust_waf — API</option>
+                <option value="agent_mcp_guard" data-i18n="gateOptAgent">agent_mcp_guard — AI ajan</option>
+                <option value="fintech_payment_tr" data-i18n="gateOptPay">fintech_payment_tr — ödeme</option>
+                <option value="api_zero_trust_waf" data-i18n="gateOptWaf">api_zero_trust_waf — API</option>
               </select>
             </div>
             <div class="scn-list" id="scnList" role="group" aria-label="Senaryolar"></div>
@@ -164,19 +164,19 @@
             </div>
             <details id="werrAdvBox" style="border:1px solid rgba(140,222,236,0.18);padding:10px 12px;border-radius:6px;background:rgba(5,6,10,0.55)">
               <summary class="small-mono" style="cursor:pointer;color:var(--ice)" data-i18n="kkWerrAdv">İleri düzey Werr parametreleri (8-durum küpü, tohum, kadans)</summary>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;font-size:12px">
+              <div class="werr-adv-checks">
                 <label style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="wpDomain" checked> <span data-i18n="wpDomLbl">Alan kapısı (D)</span></label>
                 <label style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="wpLexical" checked> <span data-i18n="wpLexLbl">Sözlüksel (L)</span></label>
                 <label style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="wpResonance" checked> <span data-i18n="wpResLbl">Rezonans (R)</span></label>
                 <label style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="wpTripod" checked> <span data-i18n="wpTriLbl">Üçayak (Tripod)</span></label>
               </div>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px">
+              <div class="werr-adv-grid">
                 <div class="field" style="margin:0"><label for="wpCx" class="small-mono">c_x</label><input id="wpCx" type="number" step="0.0001" value="-0.101096"></div>
                 <div class="field" style="margin:0"><label for="wpCy" class="small-mono">c_y</label><input id="wpCy" type="number" step="0.0001" value="0.956287"></div>
                 <div class="field" style="margin:0"><label for="wpZoom" class="small-mono">zoom</label><input id="wpZoom" type="number" step="1" min="0.1" value="45"></div>
                 <div class="field" style="margin:0"><label for="wpIter" class="small-mono">max_iter</label><input id="wpIter" type="number" step="4" min="8" max="256" value="36"></div>
-                <div class="field" style="margin:0"><label for="wpLambda" class="small-mono">λ (kadans)</label><input id="wpLambda" type="number" step="0.02" min="0" max="2" value="0.10"></div>
-                <div class="field" style="margin:0"><label for="wpAlpha" class="small-mono">α (rezonans)</label><input id="wpAlpha" type="number" step="0.05" min="0" max="1" value="0.50"></div>
+                <div class="field" style="margin:0"><label for="wpLambda" class="small-mono" data-i18n="wpLambdaLbl">λ (kadans)</label><input id="wpLambda" type="number" step="0.02" min="0" max="2" value="0.10"></div>
+                <div class="field" style="margin:0"><label for="wpAlpha" class="small-mono" data-i18n="wpAlphaLbl">α (rezonans)</label><input id="wpAlpha" type="number" step="0.05" min="0" max="1" value="0.50"></div>
               </div>
             </details>
             <button class="btn-primary" id="runBtn" type="button" data-i18n="kkRun">Kapıya sor</button>
