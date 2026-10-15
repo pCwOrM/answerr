@@ -37,9 +37,9 @@
   <!-- CHROME:NAV:END -->
   <main id="main" class="section" style="padding-top:36px">
     <div class="wrap" style="display:flex;flex-direction:column;gap:22px">
-      <h1 style="font-size:36px">Yönetim</h1>
-      <form id="kf" class="cs-card"><div class="cs-row"><div class="field" style="flex:3 1 320px"><label for="ak">Yönetici anahtarı (ANSWERR_ADMIN_KEY · yalnızca bu sekmede tutulur)</label><input id="ak" type="password" autocomplete="off"></div>
-        <button class="btn-primary btn-sm" type="submit">Bağlan</button></div></form>
+      <h1 style="font-size:36px" id="admTitle">Yönetim</h1>
+      <form id="kf" class="cs-card"><div class="cs-row"><div class="field" style="flex:3 1 320px"><label for="ak" id="admKeyLbl">Yönetici anahtarı (ANSWERR_ADMIN_KEY · yalnızca bu sekmede tutulur)</label><input id="ak" type="password" autocomplete="off"></div>
+        <button class="btn-primary btn-sm" type="submit" id="admConnBtn">Bağlan</button></div></form>
       <div id="out"></div>
     </div>
   </main>
@@ -67,11 +67,20 @@
   (function () {
     'use strict';
     var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+    var L = function () { return window.ProI18n ? window.ProI18n.lang : 'tr'; };
     var key = ''; try { key = sessionStorage.getItem('answerr_admin') || ''; } catch (e) { key = ''; }
     var API = function () { return window.ProApp.API; };
     var money = function (c, cur) { return (c / 100).toLocaleString('en-US', { style: 'currency', currency: cur || 'USD' }); };
-    var fmtT = function (ts) { return ts ? new Date(ts * 1000).toLocaleString('tr-TR', { dateStyle: 'short', timeStyle: 'short' }) : '—'; };
+    var fmtT = function (ts) { return ts ? new Date(ts * 1000).toLocaleString(L() === 'en' ? 'en-GB' : 'tr-TR', { dateStyle: 'short', timeStyle: 'short' }) : '—'; };
     var PLANS = ['kesif', 'gelistirici', 'pro', 'kurumsal', 'pilot'];
+    var lastRes = null;
+    function syncStatic() {
+      var en = L() === 'en';
+      document.getElementById('admTitle').textContent = en ? 'Administration' : 'Yönetim';
+      document.getElementById('admKeyLbl').textContent = en ? 'Admin key (ANSWERR_ADMIN_KEY · kept only in this tab)' : 'Yönetici anahtarı (ANSWERR_ADMIN_KEY · yalnızca bu sekmede tutulur)';
+      document.getElementById('admConnBtn').textContent = en ? 'Connect' : 'Bağlan';
+      if (lastRes) renderData(lastRes);
+    }
     async function call(m, p, b) {
       var r = await fetch(API() + p, { method: m, headers: { 'Content-Type': 'application/json', 'X-Admin-Key': key }, body: b ? JSON.stringify(b) : undefined });
       var d = {}; try { d = await r.json(); } catch (e) { d = {}; }
@@ -79,32 +88,37 @@
       return d;
     }
     function prevPeriod() { var d = new Date(Date.now() + 3 * 3600e3); d.setUTCDate(1); d.setUTCDate(0); return d.toISOString().slice(0, 7); }
+    function renderData(res) {
+      var out = document.getElementById('out');
+      var en = L() === 'en';
+      var m = res[0].metrics, reqs = res[1].requests, accs = res[2].accounts, sts = res[3].statements;
+      out.innerHTML =
+        '<div class="cs-kpis">' +
+        '<div class="cs-kpi"><small>MRR</small><b>' + money(m.mrr_cents, m.currency) + '</b></div>' +
+        '<div class="cs-kpi"><small>' + (en ? 'Active accounts' : 'Etkin hesap') + '</small><b>' + m.accounts_total + '</b></div>' +
+        '<div class="cs-kpi"><small>' + (en ? 'Signups (7d)' : 'Son 7 gün kayıt') + '</small><b>' + m.signups_7d + '</b></div>' +
+        '<div class="cs-kpi"><small>' + (en ? 'Decisions (' + esc(m.period) + ')' : 'Bu dönem karar (' + esc(m.period) + ')') + '</small><b>' + Number(m.decisions_this_period).toLocaleString(en ? 'en-US' : 'tr-TR') + '</b></div>' +
+        '<div class="cs-kpi"><small>' + (en ? 'Pending plan requests' : 'Bekleyen plan talebi') + '</small><b>' + m.pending_plan_requests + '</b></div></div>' +
+        '<p class="small-mono">' + (en ? 'Plan breakdown: ' : 'Plan dağılımı: ') + esc(JSON.stringify(m.accounts_by_plan)) + '</p>' +
+        '<div class="cs-card"><h2>' + (en ? 'Pending plan requests' : 'Bekleyen plan talepleri') + '</h2><p class="small-mono" style="margin:0">' + (en ? 'Approve after payment is received; approval activates the plan immediately.' : 'Ödeme alındıktan sonra onaylayın; onay planı hemen etkinleştirir.') + '</p><table class="cs-table"><thead><tr><th>' + (en ? 'Time' : 'Zaman') + '</th><th>' + (en ? 'Account' : 'Hesap') + '</th><th>' + (en ? 'Request' : 'Talep') + '</th><th>' + (en ? 'Note' : 'Not') + '</th><th></th></tr></thead><tbody>' +
+        (reqs.map(function (r) { return '<tr><td>' + fmtT(r.ts) + '</td><td>' + esc(r.company || '') + '<br><span class="muted">' + esc(r.email) + ' · ' + esc(r.account_id) + ' · ' + (en ? 'now ' : 'şimdi ') + esc(r.current_plan) + '</span></td><td><b>' + esc(r.plan) + '</b> / ' + esc(r.cycle) + '</td><td>' + esc(r.note || '') + '</td><td><button class="btn-primary btn-sm" data-ap="' + esc(r.id) + '">' + (en ? 'Approve' : 'Onayla') + '</button> <button class="btn-ghost btn-sm" data-rj="' + esc(r.id) + '">' + (en ? 'Reject' : 'Reddet') + '</button></td></tr>'; }).join('') || '<tr><td class="muted">' + (en ? 'None' : 'Yok') + '</td></tr>') +
+        '</tbody></table></div>' +
+        '<div class="cs-card"><h2>' + (en ? 'Accounts' : 'Hesaplar') + '</h2><form id="nf" class="cs-row"><div class="field"><label for="ne">' + (en ? 'New account e-mail (enterprise / pilot)' : 'Yeni hesap e-postası (kurumsal / pilot)') + '</label><input id="ne" type="email" required></div><div class="field"><label for="nc">' + (en ? 'Company' : 'Şirket') + '</label><input id="nc" type="text"></div><div class="field" style="flex:0 0 160px"><label for="np">Plan</label><select id="np">' + PLANS.map(function (p) { return '<option>' + p + '</option>'; }).join('') + '</select></div><button class="btn-primary btn-sm" type="submit">' + (en ? 'Create' : 'Oluştur') + '</button></form><div id="nk"></div>' +
+        '<div class="scroll-x"><table class="cs-table"><thead><tr><th>' + (en ? 'Account' : 'Hesap') + '</th><th>Plan</th><th>' + (en ? 'This period' : 'Bu dönem') + '</th><th>' + (en ? 'Members / keys' : 'Üye / anahtar') + '</th><th>' + (en ? 'Status' : 'Durum') + '</th><th>' + (en ? 'Created' : 'Oluşturma') + '</th></tr></thead><tbody>' +
+        accs.map(function (a) { return '<tr><td>' + esc(a.company || '') + '<br><span class="muted">' + esc(a.email) + ' · ' + esc(a.id) + '</span></td><td><select data-plan="' + esc(a.id) + '" data-cycle="' + esc(a.billing_cycle || 'monthly') + '">' + PLANS.map(function (p) { return '<option ' + (p === a.plan ? 'selected' : '') + '>' + p + '</option>'; }).join('') + '</select> ' + esc(a.billing_cycle) + (a.plan_expires_at ? '<br><span class="muted">' + (en ? 'expires ' : 'bitiş ') + fmtT(a.plan_expires_at) + '</span>' : '') + '</td><td>' + Number(a.decisions).toLocaleString(en ? 'en-US' : 'tr-TR') + '</td><td>' + a.members + ' / ' + a.keys + '</td><td><select data-status="' + esc(a.id) + '">' + ['active', 'suspended', 'closed'].map(function (s) { return '<option ' + (s === a.status ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select></td><td>' + fmtT(a.created_at) + '</td></tr>'; }).join('') +
+        '</tbody></table></div></div>' +
+        '<div class="cs-card"><h2>' + (en ? 'Statements & e-Invoice' : 'Ekstreler ve e-Fatura') + '</h2><form id="sf" class="cs-row"><div class="field" style="flex:0 0 180px"><label for="sp">' + (en ? 'Period' : 'Dönem') + '</label><input id="sp" type="text" value="' + prevPeriod() + '" pattern="\\d{4}-\\d{2}"></div><button class="btn-primary btn-sm" type="submit">' + (en ? 'Generate drafts' : 'Taslakları üret') + '</button></form>' +
+        '<p class="small-mono" style="margin:0">' + (en ? 'Draft = amount computed by answerr. Official invoice is issued via accounting integrator; enter its number with "Issued".' : 'Taslak = answerr’in hesapladığı tutar. Yasal fatura muhasebe entegratöründen kesilir; numarasını “kesildi” ile girin.') + '</p>' +
+        '<div class="scroll-x"><table class="cs-table"><thead><tr><th>' + (en ? 'Period' : 'Dönem') + '</th><th>' + (en ? 'Account' : 'Hesap') + '</th><th>Plan</th><th>' + (en ? 'Usage' : 'Kullanım') + '</th><th>' + (en ? 'Amount' : 'Tutar') + '</th><th>' + (en ? 'Status' : 'Durum') + '</th><th>' + (en ? 'e-Invoice no / action' : 'e-Fatura no / işlem') + '</th></tr></thead><tbody>' +
+        (sts.map(function (s) { return '<tr><td>' + esc(s.period) + '</td><td>' + esc(s.account_id) + '</td><td>' + esc(s.plan) + ' / ' + esc(s.cycle) + '</td><td>' + Number(s.used).toLocaleString(en ? 'en-US' : 'tr-TR') + (s.overage_units ? ' (+' + s.overage_units + ')' : '') + '</td><td>' + money(s.total_cents, s.currency) + '</td><td>' + esc(s.status) + '</td><td>' + (s.status === 'draft' ? '<input data-einv="' + esc(s.id) + '" type="text" placeholder="GIB2026…" style="min-height:34px;width:160px"> <button class="btn-ghost btn-sm" data-issue="' + esc(s.id) + '">' + (en ? 'Issued' : 'Kesildi') + '</button>' : s.status === 'issued' ? esc(s.e_invoice_no || '') + ' <button class="btn-ghost btn-sm" data-paid="' + esc(s.id) + '">' + (en ? 'Paid' : 'Ödendi') + '</button>' : esc(s.e_invoice_no || '')) + '</td></tr>'; }).join('') || '<tr><td class="muted">' + (en ? 'None' : 'Yok') + '</td></tr>') +
+        '</tbody></table></div></div>';
+      bind();
+    }
     async function load() {
       var out = document.getElementById('out');
       try {
-        var res = await Promise.all([call('GET', '/v1/admin/metrics'), call('GET', '/v1/admin/plan-requests?status=pending'), call('GET', '/v1/admin/accounts'), call('GET', '/v1/admin/statements')]);
-        var m = res[0].metrics, reqs = res[1].requests, accs = res[2].accounts, sts = res[3].statements;
-        out.innerHTML =
-          '<div class="cs-kpis">' +
-          '<div class="cs-kpi"><small>MRR</small><b>' + money(m.mrr_cents, m.currency) + '</b></div>' +
-          '<div class="cs-kpi"><small>Etkin hesap</small><b>' + m.accounts_total + '</b></div>' +
-          '<div class="cs-kpi"><small>Son 7 gün kayıt</small><b>' + m.signups_7d + '</b></div>' +
-          '<div class="cs-kpi"><small>Bu dönem karar (' + esc(m.period) + ')</small><b>' + Number(m.decisions_this_period).toLocaleString('tr-TR') + '</b></div>' +
-          '<div class="cs-kpi"><small>Bekleyen plan talebi</small><b>' + m.pending_plan_requests + '</b></div></div>' +
-          '<p class="small-mono">Plan dağılımı: ' + esc(JSON.stringify(m.accounts_by_plan)) + '</p>' +
-          '<div class="cs-card"><h2>Bekleyen plan talepleri</h2><p class="small-mono" style="margin:0">Ödeme alındıktan sonra onaylayın; onay planı hemen etkinleştirir.</p><table class="cs-table"><thead><tr><th>Zaman</th><th>Hesap</th><th>Talep</th><th>Not</th><th></th></tr></thead><tbody>' +
-          (reqs.map(function (r) { return '<tr><td>' + fmtT(r.ts) + '</td><td>' + esc(r.company || '') + '<br><span class="muted">' + esc(r.email) + ' · ' + esc(r.account_id) + ' · şimdi ' + esc(r.current_plan) + '</span></td><td><b>' + esc(r.plan) + '</b> / ' + esc(r.cycle) + '</td><td>' + esc(r.note || '') + '</td><td><button class="btn-primary btn-sm" data-ap="' + esc(r.id) + '">Onayla</button> <button class="btn-ghost btn-sm" data-rj="' + esc(r.id) + '">Reddet</button></td></tr>'; }).join('') || '<tr><td class="muted">Yok</td></tr>') +
-          '</tbody></table></div>' +
-          '<div class="cs-card"><h2>Hesaplar</h2><form id="nf" class="cs-row"><div class="field"><label for="ne">Yeni hesap e-postası (kurumsal / pilot)</label><input id="ne" type="email" required></div><div class="field"><label for="nc">Şirket</label><input id="nc" type="text"></div><div class="field" style="flex:0 0 160px"><label for="np">Plan</label><select id="np">' + PLANS.map(function (p) { return '<option>' + p + '</option>'; }).join('') + '</select></div><button class="btn-primary btn-sm" type="submit">Oluştur</button></form><div id="nk"></div>' +
-          '<div class="scroll-x"><table class="cs-table"><thead><tr><th>Hesap</th><th>Plan</th><th>Bu dönem</th><th>Üye / anahtar</th><th>Durum</th><th>Oluşturma</th></tr></thead><tbody>' +
-          accs.map(function (a) { return '<tr><td>' + esc(a.company || '') + '<br><span class="muted">' + esc(a.email) + ' · ' + esc(a.id) + '</span></td><td><select data-plan="' + esc(a.id) + '" data-cycle="' + esc(a.billing_cycle || 'monthly') + '">' + PLANS.map(function (p) { return '<option ' + (p === a.plan ? 'selected' : '') + '>' + p + '</option>'; }).join('') + '</select> ' + esc(a.billing_cycle) + (a.plan_expires_at ? '<br><span class="muted">bitiş ' + fmtT(a.plan_expires_at) + '</span>' : '') + '</td><td>' + Number(a.decisions).toLocaleString('tr-TR') + '</td><td>' + a.members + ' / ' + a.keys + '</td><td><select data-status="' + esc(a.id) + '">' + ['active', 'suspended', 'closed'].map(function (s) { return '<option ' + (s === a.status ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select></td><td>' + fmtT(a.created_at) + '</td></tr>'; }).join('') +
-          '</tbody></table></div></div>' +
-          '<div class="cs-card"><h2>Ekstreler ve e-Fatura</h2><form id="sf" class="cs-row"><div class="field" style="flex:0 0 180px"><label for="sp">Dönem</label><input id="sp" type="text" value="' + prevPeriod() + '" pattern="\\d{4}-\\d{2}"></div><button class="btn-primary btn-sm" type="submit">Taslakları üret</button></form>' +
-          '<p class="small-mono" style="margin:0">Taslak = answerr’in hesapladığı tutar. Yasal fatura muhasebe entegratöründen kesilir; numarasını “kesildi” ile girin.</p>' +
-          '<div class="scroll-x"><table class="cs-table"><thead><tr><th>Dönem</th><th>Hesap</th><th>Plan</th><th>Kullanım</th><th>Tutar</th><th>Durum</th><th>e-Fatura no / işlem</th></tr></thead><tbody>' +
-          (sts.map(function (s) { return '<tr><td>' + esc(s.period) + '</td><td>' + esc(s.account_id) + '</td><td>' + esc(s.plan) + ' / ' + esc(s.cycle) + '</td><td>' + Number(s.used).toLocaleString('tr-TR') + (s.overage_units ? ' (+' + s.overage_units + ')' : '') + '</td><td>' + money(s.total_cents, s.currency) + '</td><td>' + esc(s.status) + '</td><td>' + (s.status === 'draft' ? '<input data-einv="' + esc(s.id) + '" type="text" placeholder="GIB2026…" style="min-height:34px;width:160px"> <button class="btn-ghost btn-sm" data-issue="' + esc(s.id) + '">Kesildi</button>' : s.status === 'issued' ? esc(s.e_invoice_no || '') + ' <button class="btn-ghost btn-sm" data-paid="' + esc(s.id) + '">Ödendi</button>' : esc(s.e_invoice_no || '')) + '</td></tr>'; }).join('') || '<tr><td class="muted">Yok</td></tr>') +
-          '</tbody></table></div></div>';
-        bind();
+        lastRes = await Promise.all([call('GET', '/v1/admin/metrics'), call('GET', '/v1/admin/plan-requests?status=pending'), call('GET', '/v1/admin/accounts'), call('GET', '/v1/admin/statements')]);
+        renderData(lastRes);
       } catch (e) { out.innerHTML = '<p class="note">' + esc(e.message) + '</p>'; }
     }
     function bind() {
@@ -120,12 +134,13 @@
         e.preventDefault();
         try {
           var r = await call('POST', '/v1/admin/accounts', { email: document.getElementById('ne').value.trim(), company: document.getElementById('nc').value.trim() || null, plan: document.getElementById('np').value });
-          document.getElementById('nk').innerHTML = '<p class="small-mono">İlk API anahtarı (bir kez gösterilir; müşteriye güvenli kanaldan iletin):</p><div class="secret">' + esc(r.api_key) + '</div>';
+          document.getElementById('nk').innerHTML = '<p class="small-mono">' + (L() === 'en' ? 'First API key (shown once; send to customer over a secure channel):' : 'İlk API anahtarı (bir kez gösterilir; müşteriye güvenli kanaldan iletin):') + '</p><div class="secret">' + esc(r.api_key) + '</div>';
         } catch (x) { document.getElementById('nk').innerHTML = '<p class="note">' + esc(x.message) + '</p>'; }
       };
     }
     document.getElementById('kf').addEventListener('submit', function (e) { e.preventDefault(); key = document.getElementById('ak').value; try { sessionStorage.setItem('answerr_admin', key); } catch (x) { /* ignore */ } load(); });
-    if (key) document.addEventListener('DOMContentLoaded', load);
+    window.addEventListener('proLanguageChanged', syncStatic);
+    document.addEventListener('DOMContentLoaded', function () { syncStatic(); if (key) load(); });
   })();
   </script>
 </body>

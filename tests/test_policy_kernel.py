@@ -61,7 +61,7 @@ def test_seal_is_full_sha256_and_stable():
 @pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
 def test_python_js_parity():
     out = subprocess.run(["node", os.path.join(ROOT, "tests", "kernel_dump.js")],
-                         capture_output=True, text=True, check=True).stdout
+                         capture_output=True, text=True, encoding="utf-8", check=True).stdout
     js = json.loads(out)
     for v, jr in zip(VECTORS, js["results"]):
         r, a = _run(v)

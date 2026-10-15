@@ -95,7 +95,7 @@
     document.getElementById('checks').innerHTML =
       `<div class="label" style="margin:6px 0">${esc(A().t('stChecks'))} · ${last.tests_passed}/${last.tests_total} ${esc(A().t('stTestsOk'))}</div>` +
       checks.filter(c => c.applies !== false).map(c =>
-        `<div class="check"><span class="${c.passed ? 'ok' : 'bad'}">${c.passed ? '✓' : '✗'}</span><span><span class="mono">${esc(c.id)}</span><br><span class="muted">${esc(c.detail)}</span></span></div>`).join('');
+        `<div class="check"><span class="${c.passed ? 'ok' : 'bad'}">${c.passed ? '✓' : '✗'}</span><span><span class="mono">${esc(c.id)}</span><br><span class="muted">${esc(localizeCheckDetail(c.detail))}</span></span></div>`).join('');
 
     document.getElementById('seal').innerHTML =
       `${esc(A().t('kkSeal'))} <span title="${esc(spec.policy_seal)}">${esc(A().shortSeal(spec.policy_seal))}</span><br>` +
@@ -174,6 +174,28 @@
     catch (e) { document.getElementById('compileMsg').textContent = cmd; }
   }
 
+  function localizeCheckDetail(s) {
+    if (!s || A().lang() !== 'tr') return s || '';
+    return String(s)
+      .replace(/^Unrecognized field\b/, 'Tanınmayan alan')
+      .replace(/^Missing required field\b/, 'Eksik zorunlu alan')
+      .replace(/-> REVIEW/, '→ İNSANA DEVRET')
+      .replace(/^No contradicting thresholds on the same field\.$/, 'Aynı alanda çelişen eşik bulunmuyor.')
+      .replace(/^All (\d+) generated test vectors match expected verdicts\.$/, 'Üretilen $1 test vektörünün tamamı beklenen hükümlerle eşleşiyor.');
+  }
+
+  function syncTemplateOnLangChange() {
+    const nlEl = document.getElementById('nl');
+    if (!nlEl) return;
+    const cur = nlEl.value.trim();
+    Object.keys(TEMPLATES).forEach(k => {
+      const t = TEMPLATES[k];
+      if (cur === t.tr || cur === t.en) {
+        nlEl.value = t[A().lang()] || t.tr;
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     if (!document.getElementById('compileBtn')) return;
     document.querySelectorAll('[data-tpl]').forEach(b => b.addEventListener('click', () => setTemplate(b.dataset.tpl)));
@@ -183,7 +205,7 @@
     document.getElementById('tryBtn').addEventListener('click', tryIt);
     document.getElementById('dlBtn').addEventListener('click', download);
     document.getElementById('cpBtn').addEventListener('click', copyCmd);
-    window.addEventListener('proLanguageChanged', render);
+    window.addEventListener('proLanguageChanged', () => { syncTemplateOnLangChange(); render(); });
     let editGate = null;
     try {
       const raw = sessionStorage.getItem('answerr_edit_gate');

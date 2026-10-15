@@ -102,6 +102,12 @@
         const open = links.classList.toggle('open');
         btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        if (links.classList.contains('open')) {
+          links.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      }));
     }
   }
 

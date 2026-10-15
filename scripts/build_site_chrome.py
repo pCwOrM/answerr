@@ -246,6 +246,17 @@ LEGAL_HEAD = """<!DOCTYPE html>
 """
 
 
+LEGAL_I18N_MAP = {
+    "kullanim-sartlari": "lgTerms",
+    "kvkk-aydinlatma": "lgKvkk",
+    "gizlilik": "lgPrivacy",
+    "mesafeli-satis": "lgSales",
+    "iade-iptal": "lgRefund",
+    "cerez": "lgCookies",
+    "veri-isleme": "lgDpa",
+}
+
+
 def legal_pages():
     src = os.path.join(ROOT, "site", "legal")
     docs = []
@@ -258,8 +269,15 @@ def legal_pages():
     docs.sort()
     out = {}
     for _, slug, m, body in docs:
-        side = "".join('<li><a href="{}.html"{}>{}</a></li>'.format(s, ' aria-current="page"' if s == slug else "", html.escape(mm["title"]))
-                       for _, s, mm, _ in docs)
+        side = "".join(
+            '<li><a href="{}.html"{}{}>{}</a></li>'.format(
+                s,
+                ' aria-current="page"' if s == slug else "",
+                ' data-i18n="{}"'.format(LEGAL_I18N_MAP[s]) if s in LEGAL_I18N_MAP else "",
+                html.escape(mm["title"]),
+            )
+            for _, s, mm, _ in docs
+        )
         page = LEGAL_HEAD.format(
             title=html.escape(m["title"]), desc=html.escape(m.get("description", m["title"])),
             version_label="SÜRÜM " + CFG["legal_version"], nav=nav("legal", "../"), foot=footer("../"), side=side,

@@ -133,7 +133,7 @@
   class ProI18n {
     constructor() {
       let saved = null;
-      try { saved = localStorage.getItem('answerr_pro_lang'); } catch (e) { saved = null; }
+      try { saved = localStorage.getItem('answerr_pro_lang') || localStorage.getItem('answerr_lang'); } catch (e) { saved = null; }
       const nav = (navigator.language || 'tr').toLowerCase();
       this.lang = saved === 'en' || saved === 'tr' ? saved : (nav.startsWith('tr') ? 'tr' : 'en');
     }
@@ -142,7 +142,10 @@
     setLanguage(l) {
       if (l !== 'tr' && l !== 'en') return;
       this.lang = l;
-      try { localStorage.setItem('answerr_pro_lang', l); } catch (e) { /* private mode */ }
+      try {
+        localStorage.setItem('answerr_pro_lang', l);
+        localStorage.setItem('answerr_lang', l);
+      } catch (e) { /* private mode */ }
       this.apply();
       window.dispatchEvent(new CustomEvent('proLanguageChanged', { detail: { lang: l } }));
     }
