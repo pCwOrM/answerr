@@ -291,15 +291,20 @@
   async function viewGates(el) {
     const r = await call('GET', '/v1/gates');
     const own = r.ok ? r.data.gates.filter(g => !g.builtin) : [];
+    let draftJson = '';
+    try {
+      draftJson = sessionStorage.getItem('answerr_draft_gate') || '';
+      if (draftJson) sessionStorage.removeItem('answerr_draft_gate');
+    } catch (e) { draftJson = ''; }
     el.innerHTML = `
       <div class="cs-card"><h2>${esc(t('nav.gates'))}</h2><p class="muted" style="margin:0">${esc(t('gatesLead'))} · ${fmtN(own.length)} / ${fmtN(S.account.limits.custom_gates)}</p>
         <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('gate'))}</th><th>Version</th><th>Seal</th><th>Rules</th><th></th></tr></thead>
         <tbody>${own.length ? own.map(g => `<tr><td><code>${esc(g.gate_id)}</code><br><span class="muted">${esc(g.title || '')}</span></td><td>${esc(g.version)}</td>
           <td><code>${esc((g.policy_seal || '').slice(0, 19))}…</code></td><td>${(g.hard_rules || []).length}</td>
-          <td><button class="btn-ghost btn-sm" data-delgate="${esc(g.gate_id)}">${esc(t('del'))}</button></td></tr>`).join('') : `<tr><td colspan="5" class="muted">${esc(t('none'))}</td></tr>`}</tbody></table></div>
+          <td><button class="btn-ghost btn-sm" data-editgate="${esc(g.gate_id)}">${esc(L() === 'en' ? 'Edit in compiler' : 'Derleyicide aç')}</button> <button class="btn-ghost btn-sm" data-delgate="${esc(g.gate_id)}">${esc(t('del'))}</button></td></tr>`).join('') : `<tr><td colspan="5" class="muted">${esc(t('none'))}</td></tr>`}</tbody></table></div>
         <p><a class="btn-ghost btn-sm" href="../studio.html">${esc(t('openStudio'))}</a></p></div>
       <div class="cs-card"><form id="gForm" style="display:flex;flex-direction:column;gap:10px">
-        <div class="field"><label for="gJson">${esc(t('pasteGate'))}</label><textarea id="gJson" rows="8" spellcheck="false"></textarea></div>
+        <div class="field"><label for="gJson">${esc(t('pasteGate'))}</label><textarea id="gJson" rows="8" spellcheck="false">${esc(draftJson)}</textarea></div>
         <button class="btn-primary btn-sm" type="submit" style="align-self:flex-start">${esc(t('register'))}</button></form></div>`;
     $('#gForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -310,6 +315,13 @@
       toast(c.ok ? (c.data.gate_id + ' · ' + (c.data.policy_seal || '').slice(0, 19)) : msg(c));
       if (c.ok) viewGates(el);
     });
+    $$('[data-editgate]', el).forEach(b => b.addEventListener('click', () => {
+      const g = own.find(x => x.gate_id === b.dataset.editgate);
+      if (g) {
+        try { sessionStorage.setItem('answerr_edit_gate', JSON.stringify(g)); } catch (e) { /* ignore */ }
+        window.location.href = '../studio.html';
+      }
+    }));
     $$('[data-delgate]', el).forEach(b => b.addEventListener('click', async () => {
       if (b.dataset.armed !== '1') { b.dataset.armed = '1'; b.textContent = t('sure'); return; }
       const d = await call('DELETE', '/v1/gates/' + encodeURIComponent(b.dataset.delgate));

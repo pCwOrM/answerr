@@ -42,3 +42,16 @@ def test_no_page_links_the_dead_docs_url():
     for rel in PAGES:
         s = open(os.path.join(PRO, rel), encoding="utf-8").read()
         assert "api.answerr.me/docs" not in s, rel
+
+
+def test_root_index_promoted_and_research_portal_preserved():
+    root_idx = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
+    assert 'href="pro/pro.css"' in root_idx
+    assert 'src="pro/console.js"' in root_idx
+    assert 'id="werrPresetSel"' in root_idx
+    for href in re.findall(r'href="([^"#:]+\.html)"', root_idx):
+        assert os.path.exists(os.path.normpath(os.path.join(ROOT, href))), href
+    assert os.path.exists(os.path.join(ROOT, "research", "portal.html"))
+    assert os.path.exists(os.path.join(ROOT, "research", "index.html"))
+    assert os.path.exists(os.path.join(PRO, "archive", "2026-10-15-root-v4.1", "index.html"))
+

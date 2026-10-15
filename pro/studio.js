@@ -100,7 +100,38 @@
     document.getElementById('seal').innerHTML =
       `${esc(A().t('kkSeal'))} <span title="${esc(spec.policy_seal)}">${esc(A().shortSeal(spec.policy_seal))}</span><br>` +
       `${esc(A().t('stStatus'))} ${esc(last.status === 'ready_for_review' ? A().t('stReady') : A().t('stNeeds'))}`;
-    ['tryBtn', 'dlBtn', 'cpBtn'].forEach(id => { document.getElementById(id).disabled = false; });
+    ['deployBtn', 'tryBtn', 'dlBtn', 'cpBtn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = false;
+    });
+  }
+
+  async function deployToConsole() {
+    if (!last || !last.policy_spec) return;
+    const out = document.getElementById('tryOut');
+    const spec = Object.assign({}, last.policy_spec);
+    delete spec.policy_seal;
+    spec.version = spec.version || '1.0.0';
+    spec.source_prompt = document.getElementById('nl').value;
+    let sess = null;
+    try { sess = localStorage.getItem('answerr_session'); } catch (e) { sess = null; }
+    if (sess) {
+      try {
+        const res = await fetch(A().API + '/v1/gates', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+          body: JSON.stringify(spec)
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.gate_id) {
+          out.hidden = false;
+          out.innerHTML = `<b class="v-allow">✓ ${A().esc(data.gate_id)}</b> · ${A().esc(A().shortSeal(data.policy_seal))} · <a href="console/#gates">${A().esc(A().lang() === 'en' ? 'Open in Console →' : 'Konsolda aç →')}</a>`;
+          return;
+        }
+      } catch (e) { /* fall through to console handoff */ }
+    }
+    try { sessionStorage.setItem('answerr_draft_gate', JSON.stringify(spec, null, 2)); } catch (e) { /* ignore */ }
+    window.location.href = 'console/#gates';
   }
 
   async function tryIt() {
@@ -147,10 +178,29 @@
     if (!document.getElementById('compileBtn')) return;
     document.querySelectorAll('[data-tpl]').forEach(b => b.addEventListener('click', () => setTemplate(b.dataset.tpl)));
     document.getElementById('compileBtn').addEventListener('click', compile);
+    const depBtn = document.getElementById('deployBtn');
+    if (depBtn) depBtn.addEventListener('click', deployToConsole);
     document.getElementById('tryBtn').addEventListener('click', tryIt);
     document.getElementById('dlBtn').addEventListener('click', download);
     document.getElementById('cpBtn').addEventListener('click', copyCmd);
     window.addEventListener('proLanguageChanged', render);
-    setTemplate('agent');
+    let editGate = null;
+    try {
+      const raw = sessionStorage.getItem('answerr_edit_gate');
+      if (raw) { editGate = JSON.parse(raw); sessionStorage.removeItem('answerr_edit_gate'); }
+    } catch (e) { editGate = null; }
+    if (editGate && editGate.gate_id) {
+      document.getElementById('gateId').value = editGate.gate_id;
+      if (editGate.source_prompt) {
+        document.getElementById('nl').value = editGate.source_prompt;
+      } else if (Array.isArray(editGate.hard_rules) && editGate.hard_rules.length) {
+        document.getElementById('nl').value = editGate.hard_rules.map(r => r.reason || `${r.field} ${r.op} ${JSON.stringify(r.value)} -> ${r.effect}`).join('. ');
+      }
+      const sampleObj = {};
+      (editGate.fields || []).forEach(f => { sampleObj[f] = 1; });
+      if (Object.keys(sampleObj).length) document.getElementById('sample').value = JSON.stringify(sampleObj, null, 2);
+    } else {
+      setTemplate('agent');
+    }
   });
 })();
