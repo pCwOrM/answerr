@@ -21,6 +21,7 @@
   <a href="https://arxiv.org/abs/2609.33066"><img src="https://img.shields.io/badge/arXiv-2609.33066%20(Temel)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.33066"></a>
   <a href="https://arxiv.org/abs/2609.30115"><img src="https://img.shields.io/badge/arXiv-2609.30115%20(OED)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.30115"></a>
   <a href="https://arxiv.org/abs/2609.30719"><img src="https://img.shields.io/badge/arXiv-2609.30719%20(Werracle)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.30719"></a>
+  <a href="https://ssrn.com/abstract=7626279"><img src="https://img.shields.io/badge/SSRN-7626279%20(Werracle)-002f6c.svg?style=for-the-badge&logo=elsevier" alt="SSRN 7626279"></a>
   <a href="https://arxiv.org/abs/2609.38492"><img src="https://img.shields.io/badge/arXiv-2609.38492%20(GAP%20Lean4)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.38492"></a>
   <a href="https://doi.org/10.5281/zenodo.22983889"><img src="https://img.shields.io/badge/Lean%204%20%C4%B0spatlar%C4%B1-v2%20(10%20Teorem)-024dad.svg?style=for-the-badge" alt="Lean 4 Doğrulama"></a>
   <a href="https://doi.org/10.5281/zenodo.22978460"><img src="https://img.shields.io/badge/Kara%20Delik-Zenodo%20Kayd%C4%B1%2022978460-7c3aed.svg?style=for-the-badge" alt="Kara Delik Page Eğrisi"></a>
@@ -457,6 +458,16 @@ answerr/
   note          = {Zenodo DOI: 10.5281/zenodo.22942598; TÜRKPATENT Priority: TR 2026/016285}
 }
 
+
+@article{dagli2026werracle_ssrn,
+  title         = {Werracle: Sub-Cent Intra-Block AI Reflex Oracles and Flash-Loan Circuit Breakers for EVM Smart Contracts},
+  author        = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
+  journal       = {Elsevier SSRN Electronic Journal},
+  year          = {2026},
+  month         = {October},
+  note          = {SSRN Abstract ID: 7626279},
+  url           = {https://ssrn.com/abstract=7626279}
+}
 @article{dagli2026lean4_oed,
   title        = {Zero-Storage Procedural Neural Synthesis via Boundary Dynamics: Formal Verification in Lean 4 and Bare-Metal Gauntlet Validation},
   author       = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
