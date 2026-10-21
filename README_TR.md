@@ -12,6 +12,9 @@
   <a href="https://answerr.me"><img src="https://img.shields.io/badge/Canl%C4%B1%20Portal-answerr.me-38bdf8.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Web Sitesi: answerr.me"></a>
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg?style=for-the-badge" alt="werr Çekirdeği"></a>
   <a href="https://github.com/pCwOrM/werracle"><img src="https://img.shields.io/badge/werracle-On--Chain%20AI%20Oracle-f59e0b.svg?style=for-the-badge&logo=ethereum&logoColor=white" alt="werracle Oracle"></a>
+  <a href="https://werr.io/"><img src="https://img.shields.io/badge/Akademik%20Portal-werr.io-0284c7.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werr.io Portalı"></a>
+  <a href="https://werracle.io/"><img src="https://img.shields.io/badge/Web3%20Protokol-werracle.io-f59e0b.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werracle.io Web3 Portalı"></a>
+  <a href="https://werracle.com/"><img src="https://img.shields.io/badge/Kurumsal%20Portal-werracle.com-2b3bd1.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werracle.com Kurumsal"></a>
   <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Temel%20Ara%C5%9Ft%C4%B1rma-Mandelbrot%20N%C3%B6ral%20Sentez-green.svg?style=for-the-badge" alt="Temel Araştırma"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-%25100%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
   <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks"><img src="https://img.shields.io/badge/The%20Gauntlet-Resmi%20K%C4%B1yaslama%20Dizini-brightgreen.svg?style=for-the-badge" alt="The Gauntlet Kıyaslama Duvarı"></a>
