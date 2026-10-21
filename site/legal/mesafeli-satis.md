@@ -1,6 +1,6 @@
 title: Mesafeli Satış Sözleşmesi
 description: answerr ücretli planları için mesafeli satış sözleşmesi.
-order: 4
+order: 5
 ---
 # Mesafeli Satış Sözleşmesi
 
@@ -13,7 +13,7 @@ order: 4
 - Unvan: {{company.legal_name}}
 - Adres: {{company.address}}
 - MERSİS: {{company.mersis}} · Vergi: {{company.tax}} · {{company.trade_registry}}
-- E-posta: {{company.email}} · Telefon: {{company.phone}} · KEP: {{company.kep}}
+- E-posta: {{company.email}} · Telefon: {{company.phone}}
 
 **Alıcı:** answerr konsolunda hesap açan ve ücretli plan satın alan gerçek veya tüzel kişi. Alıcının adı, unvanı, adresi, vergi bilgileri ve e-postası konsoldaki fatura bilgilerinde yer alır.
 

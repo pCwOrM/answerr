@@ -23,6 +23,7 @@ order: 2
 | İşlem güvenliği | IP adresi, API anahtarı ön eki, oturum kayıtları, olay günlüğü | Güvenlik, kötüye kullanımın önlenmesi, hız sınırı | Meşru menfaat (m.5/2-f); hukuki yükümlülük (5651) (m.5/2-ç) |
 | Pazarlama (isteğe bağlı) | e-posta | Ürün duyuruları | Açık rıza (m.5/1) — yalnızca onay verirseniz |
 | Erken erişim formu | e-posta, şirket, not | Pilot ve satış görüşmesi | Sözleşme öncesi talep (m.5/2-c) |
+| Araştırma telemetrisi (yalnızca anahtarsız demo) | maskelenmiş durum alanları, soru metni, hüküm; IP yok | werr araştırma motorunun geliştirilmesi, anonim veri setleri | Meşru menfaat (m.5/2-f); demo alanına kişisel veri girilmemesi istenir |
 
 ## 3. Toplama yöntemi
 

@@ -35,7 +35,6 @@
         <a href="studio.html" data-i18n="navStudio">Derleyici</a>
         <a href="docs.html" data-i18n="navDocs">Geliştiriciler</a>
         <a href="pricing.html" aria-current="page" data-i18n="navPricing">Fiyatlar</a>
-        <a href="vision.html" data-i18n="navVision">Werr Evreni</a>
         <a href="research.html" data-i18n="navResearch">Araştırma</a>
         <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>
         <a class="btn-ghost btn-sm" href="console/" data-i18n="navLogin">Konsol</a>
@@ -144,21 +143,6 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="rl-title">
-      <div class="wrap">
-        <div class="section-head rv">
-          <div><div class="eyebrow" data-i18n="rlK">Lisans ve protokol</div><h2 id="rl-title" data-i18n="rlTitle">Ürünün ötesindeki gelir hatları</h2></div>
-          <p data-i18n="rlLead">Bunlar answerr Pro aboneliğinden ayrı, sözleşmeyle yürüyen hatlardır. Araştırma ve akademik kullanım her zaman ücretsizdir.</p>
-        </div>
-        <div class="grid-4">
-          <div class="card glow rv"><div class="row"><span class="st st-now" data-i18n="stNow">ŞİMDİ</span></div><h3 data-i18n="rl1t">werr ticari lisansı</h3><p data-i18n="rl1d">Açık kaynak çekirdek BSL 1.1 ile yayımlanır. Ürününüze gömmek ya da SaaS olarak sunmak için yazılı lisans gerekir.</p></div>
-          <div class="card glow rv d1"><div class="row"><span class="st st-pilot" data-i18n="stPilot">PİLOT</span></div><h3 data-i18n="rl2t">Werracle protokol ücreti</h3><p data-i18n="rl2d">Zincir üstü karar kahini: sorgu başına ayarlanabilir protokol ücreti ve protokole özel tohum kalibrasyonu.</p></div>
-          <div class="card glow rv d2"><div class="row"><span class="st st-pilot" data-i18n="stPilot">PİLOT</span></div><h3 data-i18n="rl3t">Kurum ve okul lisansı</h3><p data-i18n="rl3d">WerreduR: depolamasız öğrenme refleksleri. Okul ve platform başına yıllık lisans.</p></div>
-          <div class="card glow rv d3"><div class="row"><span class="st st-horizon" data-i18n="stHorizon">UFUK</span></div><h3 data-i18n="rl4t">Ar-Ge ortaklığı ve patent lisansı</h3><p data-i18n="rl4d">TR 2026/016285 ve TR 2026/016633 başvuruları (beklemede). Konnektom ve sentez algoritmaları için ortak araştırma.</p></div>
-        </div>
-      </div>
-    </section>
-
     <section class="section alt" aria-labelledby="sss-title">
       <div class="wrap">
         <div class="section-head rv"><h2 id="sss-title" data-i18n="faqTitle">Sık sorulanlar</h2></div>
@@ -175,23 +159,19 @@
 
     <section class="section" id="plan-iste" aria-labelledby="pi-title">
       <div class="wrap" style="display:flex;flex-direction:column;gap:24px">
-        <div class="rv"><div class="eyebrow" data-i18n="piK">Plan iste</div><h2 id="pi-title" data-i18n="piTitle">Planınızı seçin; size e-postayla dönelim.</h2></div>
+        <div class="rv"><div class="eyebrow" data-i18n="piK">Kurumsal ve pilot</div><h2 id="pi-title" data-i18n="piTitle">Kurumsal teklif ya da ücretsiz pilot başvurusu</h2><p class="muted" style="margin:10px 0 0" data-i18n="piLead">Keşif, Geliştirici ve Pro planlarına konsoldan doğrudan geçilir. Bu form, sözleşmeli Kurumsal plan ve 60 günlük tasarım ortağı pilotu içindir; bir iş günü içinde e-postayla dönüyoruz.</p></div>
         <form id="planForm" class="plan-form rv">
           <div class="field"><label for="planSel" data-i18n="piPlan">Plan</label>
             <select id="planSel">
-              <option value="kesif" data-i18n="p0n">Keşif</option>
-              <option value="gelistirici" data-i18n="p1n">Geliştirici</option>
-              <option value="pro" selected>Pro</option>
               <option value="kurumsal" data-i18n="p3n">Kurumsal</option>
               <option value="pilot" data-i18n="piPilot">Tasarım ortağı pilotu</option>
             </select></div>
-          <div class="field"><label for="billSel" data-i18n="piBill">Dönem</label>
-            <select id="billSel"><option value="m" data-i18n="piM">Aylık</option><option value="y" data-i18n="piY">Yıllık</option></select></div>
+          <input type="hidden" id="billSel" value="y">
           <div class="field"><label for="planMail" data-i18n="erMail">İş e-postası</label><input id="planMail" type="email" required autocomplete="email" placeholder="ad@sirket.com" data-i18n-placeholder="erPh"></div>
           <div class="field"><label for="planCo" data-i18n="piCo">Şirket</label><input id="planCo" type="text" autocomplete="organization" maxlength="120"></div>
           <div class="field" style="grid-column:1/-1"><label for="planNote" data-i18n="piNote">Kullanım (isteğe bağlı)</label><input id="planNote" type="text" maxlength="600" placeholder="ör. ödeme kapısı, ayda ~300 bin karar" data-i18n-placeholder="piNotePh"></div>
           <div class="sr-only" aria-hidden="true"><label for="planWeb">Website</label><input id="planWeb" type="text" tabindex="-1" autocomplete="off"></div>
-          <button type="submit" class="btn-primary" data-i18n="piBtn">Planı iste</button>
+          <button type="submit" class="btn-primary" data-i18n="piBtn">Gönder</button>
           <p class="small-mono" id="planStatus" role="status" aria-live="polite" style="grid-column:1/-1;margin:0"></p>
         </form>
       </div>
@@ -207,10 +187,10 @@
       <div><h2 class="foot-h" data-i18n="fcProduct">Ürün</h2><ul><li><a href="index.html#kara-kutu" data-i18n="navConsole">Kara Kutu</a></li><li><a href="studio.html" data-i18n="navStudio">Derleyici</a></li><li><a href="pricing.html" data-i18n="navPricing">Fiyatlar</a></li><li><a href="console/" data-i18n="navLogin">Konsol</a></li><li><a href="status.html" data-i18n="fStatus">Hizmet durumu</a></li><li><a href="index.html#erisim" data-i18n="fPilot">Tasarım ortaklığı</a></li></ul></div>
       <div><h2 class="foot-h" data-i18n="fcDev">Geliştiriciler</h2><ul><li><a href="docs.html" data-i18n="fDocs">Belgeler</a></li><li><a href="https://api.answerr.me/v1/docs" rel="noopener" data-i18n="fApiRef">API referansı</a></li><li><a href="docs.html#webhooks" data-i18n="fWebhooks">Webhook’lar</a></li><li><a href="https://github.com/pCwOrM/answerr" rel="noopener">GitHub</a></li><li><a href="https://werr.io" rel="noopener" data-i18n="fWerrIo">werr.io · Motor</a></li><li><a href="https://werracle.io" rel="noopener" data-i18n="fWerracleIo">werracle.io · Web3</a></li><li><a href="https://werracle.com" rel="noopener" data-i18n="fWerracleCom">werracle.com · Kurumsal</a></li><li><a href="https://pypi.org/project/werr/" rel="noopener">PyPI · werr</a></li><li><a href="https://github.com/pCwOrM/werr" rel="noopener" data-i18n="fWerrRepo">werr çekirdeği</a></li><li><a href="../chat.html" data-i18n="fClassic">Klasik konsol</a></li><li><a href="https://github.com/pCwOrM/answerr/blob/main/LICENSE" rel="noopener" data-i18n="fLicense">Lisans (BSL 1.1)</a></li></ul></div>
       <div><h2 class="foot-h" data-i18n="fcCompany">Şirket</h2><ul><li><a href="vision.html" data-i18n="navVision">Werr Evreni</a></li><li><a href="research.html" data-i18n="navResearch">Araştırma</a></li><li><a href="https://itouch.com.tr" rel="noopener">ITouch Bilişim</a></li><li><a href="mailto:ask@answerr.me">ask@answerr.me</a></li><li><a href="../research/portal.html" data-i18n="fPortal">Araştırma Portalı · v4.1</a></li><li><a href="archive/2026-10-14-v1.2/index.html" data-i18n="fArchive12">Arşiv · v1.2</a></li><li><a href="archive/2026-10-13-v0.6/index.html" data-i18n="fArchive06">Arşiv · v0.6</a></li></ul></div>
-      <div><h2 class="foot-h" data-i18n="fcLegal">Yasal</h2><ul><li><a href="legal/kullanim-sartlari.html" data-i18n="lgTerms">Kullanım şartları</a></li><li><a href="legal/kvkk-aydinlatma.html" data-i18n="lgKvkk">KVKK aydınlatma metni</a></li><li><a href="legal/gizlilik.html" data-i18n="lgPrivacy">Gizlilik politikası</a></li><li><a href="legal/mesafeli-satis.html" data-i18n="lgSales">Mesafeli satış sözleşmesi</a></li><li><a href="legal/iade-iptal.html" data-i18n="lgRefund">İptal ve iade</a></li><li><a href="legal/cerez.html" data-i18n="lgCookies">Çerez politikası</a></li><li><a href="legal/veri-isleme.html" data-i18n="lgDpa">Veri işleme sözleşmesi</a></li></ul></div>
+      <div><h2 class="foot-h" data-i18n="fcLegal">Yasal</h2><ul><li><a href="legal/kullanim-sartlari.html" data-i18n="lgTerms">Kullanım şartları</a></li><li><a href="legal/kvkk-aydinlatma.html" data-i18n="lgKvkk">KVKK aydınlatma metni</a></li><li><a href="legal/gizlilik.html" data-i18n="lgPrivacy">Gizlilik politikası</a></li><li><a href="legal/on-bilgilendirme.html" data-i18n="lgPre">Ön bilgilendirme formu</a></li><li><a href="legal/mesafeli-satis.html" data-i18n="lgSales">Mesafeli satış sözleşmesi</a></li><li><a href="legal/iade-iptal.html" data-i18n="lgRefund">İptal ve iade</a></li><li><a href="legal/cerez.html" data-i18n="lgCookies">Çerez politikası</a></li><li><a href="legal/veri-isleme.html" data-i18n="lgDpa">Veri işleme sözleşmesi</a></li></ul></div>
     </div>
     <div class="wrap foot-legal">
-      <span>© 2026 ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ · MERSİS 0469094455800001 · Yüreğir V.D. 4690944558 · Çukurova Teknokent, Çukurova Üniversitesi Balcalı Kampüsü, Sarıçam / Adana, Türkiye</span>
+      <span>© 2026 ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ · MERSİS 0469094455800001 · Yüreğir V.D. 4690944558 · Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26 (Çukurova Teknokent), 01330 Sarıçam / Adana, Türkiye</span>
       <span data-i18n="fRecaptcha">Bu site reCAPTCHA ile korunur; Google <a href="https://policies.google.com/privacy">Gizlilik Politikası</a> ve <a href="https://policies.google.com/terms">Hizmet Şartları</a> geçerlidir.</span>
     </div>
   </footer>

@@ -1390,3 +1390,23 @@
   }
 }
 
+
+/* 2026-10-22 mobile/tablet audit: the header overflowed between 769px and ~1180px */
+@media (max-width: 1180px) and (min-width: 769px) {
+  .btn-nav-github { display: none !important; }
+  .launch-text-desktop { display: none !important; }
+  .launch-text-mobile { display: inline !important; }
+  .landing-nav-actions { gap: 0.4rem; }
+  .btn-launch-app { padding: 0.5rem 0.9rem; }
+  .btn-nav-ghost { padding: 0.4rem 0.6rem; }
+}
+@media (max-width: 1080px) and (min-width: 769px) {
+  .desktop-nav { display: none !important; }
+  .btn-mobile-menu { display: flex !important; }
+}
+@media (max-width: 360px) {
+  .landing-header { padding: 0 0.35rem; }
+  .landing-brand .brand-title { font-size: 1rem; }
+  .landing-nav-actions { gap: 0.3rem; }
+  .btn-nav-ghost { padding: 0.4rem 0.45rem; }
+}

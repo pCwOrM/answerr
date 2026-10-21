@@ -1,6 +1,6 @@
 title: Çerez Politikası
 description: answerr.me'nin kullandığı çerezler ve tarayıcı depolaması.
-order: 6
+order: 7
 ---
 # Çerez Politikası
 
