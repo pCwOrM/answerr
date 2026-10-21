@@ -12,6 +12,10 @@
   <a href="https://answerr.me"><img src="https://img.shields.io/badge/Production-answerr.me-38bdf8.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Website: answerr.me"></a>
   <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-Zero--Memory%20Engine-10b981.svg?style=for-the-badge" alt="werr Engine"></a>
   <a href="https://github.com/pCwOrM/werracle"><img src="https://img.shields.io/badge/werracle-On--Chain%20AI%20Oracle-f59e0b.svg?style=for-the-badge&logo=ethereum&logoColor=white" alt="werracle Oracle"></a>
+  <a href="https://werr.io/"><img src="https://img.shields.io/badge/Academic%20Portal-werr.io-0284c7.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werr.io Portal"></a>
+  <a href="https://werracle.com/"><img src="https://img.shields.io/badge/Corporate%20Portal-werracle.com-2b3bd1.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werracle.com Corporate"></a>
+  <a href="https://elliptic-rank.icarm.cloud/user/114"><img src="https://img.shields.io/badge/NSF%20ICARM-230%20Curves%20Record-blue.svg?style=for-the-badge" alt="NSF ICARM Record"></a>
+  <a href="https://werracle.com/"><img src="https://img.shields.io/badge/Cloud%20Vault-Cloudflare%20R2%20Active-f38020.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Cloud Vault R2"></a>
   <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Base%20Research-Mandelbrot%20Neural%20Synthesis-green.svg?style=for-the-badge" alt="Base Research"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-100%25%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
   <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks"><img src="https://img.shields.io/badge/The%20Gauntlet-Official%20Benchmarks-brightgreen.svg?style=for-the-badge" alt="The Gauntlet Benchmarks"></a>
