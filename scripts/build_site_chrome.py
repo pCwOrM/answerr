@@ -250,6 +250,7 @@ LEGAL_HEAD = """<!DOCTYPE html>
 
 
 LEGAL_I18N_MAP = {
+    "on-bilgilendirme": "lgPre",
     "kullanim-sartlari": "lgTerms",
     "kvkk-aydinlatma": "lgKvkk",
     "gizlilik": "lgPrivacy",
@@ -287,6 +288,25 @@ def legal_pages():
             status_tr=html.escape(CFG["legal_status_tr"]), status_en=html.escape(CFG["legal_status_en"]),
             body=md(fill(body)))
         out["legal/{}.html".format(slug)] = page
+    return out
+
+
+MAIL_TEXTS = ("on-bilgilendirme", "mesafeli-satis")
+
+
+def legal_texts():
+    """Plain-text copies of the two pre-contract texts; the API attaches them to the order confirmation e-mail
+    (durable medium, Mesafeli Sözleşmeler Yönetmeliği)."""
+    src = os.path.join(ROOT, "site", "legal")
+    out = {}
+    for slug in MAIL_TEXTS:
+        meta, _, body = open(os.path.join(src, slug + ".md"), encoding="utf-8").read().partition("\n---\n")
+        title = dict(re.findall(r"^(\w+):\s*(.+)$", meta, re.M))["title"]
+        body = fill(body)
+        body = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", lambda m: m.group(1) + (" (" + m.group(2) + ")" if m.group(2).startswith("http") else
+                      " (https://answerr.me/pro/legal/" + m.group(2).replace("../", "../") + ")"), body)
+        body = body.replace("https://answerr.me/pro/legal/../", "https://answerr.me/pro/").replace("**", "")
+        out["commerce/legal/{}.txt".format(slug)] = "{}\n{}\n\n{}\n".format(title, CFG["company"]["legal_name"], body.strip())
     return out
 
 
@@ -332,6 +352,14 @@ def build(check: bool) -> int:
             if not check:
                 os.makedirs(os.path.dirname(path), exist_ok=True)
                 open(path, "w", encoding="utf-8").write(page)
+    for rel, text in legal_texts().items():
+        path = os.path.join(ROOT, rel)
+        old = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+        if old != text:
+            stale.append(rel)
+            if not check:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                open(path, "w", encoding="utf-8").write(text)
     if check and stale:
         print("out of date:", ", ".join(stale))
         return 1

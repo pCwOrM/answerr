@@ -13,7 +13,7 @@ Bu şartlar, {{company.legal_name}} ("**ITouch**", "biz") tarafından sunulan an
 - **Hizmet sağlayıcı:** {{company.legal_name}}
 - **MERSİS:** {{company.mersis}} · **Vergi:** {{company.tax}} · {{company.trade_registry}}
 - **Adres:** {{company.address}}
-- **E-posta:** {{company.email}}
+- **E-posta:** {{company.email}} · **Telefon:** {{company.phone}} · **KEP:** {{company.kep}}
 
 ## 2. Hizmetin tanımı
 
@@ -42,11 +42,11 @@ answerr bir karar **aracıdır**; hükmü uygulayıp uygulamama kararı ve bu ka
 
 ## 6. Planlar, kota ve ücretler
 
-1. Ücretsiz Keşif planı dışındaki planlar ücretlidir. Fiyatlar ABD doları cinsinden ve KDV hariçtir; Türkiye'deki müşterilere fatura tarihindeki TCMB döviz satış kuru üzerinden TL fatura kesilir.
+1. Ücretsiz Keşif planı dışındaki planlar ücretlidir. Türkiye'deki müşteriler [Fiyatlar](../pricing.html) sayfasındaki Türk lirası fiyatlarını öder; %20 KDV ödeme anında eklenir ve vergiler dahil tutar ödemeden önce gösterilir. Yurt dışındaki müşteriler için fiyatlar ABD dolarıdır.
 2. Bir karar, `/v1/decide` ya da `/v1/gates/{id}/decide` çağrısı veya `/v1/backtest` içindeki bir kayıttır. Politika derleme, okuma ve sağlık çağrıları ile açık çekirdeğin sizin ortamınızda çalışması sayılmaz.
 3. Aylık kota dolduğunda, aşım açık değilse karar çağrıları HTTP 429 döner. Aşımı açarsanız aşım, başlayan her 1.000 karar için plan fiyatıyla faturalanır.
-4. Dönemler Türkiye saatine göre takvim ayıdır. Ödeme ve iade koşulları [Mesafeli Satış Sözleşmesi](mesafeli-satis.html) ile [İptal ve İade](iade-iptal.html) metinlerinde yer alır.
-5. Fiyat değişiklikleri en az 30 gün önce e-postayla bildirilir ve bir sonraki dönemden itibaren uygulanır. Kurucu müşterilere verilen fiyat sabitleme taahhüdü yazılı olarak bildirilen süre boyunca geçerlidir.
+4. Kota ve kullanım sayaçları Türkiye saatine göre her takvim ayının başında sıfırlanır. Ödenmiş plan dönemi aylık ödemede 31, yıllık ödemede 366 gündür ve kendiliğinden yenilenmez. Ödeme ve iade koşulları [Mesafeli Satış Sözleşmesi](mesafeli-satis.html) ile [İptal ve İade](iade-iptal.html) metinlerinde yer alır.
+5. Fiyat değişiklikleri en az 30 gün önce e-postayla bildirilir; ödenmiş dönemlere uygulanmaz, yalnızca sonraki satın almalarda geçerli olur. Kurucu müşterilere verilen fiyat sabitleme taahhüdü yazılı olarak bildirilen süre boyunca geçerlidir.
 
 ## 7. Veriler
 
@@ -62,7 +62,7 @@ Hizmet, yazılım, politika çekirdeği, derleyici ve marka hakları ITouch'a ai
 
 ## 10. Sorumluluğun sınırı
 
-Kanunun izin verdiği ölçüde, ITouch'un bu şartlardan doğan toplam sorumluluğu, talebe konu olaydan önceki 12 ayda Hizmet için ödediğiniz ücretlerle sınırlıdır. Dolaylı zararlardan, kâr kaybından ve sizin politikalarınızın veya hükümleri uygulama biçiminizin sonuçlarından sorumlu değiliz. Kasıt ve ağır ihmal hâlleri saklıdır.
+Kanunun izin verdiği ölçüde, ITouch'un bu şartlardan doğan toplam sorumluluğu, talebe konu olaydan önceki 12 ayda Hizmet için ödediğiniz ücretlerle sınırlıdır. Dolaylı zararlardan, kâr kaybından ve sizin politikalarınızın veya hükümleri uygulama biçiminizin sonuçlarından sorumlu değiliz. Kasıt ve ağır ihmal hâlleri ile tüketici sıfatına sahip kullanıcılar bakımından 6502 sayılı Kanun'un emredici hükümleri saklıdır.
 
 ## 11. Askıya alma ve fesih
 
@@ -70,7 +70,7 @@ Hesabınızı istediğiniz zaman kapatabilirsiniz. Bu şartların ağır ihlali,
 
 ## 12. Değişiklikler
 
-Bu şartları değiştirebiliriz. Esaslı değişiklikler yürürlükten en az 30 gün önce e-postayla bildirilir. Yürürlükten sonra Hizmet'i kullanmaya devam etmeniz yeni şartları kabul ettiğiniz anlamına gelir.
+Bu şartları değiştirebiliriz. Esaslı değişiklikler yürürlükten en az 30 gün önce e-postayla bildirilir. Değişikliği kabul etmezseniz yürürlük tarihine kadar hesabınızı kapatabilirsiniz; bu durumda ödenmiş dönemin kalan kısmının bedeli iade edilir. Yürürlükten sonra Hizmet'i kullanmaya devam etmeniz yeni şartları kabul ettiğiniz anlamına gelir.
 
 ## 13. Uygulanacak hukuk ve yetki
 

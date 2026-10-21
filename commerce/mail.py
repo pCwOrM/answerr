@@ -175,19 +175,67 @@ def payment_paid(account: Optional[dict], pay: dict, billing: dict) -> None:
     msgs = [_msg(c["notify_to"], "[answerr] Ödeme alındı — {} — {}".format(who, _tl(pay["total_try"])), "\n".join(lines))]
     to = billing.get("invoice_email") or (account or {}).get("email")
     if to and pay.get("kind") == "plan":
-        en = (account or {}).get("lang") == "en"
-        if en:
-            body = ("Hello,\n\nWe received your payment of {} (VAT included) for the answerr {} plan. The plan is active until {}.\n"
-                    "Your e-invoice will be sent to this address within two working days.\nPayment reference: {}\n\nConsole: {}\n").format(
-                _tl(pay["total_try"]), pay.get("plan"), until, pay["id"], console_url()) + SIGNATURE_EN
-            subj = "answerr — payment received"
-        else:
-            body = ("Merhaba,\n\nanswerr {} planı için {} (KDV dahil) ödemenizi aldık. Planınız {} tarihine kadar etkin.\n"
-                    "e-Arşiv / e-Faturanız iki iş günü içinde bu adrese gönderilecek.\nÖdeme referansı: {}\n\nKonsol: {}\n").format(
-                pay.get("plan"), _tl(pay["total_try"]), until, pay["id"], console_url()) + SIGNATURE_TR
-            subj = "answerr — ödemeniz alındı"
-        msgs.append(_msg(to, subj, body))
+        msgs.append(order_confirmation(to, account, pay, billing, until))
     _dispatch(msgs)
+
+
+LEGAL_DIR = __import__("os").path.join(__import__("os").path.dirname(__import__("os").path.abspath(__file__)), "legal")
+LEGAL_TEXTS = (("on-bilgilendirme", "On_Bilgilendirme_Formu"), ("mesafeli-satis", "Mesafeli_Satis_Sozlesmesi"))
+
+
+def legal_version() -> str:
+    """Version of the pre-contract texts shipped with the API (commerce/legal/*.txt, generated from site/legal)."""
+    import os, re
+    try:
+        t = open(os.path.join(LEGAL_DIR, "mesafeli-satis.txt"), encoding="utf-8").read()
+        m = re.search(r"Sürüm:\s*([0-9-]+)", t)
+        return m.group(1) if m else "-"
+    except OSError:
+        return "-"
+
+
+def order_confirmation(to: str, account: Optional[dict], pay: dict, billing: dict, until: str) -> EmailMessage:
+    """Sipariş onayı: order details, VAT-inclusive total, buyer, consent record, and the two accepted texts attached
+    as plain text (kalıcı veri saklayıcısı)."""
+    import os
+    plan = {"gelistirici": "Geliştirici", "pro": "Pro"}.get(pay.get("plan"), pay.get("plan") or "-")
+    cycle = "yıllık (366 gün)" if pay.get("cycle") == "yearly" else "aylık (31 gün)"
+    consent = _tr_date(billing["consent_ts"], "%d.%m.%Y %H:%M") if billing.get("consent_ts") else "-"
+    body = "\n".join([
+        "Merhaba,", "",
+        "answerr siparişiniz tamamlandı. Bu e-posta sipariş onayınızdır; onayladığınız Ön Bilgilendirme Formu ve Mesafeli Satış "
+        "Sözleşmesi ekte düz metin olarak yer alır. Lütfen saklayın.", "",
+        "Sipariş",
+        "Referans        : {}".format(pay["id"]),
+        "Ürün            : answerr {} planı, {}".format(plan, cycle),
+        "Plan bitişi     : {}".format(until),
+        "Tutar (KDV h.)  : {}".format(_tl(pay["net_try"])),
+        "KDV %20         : {}".format(_tl(pay["vat_try"])),
+        "Toplam          : {} (vergiler dahil, tek çekim)".format(_tl(pay["total_try"])),
+        "Ödeme           : kart **** {} · iyzico işlem no {}".format(pay.get("card_last4") or "----", pay.get("payment_id") or "-"),
+        "Ödeme tarihi    : {}".format(_tr_date(pay.get("paid_at") or 0, "%d.%m.%Y %H:%M")), "",
+        "Alıcı",
+        "Unvan / ad      : {}".format(billing.get("legal_name") or "-"),
+        "Yetkili kişi    : {}".format(billing.get("contact_name") or "-"),
+        "VKN / TCKN      : {} {}".format(billing.get("tax_id") or "-", ("(" + billing["tax_office"] + ")") if billing.get("tax_office") else ""),
+        "Adres           : {} {}".format(billing.get("address") or "-", billing.get("city") or ""),
+        "Telefon         : {}".format(billing.get("phone") or "-"), "",
+        "Onay kaydı",
+        "Ön bilgilendirme ve mesafeli satış onayı: {} · metin sürümü {}".format(consent, billing.get("legal_version") or legal_version()),
+        "Cayma hakkı: Hizmet elektronik ortamda anında ifa edildiği için cayma hakkı yoktur (Mesafeli Sözleşmeler Yönetmeliği m.15/1-ğ).",
+        "Gönüllü iade koşulları: https://answerr.me/pro/legal/iade-iptal.html", "",
+        "Kartınızdan otomatik çekim yapılmaz. Plan bitmeden 7 gün önce hatırlatırız.",
+        "e-Arşiv / e-Faturanız iki iş günü içinde bu adrese gönderilecek.", "",
+        "Konsol: {}".format(console_url()),
+    ]) + SIGNATURE_TR
+    m = _msg(to, "answerr — sipariş onayı ve ödemeniz ({})".format(pay["id"]), body)
+    for slug, name in LEGAL_TEXTS:
+        try:
+            data = open(os.path.join(LEGAL_DIR, slug + ".txt"), encoding="utf-8").read()
+            m.add_attachment(data, subtype="plain", filename="{}_{}.txt".format(name, legal_version()))
+        except OSError:
+            pass
+    return m
 
 
 def payment_review(pay: dict, reason: str) -> None:

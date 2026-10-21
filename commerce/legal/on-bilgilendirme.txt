@@ -1,0 +1,57 @@
+Ön Bilgilendirme Formu
+ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ
+
+# Ön Bilgilendirme Formu
+
+Sürüm: 2026-10-22
+
+Bu form, Mesafeli Sözleşmeler Yönetmeliği m.5 uyarınca, ücretli bir plan satın almadan önce sizi bilgilendirmek için hazırlanmıştır. Ödeme adımında bu formu okuduğunuzu elektronik ortamda onaylarsınız.
+
+## 1. Satıcı
+
+- Unvan: ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ
+- Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26 (Çukurova Teknokent), 01330 Sarıçam / Adana, Türkiye
+- MERSİS: 0469094455800001 · Vergi: Yüreğir V.D. 4690944558
+- Ticaret sicili: Adana Ticaret Sicil No: 77766 · Adana Ticaret Odası Sicil No: 74292
+- E-posta: ask@answerr.me · Telefon: +90 850 311 52 03 · KEP: itouchbilisim@hs01.kep.tr
+
+## 2. Hizmetin temel nitelikleri
+
+answerr; yazılı karar politikalarını açık kurallara derleyen ve her istek için GEÇ / İNSANA DEVRET / DUR hükmü veren bir yazılım hizmetidir (SaaS). Hizmete API ve konsol üzerinden erişilir. Planların içeriği, kotaları ve özellikleri Fiyatlar (https://answerr.me/pro/pricing.html) sayfasında ve sipariş anında konsolda gösterilir.
+
+## 3. Bedel ve ödeme
+
+- Fiyat (vergiler dahil): Geliştirici aylık 1.738,80 TL, yıllık peşin 17.265,60 TL; Pro aylık 5.878,80 TL, yıllık peşin 58.305,60 TL. Bu tutarlara %20 KDV dahildir (KDV hariç: 1.449 TL, 14.388 TL, 4.899 TL, 48.588 TL). Ödeyeceğiniz toplam tutar, ödemeyi onaylamadan önce konsolda ve ödeme sayfasında ayrıca gösterilir. Teslimat masrafı yoktur.
+- Ödeme zamanı: Peşin. Aylık ödeme 31 gün, yıllık ödeme 366 gün kullanım hakkı verir.
+- Ödeme yöntemi: Kredi/banka kartıyla ödeme kuruluşu (iyzico) aracılığıyla tek çekim ya da banka havalesi/EFT.
+- Kart bilgileri: Satıcı'ya iletilmez ve Satıcı tarafından saklanmaz.
+- Aşım: Yalnızca aşımı açarsanız doğar: 1.000 karar başına Geliştirici'de 9,00 TL, Pro'da 6,00 TL (KDV dahil). Takvim ayı sonunda fiili kullanıma göre faturalanır.
+
+## 4. İfa
+
+Hizmet, ödeme onaylandıktan hemen sonra planın hesabınızda etkinleştirilmesiyle elektronik ortamda anında ifa edilir. Fiziksel teslimat ve kargo yoktur.
+
+## 5. Sözleşmenin süresi ve sona ermesi
+
+- Süre ve yenileme: Kartla ödenen dönemler kendiliğinden yenilenmez ve kartınızdan otomatik çekim yapılmaz. Dönem bitmeden yedi gün önce e-postayla hatırlatırız; yenilerseniz yeni dönem mevcut dönemin bitiminden başlar.
+- Sona erme: Yenilemediğiniz plan dönem sonunda ücretsiz Keşif planına geçer. Daha önce Keşif'e geçmek isterseniz bunu konsoldan seçebilirsiniz; ödenmiş dönem sonuna kadar planınız sürer.
+
+## 6. Cayma hakkı
+
+Mesafeli Sözleşmeler Yönetmeliği m.15/1-(ğ) uyarınca, elektronik ortamda anında ifa edilen hizmetlerde cayma hakkı bulunmaz. Ödeme adımında, hizmetin ödemeyle birlikte anında ifasına başlanmasını onaylarsınız. Satıcı'nın gönüllü iade koşulları İptal ve İade (https://answerr.me/pro/legal/iade-iptal.html) metnindedir.
+
+## 7. Şikâyet ve itiraz
+
+- Başvuru adresi: Şikâyetlerinizi ask@answerr.me adresine ya da Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26 (Çukurova Teknokent), 01330 Sarıçam / Adana, Türkiye adresine yazılı olarak iletebilirsiniz; en geç 30 gün içinde yanıtlanır.
+- Tüketici başvuruları: Tüketiciler, Ticaret Bakanlığınca her yıl ilan edilen parasal sınırlar içinde Tüketici Hakem Heyetlerine, bu sınırları aşan uyuşmazlıklarda Tüketici Mahkemelerine başvurabilir; başvurular e-Devlet üzerinden TÜBİS ile de yapılabilir.
+
+## 8. Kişisel veriler
+
+Kişisel verilerinizin işlenmesi KVKK Aydınlatma Metni (https://answerr.me/pro/legal/kvkk-aydinlatma.html) ve Gizlilik Politikası (https://answerr.me/pro/legal/gizlilik.html) kapsamındadır.
+
+## 9. Teknik adımlar ve hatalar
+
+- Sipariş adımları: Konsolda plan ve dönem seçilir, fatura bilgileri kaydedilir, bu form ve Mesafeli Satış Sözleşmesi onaylanır, iyzico ödeme sayfasında ödeme yapılır.
+- Hataların düzeltilmesi: Ödemeyi onaylamadan önce fatura bilgilerinizi konsolda, kart bilgilerinizi ödeme sayfasında düzeltebilirsiniz.
+- Metinlerin saklanması: Onayladığınız metinlerin sürümü kaydedilir ve sipariş onayı e-postasıyla size gönderilir. Metinlerin güncel hâli her zaman bu sitededir.
+- Dil: Sözleşme Türkçe kurulur.

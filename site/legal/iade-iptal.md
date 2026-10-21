@@ -18,11 +18,11 @@ Hizmet elektronik ortamda anında ifa edildiği için yasal cayma hakkı bulunma
 1. **İlk ücretli ödemenizden sonraki 14 gün içinde** iptal ederseniz ve bu sürede planınızın aylık kotasının %10'undan azını kullandıysanız, ödediğiniz plan bedelinin tamamını iade ederiz.
 2. Yıllık planı ilk 30 gün içinde iptal ederseniz, kullandığınız ayların aylık plan bedeli düşüldükten sonra kalan tutar iade edilir.
 3. Aşım bedelleri, gerçekleşen kullanıma dayandığı için iade edilmez.
-4. Hizmetin bizden kaynaklanan nedenlerle bir takvim ayında toplam 24 saatten uzun süre kullanılamaması hâlinde, o aya ait plan bedelinin orantılı kısmı bir sonraki faturadan düşülür.
+4. Hizmetin bizden kaynaklanan nedenlerle bir takvim ayında toplam 24 saatten uzun süre kullanılamaması hâlinde, kesinti süresine denk gelen plan bedeli, tercihinize göre iade edilir ya da ödenmiş dönemin sonuna eklenir.
 
 ## İade yöntemi
 
-İade, ödemenin yapıldığı yöntemle (kart ya da banka hesabı) en geç 14 gün içinde yapılır. Kartla yapılan ödemelerin hesabınıza yansıma süresi bankanıza bağlıdır. İade için gerekli düzeltme faturası ya da gider pusulası mevzuata göre düzenlenir.
+İade, talebin kabulünden itibaren en geç 14 gün içinde ödemenin yapıldığı yöntemle (kart ya da banka hesabı) yapılır. İade edilen dönem hesabınızdan geri alınır. Kartla yapılan ödemelerin hesabınıza yansıma süresi bankanıza bağlıdır. İade için gerekli düzeltme faturası ya da gider pusulası mevzuata göre düzenlenir.
 
 ## Başvuru
 

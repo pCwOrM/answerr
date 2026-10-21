@@ -29,9 +29,9 @@ Bu sözleşme, [Kullanım Şartları](kullanim-sartlari.html)'nın ekidir. Müş
 
 | Alt işleyen | Hizmet | Konum |
 | --- | --- | --- |
-| Contabo GmbH | Sunucu barındırma | Avrupa Birliği |
-| Google LLC | reCAPTCHA (yalnızca web formları) | ABD / küresel |
-| iyzico Ödeme Hizmetleri A.Ş. (çevrimiçi ödeme açıldığında) | Ödeme | Türkiye |
+| Contabo GmbH (Almanya) | Sunucu barındırma (karar istekleri, karar kaydı, inceleme kuyruğu) | Avrupa Birliği |
+
+Ödeme kuruluşu (iyzico), e-fatura hizmet sağlayıcısı ve Google reCAPTCHA, karar isteklerindeki verilere erişmez; bunlar ITouch'un kendi müşteri ve hesap verileri için kullandığı hizmetlerdir ve [KVKK Aydınlatma Metni](kvkk-aydinlatma.html)'nde anlatılır.
 
 Yeni bir alt işleyen eklenmeden en az 30 gün önce Veri Sorumlusu'na bildirilir; Veri Sorumlusu makul gerekçeyle itiraz edebilir.
 

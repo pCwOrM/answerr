@@ -478,7 +478,7 @@
     const pend = a.pending_plan_request;
     const b = a.billing || {};
     const est = st.ok ? st.data.current_period_estimate : null;
-    const tl = (v) => v == null ? '' : Number(v).toLocaleString('tr-TR', { maximumFractionDigits: 2 }) + ' ₺';
+    const tl = (v) => v == null ? '' : Number(v).toLocaleString('tr-TR', { minimumFractionDigits: Number(v) % 1 ? 2 : 0, maximumFractionDigits: 2 }) + ' ₺';
     const plist = pays.ok ? pays.data.payments : [];
     const paidPlan = ['gelistirici', 'pro'].includes(a.plan) && a.plan_expires_at;
     el.innerHTML = `
@@ -500,7 +500,7 @@
           <div class="price" style="font-size:36px">${p.price_monthly == null ? '$' + fmtN(p.price_yearly_from) + '+' : paid
             ? `<span data-pm="${p.price_monthly_try}" data-py="${p.price_yearly_per_month_try}" data-tl="1">${tl(p.price_monthly_try)}</span>`
             : `<span>$${p.price_monthly}</span>`}<small>${p.price_monthly == null ? esc(t('perYear')) : esc(t('perMonth'))}</small></div>
-          ${paid ? `<div class="small-mono"><span data-pmu="${p.price_monthly}" data-pyu="${p.price_yearly_per_month}">$${p.price_monthly}</span> ${esc(t('perMonth'))} · ${esc(t('plusVat'))}</div>` : ''}
+          ${paid ? `<div class="small-mono">${esc(t('vatIncl'))} <b data-pm="${(p.price_monthly_try * 1.2).toFixed(2)}" data-py="${(p.price_yearly_per_month_try * 1.2).toFixed(2)}" data-tl="1">${tl(p.price_monthly_try * 1.2)}</b> ${esc(t('perMonth'))} · <span data-pmu="${p.price_monthly}" data-pyu="${p.price_yearly_per_month}">$${p.price_monthly}</span></div>` : ''}
           <div class="quota">${p.quota == null ? esc(t('unlimited')) : fmtN(p.quota)} · ${esc(t('retention'))} ${p.retention_days} ${esc(t('days'))}</div>
           <div class="cs-row" style="gap:8px;flex-wrap:wrap">${act}</div></article>`; }).join('')}</div>
         <label class="check-line"><input type="checkbox" id="salesOk"><span>${t('salesOk')}</span></label>
