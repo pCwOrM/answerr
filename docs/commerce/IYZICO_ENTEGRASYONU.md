@@ -73,6 +73,8 @@ Uç noktalar:
 | `GET /v1/account/payments` | Müşterinin kart ödemeleri |
 | `GET /v1/admin/payments` | Tüm ödemeler (yönetici) |
 | `POST /v1/admin/payments/test` | 1–10 TL entegrasyon testi; plan değiştirmez, müşteri ödemeleri kapalıyken de çalışır |
+| `POST /v1/admin/payments/{id}/recheck` | Bekleyen ya da incelemedeki ödemeyi iyzico’ya yeniden sorar |
+| `POST /v1/admin/payments/{id}/refunded` | Panelden yapılan iptal/iadeyi kaydeder, ödenen dönemi geri alır (konsol › Yönetim’de düğme) |
 
 Ödeme alınınca: plan etkinleşir (yenilemede süre mevcut bitişin üstüne eklenir), bekleyen plan talebi onaylanır, `MAIL_NOTIFY_TO` adresine **Paraşüt'te fatura kesmek için gereken tüm alıcı bilgileri** ve müşteriye makbuz e-postası gider. İncelemeye düşen ödeme için ayrıca uyarı e-postası gider. Kart verisi answerr'a hiç ulaşmaz; yalnızca son 4 hane saklanır.
 

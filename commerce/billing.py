@@ -206,8 +206,10 @@ def buyer_from_account(acc: Dict[str, Any], member_email: str, ip: str) -> Dict[
         raise S.CommerceError(400, "billing_incomplete", "Fill in your billing details first: " + ", ".join(missing),
                               missing=missing)
     name = b["legal_name"].strip()
-    parts = name.split()
-    first, last = (" ".join(parts[:-1]), parts[-1]) if len(parts) > 1 else (name, name)
+    # iyzico's buyer is a person: the authorised contact when given, otherwise the legal name split in two
+    person = (b.get("contact_name") or "").strip() or name
+    parts = person.split()
+    first, last = (" ".join(parts[:-1]), parts[-1]) if len(parts) > 1 else (person, person)
     digits = "".join(ch for ch in b["tax_id"] if ch.isdigit())
     identity = digits if len(digits) == 11 else "11111111111"     # VKN (10 digits) is sent in the invoice, not here
     phone = "".join(ch for ch in b["phone"] if ch.isdigit() or ch == "+")

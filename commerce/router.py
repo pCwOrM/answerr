@@ -733,6 +733,7 @@ def a_mark(statement_id: str, req: StatementMark, request: Request):
 class AdminTestPay(BaseModel):
     amount_try: str = "1.00"
     legal_name: str = Field("ITouch Bilişim Sistemleri Ltd. Şti.", max_length=120)
+    contact_name: str = Field("Volkan Dağlı", max_length=120)
     email: str = Field(..., max_length=254)
     phone: str = Field("+908503115203", max_length=20)
     address: str = Field("Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26, Sarıçam", max_length=200)
@@ -758,6 +759,18 @@ def a_recheck_payment(payment_id: str, request: Request):
     return {"status": "success", "result": out.get("result"), "payment": S.get_payment(payment_id)}
 
 
+class AdminRefund(BaseModel):
+    revoke_plan: bool = True
+    note: Optional[str] = Field(None, max_length=300)
+
+
+@router.post("/v1/admin/payments/{payment_id}/refunded", tags=["Admin"])
+def a_refunded(payment_id: str, req: AdminRefund, request: Request):
+    """Record a cancel or refund made in the iyzico panel; by default the paid period is taken back."""
+    by = admin(request)
+    return {"status": "success", **S.mark_refunded(payment_id, by, req.revoke_plan, req.note)}
+
+
 @router.post("/v1/admin/payments/test", tags=["Admin"])
 def a_test_payment(req: AdminTestPay, request: Request):
     """A small test charge through iyzico (no plan is changed). Works even while customer card payments are off,
@@ -768,7 +781,7 @@ def a_test_payment(req: AdminTestPay, request: Request):
         raise S.CommerceError(400, "bad_amount", "Test amount must be between 1.00 and 10.00 TRY.")
     prov = billing.iyzico()
     acc = {"id": "itouch-test", "email": req.email, "billing_json": json.dumps(
-        {"legal_name": req.legal_name, "tax_id": req.tax_id, "address": req.address, "city": req.city, "phone": req.phone,
+        {"legal_name": req.legal_name, "contact_name": req.contact_name, "tax_id": req.tax_id, "address": req.address, "city": req.city, "phone": req.phone,
          "invoice_email": req.email}, ensure_ascii=False)}
     buyer = billing.buyer_from_account(acc, req.email, ip_of(request))
     pay = S.create_payment(None, "test", None, None, amt, "0.00", amt, "iyzico", by, billing=buyer["billing"])
