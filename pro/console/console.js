@@ -203,12 +203,6 @@
     const r = await call('GET', '/v1/account');
     if (!r.ok) { if (r.status !== 401) toast(msg(r)); renderAuth(location.hash === '#signup' ? 'signup' : 'signin'); return; }
     S.account = r.data.account;
-    const pr = new URLSearchParams(location.search).get('payment');
-    if (pr) {
-      history.replaceState(null, '', location.pathname + '#billing');
-      const k = { paid: 'payPaid', failed: 'payFailed', review: 'payReview' }[pr] || 'payUnknown';
-      setTimeout(() => toast(t(k)), 300);
-    }
     const want = (location.hash || '').replace('#', '');
     S.view = VIEWS.includes(want) ? want : 'overview';
     renderShell();
@@ -621,6 +615,12 @@
       if (S.account && VIEWS.includes(v) && v !== S.view) { S.view = v; renderShell(); }
       else if (!S.account && (v === 'signup' || v === '')) renderAuth(v === 'signup' ? 'signup' : 'signin');
     });
+    const pr = new URLSearchParams(location.search).get('payment');
+    if (pr) {   // back from the iyzico payment page; shown whether or not this browser is signed in
+      history.replaceState(null, '', location.pathname + (S.session ? '#billing' : ''));
+      const k = { paid: 'payPaid', failed: 'payFailed', review: 'payReview' }[pr] || 'payUnknown';
+      setTimeout(() => toast(t(k)), 400);
+    }
     if (await verifyFromHash()) return;
     if (S.session) { await boot(); return; }
     renderAuth(location.hash === '#signup' ? 'signup' : 'signin');
