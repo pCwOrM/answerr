@@ -231,3 +231,23 @@ def test_login_for_unknown_address_mails_signup_hint(client):
     r = client.post("/v1/auth/login", json={"email": "nobody@example.com"})
     assert r.status_code == 200 and r.json()["status"] == "sent"
     assert "hesap yok" in client.mail.OUTBOX[-1]["Subject"]
+
+
+def test_contact_person_is_the_buyer(iz):
+    s, _, _ = signup(iz)
+    iz.patch("/v1/account", json={"billing": dict(BILLING, contact_name="Ayşe Yılmaz")}, headers=auth(s))
+    buy(iz, s)
+    b = iz.fake.calls[-1][1]
+    assert (b["buyer"]["name"], b["buyer"]["surname"]) == ("Ayşe", "Yılmaz")
+    assert b["billingAddress"]["contactName"] == BILLING["legal_name"]
+
+
+def test_refund_takes_back_the_period(iz):
+    s, acc = ready(iz)
+    buy(iz, s); callback(iz, "tok-1")
+    pid = iz.get("/v1/account/payments", headers=auth(s)).json()["payments"][0]["id"]
+    r = iz.post("/v1/admin/payments/{}/refunded".format(pid), json={"note": "iptal"}, headers=H_ADMIN)
+    assert r.status_code == 200 and r.json()["plan_revoked"] is True
+    a = iz.get("/v1/account", headers=auth(s)).json()["account"]
+    assert a["plan"] == "kesif"
+    assert iz.post("/v1/admin/payments/{}/refunded".format(pid), json={}, headers=H_ADMIN).status_code == 409

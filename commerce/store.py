@@ -375,7 +375,7 @@ def account_view(account_id: str) -> Dict[str, Any]:
     }
 
 
-BILLING_FIELDS = ("legal_name", "tax_office", "tax_id", "address", "city", "country", "invoice_email", "phone")
+BILLING_FIELDS = ("legal_name", "contact_name", "tax_office", "tax_id", "address", "city", "country", "invoice_email", "phone")
 
 
 def update_account(account_id: str, by: str, fields: Dict[str, Any]) -> Dict[str, Any]:
@@ -914,6 +914,30 @@ def complete_payment(pid: str, payment_id: str, fraud_status: int, card_last4: O
                                                                  "total_try": pay["total_try"]})
         pay = _row(c.execute("SELECT * FROM payments WHERE id = ?", (pid,)).fetchone())
     return {"payment": pay, "activated": pay["kind"] == "plan", "first": True}
+
+
+def mark_refunded(pid: str, by: str, revoke_plan: bool = True, note: Optional[str] = None) -> Dict[str, Any]:
+    """Records a cancel/refund done in the iyzico panel. With revoke_plan the paid period is taken back:
+    the plan end moves back to where it was before this payment (an account with nothing left falls to Explore)."""
+    with tx() as c:
+        pay = _row(c.execute("SELECT * FROM payments WHERE id = ?", (pid,)).fetchone())
+        if not pay:
+            raise CommerceError(404, "no_payment", "Payment not found.")
+        if pay["status"] != "paid":
+            raise CommerceError(409, "not_paid", "Only a paid payment can be marked refunded (status: {}).".format(pay["status"]))
+        revoked = False
+        if revoke_plan and pay["kind"] == "plan" and pay["account_id"] and pay["period_end"]:
+            acc = _row(c.execute("SELECT * FROM accounts WHERE id = ?", (pay["account_id"],)).fetchone())
+            if acc and acc["plan"] == pay["plan"] and acc["plan_expires_at"]:
+                new_end = acc["plan_expires_at"] - (pay["period_end"] - pay["period_start"])
+                c.execute("UPDATE accounts SET plan_expires_at = ? WHERE id = ?", (min(new_end, acc["plan_expires_at"]), acc["id"]))
+                if new_end <= now():
+                    c.execute("UPDATE accounts SET plan = 'kesif', billing_cycle = 'monthly', plan_expires_at = NULL, "
+                              "overage_enabled = 0 WHERE id = ?", (acc["id"],))
+                revoked = True
+        c.execute("UPDATE payments SET status = 'refunded', error = ? WHERE id = ?", ((note or "refunded")[:300], pid))
+        event(c, pay["account_id"], by, "payment.refunded", {"payment_id": pid, "plan_revoked": revoked, "note": note})
+    return {"payment": get_payment(pid), "plan_revoked": revoked}
 
 
 def list_payments(account_id: Optional[str] = None, limit: int = 200) -> List[Dict[str, Any]]:
