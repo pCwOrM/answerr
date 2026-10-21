@@ -502,7 +502,7 @@ def checkout(req: CheckoutReq, request: Request):
     q = billing.quote_try(req.plan, req.cycle)
     pay = S.create_payment(acc["id"], "plan", req.plan, req.cycle, q["net"], q["vat"], q["total"], "iyzico", p["email"],
                            billing=dict(buyer["billing"], consent_preinfo=True, consent_distance_sale=True,
-                                        consent_ts=int(time.time()), legal_version=S.TERMS_VERSION))
+                                        consent_ts=int(time.time()), legal_version=mail.legal_version()))
     plan = P.get(req.plan)
     name = "answerr {} — {}".format(plan["name_tr"], "yıllık (12 ay)" if req.cycle == "yearly" else "aylık (1 ay)")
     out = prov.initialize(pay, buyer, name, req.lang or acc.get("lang") or "tr")

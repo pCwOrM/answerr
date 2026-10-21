@@ -152,6 +152,8 @@ for f in api_server.py policy_kernel.py policy_checks.py policy_compiler.py acce
 done
 install -d -o "$OWNER" -g "$OWNER" "$APP/commerce"
 for f in "$STAGE"/commerce/*.py "$STAGE"/commerce/*.json; do install -o "$OWNER" -g "$OWNER" -m 0644 "$f" "$APP/commerce/"; done
+install -d -o "$OWNER" -g "$OWNER" "$APP/commerce/legal"
+for f in "$STAGE"/commerce/legal/*.txt; do [ -f "$f" ] && install -o "$OWNER" -g "$OWNER" -m 0644 "$f" "$APP/commerce/legal/"; done
 [ -f "$APP/commerce/router.py" ] && [ -f "$APP/commerce/store.py" ] || { restore_from "$BK"; die "commerce package incomplete after install; rolled back"; }
 install -d -o "$OWNER" -g "$OWNER" "$APP/policies"
 install -o "$OWNER" -g "$OWNER" -m 0644 "$STAGE/policies/builtin_gates.json" "$APP/policies/builtin_gates.json"

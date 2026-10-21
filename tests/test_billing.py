@@ -120,7 +120,12 @@ def test_successful_payment_activates_plan_once(iz):
     assert iz.get("/v1/account", headers=auth(s)).json()["account"]["plan_expires_at"] == first_end
     assert len(iz.mail.OUTBOX) == n_mail
     subjects = [m["Subject"] for m in iz.mail.OUTBOX]
-    assert any("Ödeme alındı" in x for x in subjects) and any("ödemeniz alındı" in x for x in subjects)
+    assert any("Ödeme alındı" in x for x in subjects) and any("sipariş onayı" in x for x in subjects)
+    conf = next(m for m in iz.mail.OUTBOX if "sipariş onayı" in m["Subject"])
+    names = [a.get_filename() for a in conf.iter_attachments()]
+    assert names == ["On_Bilgilendirme_Formu_2026-10-22.txt", "Mesafeli_Satis_Sozlesmesi_2026-10-22.txt"]
+    text = conf.get_body(preferencelist=("plain",)).get_content()
+    assert "1.738,80 ₺" in text and "metin sürümü 2026-10-22" in text and "m.15/1-ğ" in text
     note = next(m for m in iz.mail.OUTBOX if "Ödeme alındı" in m["Subject"]).get_content()
     assert "1234567890" in note and "1.738,80 ₺" in note and "0008" in note
     pays = iz.get("/v1/account/payments", headers=auth(s)).json()["payments"]

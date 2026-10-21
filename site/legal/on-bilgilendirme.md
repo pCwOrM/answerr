@@ -13,7 +13,8 @@ Bu form, Mesafeli Sözleşmeler Yönetmeliği m.5 uyarınca, ücretli bir plan s
 - **Unvan:** {{company.legal_name}}
 - **Adres:** {{company.address}}
 - **MERSİS:** {{company.mersis}} · **Vergi:** {{company.tax}}
-- **E-posta:** {{company.email}} · **Telefon:** {{company.phone}}
+- **Ticaret sicili:** {{company.trade_registry}}
+- **E-posta:** {{company.email}} · **Telefon:** {{company.phone}} · **KEP:** {{company.kep}}
 
 ## 2. Hizmetin temel nitelikleri
 
@@ -21,11 +22,11 @@ answerr; yazılı karar politikalarını açık kurallara derleyen ve her istek 
 
 ## 3. Bedel ve ödeme
 
-- **Fiyat:** Türkiye'deki alıcılar için Geliştirici 1.449 TL / ay (yıllık ödemede 14.388 TL), Pro 4.899 TL / ay (yıllık ödemede 48.588 TL). Fiyatlara KDV dahil değildir; %20 KDV ödeme anında eklenir. KDV dahil toplam tutar, ödemeyi onaylamadan önce konsolda ve ödeme sayfasında gösterilir. Güncel içerik [Fiyatlar](../pricing.html) sayfasındadır.
+- **Fiyat (vergiler dahil):** Geliştirici aylık **1.738,80 TL**, yıllık peşin **17.265,60 TL**; Pro aylık **5.878,80 TL**, yıllık peşin **58.305,60 TL**. Bu tutarlara %20 KDV dahildir (KDV hariç: 1.449 TL, 14.388 TL, 4.899 TL, 48.588 TL). Ödeyeceğiniz toplam tutar, ödemeyi onaylamadan önce konsolda ve ödeme sayfasında ayrıca gösterilir. Teslimat masrafı yoktur.
 - **Ödeme zamanı:** Peşin. Aylık ödeme 31 gün, yıllık ödeme 366 gün kullanım hakkı verir.
 - **Ödeme yöntemi:** Kredi/banka kartıyla ödeme kuruluşu (iyzico) aracılığıyla tek çekim ya da banka havalesi/EFT.
 - **Kart bilgileri:** Satıcı'ya iletilmez ve Satıcı tarafından saklanmaz.
-- **Aşım:** Aşım bedeli yalnızca aşımı açtığınızda doğar ve fiili kullanıma göre faturalanır.
+- **Aşım:** Yalnızca aşımı açarsanız doğar: 1.000 karar başına Geliştirici'de 9,00 TL, Pro'da 6,00 TL (KDV dahil). Takvim ayı sonunda fiili kullanıma göre faturalanır.
 
 ## 4. İfa
 
@@ -38,13 +39,20 @@ Hizmet, ödeme onaylandıktan hemen sonra planın hesabınızda etkinleştirilme
 
 ## 6. Cayma hakkı
 
-Mesafeli Sözleşmeler Yönetmeliği m.15/1-(ğ) uyarınca, elektronik ortamda anında ifa edilen hizmetlerde **cayma hakkı bulunmaz**. Satıcı'nın gönüllü iade koşulları [İptal ve İade](iade-iptal.html) metnindedir.
+Mesafeli Sözleşmeler Yönetmeliği m.15/1-(ğ) uyarınca, elektronik ortamda anında ifa edilen hizmetlerde **cayma hakkı bulunmaz**. Ödeme adımında, hizmetin ödemeyle birlikte anında ifasına başlanmasını onaylarsınız. Satıcı'nın gönüllü iade koşulları [İptal ve İade](iade-iptal.html) metnindedir.
 
 ## 7. Şikâyet ve itiraz
 
-- **Başvuru adresi:** Şikâyetlerinizi {{company.email}} adresine iletebilirsiniz.
-- **Tüketici başvuruları:** Tüketiciler, Ticaret Bakanlığınca her yıl ilan edilen parasal sınırlar içinde Tüketici Hakem Heyetlerine, bu sınırları aşan uyuşmazlıklarda Tüketici Mahkemelerine başvurabilir.
+- **Başvuru adresi:** Şikâyetlerinizi {{company.email}} adresine ya da {{company.address}} adresine yazılı olarak iletebilirsiniz; en geç 30 gün içinde yanıtlanır.
+- **Tüketici başvuruları:** Tüketiciler, Ticaret Bakanlığınca her yıl ilan edilen parasal sınırlar içinde Tüketici Hakem Heyetlerine, bu sınırları aşan uyuşmazlıklarda Tüketici Mahkemelerine başvurabilir; başvurular e-Devlet üzerinden TÜBİS ile de yapılabilir.
 
 ## 8. Kişisel veriler
 
 Kişisel verilerinizin işlenmesi [KVKK Aydınlatma Metni](kvkk-aydinlatma.html) ve [Gizlilik Politikası](gizlilik.html) kapsamındadır.
+
+## 9. Teknik adımlar ve hatalar
+
+- **Sipariş adımları:** Konsolda plan ve dönem seçilir, fatura bilgileri kaydedilir, bu form ve Mesafeli Satış Sözleşmesi onaylanır, iyzico ödeme sayfasında ödeme yapılır.
+- **Hataların düzeltilmesi:** Ödemeyi onaylamadan önce fatura bilgilerinizi konsolda, kart bilgilerinizi ödeme sayfasında düzeltebilirsiniz.
+- **Metinlerin saklanması:** Onayladığınız metinlerin sürümü kaydedilir ve sipariş onayı e-postasıyla size gönderilir. Metinlerin güncel hâli her zaman bu sitededir.
+- **Dil:** Sözleşme Türkçe kurulur.

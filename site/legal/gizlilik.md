@@ -34,6 +34,10 @@ API anahtarıyla gelen müşteri trafiği telemetriye **gönderilmez**. Yalnızc
 
 E-posta, şirket adı, üyeler, plan, fatura bilgileri ve kullanım sayıları hesabınız açık olduğu sürece tutulur. Ayrıntılar [KVKK Aydınlatma Metni](kvkk-aydinlatma.html) içindedir.
 
+## Ödemeler
+
+Kartla ödemeler iyzico'nun güvenli ödeme sayfasında yapılır. Kart numarası, son kullanma tarihi ve güvenlik kodu answerr'a hiç ulaşmaz; yalnızca ödeme tutarı, durumu, iyzico işlem numarası ve kartın son 4 hanesi saklanır. Fatura bilgileriniz e-Arşiv / e-Fatura düzenlemek için kullanılır.
+
 ## Güvenlik
 
 - API anahtarları, oturum ve giriş bağlantıları yalnızca SHA-256 özetleri olarak saklanır; anahtarın kendisini biz de göremeyiz.
