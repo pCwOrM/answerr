@@ -34,7 +34,6 @@ NAV_ITEMS = [
     ("studio", "studio.html", "navStudio", "Derleyici"),
     ("docs", "docs.html", "navDocs", "Geliştiriciler"),
     ("pricing", "pricing.html", "navPricing", "Fiyatlar"),
-    ("vision", "vision.html", "navVision", "Werr Evreni"),
     ("research", "research.html", "navResearch", "Araştırma"),
 ]
 
@@ -99,6 +98,7 @@ def footer(r: str) -> str:
         col("fcLegal", "Yasal", [("legal/kullanim-sartlari.html", "lgTerms", "Kullanım şartları"),
                                  ("legal/kvkk-aydinlatma.html", "lgKvkk", "KVKK aydınlatma metni"),
                                  ("legal/gizlilik.html", "lgPrivacy", "Gizlilik politikası"),
+                                 ("legal/on-bilgilendirme.html", "lgPre", "Ön bilgilendirme formu"),
                                  ("legal/mesafeli-satis.html", "lgSales", "Mesafeli satış sözleşmesi"),
                                  ("legal/iade-iptal.html", "lgRefund", "İptal ve iade"),
                                  ("legal/cerez.html", "lgCookies", "Çerez politikası"),

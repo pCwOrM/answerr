@@ -455,3 +455,23 @@ html[lang="en"] [data-lang="tr"], html[lang="tr"] [data-lang="en"] { display: no
 .check-line input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--amber); }
 .status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; background: var(--muted); }
 .status-dot.ok { background: var(--ice); box-shadow: 0 0 10px var(--ice); } .status-dot.bad { background: var(--stop); }
+
+/* ===================================================================== 2026-10-22 mobile audit fixes */
+.soon { font-size: 11px; }
+.cs-table code, .docs-body td code { font-size: 12px; }
+.faq summary { min-height: 44px; align-items: center; }
+.tabs button { min-height: 40px; }
+.tpl-row a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 6px; }
+input[type="checkbox"], input[type="radio"] { width: 20px; height: 20px; accent-color: var(--amber); }
+.orbit .core small { font-size: max(10px, 0.8vw); }
+@media (max-width: 640px) {
+  /* labels would be unreadable on a phone: planets become tap dots, the cards below carry the text */
+  .planet { font-size: 0; width: 30px; height: 30px; min-height: 30px; padding: 0; border-radius: 50%; }
+  .planet::before { left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; }
+  .orbit .core { font-size: 13px; }
+}
+.planet { font-size: clamp(11px, 1.1vw, 13px); }
+.orbit .core small { font-size: 11px; }
+.card a.small-mono, .card > a.btn-sm, .tech a.small-mono { display: inline-flex; align-items: center; min-height: 40px; }
+@media (max-width: 640px) { .planet { font-size: 0; } }
+.card > a[href^="http"], .card p + a, .card .tpl-row a { display: inline-flex; align-items: center; min-height: 40px; }

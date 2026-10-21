@@ -4,16 +4,19 @@
     "short_name": "ITouch Bilişim Sistemleri Ltd. Şti.",
     "brand": "answerr · Werr Technology",
     "mersis": "0469094455800001",
-    "trade_registry": "Adana Ticaret Sicil No: 77766",
+    "trade_registry": "Adana Ticaret Sicil No: 77766 · Adana Ticaret Odası Sicil No: 74292",
     "tax": "Yüreğir V.D. 4690944558",
-    "address": "Çukurova Teknokent, Çukurova Üniversitesi Balcalı Kampüsü, Sarıçam / Adana, Türkiye",
+    "address": "Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26 (Çukurova Teknokent), 01330 Sarıçam / Adana, Türkiye",
     "email": "ask@answerr.me",
-    "phone": "",
+    "phone": "+90 543 815 15 30",
     "kep": "",
     "website": "https://itouch.com.tr",
-    "data_controller_contact": "ask@answerr.me"
+    "data_controller_contact": "ask@answerr.me",
+    "company_email": "info@itouch.com.tr",
+    "nace": "62.10.00 — Bilgisayar programlama faaliyetleri",
+    "source_documents": "Adana TO faaliyet belgesi 17.03.2026; GİB mükellefiyet yazısı 14.06.2025; vergi levhası; Çukurova Teknokent kira sözleşmesi"
   },
-  "legal_version": "2026-10-15",
-  "legal_status_tr": "Bu metin yürürlük öncesi taslaktır (sürüm 2026-10-15). Hukuki inceleme tamamlanınca bu not kaldırılır.",
-  "legal_status_en": "Pre-release draft (version 2026-10-15). This note is removed once legal review is complete. The Turkish text prevails."
+  "legal_version": "2026-10-22",
+  "legal_status_tr": "Bu metin yürürlük öncesi taslaktır (sürüm 2026-10-22). Hukuki inceleme tamamlanınca bu not kaldırılır.",
+  "legal_status_en": "Pre-release draft (version 2026-10-22). This note is removed once legal review is complete. The Turkish text prevails."
 }

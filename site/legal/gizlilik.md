@@ -19,7 +19,16 @@ Kısa özet: Karar vermek için gönderdiğiniz veriyi saklamamaya çalışırı
 | Sizin referans kimliğiniz (`external_id`) | Evet | Plan saklama süresi |
 | Gölge modda bildirdiğiniz gerçek sonuç | Evet | Plan saklama süresi |
 
-Anonim demo istekleri (answerr.me üzerindeki Kara Kutu) karar kaydına yazılmaz; yalnızca hız sınırı için IP adresi kısa süre tutulur.
+### Anonim demo istekleri ve araştırma telemetrisi
+
+API anahtarı olmadan yapılan demo istekleri (answerr.me üzerindeki Kara Kutu ve benzeri sayfalar) müşteri karar kaydına yazılmaz. Bu istekler, werr araştırma motorunun geliştirilmesi için **araştırma telemetrisine** gönderilir.
+
+- **Ne gönderilir:** Durum alanlarının ilk 20'si, metinlerde ilk 100 karakter, soru metni ve hüküm.
+- **Ne maskelenir:** Parola, anahtar ve gizli bilgi taşıyan alan adları `[REDACTED]` olarak, e-posta adresleri ve erişim anahtarı biçimindeki değerler de maskelenerek gönderilir.
+- **Ne kaydedilmez:** IP adresi telemetriye yazılmaz.
+- **Nasıl kullanılabilir:** Bu kayıtlar anonim araştırma veri setlerinde kullanılabilir. Demo alanına kişisel veri yazmayın.
+
+API anahtarıyla gelen müşteri trafiği telemetriye **gönderilmez**. Yalnızca istek içinde `werr_params.telemetry_opt_in: true` ile açıkça izin verilirse gönderilir.
 
 ## Hesap verileri
 

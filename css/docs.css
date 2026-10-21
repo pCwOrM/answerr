@@ -371,3 +371,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* 2026-10-22 mobile audit: long URLs and the header no longer push the page sideways at 320 px */
+.url-badge-box { flex-wrap: wrap; max-width: 100%; min-width: 0; }
+.url-badge-box code, .endpoint-path { overflow-wrap: anywhere; word-break: break-all; min-width: 0; }

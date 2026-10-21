@@ -1,6 +1,6 @@
 title: İptal ve İade
 description: answerr planlarında iptal, plan düşürme ve iade koşulları.
-order: 5
+order: 6
 ---
 # İptal ve İade
 

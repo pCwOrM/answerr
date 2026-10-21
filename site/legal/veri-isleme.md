@@ -1,6 +1,6 @@
 title: Veri İşleme Sözleşmesi
 description: Müşteri (veri sorumlusu) ile ITouch (veri işleyen) arasındaki veri işleme koşulları.
-order: 7
+order: 8
 ---
 # Veri İşleme Sözleşmesi (DPA)
 

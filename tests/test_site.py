@@ -31,7 +31,7 @@ def test_every_page_has_the_same_menu():
 
 
 def test_legal_pages_exist_and_footer_links_resolve():
-    for slug in ("kullanim-sartlari", "kvkk-aydinlatma", "gizlilik", "mesafeli-satis", "iade-iptal", "cerez", "veri-isleme"):
+    for slug in ("kullanim-sartlari", "kvkk-aydinlatma", "gizlilik", "on-bilgilendirme", "mesafeli-satis", "iade-iptal", "cerez", "veri-isleme"):
         assert os.path.exists(os.path.join(PRO, "legal", slug + ".html")), slug
     s = open(os.path.join(PRO, "index.html"), encoding="utf-8").read()
     for href in re.findall(r'href="([^"#:]+\.html)"', s):
