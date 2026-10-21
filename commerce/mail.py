@@ -50,6 +50,21 @@ def _dispatch(msgs: List[EmailMessage], sync: bool = False) -> None:
         threading.Thread(target=run, daemon=True).start()
 
 
+def no_account(email: str, lang: str = "tr") -> None:
+    """Sign-in asked for an address with no account. The API answers the same either way (no enumeration);
+    only the mailbox owner learns that they need to sign up."""
+    url = console_url() + "#signup"
+    if lang == "en":
+        subj, body = "answerr — no account for this address", (
+            "Hello,\n\nSomeone (probably you) asked for an answerr sign-in link for this address, but there is no account "
+            "with it. To create one:\n\n{}\n\nIf you did not ask for this, ignore this e-mail.\n").format(url) + SIGNATURE_EN
+    else:
+        subj, body = "answerr — bu adresle bir hesap yok", (
+            "Merhaba,\n\nBu adres için answerr giriş bağlantısı istendi ama bu adresle açılmış bir hesap yok. "
+            "Hesap açmak için:\n\n{}\n\nBu isteği siz yapmadıysanız bu e-postayı yok sayın.\n").format(url) + SIGNATURE_TR
+    _dispatch([_msg(email, subj, body)])
+
+
 def login_link(email: str, token: str, purpose: str, lang: str = "tr") -> None:
     url = console_url() + "#login=" + token
     if lang == "en":

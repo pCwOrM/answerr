@@ -108,7 +108,7 @@ def test_link_is_single_use_and_login_does_not_enumerate(client):
     n = len(client.mail.OUTBOX)
     r1 = client.post("/v1/auth/login", json={"email": "nobody@example.com"})
     r2 = client.post("/v1/auth/login", json={"email": "a@example.com"})
-    assert r1.json() == r2.json() and len(client.mail.OUTBOX) == n + 1
+    assert r1.json() == r2.json() and len(client.mail.OUTBOX) == n + 2   # unknown address gets a sign-up hint, only in its own mailbox
     sess = client.post("/v1/auth/verify", json={"token": last_token(client)}).json()["session"]
     assert client.post("/v1/auth/logout", headers=auth(sess)).status_code == 200
     assert client.get("/v1/account", headers=auth(sess)).status_code == 401

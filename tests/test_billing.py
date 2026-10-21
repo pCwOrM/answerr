@@ -28,7 +28,7 @@ class FakeIyzico:
             if not init:
                 return {"status": "failure", "errorMessage": "token not found"}
             res = {"status": "success", "paymentStatus": "SUCCESS", "paymentId": "2900" + payload["token"][-1],
-                   "conversationId": init["conversationId"], "basketId": init["basketId"], "price": float(init["price"]),
+                   "conversationId": payload.get("conversationId"), "basketId": init["basketId"], "price": float(init["price"]),
                    "paidPrice": float(init["paidPrice"]), "currency": "TRY", "fraudStatus": 1, "lastFourDigits": "0008"}
             res.update(self.override)
             return res
@@ -213,3 +213,21 @@ def test_downgrade_keeps_paid_period(iz):
 def test_public_plans_flag(iz):
     b = iz.get("/v1/plans").json()
     assert b["card_payments"] is True and b["plans"]["pro"]["price_monthly_try"] == 4899
+
+
+def test_admin_recheck_settles_held_payment(iz):
+    s, _ = ready(iz)
+    buy(iz, s)
+    iz.fake.override = {"fraudStatus": 0}
+    assert callback(iz, "tok-1")["payment"] == ["review"]
+    iz.fake.override = {}
+    pid = iz.get("/v1/account/payments", headers=auth(s)).json()["payments"][0]["id"]
+    r = iz.post("/v1/admin/payments/{}/recheck".format(pid), headers=H_ADMIN)
+    assert r.json()["result"] == "paid"
+    assert iz.get("/v1/account", headers=auth(s)).json()["account"]["plan"] == "gelistirici"
+
+
+def test_login_for_unknown_address_mails_signup_hint(client):
+    r = client.post("/v1/auth/login", json={"email": "nobody@example.com"})
+    assert r.status_code == 200 and r.json()["status"] == "sent"
+    assert "hesap yok" in client.mail.OUTBOX[-1]["Subject"]

@@ -133,9 +133,12 @@ def login(req: LoginRequest, request: Request):
     human_check(request)
     if (req.website or "").strip():
         return SENT
+    lang = req.lang if req.lang in ("tr", "en") else "tr"
     if S.member_of(email):          # same answer either way: no account enumeration
         tok = S.create_login_token(email, "login", {}, ip_of(request))
-        mail.login_link(email, tok, "login", req.lang if req.lang in ("tr", "en") else "tr")
+        mail.login_link(email, tok, "login", lang)
+    else:
+        mail.no_account(email, lang)
     return SENT
 
 
@@ -742,6 +745,17 @@ def a_payments(request: Request, account_id: Optional[str] = None, limit: int = 
     admin(request)
     return {"status": "success", "card_payments": billing.provider().name == "iyzico",
             "payments": S.list_payments(account_id, max(1, min(limit, 1000)))}
+
+
+@router.post("/v1/admin/payments/{payment_id}/recheck", tags=["Admin"])
+def a_recheck_payment(payment_id: str, request: Request):
+    """Asks iyzico again for a payment that is initiated or held for review (e.g. after a fix) and settles it."""
+    admin(request)
+    pay = S.get_payment(payment_id)
+    if not pay or not pay.get("token"):
+        raise S.CommerceError(404, "no_payment", "Payment not found.")
+    out = _settle(pay["token"])
+    return {"status": "success", "result": out.get("result"), "payment": S.get_payment(payment_id)}
 
 
 @router.post("/v1/admin/payments/test", tags=["Admin"])

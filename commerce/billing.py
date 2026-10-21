@@ -134,8 +134,12 @@ class IyzicoProvider(PaymentProvider):
         return {"provider": self.name, "mode": "redirect", "payment_page_url": res["paymentPageUrl"], "payment_id": pay["id"],
                 "total_try": total}
 
-    def retrieve(self, token: str) -> Dict[str, Any]:
-        return self.post("/payment/iyzipos/checkoutform/auth/ecom/detail", {"locale": "tr", "token": token})
+    def retrieve(self, token: str, conversation_id: Optional[str] = None) -> Dict[str, Any]:
+        """iyzico echoes the conversationId of *this* request, so it is sent here; basketId is the real binding."""
+        body = {"locale": "tr", "token": token}
+        if conversation_id:
+            body["conversationId"] = conversation_id
+        return self.post("/payment/iyzipos/checkoutform/auth/ecom/detail", body)
 
     def settle(self, token: str) -> Dict[str, Any]:
         """Retrieves the result for a token and completes or fails the matching payment. Safe to call repeatedly."""
@@ -144,13 +148,15 @@ class IyzicoProvider(PaymentProvider):
             return {"result": "unknown"}
         if pay["status"] == "paid":
             return {"result": "paid", "payment": pay, "activated": False}
-        res = self.retrieve(token)
+        if pay["status"] == "failed":
+            return {"result": "failed", "payment": pay}
+        res = self.retrieve(token, pay["conversation_id"])
         if res.get("status") != "success":
             return {"result": "error", "payment": pay, "error": res.get("errorMessage")}
         ps = (res.get("paymentStatus") or "").upper()
         checks = {
-            "conversation": res.get("conversationId") == pay["conversation_id"],
-            "basket": res.get("basketId") in (None, pay["id"]),
+            "conversation": res.get("conversationId") in (None, pay["conversation_id"]),
+            "basket": res.get("basketId") == pay["id"],
             "currency": (res.get("currency") or "TRY") == "TRY",
             "amount": Decimal(str(res.get("price") or 0)) == Decimal(pay["total_try"])
                       and Decimal(str(res.get("paidPrice") or 0)) >= Decimal(pay["total_try"]),
