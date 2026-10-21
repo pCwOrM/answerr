@@ -73,7 +73,7 @@ def set_plan(c, acc, plan, **kw):
 def test_docs_live_under_v1(client):
     assert client.get("/v1/docs").status_code == 200
     spec = client.get("/v1/openapi.json").json()
-    assert spec["info"]["version"] == "1.3.0"
+    assert spec["info"]["version"] == "1.3.1"
     assert "/v1/account" in spec["paths"] and "/v1/backtest" in spec["paths"]
     assert client.get("/").json()["docs_url"] == "/v1/docs"
 

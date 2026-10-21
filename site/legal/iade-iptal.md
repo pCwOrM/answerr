@@ -9,8 +9,7 @@ order: 6
 ## İptal
 
 - Ücretli planınızı istediğiniz zaman konsoldaki **Plan ve fatura** bölümünden Keşif planına düşürerek ya da {{company.email}} adresine yazarak iptal edebilirsiniz.
-- Aylık planlarda iptal, içinde bulunulan dönemin sonunda geçerli olur; bir sonraki dönem için ücret alınmaz.
-- Yıllık planlarda iptal, yıllık dönemin sonunda geçerli olur.
+- İptal, ödenmiş dönemin sonunda geçerli olur; o güne kadar planınız sürer. Kartla ödenen dönemler kendiliğinden yenilenmediği için bir sonraki dönem için ücret alınmaz.
 
 ## Gönüllü iade
 

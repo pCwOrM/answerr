@@ -2,7 +2,7 @@
 
 Güncelleme: 22 Ekim 2026. Kaynak: docs.iyzico.com (Abonelik, Ödeme Formu, Webhook, HMACSHA256, Sandbox ve Entegrasyon Kontrol Listesi sayfaları) ve iyzico yardım merkezi.
 
-Bugünkü durum: answerr, ödemeyi `ManualProvider` ile alıyor (havale/EFT ve yönetici onayı). Kod tarafında `commerce/billing.py` içinde `IyzicoProvider` için yer hazır.
+Bugünkü durum (API 1.3.1): kartla ödeme **iyzico Ödeme Formu (Checkout Form)** ile kodlandı ve test edildi; müşteriye açılması `ANSWERR_PAYMENT_PROVIDER=iyzico` ile olur. O açılana kadar havale/EFT ve yönetici onayı (`ManualProvider`) geçerlidir. Abonelik eklentisi **gerekmez**: her ödeme bir dönem satın alır (aylık 31 gün, yıllık 366 gün), otomatik çekim yoktur, bitişten 7 gün önce e-postayla hatırlatılır.
 
 ## A. ITouch'un yapacakları (iyzico tarafı)
 
@@ -59,36 +59,33 @@ Bugünkü durum: answerr, ödemeyi `ManualProvider` ile alıyor (havale/EFT ve y
 
 Onaylanırsa `commerce/plans.json` dosyasına `price_monthly_try` ve `price_yearly_per_month_try` alanları eklenir. Fiyat sayfası ve mesafeli satış sözleşmesi iki para birimini gösterecek şekilde güncellenir.
 
-## B. answerr tarafındaki entegrasyon (sandbox anahtarları gelince)
+## B. answerr tarafındaki entegrasyon (1.3.1 — uygulandı)
 
-Doğrulanmış API yüzeyi:
+Uç noktalar:
 
-| Adım | Uç nokta |
+| Uç nokta | Ne yapar |
 |---|---|
-| Kimlik doğrulama | `Authorization: IYZWSv2 base64("apiKey:…&randomKey:…&signature:" + hex(HMAC-SHA256(randomKey + uriPath + body, secretKey)))` ve `x-iyzi-rnd` başlığı |
-| Ürün (bir kez) | `POST /v2/subscription/products` → "answerr" |
-| Ödeme planları (bir kez) | `POST /v2/subscription/products/{productRef}/pricing-plans` — her plan için `currencyCode` TRY ya da USD, `paymentInterval` MONTHLY ya da YEARLY, `planPaymentType` RECURRING |
-| Ödeme formu | `POST /v2/subscription/checkoutform/initialize` — `callbackUrl`, `pricingPlanReferenceCode`, `subscriptionInitialStatus: ACTIVE`, `customer` (ad, soyad, e-posta, cep telefonu, TCKN/VKN, fatura adresi) |
-| Sonuç | `GET /v2/subscription/checkoutform/{token}` |
-| Plan yükseltme | `POST /v2/subscription/subscriptions/{ref}/upgrade` — `upgradePeriod` NOW ya da NEXT_PERIOD |
-| İptal | `POST /v2/subscription/subscriptions/{ref}/cancel` |
-| Kart güncelleme | `POST /v2/subscription/card-update/checkoutform/initialize` |
-| Webhook | `iyziEventType`: `subscription.order.success` / `subscription.order.failure`. İmza: `hex(HMAC-SHA256(merchantId + secretKey + eventType + subscriptionReferenceCode + orderReferenceCode + customerReferenceCode, secretKey))` = `X-IYZ-SIGNATURE-V3` |
+| `GET /v1/plans` | `card_payments` (açık mı) ve TL fiyatlar |
+| `GET /v1/account/checkout/quote?plan=&cycle=` | KDV hariç, KDV, toplam (TL) |
+| `POST /v1/account/checkout` | Fatura bilgisi ve iki onay (ön bilgilendirme, mesafeli satış) zorunlu. iyzico `checkoutform/initialize/auth/ecom` çağrılır; `payment_page_url` döner. Tek çekim, `VIRTUAL` ürün, TRY |
+| `POST /v1/billing/iyzico/callback` | Tarayıcı dönüşü. Token yalnızca ipucudur: sonuç `checkoutform/auth/ecom/detail` ile sunucudan sorgulanır; durum, `paymentStatus=SUCCESS`, `fraudStatus=1`, conversationId, basketId, tutar ve para birimi tutmazsa plan açılmaz. Konsola `?payment=paid|failed|review|unknown` ile döner, token URL'ye yazılmaz |
+| `POST /v1/billing/iyzico/webhook` | iyzico bildirimi. Gövdeye güvenilmez; içindeki token yeniden sorgulanır. `X-IYZ-SIGNATURE-V3` gelirse doğrulanır, yanlışsa yok sayılır. Her zaman 200 döner |
+| `GET /v1/account/payments` | Müşterinin kart ödemeleri |
+| `GET /v1/admin/payments` | Tüm ödemeler (yönetici) |
+| `POST /v1/admin/payments/test` | 1–10 TL entegrasyon testi; plan değiştirmez, müşteri ödemeleri kapalıyken de çalışır |
 
-Akış:
-1. Müşteri konsolda planı seçer. Ön bilgilendirme ve mesafeli satış onayı alınır. `POST /v1/account/plan-request` çağrılır, `billing.provider().checkout()` ödeme formu token'ı döner ve konsol iyzico formunu açar.
-2. `callbackUrl` (`/v1/billing/iyzico/callback`) üzerinden sonuç sorgulanır, başarılıysa `store.set_plan(...)` çağrılır. Ekstre `paid / provider=iyzico / provider_ref=subscriptionReferenceCode` olarak işaretlenir.
-3. Her dönemin tahsilatı webhook ile gelir:
-   - `success` → ekstre ödendi.
-   - `failure` → 7 gün tolerans ve e-posta. Sonra Keşif'e düşer.
-4. Konsola üç düğme eklenir: "Kartımı güncelle", "Aboneliği iptal et", "Planı yükselt".
-5. Aşım için abonelik dışında ayrı bir tahsilat yapılır (ödeme formu, dönem sonu). Başlangıçta aşım kapalı bırakılabilir.
+Ödeme alınınca: plan etkinleşir (yenilemede süre mevcut bitişin üstüne eklenir), bekleyen plan talebi onaylanır, `MAIL_NOTIFY_TO` adresine **Paraşüt'te fatura kesmek için gereken tüm alıcı bilgileri** ve müşteriye makbuz e-postası gider. İncelemeye düşen ödeme için ayrıca uyarı e-postası gider. Kart verisi answerr'a hiç ulaşmaz; yalnızca son 4 hane saklanır.
 
-Kabul ölçütleri:
-- Sandbox test kartlarıyla şu senaryolar geçmeli:
-  - Geliştirici ve Pro planları, aylık ve yıllık
-  - 3DS başarılı ve başarısız ödeme
-  - Yenileme ödemesinin başarısız olması
-  - Plan yükseltme ve iptal
-- Webhook aynı bildirimi tekrar gönderdiğinde plan ve ekstre iki kez işlenmemeli.
-- Kart verisi hiçbir zaman answerr sunucusuna, kayıtlara ya da e-postalara ulaşmamalı.
+### Canlıya alma sırası
+1. `deploy/deploy_mechsrv_v131.sh` (yedek, test, kanarya, otomatik geri dönüş). `ANSWERR_PAYMENT_PROVIDER=manual` kalır.
+2. Yönetici testi (gerçek kart, 1 TL):
+   ```
+   curl -s -X POST https://api.answerr.me/v1/admin/payments/test -H "X-Admin-Key: …" -H "Content-Type: application/json" \
+        -d '{"email":"pcworm@pcworm.net","amount_try":"1.00"}'
+   ```
+   Dönen `payment_page_url` açılır, kartla ödenir; tarayıcı konsola `?payment=paid` ile dönmeli, `GET /v1/admin/payments` içinde `paid` görünmeli, ask@ adresine bildirim gelmeli. Sonra iyzico panelinden **iade** edilir.
+3. `/etc/answerr/answerr.env` içinde `ANSWERR_PAYMENT_PROVIDER=iyzico` yapılır ve servis yeniden başlatılır. Konsolda "Kartla öde" düğmesi görünür.
+4. iyzico panelinde İşyeri Bildirimleri adresi: `https://api.answerr.me/v1/billing/iyzico/webhook`. İmzalı bildirim için entegrasyon@iyzico.com'a yazılır (zorunlu değil; imzasız bildirim de yeniden sorgulandığı için güvenlidir).
+
+### Sonraki adım (isteğe bağlı): otomatik yenileme
+Otomatik çekim istenirse iyzico Abonelik eklentisi açılır (`/v2/subscription/...`: ürün, ödeme planları, abonelik ödeme formu, `subscription.order.success/failure` bildirimleri). Bu durumda mesafeli satış sözleşmesindeki "kendiliğinden yenilenmez" maddesi değiştirilmelidir.

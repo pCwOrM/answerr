@@ -1,5 +1,5 @@
 """
-answerr REST API (v1.3.0)
+answerr REST API (v1.3.1)
 ITouch Bilişim Sistemleri Ltd. Şti. — https://answerr.me
 
 Endpoints
@@ -70,7 +70,7 @@ from commerce import router as CROUTER  # noqa: E402
 from commerce import store as CS  # noqa: E402
 from commerce import webhooks as CHOOKS  # noqa: E402
 
-API_VERSION = "1.3.0"
+API_VERSION = "1.3.1"
 START_TIME = time.time()
 
 
@@ -604,13 +604,28 @@ async def lifespan(app: FastAPI):
 
 
 def _housekeeping():
-    """Hourly retention purge (idempotent; every worker may run it)."""
+    """Hourly retention purge and renewal reminders (idempotent; every worker may run them)."""
     while True:
         time.sleep(3600)
         try:
             CS.purge()
         except Exception as e:
             print("[answerr] purge failed:", e, file=sys.stderr)
+        try:
+            renewal_reminders()
+        except Exception as e:
+            print("[answerr] renewal reminders failed:", e, file=sys.stderr)
+
+
+def renewal_reminders() -> int:
+    """One e-mail per paid period, 7 days before it ends (the store records it atomically, so workers do not duplicate)."""
+    from commerce import mail as CM
+    sent = 0
+    for acc in CS.expiring_accounts(7):
+        if not CS.reminded(acc["id"], acc["plan_expires_at"]):
+            CM.renewal_reminder(acc, acc["plan_expires_at"])
+            sent += 1
+    return sent
 
 
 app = FastAPI(

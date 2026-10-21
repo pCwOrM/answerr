@@ -79,7 +79,8 @@ def human_check(request: Request) -> None:
 # ----------------------------------------------------------------------------- public
 @router.get("/v1/plans", tags=["Plans & billing"])
 def get_plans():
-    return {"status": "success", **P.public_catalog()}
+    return {"status": "success", **P.public_catalog(), "card_payments": billing.provider().name == "iyzico",
+            "card_currency": "TRY", "vat_rate": float(billing.VAT_RATE)}
 
 
 class SignupRequest(BaseModel):
@@ -420,6 +421,9 @@ def plan_request(req: PlanReq, request: Request):
     p = need(request, roles=("owner", "admin"), session_only=True)
     acc = S.get_account(p["account_id"])
     if req.plan == "kesif":
+        if acc["plan"] in P.PAID_PLANS and (acc.get("plan_expires_at") or 0) > time.time():
+            # paid period is kept; the account falls back to Explore when it ends (no renewal is charged)
+            return {"status": "scheduled", "until": acc["plan_expires_at"], "account": S.account_view(p["account_id"])}
         out = S.set_plan(p["account_id"], "kesif", "monthly", p["email"])
         return {"status": "changed", "account": out}
     r = S.request_plan(p["account_id"], req.plan, req.cycle, req.note, p["email"])
@@ -441,50 +445,149 @@ def statements(request: Request):
     return {"status": "success", "current_period_estimate": cur, "statements": S.list_statements(p["account_id"])}
 
 
-@router.api_route("/v1/billing/iyzico/webhook", methods=["GET", "POST"], tags=["Plans & billing"])
-@router.api_route("/v1/billing/iyzico/webhoc", methods=["GET", "POST"], tags=["Plans & billing"])
-async def iyzico_webhook(request: Request):
-    """iyzico merchant webhook callback (handles both /webhook and /webhoc typo)."""
-    body = {}
-    if request.method == "POST":
-        try:
-            body = await request.json()
-        except Exception:
-            try:
-                body = dict(await request.form())
-            except Exception:
-                pass
-    
-    # Append to log
-    log_dir = "/var/lib/answerr"
-    if os.path.isdir(log_dir):
-        log_file = os.path.join(log_dir, "iyzico_webhooks.jsonl")
-        try:
-            with open(log_file, "a", encoding="utf-8") as f:
-                f.write(json.dumps({"ts": int(time.time()), "method": request.method, "body": body}) + "\n")
-        except Exception:
-            pass
+# ----------------------------------------------------------------------------- card payments (iyzico)
+CONSOLE = os.environ.get("ANSWERR_CONSOLE_URL", "https://answerr.me/pro/console/").rstrip("/") + "/"
+WEBHOOK_LOG_MAX = 5 * 1024 * 1024
 
-    return {"status": "success", "message": "Webhook processed"}
+
+class CheckoutReq(BaseModel):
+    plan: str
+    cycle: str = "monthly"
+    accept_preinfo: bool = False
+    accept_distance_sale: bool = False
+    lang: Optional[str] = "tr"
+
+
+def _settle(token: str) -> Dict[str, Any]:
+    """Settles a checkout token and sends the e-mails once (only on the first transition)."""
+    before = S.get_payment(token=token)
+    out = billing.iyzico().settle(token)
+    pay = out.get("payment") or {}
+    if out.get("result") == "paid" and out.get("first"):
+        acc = S.get_account(pay["account_id"]) if pay.get("account_id") else None
+        mail.payment_paid(acc, pay, json.loads(pay.get("billing_json") or "{}"))
+    elif out.get("result") == "review" and before and before["status"] == "initiated":
+        mail.payment_review(pay, pay.get("error") or "review")
+    return out
+
+
+@router.get("/v1/account/checkout/quote", tags=["Plans & billing"])
+def checkout_quote(request: Request, plan: str, cycle: str = "monthly"):
+    need(request, roles=("owner", "admin"), session_only=True)
+    if plan not in P.PAID_PLANS or cycle not in ("monthly", "yearly"):
+        raise S.CommerceError(400, "bad_plan", "Card payment is available for the Developer and Pro plans.")
+    return {"status": "success", "plan": plan, "cycle": cycle, "currency": "TRY", **billing.quote_try(plan, cycle),
+            "period_days": S.PAYMENT_PERIOD_DAYS[cycle], "card_payments": billing.provider().name == "iyzico"}
+
+
+@router.post("/v1/account/checkout", tags=["Plans & billing"])
+def checkout(req: CheckoutReq, request: Request):
+    """Opens an iyzico payment page for one period of a paid plan (price in TRY, 20% VAT added).
+    The plan is activated only after answerr verifies the result with iyzico."""
+    p = need(request, roles=("owner", "admin"), session_only=True)
+    if req.plan not in P.PAID_PLANS or req.cycle not in ("monthly", "yearly"):
+        raise S.CommerceError(400, "bad_plan", "Card payment is available for the Developer and Pro plans.")
+    if not (req.accept_preinfo and req.accept_distance_sale):
+        raise S.CommerceError(400, "consent_required", "Accept the preliminary information form and the distance sales contract.")
+    prov = billing.provider()
+    if prov.name != "iyzico":
+        raise S.CommerceError(409, "card_payments_off", "Card payments are not open yet; send a plan request for bank transfer.")
+    acc = S.get_account(p["account_id"])
+    if acc["status"] != "active" and acc["status"] != "suspended":
+        raise S.CommerceError(403, "account_inactive", "This account cannot make payments.")
+    buyer = billing.buyer_from_account(acc, p.get("email") or acc["email"], ip_of(request))
+    q = billing.quote_try(req.plan, req.cycle)
+    pay = S.create_payment(acc["id"], "plan", req.plan, req.cycle, q["net"], q["vat"], q["total"], "iyzico", p["email"],
+                           billing=dict(buyer["billing"], consent_preinfo=True, consent_distance_sale=True,
+                                        consent_ts=int(time.time()), legal_version=S.TERMS_VERSION))
+    plan = P.get(req.plan)
+    name = "answerr {} — {}".format(plan["name_tr"], "yıllık (12 ay)" if req.cycle == "yearly" else "aylık (1 ay)")
+    out = prov.initialize(pay, buyer, name, req.lang or acc.get("lang") or "tr")
+    return {"status": "success", **out, **q}
+
+
+@router.get("/v1/account/payments", tags=["Plans & billing"])
+def account_payments(request: Request):
+    p = need(request, roles=("owner", "admin"))
+    keep = ("id", "kind", "plan", "cycle", "net_try", "vat_try", "total_try", "currency", "status", "card_last4",
+            "created_at", "paid_at", "period_start", "period_end")
+    return {"status": "success", "payments": [{k: r.get(k) for k in keep} for r in S.list_payments(p["account_id"], 100)]}
+
+
+async def _form_body(request: Request) -> Dict[str, str]:
+    """application/x-www-form-urlencoded without python-multipart (not installed on every host)."""
+    from urllib.parse import parse_qs
+    try:
+        raw = (await request.body())[:20000].decode("utf-8", "replace")
+        return {k: v[0] for k, v in parse_qs(raw).items() if v}
+    except Exception:
+        return {}
 
 
 @router.api_route("/v1/billing/iyzico/callback", methods=["GET", "POST"], tags=["Plans & billing"])
 async def iyzico_callback(request: Request):
-    """iyzico 3D secure and checkout form callback."""
+    """Browser return from the iyzico payment page. The posted token is only a hint: the result is retrieved from iyzico
+    server-to-server and checked before anything is activated. The token is never put in the redirect URL."""
     token = None
     if request.method == "POST":
-        try:
-            form = dict(await request.form())
-            token = form.get("token")
-        except Exception:
-            pass
-    if not token:
-        token = request.query_params.get("token")
-    
-    dest = "https://answerr.me/pro/console/?payment_status=success"
+        token = (await _form_body(request)).get("token")
+    token = (token or request.query_params.get("token") or "").strip()[:200]
+    result, ref = "unknown", ""
     if token:
-        dest += f"&token={token}"
-    return Response(status_code=303, headers={"Location": dest})
+        try:
+            out = _settle(token)
+            result = out.get("result", "error")
+            ref = (out.get("payment") or {}).get("id") or ""
+        except S.CommerceError:
+            result = "error"
+    dest = CONSOLE + "?payment={}{}#billing".format(result, "&ref=" + ref if ref else "")
+    return Response(status_code=303, headers={"Location": dest, "Cache-Control": "no-store"})
+
+
+def _log_webhook(entry: Dict[str, Any]) -> None:
+    path = os.path.join(os.path.dirname(S.db_path()) or ".", "iyzico_webhooks.jsonl")
+    try:
+        if os.path.exists(path) and os.path.getsize(path) > WEBHOOK_LOG_MAX:
+            os.replace(path, path + ".1")
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False)[:4000] + "\n")
+    except Exception:
+        pass
+
+
+@router.api_route("/v1/billing/iyzico/webhook", methods=["GET", "POST"], tags=["Plans & billing"])
+@router.api_route("/v1/billing/iyzico/webhoc", methods=["GET", "POST"], include_in_schema=False)
+async def iyzico_webhook(request: Request):
+    """iyzico merchant notification. The payload is never trusted: the token it names is re-checked with iyzico.
+    Always answers 200 so iyzico does not retry for events answerr does not handle."""
+    if request.method != "POST":
+        return {"status": "success"}
+    body: Dict[str, Any] = {}
+    try:
+        body = await request.json()
+    except Exception:
+        body = await _form_body(request)
+    if not isinstance(body, dict):
+        body = {}
+    sig = request.headers.get("x-iyz-signature-v3") or ""
+    prov = billing.iyzico()
+    signed = prov.verify_webhook_v3(body, sig) if sig else None
+    token = str(body.get("token") or "").strip()[:200]
+    if not token and body.get("paymentConversationId"):
+        pay = S.get_payment(conversation_id=str(body["paymentConversationId"])[:80])
+        token = (pay or {}).get("token") or ""
+    result = "ignored"
+    if token and signed is not False and prov.card_payments:
+        try:
+            result = _settle(token).get("result", "error")
+        except S.CommerceError:
+            result = "error"
+    elif signed is False:
+        result = "bad_signature"
+    _log_webhook({"ts": int(time.time()), "event": str(body.get("iyziEventType") or "")[:60],
+                  "status": str(body.get("status") or "")[:30], "conversation": str(body.get("paymentConversationId") or "")[:80],
+                  "signed": signed, "result": result})
+    return {"status": "success"}
 
 
 # ----------------------------------------------------------------------------- admin
@@ -622,6 +725,40 @@ def a_statement_list(request: Request, period: Optional[str] = None):
 def a_mark(statement_id: str, req: StatementMark, request: Request):
     who = admin(request)
     return {"status": "success", "statement": S.mark_statement(statement_id, req.status, who, req.e_invoice_no, req.provider, req.provider_ref)}
+
+
+class AdminTestPay(BaseModel):
+    amount_try: str = "1.00"
+    legal_name: str = Field("ITouch Bilişim Sistemleri Ltd. Şti.", max_length=120)
+    email: str = Field(..., max_length=254)
+    phone: str = Field("+908503115203", max_length=20)
+    address: str = Field("Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26, Sarıçam", max_length=200)
+    city: str = "Adana"
+    tax_id: str = Field("4690944558", max_length=11)
+
+
+@router.get("/v1/admin/payments", tags=["Admin"])
+def a_payments(request: Request, account_id: Optional[str] = None, limit: int = 200):
+    admin(request)
+    return {"status": "success", "card_payments": billing.provider().name == "iyzico",
+            "payments": S.list_payments(account_id, max(1, min(limit, 1000)))}
+
+
+@router.post("/v1/admin/payments/test", tags=["Admin"])
+def a_test_payment(req: AdminTestPay, request: Request):
+    """A small test charge through iyzico (no plan is changed). Works even while customer card payments are off,
+    so the live integration can be proven before it is opened. Refund it from the iyzico panel afterwards."""
+    by = admin(request)
+    amt = billing.money(req.amount_try)
+    if not (billing.Decimal("1.00") <= billing.Decimal(amt) <= billing.Decimal("10.00")):
+        raise S.CommerceError(400, "bad_amount", "Test amount must be between 1.00 and 10.00 TRY.")
+    prov = billing.iyzico()
+    acc = {"id": "itouch-test", "email": req.email, "billing_json": json.dumps(
+        {"legal_name": req.legal_name, "tax_id": req.tax_id, "address": req.address, "city": req.city, "phone": req.phone,
+         "invoice_email": req.email}, ensure_ascii=False)}
+    buyer = billing.buyer_from_account(acc, req.email, ip_of(request))
+    pay = S.create_payment(None, "test", None, None, amt, "0.00", amt, "iyzico", by, billing=buyer["billing"])
+    return {"status": "success", **prov.initialize(pay, buyer, "answerr entegrasyon testi", "tr")}
 
 
 @router.post("/v1/admin/purge", tags=["Admin"])

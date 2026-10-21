@@ -12,7 +12,7 @@ import urllib.error
 import urllib.request
 
 BASE = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8560").rstrip("/")
-EXPECT = os.environ.get("ANSWERR_EXPECT_VERSION", "1.3.0")
+EXPECT = os.environ.get("ANSWERR_EXPECT_VERSION", "1.3.1")
 ADMIN = os.environ.get("ANSWERR_ADMIN_KEY", "")
 UA = {"User-Agent": "answerr-smoke/" + EXPECT}
 results = []
@@ -121,7 +121,34 @@ if EXPECT >= "1.3.0":
             st, _, _ = call("DELETE", "/v1/admin/accounts/" + acc, None, AH)
             check("smoke account removed", st == 200, st)
             st, _, _ = call("GET", "/v1/account", None, {"Authorization": "Bearer " + (key or "")})
-            check("deleted account's key is dead", st == 401, st)
+            # other workers may still hold the key in their 30 s cache; the account itself is gone either way (401 or 404)
+            check("deleted account's key is dead", st in (401, 404), st)
+
+# ---------------------------------------------------------------- 1.3.1 card payments (no money moves here)
+if EXPECT >= "1.3.1":
+    class _NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, *a, **k):
+            return None
+    def raw(method, path, data=None, headers=None):
+        time.sleep(0.2)
+        req = urllib.request.Request(BASE + path, data=data, method=method, headers=dict(UA, **(headers or {})))
+        try:
+            r = urllib.request.build_opener(_NoRedirect).open(req, timeout=15)
+            return r.status, dict(r.headers)
+        except urllib.error.HTTPError as e:
+            return e.code, dict(e.headers)
+    st, b, _ = call("GET", "/v1/plans")
+    check("plans expose card_payments + TRY", st == 200 and "card_payments" in (b or {}) and b["plans"]["pro"].get("price_monthly_try"), st)
+    st, hd = raw("POST", "/v1/billing/iyzico/callback", b"token=SMOKE-FAKE", {"Content-Type": "application/x-www-form-urlencoded"})
+    loc = hd.get("Location") or hd.get("location") or ""
+    check("forged callback is not reported as paid", st == 303 and "payment=unknown" in loc and "token=" not in loc, loc)
+    st, b, _ = call("POST", "/v1/billing/iyzico/webhook", {"token": "SMOKE-FAKE", "status": "SUCCESS"})
+    check("forged webhook is answered 200 and ignored", st == 200, st)
+    st, b, _ = call("POST", "/v1/account/checkout", {"plan": "pro"})
+    check("checkout needs a session", st == 401, st)
+    if ADMIN:
+        st, b, _ = call("GET", "/v1/admin/payments", None, {"X-Admin-Key": ADMIN})
+        check("admin payments list", st == 200 and isinstance((b or {}).get("payments"), list), st)
 
 width = max(len(n) for n, _, _ in results)
 for n, ok, d in results:

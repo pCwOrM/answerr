@@ -155,6 +155,13 @@ CREATE INDEX IF NOT EXISTS ev_acc ON events(account_id, ts);
 CREATE TABLE IF NOT EXISTS webhook_deliveries (
   id INTEGER PRIMARY KEY AUTOINCREMENT, account_id TEXT NOT NULL, ts REAL NOT NULL, event TEXT NOT NULL,
   url TEXT, status_code INTEGER, attempts INTEGER, error TEXT);
+CREATE TABLE IF NOT EXISTS payments (
+  id TEXT PRIMARY KEY, account_id TEXT, kind TEXT NOT NULL DEFAULT 'plan', plan TEXT, cycle TEXT,
+  net_try TEXT NOT NULL, vat_try TEXT NOT NULL, total_try TEXT NOT NULL, currency TEXT NOT NULL DEFAULT 'TRY',
+  provider TEXT NOT NULL, conversation_id TEXT NOT NULL UNIQUE, token TEXT UNIQUE, status TEXT NOT NULL DEFAULT 'initiated',
+  payment_id TEXT, fraud_status INTEGER, card_last4 TEXT, error TEXT, created_by TEXT,
+  created_at REAL NOT NULL, paid_at REAL, period_start REAL, period_end REAL, billing_json TEXT);
+CREATE INDEX IF NOT EXISTS pay_acc ON payments(account_id, created_at);
 """
 
 
@@ -838,6 +845,102 @@ def admin_metrics() -> Dict[str, Any]:
     return {"period": per, "accounts_by_plan": by_plan, "accounts_total": sum(by_plan.values()),
             "mrr_cents": mrr, "currency": P.CATALOG.get("currency", "USD"), "decisions_this_period": dec,
             "signups_7d": week, "pending_plan_requests": pend}
+
+
+# ----------------------------------------------------------------------------- card payments (iyzico checkout form)
+PAYMENT_PERIOD_DAYS = {"monthly": 31, "yearly": 366}
+
+
+def create_payment(account_id: Optional[str], kind: str, plan: Optional[str], cycle: Optional[str], net: str, vat: str,
+                   total: str, provider: str, by: str, billing: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    pid = new_id("pay", 8)
+    conv = "ans-" + secrets.token_hex(10)
+    with tx() as c:
+        c.execute("INSERT INTO payments (id, account_id, kind, plan, cycle, net_try, vat_try, total_try, provider, conversation_id, "
+                  "created_by, created_at, billing_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                  (pid, account_id, kind, plan, cycle, net, vat, total, provider, conv, by, now(),
+                   json.dumps(billing or {}, ensure_ascii=False)))
+        event(c, account_id, by, "payment.initiated", {"payment_id": pid, "plan": plan, "cycle": cycle, "total_try": total})
+    return get_payment(pid)
+
+
+def get_payment(pid: str = None, token: str = None, conversation_id: str = None) -> Optional[Dict[str, Any]]:
+    if pid:
+        r = conn().execute("SELECT * FROM payments WHERE id = ?", (pid,)).fetchone()
+    elif token:
+        r = conn().execute("SELECT * FROM payments WHERE token = ?", (token,)).fetchone()
+    else:
+        r = conn().execute("SELECT * FROM payments WHERE conversation_id = ?", (conversation_id,)).fetchone()
+    return _row(r)
+
+
+def set_payment_token(pid: str, token: str) -> None:
+    with tx() as c:
+        c.execute("UPDATE payments SET token = ? WHERE id = ?", (token, pid))
+
+
+def fail_payment(pid: str, error: str, status: str = "failed") -> None:
+    with tx() as c:
+        c.execute("UPDATE payments SET status = ?, error = ? WHERE id = ? AND status IN ('initiated', 'pending_review')",
+                  (status, (error or "")[:300], pid))
+
+
+def complete_payment(pid: str, payment_id: str, fraud_status: int, card_last4: Optional[str]) -> Dict[str, Any]:
+    """Idempotent: the first call marks the payment paid and activates or extends the plan; later calls return it unchanged."""
+    with tx() as c:
+        pay = _row(c.execute("SELECT * FROM payments WHERE id = ?", (pid,)).fetchone())
+        if not pay:
+            raise CommerceError(404, "no_payment", "Payment not found.")
+        if pay["status"] == "paid":
+            return {"payment": pay, "activated": False, "first": False}
+        t = now()
+        start = end = None
+        if pay["kind"] == "plan" and pay["account_id"]:
+            acc = _row(c.execute("SELECT * FROM accounts WHERE id = ?", (pay["account_id"],)).fetchone())
+            # renewal of the same plan extends from the current end; anything else starts now
+            base = acc["plan_expires_at"] if (acc and acc["plan"] == pay["plan"] and acc["plan_expires_at"]
+                                              and acc["plan_expires_at"] > t) else t
+            start, end = base, base + PAYMENT_PERIOD_DAYS.get(pay["cycle"], 31) * 86400
+            c.execute("UPDATE accounts SET plan = ?, billing_cycle = ?, plan_started_at = COALESCE(?, plan_started_at), "
+                      "plan_expires_at = ?, status = CASE WHEN status = 'suspended' THEN 'active' ELSE status END WHERE id = ?",
+                      (pay["plan"], pay["cycle"], t if base == t else None, end, pay["account_id"]))
+            c.execute("UPDATE plan_requests SET status = 'approved', handled_at = ?, handled_by = 'iyzico' "
+                      "WHERE account_id = ? AND status = 'pending' AND plan = ?", (t, pay["account_id"], pay["plan"]))
+            event(c, pay["account_id"], "iyzico", "plan.paid", {"plan": pay["plan"], "cycle": pay["cycle"], "until": end})
+        c.execute("UPDATE payments SET status = 'paid', payment_id = ?, fraud_status = ?, card_last4 = ?, paid_at = ?, "
+                  "period_start = ?, period_end = ?, error = NULL WHERE id = ?",
+                  (str(payment_id), fraud_status, card_last4, t, start, end, pid))
+        event(c, pay["account_id"], "iyzico", "payment.paid", {"payment_id": pid, "iyzico_payment_id": str(payment_id),
+                                                                 "total_try": pay["total_try"]})
+        pay = _row(c.execute("SELECT * FROM payments WHERE id = ?", (pid,)).fetchone())
+    return {"payment": pay, "activated": pay["kind"] == "plan", "first": True}
+
+
+def list_payments(account_id: Optional[str] = None, limit: int = 200) -> List[Dict[str, Any]]:
+    q, a = "SELECT * FROM payments", []
+    if account_id:
+        q += " WHERE account_id = ?"; a.append(account_id)
+    rows = [dict(r) for r in conn().execute(q + " ORDER BY created_at DESC LIMIT ?", a + [limit]).fetchall()]
+    for r in rows:
+        r.pop("billing_json", None) if account_id else None
+    return rows
+
+
+def expiring_accounts(within_days: int = 7) -> List[Dict[str, Any]]:
+    t = now()
+    return [dict(r) for r in conn().execute(
+        "SELECT * FROM accounts WHERE status = 'active' AND plan_expires_at IS NOT NULL AND plan_expires_at > ? AND plan_expires_at < ? "
+        "AND plan IN ('gelistirici', 'pro')", (t, t + within_days * 86400)).fetchall()]
+
+
+def reminded(account_id: str, expires_at: float) -> bool:
+    """True when a renewal reminder for this expiry was already sent; otherwise records it (atomically) and returns False."""
+    key = "renewal.reminded:{}".format(int(expires_at))
+    with tx() as c:
+        if c.execute("SELECT 1 FROM events WHERE account_id = ? AND action = ?", (account_id, key)).fetchone():
+            return True
+        event(c, account_id, "system", key)
+    return False
 
 
 def account_events(account_id: str, limit: int = 100) -> List[Dict[str, Any]]:
