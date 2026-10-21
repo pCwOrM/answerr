@@ -1,8 +1,8 @@
 {
   "version": "2026-10-14",
   "currency": "USD",
-  "vat_note": "Prices exclude VAT (KDV). Turkish customers are invoiced in TRY at the CBRT selling rate of the invoice date.",
-  "vat_note_tr": "Fiyatlara KDV dahil değildir. Türkiye’deki müşterilere fatura tarihindeki TCMB döviz satış kuru üzerinden TL fatura kesilir.",
+  "vat_note": "Prices exclude VAT (KDV). Customers in Türkiye pay the TRY list price; 20% VAT is added at payment and shown on the e-invoice.",
+  "vat_note_tr": "Fiyatlara KDV dahil değildir. Türkiye’deki müşteriler TL liste fiyatını öder; %20 KDV ödeme anında eklenir ve e-Faturada gösterilir.",
   "decision_definition": "One decision = one call to /v1/decide or /v1/gates/{id}/decide, or one record in /v1/backtest. Compiling, reading, health checks and the open kernel running locally are not counted.",
   "plans": {
     "kesif": {

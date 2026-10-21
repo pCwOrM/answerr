@@ -21,9 +21,9 @@ answerr; yazılı karar politikalarını açık kurallara derleyen ve her istek 
 
 ## 3. Bedel ve ödeme
 
-- **Fiyat:** Planların fiyatları vergiler hariç olarak [Fiyatlar](../pricing.html) sayfasında yer alır. Türk lirası planlarda KDV faturada ayrıca gösterilir.
-- **Ödeme zamanı:** Aylık planlarda her dönemin başında, yıllık planlarda dönem başında peşin tahsil edilir.
-- **Ödeme yöntemi:** Kredi/banka kartıyla ödeme kuruluşu (iyzico) aracılığıyla ya da banka havalesi/EFT ile yapılır.
+- **Fiyat:** Türkiye'deki alıcılar için Geliştirici 1.449 TL / ay (yıllık ödemede 14.388 TL), Pro 4.899 TL / ay (yıllık ödemede 48.588 TL). Fiyatlara KDV dahil değildir; %20 KDV ödeme anında eklenir. KDV dahil toplam tutar, ödemeyi onaylamadan önce konsolda ve ödeme sayfasında gösterilir. Güncel içerik [Fiyatlar](../pricing.html) sayfasındadır.
+- **Ödeme zamanı:** Peşin. Aylık ödeme 31 gün, yıllık ödeme 366 gün kullanım hakkı verir.
+- **Ödeme yöntemi:** Kredi/banka kartıyla ödeme kuruluşu (iyzico) aracılığıyla tek çekim ya da banka havalesi/EFT.
 - **Kart bilgileri:** Satıcı'ya iletilmez ve Satıcı tarafından saklanmaz.
 - **Aşım:** Aşım bedeli yalnızca aşımı açtığınızda doğar ve fiili kullanıma göre faturalanır.
 
@@ -33,8 +33,8 @@ Hizmet, ödeme onaylandıktan hemen sonra planın hesabınızda etkinleştirilme
 
 ## 5. Sözleşmenin süresi ve sona ermesi
 
-- **Süre ve yenileme:** Abonelik, iptal edilene kadar seçtiğiniz dönem (aylık ya da yıllık) boyunca kendiliğinden yenilenir.
-- **İptal:** Konsoldan istediğiniz zaman iptal edebilirsiniz. İptal, içinde bulunulan dönemin sonunda geçerli olur.
+- **Süre ve yenileme:** Kartla ödenen dönemler kendiliğinden yenilenmez ve kartınızdan otomatik çekim yapılmaz. Dönem bitmeden yedi gün önce e-postayla hatırlatırız; yenilerseniz yeni dönem mevcut dönemin bitiminden başlar.
+- **Sona erme:** Yenilemediğiniz plan dönem sonunda ücretsiz Keşif planına geçer. Daha önce Keşif'e geçmek isterseniz bunu konsoldan seçebilirsiniz; ödenmiş dönem sonuna kadar planınız sürer.
 
 ## 6. Cayma hakkı
 

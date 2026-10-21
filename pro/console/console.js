@@ -38,6 +38,11 @@
       current: 'Mevcut plan', choose: 'Bu plana geç', monthly: 'Aylık', yearly: 'Yıllık', perMonth: '/ ay', perYear: '/ yıl', contact: 'Görüşelim',
       salesOk: '<a href="../legal/on-bilgilendirme.html" target="_blank" rel="noopener">Ön bilgilendirme formunu</a> ve <a href="../legal/mesafeli-satis.html" target="_blank" rel="noopener">mesafeli satış sözleşmesini</a> okudum, onaylıyorum; hizmetin anında ifa edildiğini ve bu nedenle cayma hakkının bulunmadığını biliyorum.',
       reqSent: 'Talebiniz alındı. Ödeme bilgilerini bir iş günü içinde e-postayla gönderiyoruz; plan ödemeyle etkinleşir.',
+      when: 'Tarih', scheduled: 'Planınız ödenmiş dönem sonunda Keşif’e geçecek; yenileme ücreti alınmaz.', payCard: 'Kartla öde', payBank: 'Havale / EFT ile talep et', renew: 'Kartla yenile', plusVat: '+ KDV', vatIncl: 'KDV dahil',
+      payOpening: 'Ödeme sayfası açılıyor…', payNeedBilling: 'Kartla ödeme için önce aşağıdaki fatura bilgilerini doldurup kaydedin.',
+      payPaid: 'Ödemeniz alındı; planınız etkin. Faturanız iki iş günü içinde e-postayla gelir.', payFailed: 'Ödeme tamamlanmadı; karttan para çekilmedi. Yeniden deneyebilirsiniz.',
+      payReview: 'Ödeme bankadan döndü ama otomatik onaylanmadı; ekibimiz bir iş günü içinde dönüş yapacak.', payUnknown: 'Ödeme sonucu doğrulanamadı. Kartınızdan çekim yapıldıysa ask@answerr.me adresine yazın.',
+      payments: 'Kart ödemeleri', paidUntil: 'Ödenmiş dönem sonu', cardNote: 'Kartla ödeme iyzico güvenli ödeme sayfasında yapılır; kart bilgileri answerr’a ulaşmaz. Tutar Türk lirasıdır, tek çekim, %20 KDV eklenir. Aylık ödeme 31 gün, yıllık 366 gün kullandırır; otomatik yenileme yoktur, süre bitmeden e-postayla hatırlatırız.',
       pendingReq: 'Bekleyen talep', statements: 'Ekstreler', estimate: 'Bu dönem tahmini', base: 'Plan', overage: 'Aşım', total: 'Toplam',
       einv: 'e-Fatura', billingInfo: 'Fatura bilgileri', save: 'Kaydet', saved: 'Kaydedildi',
       bf: { legal_name: 'Unvan / ad soyad', tax_office: 'Vergi dairesi', tax_id: 'VKN / TCKN', address: 'Adres', city: 'Şehir', country: 'Ülke', invoice_email: 'Fatura e-postası', phone: 'Telefon' },
@@ -75,6 +80,11 @@
       current: 'Current plan', choose: 'Switch to this plan', monthly: 'Monthly', yearly: 'Yearly', perMonth: '/ mo', perYear: '/ yr', contact: 'Talk to us',
       salesOk: 'I have read and accept the <a href="../legal/on-bilgilendirme.html" target="_blank" rel="noopener">pre-contract information form</a> and the <a href="../legal/mesafeli-satis.html" target="_blank" rel="noopener">distance sales agreement</a>; I understand the service is performed immediately and therefore has no withdrawal right.',
       reqSent: 'Request received. We will e-mail payment details within one working day; the plan activates on payment.',
+      when: 'Date', scheduled: 'Your plan moves to Explore at the end of the paid period; no renewal is charged.', payCard: 'Pay by card', payBank: 'Request bank transfer', renew: 'Renew by card', plusVat: '+ VAT', vatIncl: 'VAT included',
+      payOpening: 'Opening the payment page…', payNeedBilling: 'To pay by card, fill in and save the billing details below first.',
+      payPaid: 'Payment received; your plan is active. The invoice arrives by e-mail within two working days.', payFailed: 'The payment was not completed and nothing was charged. You can try again.',
+      payReview: 'The bank returned the payment but it was not approved automatically; our team will get back to you within one working day.', payUnknown: 'The payment result could not be verified. If your card was charged, write to ask@answerr.me.',
+      payments: 'Card payments', paidUntil: 'Paid until', cardNote: 'Card payments run on the iyzico secure payment page; card details never reach answerr. Amounts are in Turkish lira, single charge, 20% VAT added. Monthly buys 31 days, yearly 366 days; there is no auto-renewal, we remind you by e-mail before it ends.',
       pendingReq: 'Pending request', statements: 'Statements', estimate: 'This period (estimate)', base: 'Plan', overage: 'Overage', total: 'Total',
       einv: 'e-Invoice', billingInfo: 'Billing details', save: 'Save', saved: 'Saved',
       bf: { legal_name: 'Legal name', tax_office: 'Tax office', tax_id: 'Tax ID', address: 'Address', city: 'City', country: 'Country', invoice_email: 'Invoice e-mail', phone: 'Phone' },
@@ -193,6 +203,12 @@
     const r = await call('GET', '/v1/account');
     if (!r.ok) { if (r.status !== 401) toast(msg(r)); renderAuth(location.hash === '#signup' ? 'signup' : 'signin'); return; }
     S.account = r.data.account;
+    const pr = new URLSearchParams(location.search).get('payment');
+    if (pr) {
+      history.replaceState(null, '', location.pathname + '#billing');
+      const k = { paid: 'payPaid', failed: 'payFailed', review: 'payReview' }[pr] || 'payUnknown';
+      setTimeout(() => toast(t(k)), 300);
+    }
     const want = (location.hash || '').replace('#', '');
     S.view = VIEWS.includes(want) ? want : 'overview';
     renderShell();
@@ -462,32 +478,51 @@
 
   async function viewBilling(el) {
     if (!S.plans) { const p = await call('GET', '/v1/plans', null, { anon: true }); S.plans = p.ok ? p.data : null; }
-    const [st, acc] = await Promise.all([call('GET', '/v1/account/statements'), call('GET', '/v1/account')]);
+    const [st, acc, pays] = await Promise.all([call('GET', '/v1/account/statements'), call('GET', '/v1/account'), call('GET', '/v1/account/payments')]);
     if (acc.ok) S.account = acc.data.account;
-    const a = S.account, plans = S.plans ? S.plans.plans : {}, cur = S.plans ? S.plans.currency : 'USD';
+    const a = S.account, plans = S.plans ? S.plans.plans : {}, card = Boolean(S.plans && S.plans.card_payments);
     const pend = a.pending_plan_request;
     const b = a.billing || {};
     const est = st.ok ? st.data.current_period_estimate : null;
+    const tl = (v) => v == null ? '' : Number(v).toLocaleString('tr-TR', { maximumFractionDigits: 2 }) + ' ₺';
+    const plist = pays.ok ? pays.data.payments : [];
+    const paidPlan = ['gelistirici', 'pro'].includes(a.plan) && a.plan_expires_at;
     el.innerHTML = `
       <div class="cs-card"><h2>${esc(t('current'))}: ${esc(a.plan_name[L()] || a.plan)}${a.billing_cycle === 'yearly' ? ' · ' + esc(t('yearly')) : ''}</h2>
+        ${paidPlan ? `<p class="small-mono" style="margin:0">${esc(t('paidUntil'))}: <b>${fmtT(a.plan_expires_at)}</b></p>` : ''}
         ${pend ? `<p class="note">${esc(t('pendingReq'))}: <b>${esc(pend.plan)}</b> · ${esc(pend.cycle)} · ${fmtT(pend.ts)}</p>` : ''}
         <div class="cs-row"><div class="bill" role="group"><button type="button" data-cy="monthly" aria-pressed="true">${esc(t('monthly'))}</button><button type="button" data-cy="yearly" aria-pressed="false">${esc(t('yearly'))}</button></div></div>
-        <div class="plans">${Object.entries(plans).map(([id, p]) => `<article class="plan ${id === a.plan ? 'hot' : ''}">
+        <div class="plans">${Object.entries(plans).map(([id, p]) => {
+          const paid = p.price_monthly_try != null;
+          const isCur = id === a.plan;
+          let act;
+          if (id === 'kurumsal') act = `<a class="btn-ghost btn-sm" href="mailto:ask@answerr.me?subject=answerr%20Kurumsal">${esc(t('contact'))}</a>`;
+          else if (paid && card) act = `<button class="btn-primary btn-sm" type="button" data-pay="${esc(id)}">${esc(isCur ? t('renew') : t('payCard'))}</button>
+            <button class="btn-ghost btn-sm" type="button" data-plan="${esc(id)}">${esc(t('payBank'))}</button>`;
+          else if (isCur) act = `<span class="chip v-allow">${esc(t('current'))}</span>`;
+          else act = `<button class="btn-primary btn-sm" type="button" data-plan="${esc(id)}">${esc(t('choose'))}</button>`;
+          return `<article class="plan ${isCur ? 'hot' : ''}">
           <div class="pname">${esc(L() === 'en' ? p.name_en : p.name_tr)}</div>
-          <div class="price" style="font-size:36px">${p.price_monthly == null ? '$' + fmtN(p.price_yearly_from) + '+' : `<span data-pm="${p.price_monthly}" data-py="${p.price_yearly_per_month}">$${p.price_monthly}</span>`}<small>${p.price_monthly == null ? esc(t('perYear')) : esc(t('perMonth'))}</small></div>
+          <div class="price" style="font-size:36px">${p.price_monthly == null ? '$' + fmtN(p.price_yearly_from) + '+' : paid
+            ? `<span data-pm="${p.price_monthly_try}" data-py="${p.price_yearly_per_month_try}" data-tl="1">${tl(p.price_monthly_try)}</span>`
+            : `<span>$${p.price_monthly}</span>`}<small>${p.price_monthly == null ? esc(t('perYear')) : esc(t('perMonth'))}</small></div>
+          ${paid ? `<div class="small-mono"><span data-pmu="${p.price_monthly}" data-pyu="${p.price_yearly_per_month}">$${p.price_monthly}</span> ${esc(t('perMonth'))} · ${esc(t('plusVat'))}</div>` : ''}
           <div class="quota">${p.quota == null ? esc(t('unlimited')) : fmtN(p.quota)} · ${esc(t('retention'))} ${p.retention_days} ${esc(t('days'))}</div>
-          ${id === a.plan ? `<span class="chip v-allow">${esc(t('current'))}</span>` : id === 'kurumsal' ? `<a class="btn-ghost btn-sm" href="mailto:ask@answerr.me?subject=answerr%20Kurumsal">${esc(t('contact'))}</a>`
-          : `<button class="btn-primary btn-sm" type="button" data-plan="${esc(id)}">${esc(t('choose'))}</button>`}</article>`).join('')}</div>
+          <div class="cs-row" style="gap:8px;flex-wrap:wrap">${act}</div></article>`; }).join('')}</div>
         <label class="check-line"><input type="checkbox" id="salesOk"><span>${t('salesOk')}</span></label>
-        <p class="small-mono" id="planStatus"></p>
+        ${card ? `<p class="small-mono" style="margin:0">${esc(t('cardNote'))}</p>` : ''}
+        <p class="small-mono" id="planStatus" aria-live="polite"></p>
         ${a.limits.overage_per_1000 ? `<label class="check-line"><input type="checkbox" id="ovr" ${a.overage_enabled ? 'checked' : ''}><span>${esc(t('overageToggle'))} ($${esc(a.limits.overage_per_1000)} / 1.000)</span></label>` : ''}
       </div>
+      ${plist.length ? `<div class="cs-card"><h2>${esc(t('payments'))}</h2>
+        <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('when'))}</th><th>${esc(t('plan'))}</th><th>${esc(t('total'))} (${esc(t('vatIncl'))})</th><th>${esc(t('status'))}</th><th>${esc(t('paidUntil'))}</th></tr></thead>
+        <tbody>${plist.map(x => `<tr><td>${fmtT(x.paid_at || x.created_at)}</td><td>${esc(x.plan || x.kind)} · ${esc(x.cycle || '')}</td><td>${tl(x.total_try)}</td><td>${esc(x.status)}${x.card_last4 ? ' · ****' + esc(x.card_last4) : ''}</td><td>${x.period_end ? fmtT(x.period_end) : '—'}</td></tr>`).join('')}</tbody></table></div></div>` : ''}
       <div class="cs-card"><h2>${esc(t('statements'))}</h2>
         ${est ? `<p class="small-mono" style="margin:0">${esc(t('estimate'))} (${esc(est.period)}): ${esc(t('base'))} ${money(est.base_cents, est.currency)} + ${esc(t('overage'))} ${money(est.overage_cents, est.currency)} = <b>${money(est.total_cents, est.currency)}</b> · ${fmtN(est.used)} / ${est.quota == null ? '—' : fmtN(est.quota)}</p>` : ''}
         <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('period'))}</th><th>${esc(t('plan'))}</th><th>${esc(t('total'))}</th><th>${esc(t('status'))}</th><th>${esc(t('einv'))}</th></tr></thead>
         <tbody>${st.ok && st.data.statements.length ? st.data.statements.map(s => `<tr><td>${esc(s.period)}</td><td>${esc(s.plan)}</td><td>${money(s.total_cents, s.currency)}</td><td>${esc(s.status)}</td><td>${esc(s.e_invoice_no || '—')}</td></tr>`).join('') : `<tr><td colspan="5" class="muted">${esc(t('none'))}</td></tr>`}</tbody></table></div>
         <p class="small-mono" style="margin:0">${esc(S.plans ? (L() === 'tr' ? S.plans.vat_note_tr : S.plans.vat_note) : '')}</p></div>
-      <div class="cs-card"><h2>${esc(t('billingInfo'))}</h2>
+      <div class="cs-card" id="bfCard"><h2>${esc(t('billingInfo'))}</h2>
         <form id="bfForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
           ${Object.keys(T.tr.bf).map(k => `<div class="field"><label for="bf_${k}">${esc(t('bf.' + k))}</label><input id="bf_${k}" type="text" maxlength="300" value="${esc(b[k] || '')}"></div>`).join('')}
           <button class="btn-primary btn-sm" type="submit" style="align-self:end">${esc(t('save'))}</button></form></div>`;
@@ -495,14 +530,33 @@
     $$('[data-cy]', el).forEach(btn => btn.addEventListener('click', () => {
       cycle = btn.dataset.cy;
       $$('[data-cy]', el).forEach(x => x.setAttribute('aria-pressed', String(x === btn)));
-      $$('[data-pm]', el).forEach(s => { s.textContent = '$' + (cycle === 'yearly' ? s.dataset.py : s.dataset.pm); });
+      $$('[data-pm]', el).forEach(s => { const v = cycle === 'yearly' ? s.dataset.py : s.dataset.pm; s.textContent = s.dataset.tl ? tl(v) : '$' + v; });
+      $$('[data-pmu]', el).forEach(s => { s.textContent = '$' + (cycle === 'yearly' ? s.dataset.pyu : s.dataset.pmu); });
     }));
+    const needConsent = () => {
+      if ($('#salesOk').checked) return false;
+      $('#planStatus').textContent = '☐ ' + t('salesOk').replace(/<[^>]+>/g, ''); $('#salesOk').focus(); return true;
+    };
     $$('[data-plan]', el).forEach(btn => btn.addEventListener('click', async () => {
       const id = btn.dataset.plan;
-      if (id !== 'kesif' && !$('#salesOk').checked) { $('#planStatus').textContent = '☐ ' + t('salesOk').replace(/<[^>]+>/g, ''); $('#salesOk').focus(); return; }
+      if (id !== 'kesif' && needConsent()) return;
       const d = await call('POST', '/v1/account/plan-request', { plan: id, cycle, note: 'mesafeli-satis onayi ' + new Date().toISOString() });
-      $('#planStatus').textContent = d.ok ? (d.data.status === 'changed' ? t('saved') : t('reqSent')) : msg(d);
+      $('#planStatus').textContent = d.ok ? (d.data.status === 'changed' ? t('saved') : d.data.status === 'scheduled' ? t('scheduled') : t('reqSent')) : msg(d);
       if (d.ok) setTimeout(() => viewBilling(el), 1200);
+    }));
+    $$('[data-pay]', el).forEach(btn => btn.addEventListener('click', async () => {
+      if (needConsent()) return;
+      btn.disabled = true; $('#planStatus').textContent = t('payOpening');
+      const d = await call('POST', '/v1/account/checkout', { plan: btn.dataset.pay, cycle, accept_preinfo: true, accept_distance_sale: true, lang: L() });
+      if (d.ok && d.data.payment_page_url && /^https:\/\/[a-z0-9.-]*iyzipay\.com\//i.test(d.data.payment_page_url)) { location.assign(d.data.payment_page_url); return; }
+      btn.disabled = false;
+      if (!d.ok && d.data && d.data.error === 'billing_incomplete') {
+        $('#planStatus').textContent = t('payNeedBilling');
+        const miss = (d.data.missing || [])[0]; const f = miss && $('#bf_' + miss);
+        $('#bfCard').scrollIntoView({ behavior: 'smooth', block: 'start' }); if (f) f.focus();
+        return;
+      }
+      $('#planStatus').textContent = d.ok ? t('payUnknown') : msg(d);
     }));
     const ovr = $('#ovr');
     if (ovr) ovr.addEventListener('change', async () => { const d = await call('PATCH', '/v1/account', { overage_enabled: ovr.checked }); toast(d.ok ? t('saved') : msg(d)); });
