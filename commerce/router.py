@@ -11,6 +11,7 @@ from __future__ import annotations
 import csv
 import hmac
 import io
+import json
 import os
 import time
 from typing import Any, Callable, Dict, List, Optional
@@ -438,6 +439,52 @@ def statements(request: Request):
     p = need(request, roles=("owner", "admin"))
     cur = S.build_statement(S.get_account(p["account_id"]), S.period_of())
     return {"status": "success", "current_period_estimate": cur, "statements": S.list_statements(p["account_id"])}
+
+
+@router.api_route("/v1/billing/iyzico/webhook", methods=["GET", "POST"], tags=["Plans & billing"])
+@router.api_route("/v1/billing/iyzico/webhoc", methods=["GET", "POST"], tags=["Plans & billing"])
+async def iyzico_webhook(request: Request):
+    """iyzico merchant webhook callback (handles both /webhook and /webhoc typo)."""
+    body = {}
+    if request.method == "POST":
+        try:
+            body = await request.json()
+        except Exception:
+            try:
+                body = dict(await request.form())
+            except Exception:
+                pass
+    
+    # Append to log
+    log_dir = "/var/lib/answerr"
+    if os.path.isdir(log_dir):
+        log_file = os.path.join(log_dir, "iyzico_webhooks.jsonl")
+        try:
+            with open(log_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps({"ts": int(time.time()), "method": request.method, "body": body}) + "\n")
+        except Exception:
+            pass
+
+    return {"status": "success", "message": "Webhook processed"}
+
+
+@router.api_route("/v1/billing/iyzico/callback", methods=["GET", "POST"], tags=["Plans & billing"])
+async def iyzico_callback(request: Request):
+    """iyzico 3D secure and checkout form callback."""
+    token = None
+    if request.method == "POST":
+        try:
+            form = dict(await request.form())
+            token = form.get("token")
+        except Exception:
+            pass
+    if not token:
+        token = request.query_params.get("token")
+    
+    dest = "https://answerr.me/pro/console/?payment_status=success"
+    if token:
+        dest += f"&token={token}"
+    return Response(status_code=303, headers={"Location": dest})
 
 
 # ----------------------------------------------------------------------------- admin
