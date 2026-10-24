@@ -567,5 +567,5 @@ answerr, bağımsız ve patent korumalı açık kaynaklı matematiksel yapay zek
 | **Resmi Cüzdan (Binance)** | TRC20 (TRON) | `TLMhaDJTVYBHBSGJ9nCQGLvqnYFPSBgLJu` |
 | **Resmi Tüzel Kişilik** | Teknokent | ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ. (Çukurova Teknokent) |
 
-* **Resmi İletişim Kanalları:** `vdagli@itouch.com.tr` (Kurumsal) | `pcworm@pcworm.net` (Baş Araştırmacı) | `ask@answerr.me` (Otonom Ajan) | Web: `https://answerr.me`
+* **Resmi İletişim Kanalları:** `ask@answerr.me` (Resmi İletişim & Destek) | `info@itouch.com.tr` (Kurumsal) | Web: `https://answerr.me`
 
