@@ -1,8 +1,8 @@
 {
-  "version": "2026-10-14",
+  "version": "2026-10-27",
   "currency": "USD",
-  "vat_note": "Prices exclude VAT (KDV). Customers in Türkiye pay the TRY list price; 20% VAT is added at payment and shown on the e-invoice.",
-  "vat_note_tr": "Fiyatlara KDV dahil değildir. Türkiye’deki müşteriler TL liste fiyatını öder; %20 KDV ödeme anında eklenir ve e-Faturada gösterilir.",
+  "vat_note": "All prices are exempt from VAT (0% KDV) under Turkish Law No. 4691 & VAT Law No. 3065 Temporary Art. 20/1 (Technopark R&D Software Exemption). Customers can pay via iyzico 3D Secure Card, 1-Click Base USDC wallet, multi-chain USDT/USDC (TRC20/EVM), or TEB corporate bank transfer (TRY/USD/EUR); e-Arşiv / e-Fatura and Commercial Invoice (PDF — PAID / UNPAID) are issued by ITouch.",
+  "vat_note_tr": "Tüm fiyatlar 4691 sayılı Teknoloji Geliştirme Bölgeleri Kanunu ve 3065 sayılı KDV Kanunu Geçici 20/1 maddesi (Teknopark Ar-Ge Yazılım İstisnası) kapsamında %0 KDV (KDV muafiyetli) olarak faturalanır. Kredi kartı (iyzico 3D Secure), 1-Tık Base USDC cüzdanı, çoklu ağ USDT/USDC (TRC20/EVM) veya TEB kurumsal banka havale/EFT (TL/USD/EUR) ile ödeme yapılabilir; e-Arşiv / e-Fatura ve Ticari Fatura (PDF — PAID / UNPAID) ITouch tarafından kesilir.",
   "decision_definition": "One decision = one call to /v1/decide or /v1/gates/{id}/decide, or one record in /v1/backtest. Compiling, reading, health checks and the open kernel running locally are not counted.",
   "plans": {
     "kesif": {
@@ -138,5 +138,19 @@
         "sla": false
       }
     }
+  },
+  "vat_rate": 0.0,
+  "crypto_payments": true,
+  "evm_deposit_address": "0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7",
+  "trc20_deposit_address": "TLMhaDJTVYBHBSGJ9nCQGLvqnYFPsBgLJu",
+  "base_usdc_contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "bank_accounts": {
+    "bank_name": "TEB (Türk Ekonomi Bankası A.Ş.) — Adana Toros Şubesi (446)",
+    "beneficiary": "ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ",
+    "swift_bic": "TEBUTRIS",
+    "customer_no": "23764109",
+    "iban_try": "TR92 0003 2000 0000 0070 5754 65",
+    "iban_usd": "TR83 0003 2000 0000 0088 9467 48",
+    "iban_eur": "TR28 0003 2000 0000 0088 9467 68"
   }
 }

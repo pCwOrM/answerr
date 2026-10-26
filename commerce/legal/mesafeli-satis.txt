@@ -25,17 +25,17 @@ Bu sözleşmenin konusu, Alıcı'nın answerr konsolu üzerinden seçtiği ücre
 
 Türkiye'deki Alıcılar için fiyatlar Türk lirasıdır:
 
-| Plan | Aylık (KDV hariç) | Aylık (KDV dahil) | Yıllık peşin (KDV hariç) | Yıllık peşin (KDV dahil) | Aylık kota |
+| Plan | Aylık (Net) | Aylık (Toplam · %0 KDV) | Yıllık peşin (Net) | Yıllık peşin (Toplam · %0 KDV) | Aylık kota |
 | --- | --- | --- | --- | --- | --- |
-| Geliştirici | 1.449,00 TL | 1.738,80 TL | 14.388,00 TL | 17.265,60 TL | 250.000 karar |
-| Pro | 4.899,00 TL | 5.878,80 TL | 48.588,00 TL | 58.305,60 TL | 1.000.000 karar |
+| Geliştirici | 1.449,00 TL | 1.449,00 TL | 14.388,00 TL | 14.388,00 TL | 250.000 karar |
+| Pro | 4.899,00 TL | 4.899,00 TL | 48.588,00 TL | 48.588,00 TL | 1.000.000 karar |
 | Kurumsal | Yazılı teklif | Yazılı teklif | Yazılı teklif | Yazılı teklif | Sözleşmeye göre |
 
-Aşım (yalnızca Alıcı açarsa): Geliştirici'de 1.000 karar başına 7,50 TL (KDV dahil 9,00 TL), Pro'da 5,00 TL (KDV dahil 6,00 TL).
+Aşım (yalnızca Alıcı açarsa): Geliştirici'de 1.000 karar başına 7,50 TL (%0 KDV), Pro'da 5,00 TL (%0 KDV).
 
-Yurt dışındaki Alıcılar için fiyatlar ABD dolarıdır: Geliştirici 29 USD / ay (yıllık peşinde aylık 24 USD), Pro 99 USD / ay (yıllık peşinde aylık 82 USD); aşım 1.000 karar başına 0,15 USD ve 0,10 USD. Yurt dışı satışlarda KDV mevzuata göre uygulanır.
+Yurt dışındaki Alıcılar veya kripto varlık (USDC / USDT) ile ödeme yapanlar için fiyatlar ABD dolarıdır: Geliştirici 29 USD / ay (yıllık peşinde 288 USD; aylık karşılığı 24 USD), Pro 99 USD / ay (yıllık peşinde 984 USD; aylık karşılığı 82 USD); aşım 1.000 karar başına 0,15 USD ve 0,10 USD.
 
-KDV oranı %20'dir. Alıcı'nın ödeyeceği vergiler dahil toplam tutar, ödeme adımında konsolda ve iyzico ödeme sayfasında, Alıcı ödemeyi onaylamadan önce gösterilir ve sipariş onayı e-postasında yer alır. Satıcı'nın sipariş tarihinden sonra yaptığı fiyat değişiklikleri, ödenmiş döneme uygulanmaz.
+KDV oranı %0'dır (4691 sayılı Teknoloji Geliştirme Bölgeleri Kanunu ve 3065 sayılı KDV Kanunu Geçici 20/1 maddesi uyarınca Teknopark Ar-Ge yazılım istisnası ve yurt dışı satışlarda Hizmet İhracatı muafiyeti). Alıcı'nın ödeyeceği vergiler dahil toplam tutar, ödeme adımında konsolda ve iyzico ödeme sayfasında, Alıcı ödemeyi onaylamadan önce gösterilir ve sipariş onayı e-postasında yer alır. Satıcı'nın sipariş tarihinden sonra yaptığı fiyat değişiklikleri, ödenmiş döneme uygulanmaz.
 
 ## Madde 4 — Ödeme ve süre
 

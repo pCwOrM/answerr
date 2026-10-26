@@ -69,8 +69,8 @@ def callback(c, token):
 
 def test_quote_adds_vat():
     from commerce import billing
-    assert billing.quote_try("gelistirici", "monthly") == {"net": "1449.00", "vat": "289.80", "total": "1738.80", "vat_rate": "0.2"}
-    assert billing.quote_try("pro", "yearly")["total"] == "58305.60"      # 4049 × 12 × 1.2
+    assert billing.quote_try("gelistirici", "monthly") == {"net": "1449.00", "vat": "0.00", "total": "1449.00", "vat_rate": "0.0"}
+    assert billing.quote_try("pro", "yearly")["total"] == "48588.00"      # 4049 × 12 (%0 KDV)
 
 
 def test_signature_matches_iyzico_spec():
@@ -103,9 +103,9 @@ def test_successful_payment_activates_plan_once(iz):
     r = buy(iz, s)
     assert r.status_code == 200, r.text
     b = r.json()
-    assert b["mode"] == "redirect" and b["total"] == "1738.80"
+    assert b["mode"] == "redirect" and b["total"] == "1449.00"
     path, init = iz.fake.calls[-1]
-    assert init["price"] == init["paidPrice"] == "1738.80" and init["currency"] == "TRY"
+    assert init["price"] == init["paidPrice"] == "1449.00" and init["currency"] == "TRY"
     assert init["basketItems"][0]["itemType"] == "VIRTUAL" and init["enabledInstallments"] == [1]
     assert init["buyer"]["gsmNumber"] == "+905320000000" and "shippingAddress" not in init
     q = callback(iz, "tok-1")
@@ -125,9 +125,9 @@ def test_successful_payment_activates_plan_once(iz):
     names = [a.get_filename() for a in conf.iter_attachments()]
     assert names == ["On_Bilgilendirme_Formu_2026-10-22.txt", "Mesafeli_Satis_Sozlesmesi_2026-10-22.txt"]
     text = conf.get_body(preferencelist=("plain",)).get_content()
-    assert "1.738,80 ₺" in text and "metin sürümü 2026-10-22" in text and "m.15/1-ğ" in text
+    assert "1.449,00 ₺" in text and "metin sürümü 2026-10-22" in text and "m.15/1-ğ" in text
     note = next(m for m in iz.mail.OUTBOX if "Ödeme alındı" in m["Subject"]).get_content()
-    assert "1234567890" in note and "1.738,80 ₺" in note and "0008" in note
+    assert "1234567890" in note and "1.449,00 ₺" in note and "0008" in note
     pays = iz.get("/v1/account/payments", headers=auth(s)).json()["payments"]
     assert pays[0]["status"] == "paid" and "billing_json" not in pays[0] and "token" not in pays[0]
 
@@ -256,3 +256,53 @@ def test_refund_takes_back_the_period(iz):
     a = iz.get("/v1/account", headers=auth(s)).json()["account"]
     assert a["plan"] == "kesif"
     assert iz.post("/v1/admin/payments/{}/refunded".format(pid), json={}, headers=H_ADMIN).status_code == 409
+
+
+
+def test_crypto_checkout_activates_plan(client, monkeypatch):
+    from commerce import billing
+    monkeypatch.setattr(
+        billing,
+        "verify_crypto_payment",
+        lambda tx_hash, network, token, expected_usd: {
+            "verified": True,
+            "amount": expected_usd,
+            "currency": "USDC",
+            "network": "Base Mainnet",
+            "tx_hash": tx_hash.lower(),
+        },
+    )
+    s, acc = ready(client)
+    tx = "0x" + "a" * 64
+    r = client.post(
+        "/v1/account/crypto-checkout",
+        json={
+            "plan": "pro",
+            "cycle": "monthly",
+            "tx_hash": tx,
+            "network": "base",
+            "token": "USDC",
+            "accept_preinfo": True,
+            "accept_distance_sale": True,
+        },
+        headers=auth(s),
+    )
+    assert r.status_code == 200, r.text
+    data = r.json()
+    assert data["result"] == "paid" and data["payment"]["total_try"] == "99.00" and data["payment"]["currency"] == "USDC"
+    assert data["account"]["plan"] == "pro"
+    # Replaying the same tx_hash is rejected with 409
+    r2 = client.post(
+        "/v1/account/crypto-checkout",
+        json={
+            "plan": "pro",
+            "cycle": "monthly",
+            "tx_hash": tx,
+            "network": "base",
+            "token": "USDC",
+            "accept_preinfo": True,
+            "accept_distance_sale": True,
+        },
+        headers=auth(s),
+    )
+    assert r2.status_code == 409 and r2.json()["error"] == "tx_already_used"

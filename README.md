@@ -622,11 +622,18 @@ The Werr / Werracle / Answerr ecosystem operates under a strict institutional se
 #### 1. 🏢 Commercial Operating & IP Licensing Layer (`ITouch Systems`)
 * **Legal Entity:** **ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi** (*ITouch Systems*)
 * **Headquarters & Registration:** Çukurova Teknokent, Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26, 01330 Sarıçam / Adana, Türkiye • Tax Office & VKN: **Yüreğir V.D. 4690944558** • MERSİS: `0469094455800001` • Industrial Registry: `827254` • KEP: `itouchbilisim@hs01.kep.tr`
-* **Company Partners (2 Partners):**
-  1. **Volkan Dağlı** — *Co-Founder, Major Partner & Chief Technology Officer (CTO)*
-  2. **Bekirhan Dağlı** — *Partner (Environmental Engineer & Cybersecurity Specialist)*
-* **R&D, Engineering & Financial Operations Team (4 Specialist Staff Members):**
-  * *1 Mechatronics Engineer • 1 Computer Engineer • 1 Economist & M.Sc. in Banking Specialist • 1 Computer Programming Specialist*
+* **Total Commercial & R&D Force (8-Person Team — 2 Partners + 6 Specialists):**
+  * **Company Partners (2 Partners):**
+    1. **Volkan Dağlı** — *Co-Founder, Major Partner & Chief Technology Officer (CTO)*
+    2. **Bekirhan Dağlı** — *Partner (Environmental Engineer & Cybersecurity Specialist)*
+  * **In-House Payroll R&D & Financial Specialists (2 Staff):**
+    3. **Burak Salar** — *Mechatronics Engineer & MBA*
+    4. **Fatih İlkin Sercan** — *Economist & Capital Markets Specialist (B.Sc. in Economics, Anadolu University [2012]; M.Sc. in Capital Markets and Stock Exchange, Marmara University — Institute of Banking and Insurance [2016])*
+  * **Contracted Partner-Company Engineering & Operations Specialists (4 Staff):**
+    5. **Mustafa Kalender** — *Computer Engineer (Contracted via [Tetra Ar-Ge](https://tetraarge.com.tr/))*
+    6. **Senior Software Development Specialist** — *Certified Software Development Master & Master Instructor / Usta Öğretici (Contracted via [Tetra Ar-Ge](https://tetraarge.com.tr/))*
+    7. **Prenses Metin** — *Computer Programmer (Contracted via [Gifted Coder Technology](https://giftedcodertechnology.com.tr/))*
+    8. **Semih Salar** — *Business Administration & Operations Specialist (Contracted via [Türeken Ajans](https://tureken.com/))*
 * **Exclusive Commercial Rights & Trademarks:** By formal authorization of **Volkan Dağlı** (as Major Partner, CTO, and authorized patent/software rights representative), all commercial operating, distribution, and enterprise licensing rights for the software, patents, and research outputs — together with the registered trademarks **`Werr®`**, **`Werracle®`**, and **`Answerr®`** (TÜRKPATENT filings under ITouch Systems) — belong exclusively to **ITouch Bilişim Sistemleri Ltd. Şti.**
 
 #### 2. 🎓 Academic Research & Patent Authorship Layer
@@ -642,7 +649,8 @@ The Werr / Werracle / Answerr ecosystem operates under a strict institutional se
 | **Instant Commercial Invoice (PDF)** | Official ITouch Systems Tax Invoice | [**`radar.werracle.com/v1/radar/invoice/sample.pdf`**](https://radar.werracle.com/v1/radar/invoice/sample.pdf) |
 | **Official EVM Treasury (Binance)** | Base / Ethereum (ERC20) / Arbitrum / BSC (`USDC` & `USDT`) | `0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7` |
 | **Official TRON Treasury (Binance)** | TRC20 (TRON Network — `USDT`) | `TLMhaDJTVYBHBSGJ9nCQGLvqnYFPsBgLJu` |
-| **Official Corporate Entity** | Çukurova Teknokent (VKN: `4690944558`) | ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Ltd. Şti. |
+| **TEB Corporate Bank Accounts (SWIFT: `TEBUTRIS`)** | Adana Toros Branch (446) • Customer No: `23764109` | **TRY:** `TR92 0003 2000 0000 0070 5754 65` • **USD:** `TR83 0003 2000 0000 0088 9467 48` • **EUR:** `TR28 0003 2000 0000 0088 9467 68` |
+| **Official Corporate Entity** | Çukurova Teknokent (VKN: `4690944558` — 0% VAT under Law 4691 & 3065 Temp. Art. 20/1) | ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Ltd. Şti. |
 
 * **Official Contacts:** `contact@werracle.com` (Corporate & Protocol) | `ask@answerr.me` (Support & General Inquiries) | `labs@werr.io` (Werr Labs Research) | `billing@werr.io` (Billing & Invoices)
 

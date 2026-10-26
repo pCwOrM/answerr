@@ -38,11 +38,11 @@
       current: 'Mevcut plan', choose: 'Bu plana geç', monthly: 'Aylık', yearly: 'Yıllık', perMonth: '/ ay', perYear: '/ yıl', contact: 'Görüşelim',
       salesOk: '<a href="../legal/on-bilgilendirme.html" target="_blank" rel="noopener">Ön bilgilendirme formunu</a> ve <a href="../legal/mesafeli-satis.html" target="_blank" rel="noopener">mesafeli satış sözleşmesini</a> okudum, onaylıyorum; hizmetin anında ifa edildiğini ve bu nedenle cayma hakkının bulunmadığını biliyorum.',
       reqSent: 'Talebiniz alındı. Ödeme bilgilerini bir iş günü içinde e-postayla gönderiyoruz; plan ödemeyle etkinleşir.',
-      when: 'Tarih', scheduled: 'Planınız ödenmiş dönem sonunda Keşif’e geçecek; yenileme ücreti alınmaz.', payCard: 'Kartla öde', payBank: 'Havale / EFT ile talep et', renew: 'Kartla yenile', plusVat: '+ KDV', vatIncl: 'KDV dahil',
+      when: 'Tarih', scheduled: 'Planınız ödenmiş dönem sonunda Keşif’e geçecek; yenileme ücreti alınmaz.', payCard: 'Kartla öde', payCrypto: '⚡ Kripto ile öde (USDC / USDT)', payBank: 'Havale / EFT ile talep et', renew: 'Kartla yenile', plusVat: '(%0 KDV)', vatIncl: '%0 KDV · Teknopark Muafiyetli',
       payOpening: 'Ödeme sayfası açılıyor…', payNeedBilling: 'Kartla ödeme için önce aşağıdaki fatura bilgilerini doldurup kaydedin.',
       payPaid: 'Ödemeniz alındı; planınız etkin. Faturanız iki iş günü içinde e-postayla gelir.', payFailed: 'Ödeme tamamlanmadı; karttan para çekilmedi. Yeniden deneyebilirsiniz.',
       payReview: 'Ödeme bankadan döndü ama otomatik onaylanmadı; ekibimiz bir iş günü içinde dönüş yapacak.', payUnknown: 'Ödeme sonucu doğrulanamadı. Kartınızdan çekim yapıldıysa ask@answerr.me adresine yazın.',
-      payments: 'Kart ödemeleri', paidUntil: 'Ödenmiş dönem sonu', cardNote: 'Kartla ödeme iyzico güvenli ödeme sayfasında yapılır; kart bilgileri answerr’a ulaşmaz. Tutar Türk lirasıdır, tek çekim, %20 KDV eklenir. Aylık ödeme 31 gün, yıllık 366 gün kullandırır; otomatik yenileme yoktur, süre bitmeden e-postayla hatırlatırız.',
+      payments: 'Ödemeler ve Ticari Faturalar', paidUntil: 'Ödenmiş dönem sonu', cardNote: 'Kartla ödeme iyzico 3D Secure güvenli ödeme sayfasında, kripto ödeme ise 1-Tık Base USDC cüzdanı veya çoklu ağ USDT/USDC (TRC20 / EVM) ile anında yapılır. 4691 s. Kanun ve 3065 s. KDV Kanunu Geçici 20/1 (Teknopark Ar-Ge Yazılım İstisnası) uyarınca tüm ödemeler %0 KDV olarak faturalanır ve PDF Ticari Faturanız anında indirilir.',
       pendingReq: 'Bekleyen talep', statements: 'Ekstreler', estimate: 'Bu dönem tahmini', base: 'Plan', overage: 'Aşım', total: 'Toplam',
       einv: 'e-Fatura', billingInfo: 'Fatura bilgileri', save: 'Kaydet', saved: 'Kaydedildi',
       bf: { legal_name: 'Unvan / ad soyad', contact_name: 'Yetkili kişi (ad soyad)', tax_office: 'Vergi dairesi', tax_id: 'VKN / TCKN', address: 'Adres', city: 'Şehir', country: 'Ülke', invoice_email: 'Fatura e-postası', phone: 'Telefon' },
@@ -80,11 +80,11 @@
       current: 'Current plan', choose: 'Switch to this plan', monthly: 'Monthly', yearly: 'Yearly', perMonth: '/ mo', perYear: '/ yr', contact: 'Talk to us',
       salesOk: 'I have read and accept the <a href="../legal/on-bilgilendirme.html" target="_blank" rel="noopener">pre-contract information form</a> and the <a href="../legal/mesafeli-satis.html" target="_blank" rel="noopener">distance sales agreement</a>; I understand the service is performed immediately and therefore has no withdrawal right.',
       reqSent: 'Request received. We will e-mail payment details within one working day; the plan activates on payment.',
-      when: 'Date', scheduled: 'Your plan moves to Explore at the end of the paid period; no renewal is charged.', payCard: 'Pay by card', payBank: 'Request bank transfer', renew: 'Renew by card', plusVat: '+ VAT', vatIncl: 'VAT included',
+      when: 'Date', scheduled: 'Your plan moves to Explore at the end of the paid period; no renewal is charged.', payCard: 'Pay by card', payCrypto: '⚡ Pay with Crypto (USDC / USDT)', payBank: 'Request bank transfer', renew: 'Renew by card', plusVat: '(0% VAT)', vatIncl: '0% VAT · Technopark Exempt',
       payOpening: 'Opening the payment page…', payNeedBilling: 'To pay by card, fill in and save the billing details below first.',
       payPaid: 'Payment received; your plan is active. The invoice arrives by e-mail within two working days.', payFailed: 'The payment was not completed and nothing was charged. You can try again.',
       payReview: 'The bank returned the payment but it was not approved automatically; our team will get back to you within one working day.', payUnknown: 'The payment result could not be verified. If your card was charged, write to ask@answerr.me.',
-      payments: 'Card payments', paidUntil: 'Paid until', cardNote: 'Card payments run on the iyzico secure payment page; card details never reach answerr. Amounts are in Turkish lira, single charge, 20% VAT added. Monthly buys 31 days, yearly 366 days; there is no auto-renewal, we remind you by e-mail before it ends.',
+      payments: 'Payments & Commercial Invoices', paidUntil: 'Paid until', cardNote: 'Pay instantly by card (iyzico 3D Secure) or crypto (1-Click Base USDC wallet or multi-chain TRC20/EVM USDT & USDC). All invoices are 0% VAT (%0 KDV Technopark R&D Software & Export Exemption) with an instant downloadable PDF Commercial Invoice.',
       pendingReq: 'Pending request', statements: 'Statements', estimate: 'This period (estimate)', base: 'Plan', overage: 'Overage', total: 'Total',
       einv: 'e-Invoice', billingInfo: 'Billing details', save: 'Save', saved: 'Saved',
       bf: { legal_name: 'Legal name', contact_name: 'Contact person', tax_office: 'Tax office', tax_id: 'Tax ID', address: 'Address', city: 'City', country: 'Country', invoice_email: 'Invoice e-mail', phone: 'Phone' },
@@ -491,7 +491,8 @@
           const isCur = id === a.plan;
           let act;
           if (id === 'kurumsal') act = `<a class="btn-ghost btn-sm" href="mailto:ask@answerr.me?subject=answerr%20Kurumsal">${esc(t('contact'))}</a>`;
-          else if (paid && card) act = `<button class="btn-primary btn-sm" type="button" data-pay="${esc(id)}">${esc(isCur ? t('renew') : t('payCard'))}</button>
+          else if (paid) act = `${card ? `<button class="btn-primary btn-sm" type="button" data-pay="${esc(id)}">${esc(isCur ? t('renew') : t('payCard'))}</button>` : ''}
+            <button class="btn-primary btn-sm" type="button" data-crypto="${esc(id)}" style="background:#38bdf8;border-color:#38bdf8;color:#05060a">${esc(t('payCrypto'))}</button>
             <button class="btn-ghost btn-sm" type="button" data-plan="${esc(id)}">${esc(t('payBank'))}</button>`;
           else if (isCur) act = `<span class="chip v-allow">${esc(t('current'))}</span>`;
           else act = `<button class="btn-primary btn-sm" type="button" data-plan="${esc(id)}">${esc(t('choose'))}</button>`;
@@ -500,9 +501,39 @@
           <div class="price" style="font-size:36px">${p.price_monthly == null ? '$' + fmtN(p.price_yearly_from) + '+' : paid
             ? `<span data-pm="${p.price_monthly_try}" data-py="${p.price_yearly_per_month_try}" data-tl="1">${tl(p.price_monthly_try)}</span>`
             : `<span>$${p.price_monthly}</span>`}<small>${p.price_monthly == null ? esc(t('perYear')) : esc(t('perMonth'))}</small></div>
-          ${paid ? `<div class="small-mono">${esc(t('vatIncl'))} <b data-pm="${(p.price_monthly_try * 1.2).toFixed(2)}" data-py="${(p.price_yearly_per_month_try * 1.2).toFixed(2)}" data-tl="1">${tl(p.price_monthly_try * 1.2)}</b> ${esc(t('perMonth'))} · <span data-pmu="${p.price_monthly}" data-pyu="${p.price_yearly_per_month}">$${p.price_monthly}</span></div>` : ''}
+          ${paid ? `<div class="small-mono">${esc(t('vatIncl'))} · <b data-pmu="${p.price_monthly}" data-pyu="${p.price_yearly_per_month}">$${p.price_monthly} USDC/USDT</b> ${esc(t('perMonth'))}</div>` : ''}
           <div class="quota">${p.quota == null ? esc(t('unlimited')) : fmtN(p.quota)} · ${esc(t('retention'))} ${p.retention_days} ${esc(t('days'))}</div>
           <div class="cs-row" style="gap:8px;flex-wrap:wrap">${act}</div></article>`; }).join('')}</div>
+        <div id="cryptoBox" class="cs-card" style="display:none;margin-top:14px;border-color:#38bdf8;background:rgba(14,22,40,0.9)">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+            <h3 id="crTitle" style="margin:0;color:#38bdf8">⚡ USDC / USDT Kripto Ödeme (%0 KDV)</h3>
+            <button type="button" class="btn-ghost btn-sm" id="crClose">✕</button>
+          </div>
+          <p class="small-mono" id="crAmountInfo" style="margin:8px 0"></p>
+          <div class="cs-row" style="gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <button type="button" class="btn-primary btn-sm" id="crWeb3Btn" style="background:#38bdf8;border-color:#38bdf8;color:#05060a">⚡ 1-Tık Base USDC Cüzdan ile Öde (MetaMask / Rabby)</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px">
+            <div class="field"><label for="crNet">Ağ (Network)</label>
+              <select id="crNet">
+                <option value="trc20">TRON (TRC20) — USDT</option>
+                <option value="base">Base Mainnet — USDC / USDT</option>
+                <option value="ethereum">Ethereum (ERC20) — USDT / USDC</option>
+                <option value="arbitrum">Arbitrum One — USDT / USDC</option>
+                <option value="bsc">BNB Smart Chain (BEP20) — USDT / USDC</option>
+              </select>
+            </div>
+            <div class="field"><label for="crTok">Token</label>
+              <select id="crTok"><option value="USDT">USDT</option><option value="USDC">USDC</option></select>
+            </div>
+          </div>
+          <div class="small-mono" style="margin:8px 0">Hazine Adresi: <code id="crAddr" style="color:#10b981;word-break:break-all">TLMhaDJTVYBHBSGJ9nCQGLvqnYFPsBgLJu</code></div>
+          <div class="cs-row" style="gap:8px;align-items:flex-end;flex-wrap:wrap">
+            <div class="field" style="flex:1 1 280px"><label for="crTx">İşlem Hash (TXID)</label><input id="crTx" type="text" placeholder="0x... veya 64 karakter TRON TXID"></div>
+            <button type="button" class="btn-primary btn-sm" id="crVerifyBtn">✓ Doğrula &amp; Planı Etkinleştir</button>
+          </div>
+          <p class="small-mono" id="crStatus" style="margin:8px 0 0"></p>
+        </div>
         <label class="check-line"><input type="checkbox" id="salesOk"><span>${t('salesOk')}</span></label>
         ${card ? `<p class="small-mono" style="margin:0">${esc(t('cardNote'))}</p>` : ''}
         <p class="small-mono" id="planStatus" aria-live="polite"></p>
@@ -510,7 +541,7 @@
       </div>
       ${plist.length ? `<div class="cs-card"><h2>${esc(t('payments'))}</h2>
         <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('when'))}</th><th>${esc(t('plan'))}</th><th>${esc(t('total'))} (${esc(t('vatIncl'))})</th><th>${esc(t('status'))}</th><th>${esc(t('paidUntil'))}</th></tr></thead>
-        <tbody>${plist.map(x => `<tr><td>${fmtT(x.paid_at || x.created_at)}</td><td>${esc(x.plan || x.kind)} · ${esc(x.cycle || '')}</td><td>${tl(x.total_try)}</td><td>${esc(x.status)}${x.card_last4 ? ' · ****' + esc(x.card_last4) : ''}</td><td>${x.period_end ? fmtT(x.period_end) : '—'}</td></tr>`).join('')}</tbody></table></div></div>` : ''}
+        <tbody>${plist.map(x => `<tr><td>${fmtT(x.paid_at || x.created_at)}</td><td>${esc(x.plan || x.kind)} · ${esc(x.cycle || '')}</td><td>${(x.currency && x.currency !== 'TRY') ? esc(x.total_try + ' ' + x.currency) : tl(x.total_try)}</td><td>${esc(x.status)}${x.card_last4 ? ' · ' + esc(x.card_last4) : ''}</td><td>${x.period_end ? fmtT(x.period_end) : '—'} `<button type="button" class="btn-ghost btn-sm" data-inv="${esc(x.id)}" style="margin-left:6px">📄 ${x.status === 'paid' ? 'PAID Fatura (PDF)' : 'UNPAID Proforma (PDF)'}</button>`</td></tr>`).join('')}</tbody></table></div></div>` : ''}
       <div class="cs-card"><h2>${esc(t('statements'))}</h2>
         ${est ? `<p class="small-mono" style="margin:0">${esc(t('estimate'))} (${esc(est.period)}): ${esc(t('base'))} ${money(est.base_cents, est.currency)} + ${esc(t('overage'))} ${money(est.overage_cents, est.currency)} = <b>${money(est.total_cents, est.currency)}</b> · ${fmtN(est.used)} / ${est.quota == null ? '—' : fmtN(est.quota)}</p>` : ''}
         <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('period'))}</th><th>${esc(t('plan'))}</th><th>${esc(t('total'))}</th><th>${esc(t('status'))}</th><th>${esc(t('einv'))}</th></tr></thead>
@@ -535,6 +566,11 @@
       const id = btn.dataset.plan;
       if (id !== 'kesif' && needConsent()) return;
       const d = await call('POST', '/v1/account/plan-request', { plan: id, cycle, note: 'mesafeli-satis onayi ' + new Date().toISOString() });
+      if (d.ok && d.data.proforma_invoice_pdf_url) {
+        $('#planStatus').innerHTML = `⏳ Havale/EFT Talebi Alındı — <b>TEB TL IBAN:</b> <code>TR92 0003 2000 0000 0070 5754 65</code> · <b>USD IBAN:</b> <code>TR83 0003 2000 0000 0088 9467 48</code> · <b>EUR IBAN:</b> <code>TR28 0003 2000 0000 0088 9467 68</code> (Alıcı: ITouch Bilişim Sistemleri Ltd. Şti.). Ödeme sonrası faturanız PAID damgalanır. Aşağıdaki Ödemeler tablosundan <b>UNPAID Proforma (PDF)</b> faturanızı indirebilirsiniz.`;
+        setTimeout(() => viewBilling(el), 1800);
+        return;
+      }
       $('#planStatus').textContent = d.ok ? (d.data.status === 'changed' ? t('saved') : d.data.status === 'scheduled' ? t('scheduled') : t('reqSent')) : msg(d);
       if (d.ok) setTimeout(() => viewBilling(el), 1200);
     }));
@@ -552,6 +588,77 @@
       }
       $('#planStatus').textContent = d.ok ? t('payUnknown') : msg(d);
     }));
+    let curCryptoPlan = 'pro';
+    const EVM_ADDR = '0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7';
+    const TRON_ADDR = 'TLMhaDJTVYBHBSGJ9nCQGLvqnYFPsBgLJu';
+    const BASE_USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
+    const usdFor = (pl, cy) => { const p = plans[pl] || {}; return cy === 'yearly' ? (p.price_yearly_per_month * 12) : p.price_monthly; };
+    const updCrInfo = () => {
+      const amt = usdFor(curCryptoPlan, cycle);
+      const pName = plans[curCryptoPlan] ? (L() === 'en' ? plans[curCryptoPlan].name_en : plans[curCryptoPlan].name_tr) : curCryptoPlan;
+      if ($('#crAmountInfo')) $('#crAmountInfo').textContent = `${pName} (${cycle === 'yearly' ? t('yearly') : t('monthly')}) — Ödenecek Tutar: ${amt} USDC / USDT (%0 KDV · Teknopark Muafiyetli)`;
+      if ($('#crAddr') && $('#crNet')) $('#crAddr').textContent = $('#crNet').value === 'trc20' ? TRON_ADDR : EVM_ADDR;
+    };
+    if ($('#crNet')) $('#crNet').addEventListener('change', () => {
+      if ($('#crNet').value === 'trc20' && $('#crTok')) $('#crTok').value = 'USDT';
+      updCrInfo();
+    });
+    if ($('#crClose')) $('#crClose').addEventListener('click', () => { $('#cryptoBox').style.display = 'none'; });
+    $$('[data-crypto]', el).forEach(btn => btn.addEventListener('click', () => {
+      if (needConsent()) return;
+      curCryptoPlan = btn.dataset.crypto;
+      $('#cryptoBox').style.display = 'block';
+      updCrInfo();
+      $('#cryptoBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }));
+    if ($('#crWeb3Btn')) $('#crWeb3Btn').addEventListener('click', async () => {
+      if (needConsent()) return;
+      if (!window.ethereum) { $('#crStatus').textContent = 'Web3 cüzdanı (MetaMask / Rabby) bulunamadı. Aşağıdan ağ seçip TXID ile doğrulayabilirsiniz.'; return; }
+      try {
+        $('#crStatus').textContent = 'Base Mainnet (Chain ID 8453) cüzdanına bağlanılıyor…';
+        const accs = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        try { await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x2105' }] }); }
+        catch (sw) {
+          if (sw.code === 4902) await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [{ chainId: '0x2105', chainName: 'Base Mainnet', nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 }, rpcUrls: ['https://mainnet.base.org'], blockExplorerUrls: ['https://basescan.org'] }] });
+          else throw sw;
+        }
+        const amt = usdFor(curCryptoPlan, cycle);
+        const units = (BigInt(amt) * 1000000n).toString(16).padStart(64, '0');
+        const dataHex = '0xa9059cbb' + EVM_ADDR.toLowerCase().replace(/^0x/, '').padStart(64, '0') + units;
+        $('#crStatus').textContent = `Cüzdanınızda ${amt} USDC transferini onaylayın…`;
+        const txHash = await window.ethereum.request({ method: 'eth_sendTransaction', params: [{ from: accs[0], to: BASE_USDC, data: dataHex }] });
+        $('#crTx').value = txHash; $('#crNet').value = 'base'; $('#crTok').value = 'USDC';
+        $('#crStatus').textContent = 'Transfer gönderildi, blok onayı bekleniyor…';
+        for (let i = 0; i < 40; i++) {
+          await new Promise(r => setTimeout(r, 2000));
+          const rec = await window.ethereum.request({ method: 'eth_getTransactionReceipt', params: [txHash] });
+          if (rec && rec.status === '0x1') break;
+        }
+        $('#crVerifyBtn').click();
+      } catch (e) { $('#crStatus').textContent = 'Hata: ' + (e.message || String(e)); }
+    });
+    if ($('#crVerifyBtn')) $('#crVerifyBtn').addEventListener('click', async () => {
+      if (needConsent()) return;
+      const txHash = ($('#crTx').value || '').trim();
+      if (!txHash) { $('#crStatus').textContent = 'Lütfen işlem hash (TXID) girin.'; return; }
+      $('#crVerifyBtn').disabled = true; $('#crStatus').textContent = 'Blokzincir üzerinde doğrulanıyor…';
+      const d = await call('POST', '/v1/account/crypto-checkout', {
+        plan: curCryptoPlan, cycle, tx_hash: txHash, network: $('#crNet').value, token: $('#crTok').value,
+        accept_preinfo: true, accept_distance_sale: true
+      });
+      $('#crVerifyBtn').disabled = false;
+      if (!d.ok) { $('#crStatus').textContent = msg(d); return; }
+      toast(t('payPaid'));
+      viewBilling(el);
+    });
+    $$('[data-inv]', el).forEach(btn => btn.addEventListener('click', async () => {
+      const res = await call('GET', '/v1/account/payments/' + encodeURIComponent(btn.dataset.inv) + '/invoice.pdf', null, { raw: true });
+      if (!res.ok) { toast(t('err')); return; }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    }));
+
     const ovr = $('#ovr');
     if (ovr) ovr.addEventListener('change', async () => { const d = await call('PATCH', '/v1/account', { overage_enabled: ovr.checked }); toast(d.ok ? t('saved') : msg(d)); });
     $('#bfForm').addEventListener('submit', async (e) => {

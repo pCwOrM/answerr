@@ -852,15 +852,16 @@ PAYMENT_PERIOD_DAYS = {"monthly": 31, "yearly": 366}
 
 
 def create_payment(account_id: Optional[str], kind: str, plan: Optional[str], cycle: Optional[str], net: str, vat: str,
-                   total: str, provider: str, by: str, billing: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+                   total: str, provider: str, by: str, billing: Optional[Dict[str, Any]] = None,
+                   currency: str = "TRY") -> Dict[str, Any]:
     pid = new_id("pay", 8)
     conv = "ans-" + secrets.token_hex(10)
     with tx() as c:
-        c.execute("INSERT INTO payments (id, account_id, kind, plan, cycle, net_try, vat_try, total_try, provider, conversation_id, "
-                  "created_by, created_at, billing_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                  (pid, account_id, kind, plan, cycle, net, vat, total, provider, conv, by, now(),
+        c.execute("INSERT INTO payments (id, account_id, kind, plan, cycle, net_try, vat_try, total_try, currency, provider, conversation_id, "
+                  "created_by, created_at, billing_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                  (pid, account_id, kind, plan, cycle, net, vat, total, currency, provider, conv, by, now(),
                    json.dumps(billing or {}, ensure_ascii=False)))
-        event(c, account_id, by, "payment.initiated", {"payment_id": pid, "plan": plan, "cycle": cycle, "total_try": total})
+        event(c, account_id, by, "payment.initiated", {"payment_id": pid, "plan": plan, "cycle": cycle, "total_try": total, "currency": currency})
     return get_payment(pid)
 
 

@@ -42,7 +42,7 @@ answerr bir karar **aracıdır**; hükmü uygulayıp uygulamama kararı ve bu ka
 
 ## 6. Planlar, kota ve ücretler
 
-1. Ücretsiz Keşif planı dışındaki planlar ücretlidir. Türkiye'deki müşteriler [Fiyatlar](../pricing.html) sayfasındaki Türk lirası fiyatlarını öder; %20 KDV ödeme anında eklenir ve vergiler dahil tutar ödemeden önce gösterilir. Yurt dışındaki müşteriler için fiyatlar ABD dolarıdır.
+1. Ücretsiz Keşif planı dışındaki planlar ücretlidir. Türkiye'deki müşteriler [Fiyatlar](../pricing.html) sayfasındaki Türk lirası fiyatlarını (veya kripto varlık ile USD karşılığını) öder; 4691 sayılı Kanun ve 3065 sayılı KDV Kanunu Geçici 20/1 maddesi (Teknopark Ar-Ge yazılım istisnası) ile Hizmet İhracatı kapsamında faturalar %0 KDV (KDV muafiyetli) olarak düzenlenir ve toplam tutar ödemeden önce gösterilir.
 2. Bir karar, `/v1/decide` ya da `/v1/gates/{id}/decide` çağrısı veya `/v1/backtest` içindeki bir kayıttır. Politika derleme, okuma ve sağlık çağrıları ile açık çekirdeğin sizin ortamınızda çalışması sayılmaz.
 3. Aylık kota dolduğunda, aşım açık değilse karar çağrıları HTTP 429 döner. Aşımı açarsanız aşım, başlayan her 1.000 karar için plan fiyatıyla faturalanır.
 4. Kota ve kullanım sayaçları Türkiye saatine göre her takvim ayının başında sıfırlanır. Ödenmiş plan dönemi aylık ödemede 31, yıllık ödemede 366 gündür ve kendiliğinden yenilenmez. Ödeme ve iade koşulları [Mesafeli Satış Sözleşmesi](mesafeli-satis.html) ile [İptal ve İade](iade-iptal.html) metinlerinde yer alır.

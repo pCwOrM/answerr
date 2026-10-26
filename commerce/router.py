@@ -80,6 +80,9 @@ def human_check(request: Request) -> None:
 @router.get("/v1/plans", tags=["Plans & billing"])
 def get_plans():
     return {"status": "success", **P.public_catalog(), "card_payments": billing.provider().name == "iyzico",
+            "crypto_payments": True, "evm_deposit_address": billing.EVM_DEPOSIT_ADDRESS,
+            "trc20_deposit_address": billing.TRC20_DEPOSIT_ADDRESS,
+            "base_usdc_contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
             "card_currency": "TRY", "vat_rate": float(billing.VAT_RATE)}
 
 
@@ -432,7 +435,18 @@ def plan_request(req: PlanReq, request: Request):
     r = S.request_plan(p["account_id"], req.plan, req.cycle, req.note, p["email"])
     mail.plan_request(acc, r, p["email"])
     nxt = billing.provider().checkout(acc, req.plan, req.cycle)
-    return {"status": "requested", "request": r, "payment": nxt}
+    proforma_url = None
+    if req.plan in P.PAID_PLANS and req.cycle in ("monthly", "yearly"):
+        q_try = billing.quote_try(req.plan, req.cycle)
+        b_info = json.loads(acc.get("billing_json") or "{}")
+        unpaid_pay = S.create_payment(
+            acc["id"], "plan", req.plan, req.cycle, q_try["net"], "0.00", q_try["total"],
+            "bank_wire", p["email"], billing=b_info, currency="TRY"
+        )
+        proforma_url = "/v1/account/payments/{}/invoice.pdf".format(unpaid_pay["id"])
+        nxt["proforma_invoice_pdf_url"] = proforma_url
+        nxt["bank_accounts"] = P.CATALOG.get("bank_accounts", {})
+    return {"status": "requested", "request": r, "payment": nxt, "proforma_invoice_pdf_url": proforma_url}
 
 
 @router.get("/v1/account/plan-requests", tags=["Plans & billing"])
@@ -507,6 +521,70 @@ def checkout(req: CheckoutReq, request: Request):
     name = "answerr {} — {}".format(plan["name_tr"], "yıllık (12 ay)" if req.cycle == "yearly" else "aylık (1 ay)")
     out = prov.initialize(pay, buyer, name, req.lang or acc.get("lang") or "tr")
     return {"status": "success", **out, **q}
+
+
+class CryptoCheckoutReq(BaseModel):
+    plan: str
+    cycle: str = "monthly"
+    tx_hash: str = Field(..., max_length=160)
+    network: str = "base"
+    token: str = "USDC"
+    accept_preinfo: bool = False
+    accept_distance_sale: bool = False
+
+
+@router.post("/v1/account/crypto-checkout", tags=["Plans & billing"])
+def crypto_checkout(req: CryptoCheckoutReq, request: Request):
+    """Verifies an on-chain USDC/USDT transaction (Base, TRON TRC20, Ethereum, Arbitrum, BSC) and activates the plan immediately (0% KDV)."""
+    p = need(request, roles=("owner", "admin"), session_only=True)
+    if req.plan not in P.PAID_PLANS or req.cycle not in ("monthly", "yearly"):
+        raise S.CommerceError(400, "bad_plan", "Crypto payment is available for the Developer and Pro plans.")
+    if not (req.accept_preinfo and req.accept_distance_sale):
+        raise S.CommerceError(400, "consent_required", "Accept the preliminary information form and the distance sales contract.")
+    acc = S.get_account(p["account_id"])
+    if acc["status"] not in ("active", "suspended"):
+        raise S.CommerceError(403, "account_inactive", "This account cannot make payments.")
+    tx_clean = (req.tx_hash or "").strip().lower()
+    if not tx_clean:
+        raise S.CommerceError(400, "bad_tx_hash", "Please provide a valid transaction hash (TXID).")
+    tok_key = "crypto:" + tx_clean
+    existing = S.get_payment(token=tok_key)
+    if existing and existing.get("status") == "paid":
+        raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
+    q_usd = billing.quote_usd(req.plan, req.cycle)
+    ver = billing.verify_crypto_payment(req.tx_hash, req.network, req.token, float(q_usd["total"]))
+    b_info = json.loads(acc.get("billing_json") or "{}")
+    b_info.update({"consent_preinfo": True, "consent_distance_sale": True, "consent_ts": int(time.time()), "legal_version": mail.legal_version()})
+    pay = S.create_payment(
+        acc["id"], "plan", req.plan, req.cycle, q_usd["net"], "0.00", q_usd["total"],
+        "crypto_" + req.network.lower(), p["email"], billing=b_info, currency=ver["currency"]
+    )
+    S.set_payment_token(pay["id"], tok_key)
+    out = S.complete_payment(pay["id"], ver["tx_hash"], 1, ver["network"][:16])
+    if out.get("first"):
+        mail.payment_paid(acc, out["payment"], b_info)
+    return {
+        "status": "success",
+        "result": "paid",
+        "payment": out["payment"],
+        "account": S.account_view(acc["id"]),
+        "invoice_pdf_url": "/v1/account/payments/{}/invoice.pdf".format(pay["id"]),
+    }
+
+
+@router.get("/v1/account/payments/{payment_id}/invoice.pdf", tags=["Plans & billing"])
+def account_payment_invoice_pdf(payment_id: str, request: Request):
+    p = need(request, roles=("owner", "admin"))
+    pay = S.get_payment(pid=payment_id)
+    if not pay or pay.get("account_id") != p["account_id"]:
+        raise S.CommerceError(404, "no_payment", "Payment or proforma invoice record not found.")
+    acc = S.get_account(p["account_id"])
+    pdf_bytes = billing.generate_answerr_invoice_pdf(acc, pay)
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'inline; filename="answerr-invoice-{payment_id}.pdf"', "Cache-Control": "no-store"},
+    )
 
 
 @router.get("/v1/account/payments", tags=["Plans & billing"])
