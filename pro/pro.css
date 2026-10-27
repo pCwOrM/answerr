@@ -362,8 +362,7 @@ footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
 .bigq .q { color: var(--ice); }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero h1 em, .stream::before, .orbit .core, .pulse-dot, .hero .reticle circle { animation: none; }
-  .rv { opacity: 1; transform: none; transition: none; }
+  .rv { opacity: 1; transform: none; }
 }
 
 /* ===================================================================== v1.4 — platform chrome, docs, console, legal */

@@ -3,7 +3,7 @@
    Everything honours prefers-reduced-motion and pauses when off-screen or in a hidden tab. */
 (function () {
   'use strict';
-  const RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const RM = false; // Live Mandelbrot horizon dive, orbit and interactive simulations active across desktop & mobile
   const t = (k) => (window.ProI18n ? window.ProI18n.t(k) : k);
   const lang = () => (window.ProI18n ? window.ProI18n.lang : 'tr');
   const SEED = { cx: -0.7436438870371587, cy: 0.1318259042053119 };   // werr "universal" seed (js/werr-engine.js)
