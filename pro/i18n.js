@@ -100,7 +100,36 @@
       lgDpa: 'Veri işleme sözleşmesi',
 
     },
-    en: {
+      navEcosystem: 'Ekosistem',
+      fcProduct: 'Ürün',
+      fcDev: 'Geliştiriciler',
+      fcEcosystem: 'Ekosistem & Araştırma',
+      fcCompany: 'Kurumsal & Yasal',
+      fStatus: 'Hizmet durumu',
+      fPilot: 'Tasarım ortaklığı',
+      fDocs: 'Belgeler',
+      fApiRef: 'API referansı',
+      fWebhooks: "Webhook'lar",
+      fRadarApi: 'Werracle Radar API ↗',
+      fWerracleCom: 'werracle.com ↗',
+      fWerrIo: 'werr.io · Motor ↗',
+      fWerrRepo: 'werr Çekirdeği (GitHub)',
+      fClassic: 'Klasik konsol',
+      fLicense: 'Lisans (BSL 1.1)',
+      fPortal: 'Araştırma Portalı',
+      fVision: 'Werr Evreni',
+      fContact: 'ask@answerr.me',
+      fCompanyShort: 'ITouch Bilişim Sistemleri',
+      lgTerms: 'Kullanım şartları',
+      lgPrivacy: 'Gizlilik politikası',
+      lgKvkk: 'KVKK aydınlatma metni',
+      lgSales: 'Mesafeli satış & iade',
+      lgCookies: 'Çerez politikası',
+      footTag: 'Doğal dilde yazılan, deterministik çalışan karar politikaları. Çalışma anında model yok; her kararın izi var.',
+      footOrg: 'ITouch Bilişim Sistemleri · Çukurova Üniversitesi Teknokent',
+      fRecaptcha: 'Bu site reCAPTCHA ile korunur; Google <a href="https://policies.google.com/privacy">Gizlilik Politikası</a> ve <a href="https://policies.google.com/terms">Hizmet Şartları</a> geçerlidir.',
+    },
+en: {
       hudRight: 'NO MODEL AT DECISION TIME · EVERY DECISION HAS A TRACE',
       hudOnline: 'API ONLINE', hudOffline: 'API UNREACHABLE · USING THE IN-BROWSER KERNEL', hudKernel: 'kernel',
       navHow: 'How it works', navConsole: 'Black Box', navStudio: 'Compiler', navDocs: 'Developers', navPricing: 'Pricing', navEcosystem: 'Ecosystem', navResearch: 'Research', navVision: 'Werr Universe', navApi: 'API docs', navAccess: 'Early access',
@@ -197,6 +226,35 @@
       lgCookies: 'Cookie policy',
       lgDpa: 'Data processing agreement',
 
+   ,
+      navEcosystem: 'Ecosystem',
+      fcProduct: 'Product',
+      fcDev: 'Developers',
+      fcEcosystem: 'Ecosystem & Research',
+      fcCompany: 'Company & Legal',
+      fStatus: 'Service status',
+      fPilot: 'Design partnership',
+      fDocs: 'Docs',
+      fApiRef: 'API reference',
+      fWebhooks: 'Webhooks',
+      fRadarApi: 'Werracle Radar API ↗',
+      fWerracleCom: 'werracle.com ↗',
+      fWerrIo: 'werr.io · Engine ↗',
+      fWerrRepo: 'werr Kernel (GitHub)',
+      fClassic: 'Classic console',
+      fLicense: 'Licence (BSL 1.1)',
+      fPortal: 'Research Portal',
+      fVision: 'Werr Universe',
+      fContact: 'ask@answerr.me',
+      fCompanyShort: 'ITouch Systems',
+      lgTerms: 'Terms of service',
+      lgPrivacy: 'Privacy policy',
+      lgKvkk: 'KVKK notice',
+      lgSales: 'Distance sales & refunds',
+      lgCookies: 'Cookie policy',
+      footTag: 'Decision policies written in natural language, executed deterministically. No model at decision time; every decision leaves a trace.',
+      footOrg: 'ITouch Systems · Cukurova University Science Park',
+      fRecaptcha: 'This site is protected by reCAPTCHA; Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.',
     }
   };
 
@@ -222,9 +280,11 @@
     apply() {
       document.documentElement.lang = this.lang;
       document.querySelectorAll('[data-i18n]').forEach(el => {
-        const v = this.t(el.getAttribute('data-i18n'));
-        // dictionary values are static strings owned by this file
-        if (v.indexOf('<') >= 0) el.innerHTML = v; else el.textContent = v;
+        const k = el.getAttribute('data-i18n');
+        const v = this.t(k);
+        if (v && v !== k) {
+          if (v.indexOf('<') >= 0) el.innerHTML = v; else el.textContent = v;
+        }
       });
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.setAttribute('placeholder', this.t(el.getAttribute('data-i18n-placeholder'))));
       document.querySelectorAll('.lang-switch-btn').forEach(btn => {

@@ -73,9 +73,9 @@
   const latencies = [];
 
   async function loadGates() {
-    for (const url of ['../policies/builtin_gates.json', 'policies/builtin_gates.json']) {
-      try {
-        const r = await fetch(url, { cache: 'no-cache' });
+    const targetUrl = (window.location.pathname.indexOf('/pro/') >= 0 ? '../' : '') + 'policies/builtin_gates.json';
+    try {
+      const r = await fetch(targetUrl);
         if (r.ok) { gates = await r.json(); return; }
       } catch (e) { /* try next */ }
     }

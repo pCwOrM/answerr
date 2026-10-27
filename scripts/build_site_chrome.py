@@ -86,36 +86,44 @@ def nav(active: str, r: str) -> str:
 def footer(r: str) -> str:
     def col(title_key, title, items):
         lis = "".join('<li><a href="{}"{}{}>{}</a></li>'.format(
-            h if h.startswith(("http", "mailto")) else r + h, ' rel="noopener"' if h.startswith("http") else "",
+            h if h.startswith(("http", "mailto")) else r + h,
+            ' rel="noopener"' if h.startswith("http") else "",
             ' data-i18n="{}"'.format(k) if k else "", t) for h, k, t in items)
         return '<div><h2 class="foot-h" data-i18n="{}">{}</h2><ul>{}</ul></div>'.format(title_key, title, lis)
 
     cols = [
-        col("fcProduct", "Ürün", [("index.html#kara-kutu", "navConsole", "Kara Kutu"), ("studio.html", "navStudio", "Derleyici"),
-                                  ("pricing.html", "navPricing", "Fiyatlar"), ("console/", "navLogin", "Konsol"),
-                                  ("status.html", "fStatus", "Hizmet durumu"), ("index.html#erisim", "fPilot", "Tasarım ortaklığı")]),
-        col("fcDev", "Geliştiriciler", [("docs.html", "fDocs", "Belgeler"), ("https://api.answerr.me/v1/docs", "fApiRef", "API referansı"),
-                                        ("docs.html#webhooks", "fWebhooks", "Webhook’lar"), ("https://github.com/pCwOrM/answerr", None, "GitHub"),
-                                        ("https://werr.io", "fWerrIo", "werr.io · Motor"),
-                                        ("https://werracle.io", "fWerracleIo", "werracle.io · Web3"),
-                                        ("https://radar.werracle.com/pricing#subscribe-section", "fRadarApi", "radar.werracle.com · DeFi Risk DaaS"),
-                                        ("https://werracle.com", "fWerracleCom", "werracle.com · Kurumsal"),
-                                        ("https://github.com/pCwOrM/werr", "fWerrRepo", "werr çekirdeği (GitHub)"),
-                                        ("../chat.html", "fClassic", "Klasik konsol"),
-                                        ("https://github.com/pCwOrM/answerr/blob/main/LICENSE", "fLicense", "Lisans (BSL 1.1)")]),
-        col("fcCompany", "Şirket", [("vision.html", "navVision", "Werr Evreni"), ("research.html", "navResearch", "Araştırma"),
-                                    (CO["website"], "fCompanyShort", "ITouch Bilişim Sistemleri"), ("mailto:" + CO["email"], None, CO["email"]),
-                                    ("../research/portal.html", "fPortal", "Araştırma Portalı · v4.1"),
-                                    ("archive/2026-10-14-v1.2/index.html", "fArchive12", "Arşiv · v1.2"),
-                                    ("archive/2026-10-13-v0.6/index.html", "fArchive06", "Arşiv · v0.6")]),
-        col("fcLegal", "Yasal", [("legal/kullanim-sartlari.html", "lgTerms", "Kullanım şartları"),
-                                 ("legal/kvkk-aydinlatma.html", "lgKvkk", "KVKK aydınlatma metni"),
-                                 ("legal/gizlilik.html", "lgPrivacy", "Gizlilik politikası"),
-                                 ("legal/on-bilgilendirme.html", "lgPre", "Ön bilgilendirme formu"),
-                                 ("legal/mesafeli-satis.html", "lgSales", "Mesafeli satış sözleşmesi"),
-                                 ("legal/iade-iptal.html", "lgRefund", "İptal ve iade"),
-                                 ("legal/cerez.html", "lgCookies", "Çerez politikası"),
-                                 ("legal/veri-isleme.html", "lgDpa", "Veri işleme sözleşmesi")]),
+        col("fcProduct", "Ürün", [
+            ("index.html#kara-kutu", "navConsole", "Kara Kutu"),
+            ("studio.html", "navStudio", "Derleyici"),
+            ("pricing.html", "navPricing", "Fiyatlar"),
+            ("console/", "navLogin", "Konsol"),
+            ("status.html", "fStatus", "Hizmet durumu"),
+            ("index.html#erisim", "fPilot", "Tasarım ortaklığı")
+        ]),
+        col("fcDev", "Geliştiriciler", [
+            ("docs.html", "fDocs", "Belgeler"),
+            ("https://api.answerr.me/v1/docs", "fApiRef", "API referansı"),
+            ("docs.html#webhooks", "fWebhooks", "Webhook'lar"),
+            ("https://github.com/pCwOrM/answerr", None, "GitHub · answerr"),
+            ("https://github.com/pCwOrM/werr", "fWerrRepo", "werr Çekirdeği (GitHub)"),
+            ("../chat.html", "fClassic", "Klasik konsol")
+        ]),
+        col("fcEcosystem", "Ekosistem & Araştırma", [
+            ("https://radar.werracle.com/", "fRadarApi", "Werracle Radar API ↗"),
+            ("https://werracle.com", "fWerracleCom", "werracle.com ↗"),
+            ("https://werr.io", "fWerrIo", "werr.io · Motor ↗"),
+            ("research.html", "fPortal", "Araştırma Portalı"),
+            ("vision.html", "fVision", "Werr Evreni"),
+            ("mailto:" + CO["email"], "fContact", CO["email"])
+        ]),
+        col("fcCompany", "Kurumsal & Yasal", [
+            (CO["website"], "fCompanyShort", "ITouch Bilişim Sistemleri"),
+            ("legal/kullanim-sartlari.html", "lgTerms", "Kullanım şartları"),
+            ("legal/gizlilik.html", "lgPrivacy", "Gizlilik politikası"),
+            ("legal/kvkk-aydinlatma.html", "lgKvkk", "KVKK aydınlatma metni"),
+            ("legal/mesafeli-satis.html", "lgSales", "Mesafeli satış & iade"),
+            ("legal/cerez.html", "lgCookies", "Çerez politikası")
+        ])
     ]
     legal = "{} · MERSİS {} · {} · {}".format(CO["legal_name"], CO["mersis"], CO["tax"], CO["address"])
     return "\n".join([
@@ -134,7 +142,6 @@ def footer(r: str) -> str:
         "  </footer>",
         "  " + FOOT_END,
     ])
-
 
 def splice(text: str, start: str, end: str, block: str, legacy: str) -> str:
     if start in text and end in text:

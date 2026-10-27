@@ -148,9 +148,9 @@
     const cls = { ALLOW: 'v-allow', REVIEW: 'v-review', DENY: 'v-deny' };
 
     (async () => {
-      for (const u of ['../policies/builtin_gates.json', 'policies/builtin_gates.json']) {
-        try {
-          const r = await fetch(u, { cache: 'no-cache' });
+      const targetU = (window.location.pathname.indexOf('/pro/') >= 0 ? '../' : '') + 'policies/builtin_gates.json';
+      try {
+        const r = await fetch(targetU);
           if (r.ok) {
             const g = await r.json();
             policy = g.agent_mcp_guard;
