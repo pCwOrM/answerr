@@ -931,6 +931,8 @@ class DecisionRequest(BaseModel):
     prompt: Optional[str] = None
     recaptcha_token: Optional[str] = None
     mode: Optional[str] = Field(None, description="'live' (default) or 'shadow': logged and metered, never queued for review")
+    autonomous: Optional[bool] = Field(False, description="When true, suppresses REVIEW verdict for Edge AI and autonomous agents; resolves deterministically based on confidence.")
+    autonomous_bias: Optional[str] = Field("balanced", description="'balanced' (default), 'permissive', or 'fail_closed'")
     observed_outcome: Optional[Any] = Field(None, description="Your own decision for this case (ALLOW/REVIEW/DENY or true/false), for shadow reports")
     external_id: Optional[str] = Field(None, max_length=120, description="Your reference (order id, tool-call id); echoed in logs, reviews and webhooks")
     enqueue_review: Optional[bool] = Field(True, description="REVIEW verdicts go to the human-review queue (Pro and above)")
@@ -1523,7 +1525,7 @@ def post_decide(req: DecisionRequest, request: Request):
         werr_questions["decision"] = werr.NoulQuestion(instructions="Is the proposed operation safe and valid?")
         noul_texts["decision"] = "Is the proposed operation safe and valid?"
 
-    kernel = PK.evaluate(state, policy, bool(req.strict_policy))
+    kernel = PK.evaluate(state, policy, bool(req.strict_policy), autonomous=req.autonomous, autonomous_bias=req.autonomous_bias or "balanced")
     governs = bool(policy or req.strict_policy or kernel["tool"] or kernel["verdict"] == "DENY")
 
     engine, werr_meta = resolve_werr_engine(
@@ -1605,6 +1607,11 @@ def post_decide(req: DecisionRequest, request: Request):
         "werr_config": werr_meta,
         "security": {"rate_tier": sec["rate_tier"], "recaptcha": sec["recaptcha"],
                      "api_key": bool(sec["tenant"])},
+        "autonomous_resolution": kernel.get("autonomous_resolution", False),
+        "confidence_index": kernel.get("confidence_index", kernel.get("confidence", 1.0)),
+        "confidence_band": kernel.get("confidence_band", "HIGH_CONFIDENCE"),
+        "retry_recommended": kernel.get("retry_recommended", False),
+        "original_verdict": kernel.get("original_verdict"),
         "telemetry": {
             "engine_latency_ms": round(getattr(result, "latency_ms", 0.0), 3),
             "total_request_latency_ms": round(total_ms, 3),

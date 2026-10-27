@@ -348,7 +348,8 @@ def key_recognized(key: str, policy_field_set: set) -> bool:
 
 # ---------------------------------------------------------------- main
 def evaluate(state: Optional[Dict[str, Any]], policy: Optional[Dict[str, Any]] = None,
-             strict: bool = False) -> Dict[str, Any]:
+             strict: bool = False, autonomous: Optional[bool] = None,
+             autonomous_bias: str = "balanced") -> Dict[str, Any]:
     state = dict(state or {})
     policy = policy or None
     strict = bool(strict or (policy and policy.get("unknown_fallback") == "abstain_review"))
@@ -462,12 +463,45 @@ def evaluate(state: Optional[Dict[str, Any]], policy: Optional[Dict[str, Any]] =
     else:
         noul = round4(1.0 / (1.0 + math.exp((risk - RISK_ALLOW_MAX) * 2.0)))
 
-    return {
+    # 6. Autonomous Reflex Resolution (suppress REVIEW for Edge AI and autonomous agents)
+    auto_enabled = bool(autonomous or (state and (state.get("_autonomous") or state.get("autonomous"))) or (policy and (policy.get("autonomous") or policy.get("mode") == "autonomous" or policy.get("resolution_mode") == "autonomous")))
+    autonomous_resolution = False
+    original_verdict = None
+    retry_rec = False
+    active_reason = best["reason"]
+
+    if auto_enabled and verdict == "REVIEW":
+        autonomous_resolution = True
+        original_verdict = "REVIEW"
+        bias = (policy or {}).get("autonomous_bias") or autonomous_bias or "balanced"
+        if bias == "fail_closed":
+            verdict = "DENY"
+            confidence = 0.85
+            active_reason = f"[Autonomous Reflex] {best['reason']} (fail_closed policy resolved to DENY)"
+        elif bias == "permissive":
+            verdict = "ALLOW"
+            confidence = 0.85
+            active_reason = f"[Autonomous Reflex] {best['reason']} (permissive policy resolved to ALLOW)"
+        else: # balanced median split
+            thresh = 0.50
+            if noul >= thresh:
+                verdict = "ALLOW"
+                confidence = round4(max(0.50, min(1.0, noul)))
+                active_reason = f"[Autonomous Reflex] {best['reason']} (noul {noul:.3f} >= {thresh}; resolved to ALLOW)"
+            else:
+                verdict = "DENY"
+                confidence = round4(max(0.50, min(1.0, 1.0 - noul)))
+                active_reason = f"[Autonomous Reflex] {best['reason']} (noul {noul:.3f} < {thresh}; resolved to DENY)"
+        retry_rec = bool(0.42 <= noul <= 0.58)
+
+    conf_band = "HIGH_CONFIDENCE" if confidence >= 0.80 else ("MODERATE_CONFIDENCE" if confidence >= 0.50 else "MARGINAL_CONFIDENCE")
+
+    res = {
         "kernel_version": KERNEL_VERSION,
         "verdict": verdict,
         "label": LABELS[verdict],
         "rule_id": best["rule_id"],
-        "reason": best["reason"],
+        "reason": active_reason,
         "confidence": confidence,
         "risk_score": risk,
         "noul": noul,
@@ -482,6 +516,13 @@ def evaluate(state: Optional[Dict[str, Any]], policy: Optional[Dict[str, Any]] =
         "policy_id": (policy or {}).get("gate_id") or (policy or {}).get("id") or "universal_default",
         "policy_version": (policy or {}).get("version") or KERNEL_VERSION,
     }
+    if auto_enabled:
+        res["autonomous_resolution"] = autonomous_resolution
+        res["confidence_index"] = confidence
+        res["confidence_band"] = conf_band
+        res["original_verdict"] = original_verdict
+        res["retry_recommended"] = retry_rec
+    return res
 
 
 def question_polarity(text: Optional[str]) -> str:

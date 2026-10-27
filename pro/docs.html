@@ -31,16 +31,25 @@
       </a>
       <button class="nav-toggle" type="button" aria-label="Menü" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h9" stroke="currentColor" stroke-width="1.6"/></svg></button>
       <div class="nav-links">
-        <a href="index.html#kara-kutu" data-i18n="navConsole">Kara Kutu</a>
         <a href="studio.html" data-i18n="navStudio">Derleyici</a>
+        <a href="index.html#kara-kutu" data-i18n="navConsole">Kara Kutu</a>
         <a href="docs.html" aria-current="page" data-i18n="navDocs">Geliştiriciler</a>
         <a href="pricing.html" data-i18n="navPricing">Fiyatlar</a>
-        <a href="research.html" data-i18n="navResearch">Araştırma</a>
-        <a href="https://radar.werracle.com/" target="_blank" rel="noopener" style="color:var(--amber);font-weight:600;" data-i18n="navRadar">Radar API ↗</a>
-        <a href="https://werracle.com" target="_blank" rel="noopener" data-i18n="navWerracleCom">werracle.com ↗</a>
-        <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>
-        <a class="btn-ghost btn-sm" href="console/" data-i18n="navLogin">Konsol</a>
-        <a class="btn-primary btn-sm nav-cta" href="console/#signup" data-i18n="navStart">Ücretsiz başla</a>
+        <div class="nav-dropdown">
+          <button type="button" class="nav-dropdown-toggle" aria-expanded="false" data-i18n="navEcosystem">Ekosistem <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+          <div class="nav-dropdown-menu">
+            <a href="https://radar.werracle.com/" target="_blank" rel="noopener"><span>Werracle Radar API ↗</span><small>DeFi Risk</small></a>
+            <a href="https://werracle.com" target="_blank" rel="noopener"><span>werracle.com ↗</span><small>Web3</small></a>
+            <a href="https://werr.io" target="_blank" rel="noopener"><span>werr.io ↗</span><small>Motor</small></a>
+            <a href="research.html"><span>Araştırma &amp; Raporlar</span><small>v1.3</small></a>
+            <a href="vision.html"><span>Werr Evreni</span><small>Vizyon</small></a>
+          </div>
+        </div>
+        <div class="nav-actions">
+          <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>
+          <a class="btn-ghost btn-sm" href="console/" data-i18n="navLogin">Konsol</a>
+          <a class="btn-primary btn-sm nav-cta" href="console/?plan=kesif#signup" data-i18n="navStart">Ücretsiz başla</a>
+        </div>
       </div>
     </div>
   </nav>
@@ -69,6 +78,7 @@
           <a href="#kayit" data-i18n="dcT9">Karar kaydı</a>
           <a href="#kota" data-i18n="dcT10">Kota, hız ve hatalar</a>
           <a href="#ucnoktalar" data-i18n="dcT11">Uç noktalar</a>
+          <a href="#use-cases" data-i18n="dcTUseCases">Kullanım senaryoları</a>
         </nav>
 
         <div class="docs-body">
@@ -208,6 +218,31 @@ def guarded(tool_name, args, run, user_role="member", wait_s=300):
             raise PermissionError("rejected by reviewer: " + (r.get("note") or ""))
         time.sleep(3)
     raise TimeoutError("review still pending")</code></pre>
+                        <div class="callout" style="margin-top:1.25rem;border-left:3px solid var(--accent);padding:0.75rem 1rem;background:rgba(255,176,72,0.06);">
+              <h3 style="font-size:1.05rem;margin:0 0 0.5rem 0;" data-lang="tr">⚡ Otonom Refleks &amp; Edge AI Modu (İnsana Sor Katmanını Bastırma)</h3>
+              <h3 style="font-size:1.05rem;margin:0 0 0.5rem 0;" data-lang="en">⚡ Autonomous Reflex &amp; Edge AI Mode (Bypassing Human Escalation)</h3>
+              <p data-lang="tr">Ajan döngülerinde veya mikro-saniyelik edge sistemlerde bir insanın onayını beklemek otonomiyi kırar. İstekte <code>"autonomous": true</code> veya <code>"allow_review": false</code> gönderildiğinde, <code>REVIEW</code> durumu deterministik olarak mutlak <code>ALLOW</code> ya da <code>DENY</code> kararına çözümlenir.</p>
+              <p data-lang="en">In agent loops or sub-millisecond edge systems, waiting for human escalation halts autonomy. By providing <code>"autonomous": true</code> or <code>"allow_review": false</code>, any <code>REVIEW</code> verdict is deterministically resolved into a binary <code>ALLOW</code> or <code>DENY</code>.</p>
+<pre><code>// Karar isteği gövdesi (Autonomous Edge AI)
+{
+  "state": {"tool_name": "execute_shell", "command": "git push", "auth_level": "elevated"},
+  "autonomous": true,
+  "autonomous_bias": "balanced"  // "balanced" | "fail_closed" | "permissive"
+}
+
+// Yanıt gövdesi ek meta verileri:
+{
+  "verdict": "ALLOW",
+  "autonomous_resolution": true,
+  "original_verdict": "REVIEW",
+  "confidence_index": 0.542,
+  "confidence_band": "MODERATE_CONFIDENCE",
+  "retry_recommended": false
+}</code></pre>
+              <p data-lang="tr">Eğer karar sınırına çok yakın bir belirsizlik varsa (noul &sim; 0.50), motor <code>retry_recommended: true</code> önerisi ile durumu zenginleştirip tekrar denemenizi tavsiye eder.</p>
+              <p data-lang="en">If the decision lies near the boundary band (noul &sim; 0.50), the engine flags <code>retry_recommended: true</code>, advising the caller to enrich state telemetry before retrying.</p>
+            </div>
+
             <p data-lang="tr">Bekleme yerine webhook kullanabilirsiniz: <code>review.resolved</code> olayı geldiğinde işi sürdürün.</p>
             <p data-lang="en">Instead of polling, use webhooks: resume the job when the <code>review.resolved</code> event arrives.</p>
           </section>
@@ -290,6 +325,66 @@ GET /v1/account/usage?days=30</code></pre>
             <div class="ep"><span class="m">GET</span><code>/v1/account · /usage · /decisions · /shadow-report · /statements</code><span class="d" data-i18n="dcEp7">Hesap, kullanım, kayıt, raporlar, ekstreler</span></div>
             <div class="ep"><span class="m">GET</span><code>/v1/plans · /v1/health</code><span class="d" data-i18n="dcEp8">Plan kataloğu · sağlık</span></div>
             <p><a class="btn-ghost btn-sm" href="https://api.answerr.me/v1/docs" rel="noopener" data-i18n="dcSwagger">Etkileşimli referansı aç (Swagger)</a></p>
+          </section>
+
+          <section id="use-cases">
+            <h2 data-i18n="dcTUseCases">Endüstriyel Kullanım Senaryoları &amp; Derleyici Mimarisi</h2>
+            
+            <p data-lang="tr">answerr Pro, model bağımlılığı olmaksızın mikro-saniyelik hızda deterministik karar veren bir kural motorudur. Aşağıda yaygın üretim mimarileri ve Derleyici (Policy Compiler) entegrasyon senaryoları özetlenmiştir.</p>
+            <p data-lang="en">answerr Pro is a model-free, deterministic policy kernel operating at sub-millisecond speeds. Below are key production use cases and Policy Compiler integration patterns.</p>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1.5rem;margin:1.5rem 0;">
+              <div style="background:var(--card-bg, #11141c);border:1px solid var(--border,#222838);padding:1.25rem;border-radius:8px;">
+                <h3 style="margin-top:0;font-size:1.1rem;color:var(--accent,#FFB048);">1. AI Agent MCP Tool Guard</h3>
+                <p style="font-size:0.9rem;" data-lang="tr">LLM'ler ve Otonom Ajanlar harici araçları (shell, sql, para transferi, api çağrısı) çalıştırmadan önce yetki matrisini doğrular. Prompt injection durumunda dahi geri dönülmez operasyonları engeller.</p>
+                <p style="font-size:0.9rem;" data-lang="en">Guards autonomous LLM agents before executing privileged tools (shell, database mutations, fund movement). Prevents harmful actions even under active prompt injection.</p>
+                <span class="tag small-mono">MCP / Function Calling</span>
+              </div>
+
+              <div style="background:var(--card-bg, #11141c);border:1px solid var(--border,#222838);padding:1.25rem;border-radius:8px;">
+                <h3 style="margin-top:0;font-size:1.1rem;color:var(--cyan,#8CDEEC);">2. DeFi Risk &amp; Werracle Radar SVR</h3>
+                <p style="font-size:0.9rem;" data-lang="tr">Merkeziyetsiz finans borç verme havuzlarında (Morpho, Aave) dinamik teminat ve borçlanma tavanlarını yönetir. Werracle Radar SVR oraklı ile anlık temerrüt ve likidite risklerini filtreler.</p>
+                <p style="font-size:0.9rem;" data-lang="en">Governs collateral parameters, dynamic LTV caps, and liquidation guards in DeFi lending vaults. Interoperable with Werracle Radar SVR oracle metrics.</p>
+                <span class="tag small-mono">Web3 / Risk Engine</span>
+              </div>
+
+              <div style="background:var(--card-bg, #11141c);border:1px solid var(--border,#222838);padding:1.25rem;border-radius:8px;">
+                <h3 style="margin-top:0;font-size:1.1rem;color:var(--accent,#FFB048);">3. Edge AI, Robotik &amp; Çevrimdışı Sistemler</h3>
+                <p style="font-size:0.9rem;" data-lang="tr">İnternet bağlantısı olmayan otonom araçlar, İHA'lar veya endüstriyel SCADA saha cihazları. Derlenmiş JSON politikası yerel C / Wasm / Python çekirdeğinde 0.1 ms altında sıfır gecikmeyle çalışır.</p>
+                <p style="font-size:0.9rem;" data-lang="en">Offline robotics, UAVs, and field SCADA gateways. Compiled JSON policies evaluate locally via Python, Wasm, or embedded C in under 100 microseconds.</p>
+                <span class="tag small-mono">Sub-millisecond Offline</span>
+              </div>
+
+              <div style="background:var(--card-bg, #11141c);border:1px solid var(--border,#222838);padding:1.25rem;border-radius:8px;">
+                <h3 style="margin-top:0;font-size:1.1rem;color:var(--cyan,#8CDEEC);">4. FinTech &amp; Fraud Önleme</h3>
+                <p style="font-size:0.9rem;" data-lang="tr">Ödeme ağ geçitlerinde her işlem için anlık kural tabanlı değerlendirme. Kara kutu ML yerine, her reddin arkasında BDDK/GDPR uyumlu denetlenebilir kural izi (audit trace) ve SHA-256 mühür bırakır.</p>
+                <p style="font-size:0.9rem;" data-lang="en">Real-time payment authorization and transaction fraud filtering. Provides fully auditable rule traces and cryptographic SHA-256 seals for regulatory compliance.</p>
+                <span class="tag small-mono">Audit-Ready FinTech</span>
+              </div>
+            </div>
+
+            <h3 data-lang="tr">Politika Derleyicisi (Compiler Workflow)</h3>
+            <h3 data-lang="en">Policy Compiler Workflow</h3>
+            <p data-lang="tr">Politikalar doğal dilde yazılır veya <a href="studio.html">answerr Studio</a> görsel editöründe tasarlanır. <code>POST /v1/policies/compile</code> uç noktası bunu optimize edilmiş AST ve doğrulanmış kanonik JSON politikasına dönüştürür:</p>
+            <p data-lang="en">Write policies in natural language or compose them in the <a href="studio.html">answerr Studio</a> visual editor. The <code>POST /v1/policies/compile</code> endpoint transforms them into canonical JSON AST:</p>
+
+<pre><code>// 1. Doğal Dilde Politika Derleme (Compile Endpoint)
+POST https://api.answerr.me/v1/policies/compile
+Authorization: Bearer ans_live_...
+Content-Type: application/json
+
+{
+  "text": "Eğer transfer_tutari > 50000 ve kullanıcı_yasi < 18 ise DUR. Eğer kyc_onay == false ise İNSANA DEVRET. Aksi halde GEÇ.",
+  "language": "tr",
+  "gate_id": "genclik_transfer_kurali"
+}
+
+// 2. Kapı Olarak Kaydetme & Doğrudan Çağrı
+POST https://api.answerr.me/v1/gates/genclik_transfer_kurali/decide
+{
+  "state": {"transfer_tutari": 75000, "kullanıcı_yasi": 16, "kyc_onay": true}
+}
+// Sonuç: {"verdict": "DENY", "trace": {"rule_id": "rule_1", "reason": "transfer_tutari > 50000"}}</code></pre>
           </section>
         </div>
       </div>

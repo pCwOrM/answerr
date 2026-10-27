@@ -30,11 +30,10 @@ PAGES = {
 }
 
 NAV_ITEMS = [
-    ("blackbox", "index.html#kara-kutu", "navConsole", "Kara Kutu"),
     ("studio", "studio.html", "navStudio", "Derleyici"),
+    ("blackbox", "index.html#kara-kutu", "navConsole", "Kara Kutu"),
     ("docs", "docs.html", "navDocs", "Geliştiriciler"),
     ("pricing", "pricing.html", "navPricing", "Fiyatlar"),
-    ("research", "research.html", "navResearch", "Araştırma"),
 ]
 
 LOGO = ('<svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" '
@@ -60,11 +59,21 @@ def nav(active: str, r: str) -> str:
         'viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h9" stroke="currentColor" stroke-width="1.6"/></svg></button>',
         '      <div class="nav-links">',
         *links,
-        '        <a href="https://radar.werracle.com/" target="_blank" rel="noopener" style="color:var(--amber);font-weight:600;" data-i18n="navRadar">Radar API ↗</a>',
-        '        <a href="https://werracle.com" target="_blank" rel="noopener" data-i18n="navWerracleCom">werracle.com ↗</a>',
-        '        <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>',
-        '        <a class="btn-ghost btn-sm" href="{}console/"{} data-i18n="navLogin">Konsol</a>'.format(r, cons),
-        '        <a class="btn-primary btn-sm nav-cta" href="{}console/#signup" data-i18n="navStart">Ücretsiz başla</a>'.format(r),
+        '        <div class="nav-dropdown">',
+        '          <button type="button" class="nav-dropdown-toggle" aria-expanded="false" data-i18n="navEcosystem">Ekosistem <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>',
+        '          <div class="nav-dropdown-menu">',
+        '            <a href="https://radar.werracle.com/" target="_blank" rel="noopener"><span>Werracle Radar API ↗</span><small>DeFi Risk</small></a>',
+        '            <a href="https://werracle.com" target="_blank" rel="noopener"><span>werracle.com ↗</span><small>Web3</small></a>',
+        '            <a href="https://werr.io" target="_blank" rel="noopener"><span>werr.io ↗</span><small>Motor</small></a>',
+        '            <a href="{}research.html"><span>Araştırma &amp; Raporlar</span><small>v1.3</small></a>'.format(r),
+        '            <a href="{}vision.html"><span>Werr Evreni</span><small>Vizyon</small></a>'.format(r),
+        '          </div>',
+        '        </div>',
+        '        <div class="nav-actions">',
+        '          <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>',
+        '          <a class="btn-ghost btn-sm" href="{}console/"{} data-i18n="navLogin">Konsol</a>'.format(r, cons),
+        '          <a class="btn-primary btn-sm nav-cta" href="{}console/?plan=kesif#signup" data-i18n="navStart">Ücretsiz başla</a>'.format(r),
+        '        </div>',
         "      </div>",
         "    </div>",
         "  </nav>",

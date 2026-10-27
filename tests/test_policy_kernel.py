@@ -70,3 +70,23 @@ def test_python_js_parity():
         assert json.loads(json.dumps(a)) == jr["answer"], v["name"]
     for g, seal in js["seals"].items():
         assert K.policy_seal(GATES[g]) == seal, g
+
+
+def test_autonomous_edge_ai_resolution():
+    state_mid = {"amount": 5500, "user_role": "analyst"}
+    res_normal = K.evaluate(state_mid)
+    assert res_normal["verdict"] == "REVIEW"
+    assert res_normal.get("autonomous_resolution", False) is False
+
+    res_auto = K.evaluate(state_mid, autonomous=True)
+    assert res_auto["verdict"] in ("ALLOW", "DENY")
+    assert res_auto["autonomous_resolution"] is True
+    assert res_auto["original_verdict"] == "REVIEW"
+    assert "confidence_index" in res_auto
+    assert "retry_recommended" in res_auto
+
+    res_deny = K.evaluate(state_mid, autonomous=True, autonomous_bias="fail_closed")
+    assert res_deny["verdict"] == "DENY"
+
+    res_allow = K.evaluate(state_mid, autonomous=True, autonomous_bias="permissive")
+    assert res_allow["verdict"] == "ALLOW"
