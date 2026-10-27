@@ -43,43 +43,45 @@ LOGO = ('<svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><cir
 
 def nav(active: str, r: str) -> str:
     links = []
-    for key, href, i18n, label in NAV_ITEMS:
-        cur = ' aria-current="page"' if key == active else ""
-        links.append('        <a href="{}{}"{} data-i18n="{}">{}</a>'.format(r, href, cur, i18n, label))
+    for key, href, i18n_key, label in NAV_ITEMS:
+        curr = ' aria-current="page"' if key == active else ""
+        links.append(f'        <a href="{r}{href}"{curr} data-i18n="{i18n_key}">{label}</a>')
     cons = ' aria-current="page"' if active == "console" else ""
     return "\n".join([
         NAV_START,
         '  <nav class="nav" aria-label="Ana gezinme">',
         '    <div class="wrap">',
-        '      <a class="brand" href="{}index.html" aria-label="answerr Pro ana sayfa">'.format(r),
-        "        " + LOGO,
+        f'      <a class="brand" href="{r}index.html" aria-label="answerr Pro ana sayfa">',
+        f"        {LOGO}",
         '        <b>answerr</b><span class="tag">PRO</span>',
         "      </a>",
-        '      <button class="nav-toggle" type="button" aria-label="Menü" aria-expanded="false"><svg width="20" height="20" '
-        'viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h9" stroke="currentColor" stroke-width="1.6"/></svg></button>',
+        '      <button class="nav-toggle" type="button" aria-label="Menü" aria-expanded="false">'
+        '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h9" stroke="currentColor" stroke-width="1.6"/></svg></button>',
         '      <div class="nav-links">',
         *links,
         '        <div class="nav-dropdown">',
-        '          <button type="button" class="nav-dropdown-toggle" aria-expanded="false" data-i18n="navEcosystem">Ekosistem <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>',
-        '          <div class="nav-dropdown-menu">',
-        '            <a href="https://radar.werracle.com/" target="_blank" rel="noopener"><span>Werracle Radar API ↗</span><small>DeFi Risk</small></a>',
-        '            <a href="https://werracle.com" target="_blank" rel="noopener"><span>werracle.com ↗</span><small>Web3</small></a>',
-        '            <a href="https://werr.io" target="_blank" rel="noopener"><span>werr.io ↗</span><small>Motor</small></a>',
-        '            <a href="{}research.html"><span>Araştırma &amp; Raporlar</span><small>v1.3</small></a>'.format(r),
-        '            <a href="{}vision.html"><span>Werr Evreni</span><small>Vizyon</small></a>'.format(r),
+        '          <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">'
+        '<span data-i18n="navEcosystem">Ekosistem</span> '
+        '<svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        '</button>',
+        '          <div class="nav-dropdown-menu" style="display:none;">',
+        '            <a href="https://radar.werracle.com/" target="_blank" rel="noopener">Werracle Radar API ↗</a>',
+        '            <a href="https://werracle.com" target="_blank" rel="noopener">werracle.com ↗</a>',
+        '            <a href="https://werr.io" target="_blank" rel="noopener">werr.io ↗</a>',
+        f'            <a href="{r}research.html" data-i18n="navResearch">Araştırma &amp; Raporlar</a>',
+        f'            <a href="{r}vision.html" data-i18n="navVision">Werr Evreni</a>',
         '          </div>',
         '        </div>',
         '        <div class="nav-actions">',
         '          <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>',
-        '          <a class="btn-ghost btn-sm" href="{}console/"{} data-i18n="navLogin">Konsol</a>'.format(r, cons),
-        '          <a class="btn-primary btn-sm nav-cta" href="{}console/?plan=kesif#signup" data-i18n="navStart">Ücretsiz başla</a>'.format(r),
+        f'          <a class="btn-ghost btn-sm" href="{r}console/"{cons} data-i18n="navLogin">Konsol</a>',
+        f'          <a class="btn-primary btn-sm nav-cta" href="{r}console/?plan=kesif#signup" data-i18n="navStart">Ücretsiz başla</a>',
         '        </div>',
         "      </div>",
         "    </div>",
         "  </nav>",
-        "  " + NAV_END,
+        NAV_END,
     ])
-
 
 def footer(r: str) -> str:
     def col(title_key, title, items):

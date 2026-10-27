@@ -5,7 +5,7 @@
     tr: {
       hudRight: 'ÇALIŞMA ANINDA MODEL YOK · HER KARARIN İZİ VAR',
       hudOnline: 'API ÇEVRİMİÇİ', hudOffline: 'API’YE ULAŞILAMADI · TARAYICIDAKİ ÇEKİRDEK KULLANILIYOR', hudKernel: 'çekirdek',
-      navHow: 'Nasıl çalışır', navConsole: 'Kara Kutu', navStudio: 'Derleyici', navResearch: 'Araştırma', navApi: 'API belgeleri', navAccess: 'Erken erişim',
+      navHow: 'Nasıl çalışır', navConsole: 'Kara Kutu', navStudio: 'Derleyici', navDocs: 'Geliştiriciler', navPricing: 'Fiyatlar', navEcosystem: 'Ekosistem', navResearch: 'Araştırma', navVision: 'Werr Evreni', navApi: 'API belgeleri', navAccess: 'Erken erişim',
       heroEyebrow: '◇ Olay ufku protokolü · karar kapısı',
       heroTitle: 'Ajanınız harekete geçmeden önce, son söz <em>deterministik</em>.',
       heroLead: 'Kurallarınızı Türkçe ya da İngilizce yazın. answerr onları açık, sürümlenmiş kurallara derler; aynı girdiye her seferinde aynı kararı verir ve nedenini kaydeder. Tanımadığı bir durumda tahmin etmez, insana devreder.',
@@ -68,7 +68,7 @@
     en: {
       hudRight: 'NO MODEL AT DECISION TIME · EVERY DECISION HAS A TRACE',
       hudOnline: 'API ONLINE', hudOffline: 'API UNREACHABLE · USING THE IN-BROWSER KERNEL', hudKernel: 'kernel',
-      navHow: 'How it works', navConsole: 'Black Box', navStudio: 'Compiler', navResearch: 'Research', navApi: 'API docs', navAccess: 'Early access',
+      navHow: 'How it works', navConsole: 'Black Box', navStudio: 'Compiler', navDocs: 'Developers', navPricing: 'Pricing', navEcosystem: 'Ecosystem', navResearch: 'Research', navVision: 'Werr Universe', navApi: 'API docs', navAccess: 'Early access',
       heroEyebrow: '◇ Event horizon protocol · decision gate',
       heroTitle: 'Before your agent acts, the last word is <em>deterministic</em>.',
       heroLead: 'Write your rules in Turkish or English. answerr compiles them into explicit, versioned rules; the same input always gets the same decision, with its reason recorded. When it does not recognise a situation it does not guess — it hands it to a human.',

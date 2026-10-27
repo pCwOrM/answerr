@@ -109,6 +109,21 @@
         }
       }));
     }
+    const dropBtn = document.querySelector('.nav-dropdown-toggle');
+    const dropWrap = document.querySelector('.nav-dropdown');
+    if (dropBtn && dropWrap) {
+      dropBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropWrap.classList.toggle('open');
+        dropBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+      document.addEventListener('click', (e) => {
+        if (!dropWrap.contains(e.target)) {
+          dropWrap.classList.remove('open');
+          dropBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
   }
 
   async function setupHud() {
@@ -117,7 +132,7 @@
     const h = await health();
     const render = () => {
       if (h) {
-        el.innerHTML = `<span class="dot on"></span>${esc(t('hudOnline'))} · API ${esc(h.api_version)} · ${esc(t('hudKernel'))} ${esc(h.kernel_version || '—')}`;
+        const werrVer = h.werr_version ? ` · werr ${esc(h.werr_version)}` : ''; el.innerHTML = `<span class="dot on"></span>${esc(t('hudOnline'))} · API v${esc(h.api_version)}${werrVer}`;
       } else {
         el.innerHTML = `<span class="dot off"></span>${esc(t('hudOffline'))}`;
       }
