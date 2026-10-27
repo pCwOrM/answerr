@@ -1136,7 +1136,7 @@ def build_engine(cx=None, cy=None, zoom=None, domain=None):
     return eng
 
 
-TELEMETRY_INGEST_URL = os.environ.get("ANSWERR_TELEMETRY_INGEST_URL", "http://127.0.0.1:8550/v1/telemetry/ingest")
+TELEMETRY_INGEST_URL = os.environ.get("ANSWERR_TELEMETRY_INGEST_URL", "http://127.0.0.1:8550/telemetry")
 PUBLIC_TELEMETRY_ENABLED = os.environ.get("ANSWERR_PUBLIC_TELEMETRY", "1").strip().lower() in ("1", "true", "yes", "on")
 
 
@@ -1146,6 +1146,8 @@ def _dispatch_public_telemetry(
     result: Any,
     werr_meta: Dict[str, Any],
     source: str = "answerr_web",
+    gate_id: Optional[str] = None,
+    kernel_verdict: Optional[str] = None,
 ) -> None:
     """Non-blocking privacy-filtered telemetry dispatch to local werr-telemetry daemon (port 8550).
     Never called for authenticated customer API-key traffic unless explicitly opted in."""
@@ -1185,6 +1187,10 @@ def _dispatch_public_telemetry(
         state_summary = _sanitize_client_state(state if isinstance(state, dict) else {})
         state_summary["_werr_preset"] = str(werr_meta.get("preset", "smart_router"))[:32]
         state_summary["_werr_cube"] = "".join(str(x) for x in (werr_meta.get("state_cube") or [1, 1, 1]))
+        if gate_id:
+            state_summary["_gate_id"] = str(gate_id)[:32]
+        if kernel_verdict:
+            state_summary["_kernel_verdict"] = str(kernel_verdict)[:16]
         payload = json.dumps({
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "version": "werr-{}-{}".format(getattr(werr, "__version__", "0.5.1"), werr_meta.get("preset", "auto"))[:48],
@@ -1594,7 +1600,12 @@ def post_decide(req: DecisionRequest, request: Request):
         _meter(principal, req, body, kernel, policy, trace, state, mode, total_ms, headers)
     opt_in = req.werr_params.telemetry_opt_in if req.werr_params else None
     if (not sec["tenant"] and opt_in is not False) or (sec["tenant"] and opt_in is True):
-        _dispatch_public_telemetry(state, werr_questions, result, werr_meta, source="answerr_decide")
+        _dispatch_public_telemetry(
+            state, werr_questions, result, werr_meta,
+            source="answerr_decide",
+            gate_id=(policy or {}).get("gate_id") or req.gate_id,
+            kernel_verdict=body["verdict"],
+        )
     return JSONResponse(content=body, headers=headers)
 
 

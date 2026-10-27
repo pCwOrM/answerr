@@ -171,7 +171,8 @@
     renderScenarios();
   }
 
-  async function run() {
+  async function run(opts) {
+    const autoInit = Boolean(opts && opts.autoInit === true);
     const btn = document.getElementById('runBtn');
     const reactor = document.getElementById('reactor');
     let state;
@@ -186,6 +187,7 @@
     reactor.classList.add('busy');
     const question = QUESTIONS[current.gate][A().lang()];
     const wp = readWerrParams();
+    wp.telemetry_opt_in = !autoInit;
     const body = {
       gate_id: current.gate, strict_policy: true, state,
       questions: { allow: { type: 'noul', text: question } },
@@ -378,7 +380,7 @@
         });
       });
     }
-    document.getElementById('runBtn').addEventListener('click', run);
+    document.getElementById('runBtn').addEventListener('click', () => run());
     const form = document.getElementById('accessForm');
     if (form) form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -405,6 +407,6 @@
     await loadGates();
     syncWerrInputsFromPreset();
     loadScenario();
-    run();
+    run({ autoInit: true });
   });
 })();
