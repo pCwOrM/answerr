@@ -353,18 +353,36 @@ class GateStore:
             self.available = False
 
     def _locked(self):
-        import fcntl
+        try:
+            import fcntl
+            has_fcntl = True
+        except ImportError:
+            has_fcntl = False
 
         class _L:
             def __enter__(s):
                 d = os.path.dirname(self.path) or "."
                 os.makedirs(d, exist_ok=True)
                 s.f = open(self.path + ".lock", "a")
-                fcntl.flock(s.f, fcntl.LOCK_EX)
+                if has_fcntl:
+                    fcntl.flock(s.f, fcntl.LOCK_EX)
+                else:
+                    try:
+                        import msvcrt
+                        msvcrt.locking(s.f.fileno(), msvcrt.LK_LOCK, 1)
+                    except Exception:
+                        pass
                 return s
 
             def __exit__(s, *a):
-                fcntl.flock(s.f, fcntl.LOCK_UN)
+                if has_fcntl:
+                    fcntl.flock(s.f, fcntl.LOCK_UN)
+                else:
+                    try:
+                        import msvcrt
+                        msvcrt.locking(s.f.fileno(), msvcrt.LK_UNLCK, 1)
+                    except Exception:
+                        pass
                 s.f.close()
         return _L()
 
