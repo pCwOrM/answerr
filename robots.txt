@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /pro/archive/
+
+Sitemap: https://answerr.me/sitemap.xml
