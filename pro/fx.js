@@ -37,7 +37,7 @@
     const off = document.createElement('canvas');
     const octx = off.getContext('2d');
     const lut = buildLUT();
-    const SCALE0 = 1.45, F = 1.6, T = 2200, MIN = 3e-12;
+    const SCALE0 = 1.45, F = 1.6, T = 1600, MIN = 3e-12;
     let W = 0, H = 0, ax = 0.7, ay = 0.5, img = null;
     let cur = null, next = null, pending = false, kStart = 0, offset = 0, running = false, visible = true, reqId = 0, lastDraw = 0;
     const tele = host.querySelector('[data-tele]');
@@ -104,7 +104,7 @@
           else { host.classList.remove('live'); setTimeout(restart, 900); running = false; return; }
         } else tt = 1;
       }
-      offset = (offset + 1.6) % 1024;
+      offset = (offset + 2.5) % 1024;
       paint(Math.pow(F, tt));
     }
     function restart() {

@@ -93,7 +93,7 @@ h3 { font-size: 22px; }
 /* Hero */
 .hero { position: relative; overflow: hidden; border-top: 1px solid rgba(140,222,236,0.08); border-bottom: 1px solid rgba(140,222,236,0.08); }
 .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
-.hero-scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,6,10,0.96) 0%, rgba(5,6,10,0.86) 42%, rgba(5,6,10,0.3) 100%); }
+.hero-scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,6,10,0.96) 0%, rgba(5,6,10,0.78) 42%, rgba(5,6,10,0.12) 100%); }
 .hero .wrap { position: relative; padding-top: 112px; padding-bottom: 104px; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end; justify-content: space-between; }
 .hero-copy { flex: 999 1 540px; min-width: 0; max-width: 720px; display: flex; flex-direction: column; gap: 26px; }
 .hero h1 { font-size: clamp(40px, 6vw, 68px); line-height: 1.03; }
