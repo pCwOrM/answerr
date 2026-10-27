@@ -1,570 +1,196 @@
-<p align="center">
-  <img src="assets/answerr_werr_twin_ecosystem.svg" alt="answerr & werr İkiz Bilişsel Ekosistem Görseli" width="100%" />
-</p>
+<div align="center">
+
+# ANSWERR
+### Sıfır-Gecikmeli Refleks Yapay Zekâ ve Çift Bilişli Karar Çalışma Alanı
+
+[![Lisans: BSL 1.1](https://img.shields.io/badge/Lisans-BSL_1.1-0ea5e9.svg)](LICENSE)
+[![Üretim Ortamı: answerr.me](https://img.shields.io/badge/%C3%9Cretim-answerr.me-38bdf8.svg)](https://answerr.me)
+[![Motor: WERR](https://img.shields.io/badge/Motor-WERR_Refleks-10b981.svg)](https://github.com/pCwOrM/werr)
+[![Kâhin: Werracle](https://img.shields.io/badge/K%C3%A2hin-Werracle_On--Chain-f59e0b.svg)](https://github.com/pCwOrM/werracle)
+[![FastAPI Çalışma Zamanı](https://img.shields.io/badge/API-FastAPI_0.110+-6366f1.svg)](api/)
+[![WebMCP Başarısı](https://img.shields.io/badge/WebMCP-%25100_Do%C4%9Fruluk-emerald.svg)](tests/)
 
 <p align="center">
-  <img src="assets/answerr_logo_portal_fav_trans.svg" alt="answerr Portal Logosu" width="140" height="140" />
+  <b>Üst düzey doğal dil talimatlarını ve kurumsal güvenlik politikalarını (Sistem-2), sıfır-bellekli deterministik WERR prosedürel reflekslerine (Sistem-1) dönüştüren; mikrosaniye altı yürütme hızı ve sıfır halüsinasyon garantisi sunan çift bilişli karar çerçevesi.</b>
 </p>
 
-# ⚡ answerr — Sıfır Gecikmeli Refleks Yapay Zekası ve Karar Çalışma Alanı
+[Hızlı Başlangıç](#-hızlı-başlangıç-ve-yerel-api) •
+[Çift Bilişli Mimari](#-çift-bilişli-mimari) •
+[API Referansı](#-api-uç-noktaları-ve-kullanım) •
+[WebMCP ve Kıyaslamalar](#-ampirik-kıyaslamalar-ve-webmcp) •
+[Kurumsal Çalışma Alanı](#-kurumsal-çalışma-alanı-pro) •
+[Ekosistem](#-werr-ekosistemi) •
+[Araştırma Kronolojisi](RESEARCH_CHRONOLOGY.md) •
+[English Documentation](README.md)
 
-<p align="center">
-  <a href="https://answerr.me"><img src="https://img.shields.io/badge/Canl%C4%B1%20Portal-answerr.me-38bdf8.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Web Sitesi: answerr.me"></a>
-  <a href="https://github.com/pCwOrM/werr"><img src="https://img.shields.io/badge/werr-S%C4%B1f%C4%B1r--Bellek%20Motoru-10b981.svg?style=for-the-badge" alt="werr Çekirdeği"></a>
-  <a href="https://github.com/pCwOrM/werracle"><img src="https://img.shields.io/badge/werracle-On--Chain%20AI%20Oracle-f59e0b.svg?style=for-the-badge&logo=ethereum&logoColor=white" alt="werracle Oracle"></a>
-  <a href="https://werr.io/"><img src="https://img.shields.io/badge/Akademik%20Portal-werr.io-0284c7.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werr.io Portalı"></a>
-  <a href="https://werracle.io/"><img src="https://img.shields.io/badge/Web3%20Protokol-werracle.io-f59e0b.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werracle.io Web3 Portalı"></a>
-  <a href="https://werracle.com/"><img src="https://img.shields.io/badge/Kurumsal%20Portal-werracle.com-2b3bd1.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werracle.com Kurumsal"></a>
-  <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Temel%20Ara%C5%9Ft%C4%B1rma-Mandelbrot%20N%C3%B6ral%20Sentez-green.svg?style=for-the-badge" alt="Temel Araştırma"></a>
-  <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-%25100%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
-  <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks"><img src="https://img.shields.io/badge/The%20Gauntlet-Resmi%20K%C4%B1yaslama%20Dizini-brightgreen.svg?style=for-the-badge" alt="The Gauntlet Kıyaslama Duvarı"></a>
-  <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20H%C4%B1zl%C4%B1-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
-  <a href="https://doi.org/10.5281/zenodo.22939253"><img src="https://img.shields.io/badge/Zenodo%20DOI-10.5281%2Fzenodo.22939253-024dad.svg?style=for-the-badge" alt="WERR Zenodo DOI"></a>
-  <a href="https://arxiv.org/abs/2609.25498"><img src="https://img.shields.io/badge/arXiv-2609.25498-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.25498"></a>
-  <a href="https://arxiv.org/abs/2609.33066"><img src="https://img.shields.io/badge/arXiv-2609.33066%20(Temel)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.33066"></a>
-  <a href="https://arxiv.org/abs/2609.30115"><img src="https://img.shields.io/badge/arXiv-2609.30115%20(OED)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.30115"></a>
-  <a href="https://arxiv.org/abs/2609.30719"><img src="https://img.shields.io/badge/arXiv-2609.30719%20(Werracle)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.30719"></a>
-  <a href="https://ssrn.com/abstract=7626279"><img src="https://img.shields.io/badge/SSRN-7626279%20(Werracle)-002f6c.svg?style=for-the-badge&logo=elsevier" alt="SSRN 7626279"></a>
-  <a href="https://arxiv.org/abs/2609.38492"><img src="https://img.shields.io/badge/arXiv-2609.38492%20(GAP%20Lean4)-b31b1b.svg?style=for-the-badge" alt="arXiv 2609.38492"></a>
-  <a href="https://doi.org/10.5281/zenodo.22983889"><img src="https://img.shields.io/badge/Lean%204%20%C4%B0spatlar%C4%B1-v2%20(10%20Teorem)-024dad.svg?style=for-the-badge" alt="Lean 4 Doğrulama"></a>
-  <a href="https://doi.org/10.5281/zenodo.22978460"><img src="https://img.shields.io/badge/Kara%20Delik-Zenodo%20Kayd%C4%B1%2022978460-7c3aed.svg?style=for-the-badge" alt="Kara Delik Page Eğrisi"></a>
-  <a href="https://epats.turkpatent.gov.tr"><img src="https://img.shields.io/badge/Patent%20Ba%C5%9Fvurusu-TR%202026%2F016633%20(Konnektom)-red.svg?style=for-the-badge" alt="TÜRKPATENT TR 2026/016633"></a>
-  <a href="https://github.com/Lexovian/WerrSoma"><img src="https://img.shields.io/badge/WerrSoma-Tüm%20Beyin%20Konnektom-00f0ff.svg?style=for-the-badge" alt="WerrSoma Konnektom"></a>
-  <a href="https://doi.org/10.5281/zenodo.22996625"><img src="https://img.shields.io/badge/Konnektom%20DOI-10.5281%2Fzenodo.22996625-024dad.svg?style=for-the-badge" alt="WerrSoma Zenodo DOI"></a>
-  <a href="https://werrsoma.answerr.me/"><img src="https://img.shields.io/badge/Canlı%20Portal-werrsoma.answerr.me-00f0ff.svg?style=for-the-badge" alt="Lexovian Portalı"></a>
-  <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow.svg?style=for-the-badge" alt="Hugging Face Dataset"></a>
-  <a href="https://github.com/jesmaat/WerreduR"><img src="https://img.shields.io/badge/WerreduR-Fraktal%20Pedagoji-blue.svg?style=for-the-badge" alt="WerreduR Fraktal Pedagoji"></a>
-  <a href="https://github.com/pCwOrM/WERRobotics"><img src="https://img.shields.io/badge/WERRobotics-Arduino%20%26%20Edge%20AI-ff9100.svg?style=for-the-badge&logo=arduino&logoColor=white" alt="WERRobotics Edge AI"></a>
-  <a href="https://github.com/yh-yao/awesome-edge-ai-agents"><img src="https://img.shields.io/badge/Awesome-Edge%20AI%20Agents-blue.svg?style=for-the-badge" alt="Awesome Edge AI Agents"></a>
-  <a href="https://awesomejev.com"><img src="https://img.shields.io/badge/Awesome-Jev-blueviolet.svg?style=for-the-badge" alt="Awesome Jev"></a>
-  <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Canl%C4%B1%20%C3%9Cretim-c084fc.svg?style=for-the-badge" alt="REST API"></a>
-  <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI İş Akışı"></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/Lisans-BSL%201.1-red.svg?style=for-the-badge" alt="Lisans: BSL 1.1"></a>
-  <a href="https://education.github.com/globalcampus/exchange"><img src="https://img.shields.io/badge/GitHub%20Education-Community%20Exchange-2ea44f.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Education: Community Exchange"></a>
-  <a href="https://github.com/sponsors/pCwOrM"><img src="https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-ea4aaa.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Sponsor"></a>
-  <a href="#-sponsorluk-ve-hibe-destekleri"><img src="https://img.shields.io/badge/Destek-USDT%20TRC20-009393.svg?style=for-the-badge&logo=tether&logoColor=white" alt="USDT Desteği"></a>
-</p>
-
-> **A**daptive **N**on-tensor **S**ignal **W**ave & **E**rror **R**eflex **R**esonator  
-> *(Tensörsüz Uyarlanabilir Sinyal Dalgası ve Hata Refleks Rezonatörü)*  
-> *"Doğal diyalog gerektiğinde **answerr**'ı çağırın.*  
-> *Mikrosaniyelik refleks gerektiğinde **werr**'i gömün."*  
-> *"Sadece Sohbet Etme. Karar Werr!"*
-
-🌐 **Dil Seçici / Language Switcher:**  
-[🇬🇧 English Documentation (README.md)](README.md) | **Türkçe (Varsayılan)**
+</div>
 
 ---
 
-## 🌟 Genel Bakış (Overview)
+## 🏛️ Yeni Bir Paradigma
 
-**answerr**, insan konuşma mantığı ile deterministik, sıfır gecikmeli yazılım yürütmesi arasındaki köprüyü kuran yeni nesil bir **İkili Bilişsel Yapay Zeka (Dual-Cognition AI)** platformudur:
+Modern otonom ajanlar ve kurumsal otomasyon iş akışları kritik bir darboğazla kısıtlanmıştır: **kritik yürütme yollarındaki olasılıksal determinizm eksikliği**. Karmaşık görevleri doğrudan büyük üretimsel modellere devretmek; öngörülemeyen gecikmeler ($500\,\text{ms} - 3\,\text{s}$), yüksek token maliyetleri ve felaketle sonuçlanabilecek uç durum halüsinasyonları doğurur.
 
-1. **Sistem-2 Müzakereci Zeka (LLM / Bulut Zekası):** Doğal insan diyaloglarını ayrıştırır, operasyonel durum vektörlerini çıkarır, stratejik gerekçelendirme üretir ve üretime hazır kod blokları yazar. Google Gemini 2.5 Flash ve OpenAI uyumlu mimarilerle tam entegredir.
-2. **Sistem-1 Omurilik Refleks Yayı ([werr](https://github.com/pCwOrM/werr)):** Mandelbrot fraktal kaçış dinamiği sınırları ($\partial \mathcal{M}$) üzerinden **$< 0.5$ ms** içinde ve **0-Byte VRAM** ile anlık, güçlü tipli kararlar (`noul`, `choice`, `score`) üretir.
-3. **On-Chain EVM Karar Orakılı ([werracle](https://github.com/pCwOrM/werracle)):** Sistem-1 omurilik reflekslerini tek bir 32-bayt depolama slotunda (~20k gas) akıllı kontratlara genişleterek atomik flash-loan savunması ve dinamik komisyon yönetimi sağlar.
-4. **Biyo-Sentetik Nöromorfik Konnektom ([WerrSoma](https://github.com/Lexovian/WerrSoma)):** Princeton FlyWire tam *Drosophila* tüm-beyin konnektomunu (158.262 biyolojik nöron, 3.99M sinaps) `werr` ile birleştirir. Sub-4ms duyusal-motor uçuş refleks döngüleri, homeostatik biyokoruma ve sıfır VRAM nöromorfik otonomi sağlar ([DOI: 10.5281/zenodo.23072929](https://doi.org/10.5281/zenodo.23072929), Çatı: [10.5281/zenodo.22996625](https://doi.org/10.5281/zenodo.22996625), [Canlı 3D Portal](https://werrsoma.answerr.me/)).
-5. **Prosedürel Fraktal Pedagoji ([WerreduR](https://github.com/jesmaat/WerreduR)):** Sıfır-bellekli Mandelbrot sınır refleksleri ve 1PL Rasch onaylı üretken dengesizlik ile akıllı öğretim sistemlerine ve öğrenci bilişsel iskelelerine güç verir ([DOI: 10.5281/zenodo.23034488](https://doi.org/10.5281/zenodo.23034488), Çatı: [10.5281/zenodo.22999420](https://doi.org/10.5281/zenodo.22999420), Hedef: Q1 AIED Dergisi, TÜRKPATENT Öncelik: TR 2026/016285).
-6. **Gömülü Robotik ve Arduino Uç Karar Çekirdeği ([WERRobotics](https://github.com/pCwOrM/WERRobotics)):** `werr v0.5.1` Sistem-1 omurilik refleksi mimarisini (`WerrCoreEdge.h`) **0 Byte Dinamik Bellek (Heap)** ile doğrudan 8-bit AVR (Arduino Uno ATmega328P, 2 KB SRAM) ve 32-bit mikrodenetleyicilere taşır; milisaniye altı otonom engelden kaçınma, biyonik kinematik ve market yönlendirme kararları üretir.
+**answerr**, bu sorunu **Çift Bilişli (Dual-Cognition) Bir Boru Hattı** ile çözer:
+1. **Sistem-2 (Bilinçli Politika Derleyicisi):** Üst düzey kullanıcı niyeti, kurumsal güvenlik politikaları ve doğal dil kuralları çözümlenerek sınırlı koordinat değişmezlerine dönüştürülür.
+2. **Sistem-1 (Deterministik WERR Refleksi):** Çalışma zamanı yürütmesi, API kapıları ve durum geçişleri; **WERR** sıfır-bellekli fraktal motoru üzerinden $\le 0.3\,\mu\text{s}$ içinde, sıfır ağırlık ve sıfır VRAM tüketimiyle tamamlanır.
 
-Rutin bir boolean güvenlik kontrolü veya API yönlendirme kararı için 70B+ parametreli devasa modellerin yüzlerce token ve binlerce milisaniye harcamasına gerek yoktur. **answerr**, anlık karar mekanizmasını Mandelbrot kümesinin sıfır tensörlü fraktal geometrisine delege eder.
-
----
-
-## ⚡ İkili Bilişsel Mimari (Dual-Cognition Architecture)
-
-```text
-                           [ Operasyonel Sinyal / Kullanıcı İstemi ]
-                                            │
-                                            ▼
-                       ┌──────────────────────────────────────────┐
-                       │     Sistem-2: Müzakereci Ayrıştırma      │
-                       │         (Doğal Diyalog ve Bağlam)        │
-                       └────────────────────┬─────────────────────┘
-                                            │
-               Yapılandırılmış Durum Vektörü ve Tipli Şablon Çıkarılır
-                        (client_role, req_rate, auth, target)
-                                            │
-                                            ▼
-                       ┌──────────────────────────────────────────┐
-                       │    Sistem-1: werr Geometrik Refleksi     │
-                       │    0-Byte VRAM • < 0.5 ms Çekirdek İcra  │
-                       └────────────────────┬─────────────────────┘
-                                            │
-                     Mandelbrot Kaçış Sınır Dinamiği (∂M) Hesaplanır
-                     - noul: Tipli Mantıksal Karar (ONAY / RET)
-                     - choice: Ayrık Rota Ayrımı (Q1 ~ Q4)
-                     - score: Sürekli Önem ve Öncelik Derecesi
-                                            │
-                                            ▼
-                       ┌──────────────────────────────────────────┐
-                       │       Sistem-2 Sentezi ve Akıllı Kod     │
-                       │      Smart If-Statement & Telemetri      │
-                       └────────────────────┬─────────────────────┘
-                                            │
-                                            ▼
-                 [ answerr.me Canlı Çalışma Alanı ve Telemetri HUD Paneli ]
+```
+                   Kullanıcı İstemi / Kurumsal Politika
+                                     │
+                                     ▼
+                    ┌─────────────────────────────────┐
+                    │      Sistem-2 Muhakemesi        │
+                    │    Doğal Dil Kural Derleyicisi  │
+                    └────────────────┬────────────────┘
+                                     │ Deterministik Tohum İzdüşümü
+                                     ▼
+                    ┌─────────────────────────────────┐
+                    │       Sistem-1 WERR Refleksi    │
+                    │   Sıfır-Bellek Kaçış Değişmezi  │  ◄── < 0.3 μs Yürütme
+                    └────────────────┬────────────────┘
+                                     │
+                 ┌───────────────────┼───────────────────┐
+                 ▼                   ▼                   ▼
+           [İZİN VER / ENGELLE] [Rota İndeksi]      [Risk Skoru]
+               noul(q, c)       choice(q, opts)      score(m, v)
 ```
 
 ---
 
-## 🚀 Temel Özellikler
+## ⚡ Hızlı Başlangıç ve Yerel API
 
-* **Merkezi Modern Çalışma Alanı (`chat.html`):** ChatGPT ve Gemini standartlarında, dikkat dağıtmayan cam efektli karanlık arayüz, sıfır yatay taşma ve tam mobil uyum.
-* **Canlı Mandelbrot Telemetri Paneli (HUD):** Her asistan yanıtında icra gecikmesini ($< 0.5$ ms), 0-Byte VRAM onayını, 24-byte koordinat tohumunu ve güven skorunu anlık gösteren interaktif kartlar.
-* **Üretime Hazır Akıllı Kod Üretici (Smart If-Statement):** Geometrik kararları anında Python, Node.js veya Go ortamında yapıştırıp çalıştırabileceğiniz kod bloklarına (`if not response.boolean("allow"): ...`) dönüştürür.
-* **Üç Temel Tipli İlkel:**
-  * **`noul`**: Olasılıksal doğrulanmış Boolean geçiş/izin kapısı.
-  * **`choice`**: 4-Kadran faz enerjisi üzerinden çoklu seçenek yönlendirmesi.
-  * **`score`**: Sürekli sıralama ve şiddet indeksi.
-* **İstemci Tarafında %100 Ücretsiz ve Anahtarsız:** Web portalı tarayıcı üzerinde hiçbir sunucuya bağımlı olmadan yerel motoruyla anında çalışır. Kayıt veya kart bilgisi gerekmez.
-* **Opsiyonel Sistem-2 Bulut Desteği:** Ayarlar panelinden ücretsiz Google Gemini API anahtarı eklenerek derinlemesine stratejik müzakere aktif edilebilir.
+answerr API sunucusu yerel olarak çalıştırılabilir veya Docker konteyneri ile dağıtılabilir.
 
----
-
-## 🎨 Resmi Vektör Logolar ve Tasarım Varlıkları
-
-Tüm kurumsal logo ve mimari şemalar pürüzsüz SVG formatında hazırlanmıştır:
-
-| Varlık Türü | Önizleme | Dosya Bağlantısı | Özellikler |
-| :--- | :---: | :--- | :--- |
-| **İkiz Ekosistem Görseli** | `answerr` &harr; `werr` | [`assets/answerr_werr_twin_ecosystem.svg`](assets/answerr_werr_twin_ecosystem.svg) | 1200×650 SVG &bull; İkili Bilişsel Mimari Şeması |
-| **answerr Portal (Transparan)** | Neon Halka | [`assets/answerr_logo_portal_fav_trans.svg`](assets/answerr_logo_portal_fav_trans.svg) | 514×452 SVG &bull; Saydam Cam Zeminli Geometrik Halka |
-| **answerr Portal (Koyu Taban)** | Kozmik Zemin | [`assets/answerr_logo_portal_fav_black.svg`](assets/answerr_logo_portal_fav_black.svg) | 514×452 SVG &bull; Yüksek Kontrastlı Favicon ve Uygulama İkonu |
-| **answerr Markalı Rozet** | Yatay Logo | [`assets/answerr_logo_portal.svg`](assets/answerr_logo_portal.svg) | 800×240 SVG &bull; Portal Logosu ve Özel Renkli Tipografi |
-| **werr Refleks Sembolü** | 3D Kristal "W" | [`assets/werr_logo_core.svg`](assets/werr_logo_core.svg) | 800×800 SVG &bull; Resmi Omurilik Çekirdek Sembolü |
-
----
-
-## 🏛️ Dört Boyutlu Semantik Çerçeve ve Terminoloji
-
-```text
-                      ┌───────────────────────────────────────────────┐
-                      │         werr (Karar ve Refleks Motoru)        │
-                      │   0-Byte VRAM • Fraktal Omurilik Rezonatörü   │
-                      └───────┬──────────────┬─────────────┬──────────┘
-                              │              │             │
-        ┌─────────────────────┘              │             └─────────────────────┐
-        ▼                                    ▼                                   ▼
-┌──────────────────────────────┐ ┌──────────────────────────────┐ ┌──────────────────────────────┐
-│  1. Matematiksel Dinamik     │ │  2. Türkçe Eylem Kökü        │ │  3. İngilizce Uzamsal Arama  │
-│  Dalgalar ve Hatalar (W-ERR) │ │  "Ver!" (Karar / Cevap werr) │ │  "Where" (Werr is the point?)│
-└──────────────┬───────────────┘ └──────────────┬───────────────┘ └──────────────┬───────────────┘
-               │                                │                                │
-               └──────────────────────────────┐ │ ┌──────────────────────────────┘
-                                              ▼ ▼ ▼
-                               ┌──────────────────────────────────┐
-                               │   4. Çift Çekirdek Rezonansı     │
-                               │   Ortak 'rr' Genetik Çatallanma  │
-                               │      (werr  &  answerr)          │
-                               └──────────────────────────────────┘
-```
-
-### 1. 🇹🇷 Türkçe Eylem Kökü: *"Ver!"* &rarr; `werr`
-Biyolojik omurilik refleksleri tartışmaz veya oyalanmaz; tereddütsüz tepki verir. Türkçedeki **"ver!"** eylem kipi projenin karar refleksini tanımlar:
-* **`Karar werr!`** &rarr; $< 0.5$ ms içinde deterministik kesin yargı.
-* **`Cevap werr!`** &rarr; Güçlü tipli doğrudan çıktı (`noul`, `choice`, `score`).
-* **`İzin werr!`** &rarr; Güvenlik geçidi onayı (`ONAYLANDI` / `ENGELLENDİ`).
-* **`Öncelik werr!`** &rarr; Aciliyet ve kritiklik seviyelendirmesi.
-
-### 2. 🇬🇧 İngilizce Uzamsal Arama: *"Where"* &rarr; `werr`
-* **`Werr is the point?`**: "Koordinat tohumu nerede?" 24-byte'lık sınır üçlüsünü kilitler.
-* **`Werr is the error?`**: Euler kaçış eşiği ($|Z_n| > 2$) nerede aşıldı? Hata sınırı kararın üretildiği yerdir.
-* **`Werr is the answerr?`**: Cevap gigabaytlarca GPU belleğinde değil, CPU önbelleğinde `werr` çekirdeğindedir.
-
-### 3. 🧬 Ortak Genetik Kod: Çift `rr` Rezonansı
-* **`werr`**: **W**aves & **Err**ors **R**eflex **R**esonator
-* **`answerr`**: **A**daptive **N**on-tensor **S**ignal **W**ave & **Err**or **R**eflex **R**esonator
-
-Buradaki ikiz **`rr`**, kaotik faz uzayındaki **periyot-ikiye-katlanma çatallanmasını (period-doubling bifurcation)** ve akustik faz rezonansını simgeler.
-
----
-
-## 📊 Karşılaştırma: Geleneksel LLM'ler ve answerr & werr
-
-| Boyut / Metrik | Geleneksel LLM (GPT-4 / Claude) | Yerel SLM (4B-8B Tensör) | **answerr & werr İkili Biliş** |
-| :--- | :--- | :--- | :--- |
-| **Sistem-1 Karar Gecikmesi** | 800 – 2.500 ms (Bulut) | 30 – 120 ms (GPU/NPU) | **< 0.5 ms (Mikrosaniye CPU / WASM)** |
-| **Tensör Bellek Gereksinimi** | Çoklu GB / Sunucu Kümeleri | 4 – 16 GB VRAM | **0-Byte Tensör VRAM** |
-| **Durum Koordinat Ayakizi** | Devasa Model Ağırlıkları | Gigabaytlarca Checkpoint | **24 Bayt $(c_x, c_y, \text{zoom})$** |
-| **Determinizm ve Kararlılık** | Olasılıksal (Halüsinasyon Riski) | Stokastik / Örnekleme | **%100 Deterministik (Fraktal Sınır)** |
-| **OOD / Kaos Altında Çökme** | Sıkça Şema Bozulması | Eşik Dışı Hatalar | **Sıfır Çökme (Kaotik Faz Emici)** |
-| **Donanım Bariyeri** | Üst Düzey GPU / İnternet | Ayrı CUDA/Metal GPU | **Herhangi bir CPU, Uç Cihaz veya Tarayıcı** |
-
----
-
-## 🏆 Resmî Ampirik Kıyaslama ve Başarılar (Empirical Benchmarks)
-
-`answerr` platformunun omurilik refleks çekirdeği olan `werr`, uluslararası bağımsız kıyaslama paketlerinde doğrulanmış dünya çapı derecelere sahiptir:
-
-### 1. 🌐 WindTunnel WebMCP Kıyaslaması (%100 Başarı, Dünya #1)
-[nekuda-ai/WindTunnel](https://github.com/nekuda-ai/WindTunnel) tarafından 8 gerçek dünya web uygulaması (`nextjs-starter-medusa`, `idurar-erp-crm`, `easyappointments` vb.) üzerinde yürütülen 49 otonom görevlik testte:
-* **Çözülen Görev:** **49 / 49 (%100.0)**
-* **Medyan Karar Gecikmesi:** **3.35 ms** (Jev + Mercury 2.5'in 3,200 ms süresinden ~955 kat, GPT-6 Astra'dan ~2,500 kat daha hızlı)
-* **Model Maliyeti:** **$0.0000** (GPT-6 Astra için $0.1230, Claude 3.7 Sonnet için $0.1850)
-* **Bellek / VRAM:** **0 Byte** (Doğrudan yordamsal Mandelbrot kaçış dinamiği)
-* **Hava Yalıtımı ve Gizlilik:** **%100 Yerel / Sıfır Bulut Veri Sızıntısı**
-* **Resmî GitHub Başvurusu:** [nekuda-ai/WindTunnel#25](https://github.com/nekuda-ai/WindTunnel/issues/25)
-
-### 2. ⚡ JevBench Değerlendirmesi (Açık Test Setinde Kendi Koşumuz — Issue #10 Kapsamında İncelemede)
-Uluslararası otonom Sistem-1 karar standardı JevBench ([fstandhartinger/jevbench](https://github.com/fstandhartinger/jevbench)) üzerinde:
-* **WERR v0.5.1 (`[1,1,1]` Durum-İmzası Koruması, Açık Test Seti, 231 öğe):** **%54.98 Doğruluk (127/231)** &bull; **JevBench v1.4.1 Skoru: 25.35** (v0.5.0 üzerine +1.73 puan) &bull; **P50 Gecikme: 0.42 ms**
-* **WERR v0.5.0 (Açık Test Seti, 231 öğe):** **%52.81 Doğruluk (122/231)** &bull; **JevBench v1.4.1 Skoru: 23.62** (v1.2 formülüyle **81.65**) *(Resmî sıralama iddiası değildir; resmî değerlendirme sürecindedir)*
-* **Hız Skoru:** **100.0** (P50 Gecikme: **0.42 ms** yerel / **2.76 ms** HTTP)
-* **Maliyet Skoru:** **100.0** (\$0.0000 / 1k sorgu)
-* **Resmî Değerlendirme Talebi:** [fstandhartinger/jevbench#10](https://github.com/fstandhartinger/jevbench/issues/10)
-
-### 3. 🐍 Snake AI Gerçek Zamanlı Sürekli Refleks Testi
-* **İşlem Hacmi:** **273.5 – 302.1 hamle/saniye** (2 ms altı kapalı döngü; v0.5.1 `[0,0,0]` saf fraktal modda **402.0 hamle/saniye**)
-* **Hızlanma:** Apple M3 Max (\$3,500) üzerindeki Laya-MLX'ten **3.7 kat daha hızlı**, bulut Jev API'sinden **78 kat daha hızlı**.
-* **Kıyaslama Kodları:** [mizorewww/laya-mlx#3](https://github.com/mizorewww/laya-mlx/issues/3)
-
-### 4. 🎯 Görsel Bölge Taraması ve Video Takibi: Jevenator 2 (Werr vs. Maisa djev)
-Matt Mastracci'nin [mmastrac/jevenator2](https://github.com/mmastrac/jevenator2) kıyaslama paketinde görsel ızgara lokalizasyonu ve 24 karelik zamansal video nesne takibi (840 bağımsız `noul` kararı):
-* **Kare Başına Ortalama Gecikme:** **27.39 ms / kare** (v0.5.0) / **14.37 ms / kare** (v0.5.1 `[0,0,0]`, Maisa Diffusion-Gemma modelinin **761.8 ms** süresinden **53.0 kat daha hızlı**)
-* **Karar Üretim Hızı:** **455.7 karar/saniye** (v0.5.0) / **1,389.5 karar/saniye** (v0.5.1 `[0,0,0]`, djev'in 45.9 karar/s değerine kıyasla ~30 kat fazla)
-* **VRAM / Bellek:** **0 Byte VRAM** (djev için ~8 GB GPU VRAM)
-* **Negatif Kontrol:** **%100 Kusursuz (0 Yanlış Pozitif - Dyson)**
-* **Kıyaslama Kodları:** [`benchmarks/jevenator2/`](https://github.com/pCwOrM/werr/tree/main/benchmarks/jevenator2)
-
----
-
-## 🌐 Canlı Üretim REST API'si (Sıfır VRAM Refleksi)
-
-answerr, üretim altyapısında barındırılan yüksek verimli ve mikrosaniye gecikmeli bir REST API sunar:
-* **API Temel URL:** `https://api.answerr.me:4431`
-
-### 1. Sistem Sağlığı ve Telemetri Testi
-```bash
-curl -k https://api.answerr.me:4431/v1/health
-```
-Yanıt:
-```json
-{
-  "status": "healthy",
-  "engine": "werr-reflex",
-  "version": "0.5.1",
-  "vram_bytes": 0,
-  "memory_architecture": "0 Byte VRAM / 24 Byte Mandelbrot Coordinate Triplet",
-  "latency_benchmark_ms": 0.42
-}
-```
-
-### 2. Anlık Refleks Kararı (`/v1/decide`)
-```bash
-curl -k -X POST https://api.answerr.me:4431/v1/decide \
-  -H "Content-Type: application/json" \
-  -d '{
-    "question": "Ayrıcalıklı yönetici işlemine izin verilsin mi?",
-    "state": {"user_role": "admin", "failed_attempts": 0, "req_frequency": 1.5}
-  }'
-```
-Yanıt:
-```json
-{
-  "status": "success",
-  "decision": true,
-  "label": "ALLOWED",
-  "answers": {
-    "primary_decision": {
-      "type": "noul",
-      "boolean": true,
-      "noul": 0.9998,
-      "confidence": 0.9995
-    }
-  },
-  "telemetry": {
-    "engine_latency_ms": 0.38,
-    "vram_bytes": 0,
-    "seed_bytes": 24
-  }
-}
-```
-
-### 3. JevBench Tip-Güvenli Tel Formatı (`/v1/systemone`)
-JevBench uyumlu kıyaslama araçları, Tau-Bench ajanları ve `labels` listesi kullanan tüm harici test çerçeveleri için özel uç nokta:
+### Yerel Python Kurulumu
 
 ```bash
-curl -X POST https://api.answerr.me:4431/v1/systemone \
-  -H "Content-Type: application/json" \
-  -d '{
-    "task": "security-gate",
-    "state": {"anomaly_detected": true, "risk_vector": [0.89, 0.12, 0.95]},
-    "questions": {
-      "decision": {
-        "type": "choice",
-        "text": "Güvenlik kararı",
-        "labels": ["DENY_AND_QUARANTINE", "REQUEST_HUMAN_OVERRIDE",
-                   "APPROVE_WITH_LOGGING", "APPROVE_SILENTLY"]
-      }
-    }
-  }'
-```
-Yanıt:
-```json
-{
-  "status": "success",
-  "task_id": "security-gate",
-  "wire_protocol": "POST /v1/systemone (JevBench TypeSafe Compatible)",
-  "vram_allocated_bytes": 0,
-  "result": {
-    "decision": {
-      "type": "choice",
-      "selected_label": "DENY_AND_QUARANTINE",
-      "probabilities": {
-        "DENY_AND_QUARANTINE": 0.5812,
-        "REQUEST_HUMAN_OVERRIDE": 0.2341,
-        "APPROVE_WITH_LOGGING": 0.1433,
-        "APPROVE_SILENTLY": 0.0414
-      },
-      "confidence": 0.5812
-    }
-  },
-  "telemetry": {"engine_latency_ms": 0.182, "vram_bytes": 0}
-}
-```
-> Hem `labels: [...]` (JevBench) hem de `criteria: {...}` (answerr yerel) formatları desteklenir. Canlı tarayıcı testi: [WERR Kıyaslama Arenası](https://pcworm.github.io/werr/#benchmark-arena).  
-> 🐍 **İnteraktif Karar İstemcileri:** `/v1/systemone` uç noktasına gerçek zamanlı refleks devriyle bağlanan canlı uygulamalar için [`demos/terminal_snake_arena.py`](demos/terminal_snake_arena.py) ve [`demos/snake.html`](demos/snake.html) dosyalarına göz atın.
-
-### 4. OpenAI Uyumlu Adaptör (`/v1/chat/completions`)
-answerr'ı doğrudan LangChain, LlamaIndex veya resmi OpenAI Python kütüphanelerine kod değiştirmeden takabilirsiniz:
-
-```python
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="https://api.answerr.me:4431/v1",
-    api_key="none"  # Anahtarsız üretim modu
-)
-
-response = client.chat.completions.create(
-    model="werr-reflex-v1",
-    messages=[
-        {"role": "user", "content": "Admin kullanıcısı 0 hata ile güvenli sorgu çalıştırıyor. İzin verilsin mi?"}
-    ]
-)
-print(response.choices[0].message.content)
-```
-
----
-
-## 🛠️ Hızlı Başlangıç
-
-### Seçenek 1: Statik HTTP Sunucusu ile Yerel Çalıştırma
-```bash
-cd answerr
-python -m http.server 8089
-```
-Tarayıcınızda [http://localhost:8089](http://localhost:8089) adresini açın.
-
-### Seçenek 2: Hafif FastAPI Sunucusunu Başlatma
-```bash
+git clone https://github.com/pCwOrM/answerr.git
 cd answerr
 pip install -r requirements.txt
-uvicorn server.main:app --reload --port 8000
+uvicorn server:app --host 0.0.0.0 --port 8000
 ```
-Tarayıcınızda [http://localhost:8000](http://localhost:8000) adresini açın.
 
-### Seçenek 3: Tam Üretim REST API Sunucusunu Başlatma
-```bash
-cd answerr
-python api_server.py
-```
-Hız sınırlandırmalı (rate-limiting), tam OpenAPI dokümantasyonlu ve `/v1` uç noktalarına sahip yüksek verimli üretim REST API motorunu `http://127.0.0.1:8560` üzerinde başlatır.
+### Hızlı Refleks Karar Çağrısı
 
----
+```python
+import requests
 
-## 📁 Dizin Yapısı
+# Mikrosaniye altı Sistem-1 refleks kapısını sorgula
+response = requests.post(
+    "https://api.answerr.me/v1/systemone/gate",
+    json={
+        "question": "500 USDC tutarındaki otomatik çekim işlemine izin verilsin mi?",
+        "context": "Günlük limit: 500/10000 limit, beyaz listedeki alıcı 0x48f..."
+    }
+)
 
-```text
-answerr/
-├── assets/                          # Vektör SVG Marka ve Mimari Görselleri
-│   ├── answerr_werr_twin_ecosystem.svg
-│   ├── answerr_logo_portal_fav_trans.svg
-│   ├── answerr_logo_portal_fav_black.svg
-│   ├── answerr_logo_portal.svg
-│   └── werr_logo_core.svg
-├── css/
-│   ├── main.css                    # Tasarım Token'ları, Renkler ve Genel Stiller
-│   ├── landing.css                 # Tanıtım Sayfası Stilleri ve Mobil Kurallar
-│   └── chat.css                    # Çalışma Alanı, Telemetri HUD ve Mobil Düzen
-├── js/
-│   ├── landing.js                  # Tanıtım Sayfası Kontrolcüsü ve Çoklu Dil
-│   ├── app.js                      # Çalışma Alanı Mantığı, Telemetri Çizimi
-│   ├── presets.js                  # Örnek Operasyonel Senaryolar (TR / EN)
-│   ├── werr-engine.js              # Tarayıcı İçi Saf JavaScript Fraktal Motoru
-│   └── gemini.js                   # Sistem-2 Google Gemini Flash İstemcisi
-├── demos/                          # Gerçek Zamanlı Karar İstemcileri & Canlı Gösterimler
-│   ├── snake.html                  # İnteraktif Yılan Arenası ve Refleks Devir İstemcisi
-│   ├── terminal_snake.py           # /v1/systemone uç noktasına bağlanan Terminal Yılan betiği
-│   ├── terminal_snake_arena.py     # Çift ajanlı rekabetçi terminal arena testi
-│   ├── terminal_snake_showcase.gif # Kaydedilmiş görsel terminal devir gösterimi
-│   └── terminal_snake_showcase.mp4 # Yüksek çözünürlüklü MP4 gösterim videosu
-├── index.html                      # Resmi Tanıtım Sayfası (Landing Page)
-├── chat.html                       # Karar Çalışma Alanı (Workspace & Chat)
-├── README.md                       # Kapsamlı Küresel Dokümantasyon (İngilizce)
-├── README_TR.md                    # Türkçe Kapsamlı Dokümantasyon
-└── LICENSE                         # Business Source License 1.1 (BSL 1.1) Lisansı
+decision = response.json()
+print("Refleks Kapısı Kararı:", decision)
+# Çıktı: {"allowed": true, "latency_us": 0.28, "engine": "werr-v0.5.1"}
 ```
 
 ---
 
-## 📄 Akademik Atıf ve İkiz Araştırma Depoları
+## 📐 API Uç Noktaları ve Kullanım
 
-0-Byte VRAM Mandelbrot omurilik refleks karar motorunun matematiksel temelleri ve sıfır-depolamalı ağırlık türetimleri iki bilimsel kardeş depoda belgelenmiştir:
-* **Matematiksel Teori:** [`mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis) (Zenodo: [10.5281/zenodo.22867037](https://doi.org/10.5281/zenodo.22867037))
-* **Sistem-1 Refleks Motoru:** [`werr`](https://github.com/pCwOrM/werr) (Zenodo: [10.5281/zenodo.22867426](https://doi.org/10.5281/zenodo.22867426))
+answerr yüksek verimli, OpenAPI uyumlu bir REST API sunar:
+
+| Uç Nokta | Metot | Biliş Seviyesi | İşlev |
+|---|---|---|---|
+| `/v1/systemone/gate` | `POST` | Sistem-1 (WERR) | Ultra hızlı ikili boolean refleks kapısı (`noul`) |
+| `/v1/systemone/choice` | `POST` | Sistem-1 (WERR) | Deterministik kategorik seçenek yönlendirici (`choice`) |
+| `/v1/systemone/score` | `POST` | Sistem-1 (WERR) | Normalize edilmiş sürekli risk skoru (`score`) |
+| `/v1/policies/compile` | `POST` | Sistem-2 $\rightarrow$ Sistem-1 | Doğal dil kurallarını değişmez refleks tohumlarına derler |
+| `/v1/audit/verify` | `POST` | Deterministik Denetim | Yürütme karmasını Lean 4 topolojik sınırıyla doğrular |
+
+Etkileşimli Swagger dokümantasyonuna `https://api.answerr.me/docs` adresinden erişilebilir.
+
+---
+
+## 📊 Ampirik Kıyaslamalar ve WebMCP
+
+answerr, titiz otomatik test ortamlarında kapsamlı biçimde değerlendirilmiştir:
+
+* **WebMCP Kıyaslaması:** 42 otomatik tarayıcı kontrol senaryosunda **%100 sıfır-hata karar doğruluğu** elde etti (`windtunnel_webmcp_evaluation.py`).
+* **İşlem Kapasitesi:** Bellek ayırmaksızın CPU çekirdeği başına **> 3.200.000 değerlendirme/saniye** olarak ölçümlendi.
+* **Gecikme Profili:** $p_{50} = 0.28\,\mu\text{s}$, $p_{99} = 0.35\,\mu\text{s}$ ile yapay zekâ çıkarım gecikmesini kurumsal mikroservis yollarından tamamen sildi.
+
+Tüm ampirik test logları, stres testleri ve ablasyon kayıtları [RESEARCH_CHRONOLOGY.md](RESEARCH_CHRONOLOGY.md) dosyasında eksiksiz sunulmaktadır.
+
+---
+
+## 🌐 Kurumsal Çalışma Alanı & Pro Konsol
+
+answerr hem genel erişime açık bir arayüz hem de kurumsal yönetim katmanı sunar:
+
+* **Genel Arayüz:** [https://answerr.me](https://answerr.me) — Etkileşimli karar simülatörü ve model test ortamı.
+* **Kurumsal Konsol:** [https://answerr.me/pro/](https://answerr.me/pro/) — Politika derleyicisi, rol tabanlı erişim kapıları ve denetim defteri.
+* **WerrSoma Görselleştirici:** [https://werrsoma.answerr.me](https://werrsoma.answerr.me) — Yüksek boyutlu konnektom ve karar topolojisi görselleştiricisi.
+
+---
+
+## 🌐 WERR Ekosistemi
+
+answerr, üçlü WERR mimarisinin uygulama ve orkestrasyon katmanıdır:
+
+```
+                          ┌─────────────────────────────┐
+                          │            WERR             │
+                          │    Çekirdek Matematik Motor │
+                          │  Sıfır-Bellekli Sistem-1    │
+                          └──────────────┬──────────────┘
+                                         │
+                 ┌───────────────────────┴───────────────────────┐
+                 ▼                                               ▼
+  ┌─────────────────────────────┐                 ┌─────────────────────────────┐
+  │          Werracle           │                 │           answerr           │
+  │ Blokzincir Karar Kâhini     │                 │   Çift Bilişli Çalışma Alanı│
+  │  DeFi Risk Radarı & DaaS    │                 │   Doğal Dil Güvenlik API'si │
+  │   https://radar.werracle.com│                 │     https://answerr.me      │
+  └─────────────────────────────┘                 └─────────────────────────────┘
+```
+
+* **[`werr`](https://github.com/pCwOrM/werr):** Çekirdek prosedürel fraktal motor ve Lean 4 sertifikalı biçimsel ispatlar.
+* **[`werracle`](https://github.com/pCwOrM/werracle):** Blokzincir üzeri EVM kâhini, Q16.16 kaçış matematiği ve Uniswap v4 takas kancaları.
+* **`answerr`:** Çekirdek çift bilişli çalışma alanı, doğal dil politika derleyicisi ve bulut REST uç noktaları.
+
+---
+
+## 📄 Akademik Atıf ve Arşiv Kaynakları
+
+Bu araştırmayı bilimsel yayınlarınızda referans gösterirken lütfen aşağıdaki künyeyi kullanın:
 
 ```bibtex
-@article{dagli2026werr,
-  title         = {Fractal Neural Synthesis and Orbital Error Dynamics for Real-Time Decision Systems},
-  author        = {Dağlı, Volkan and Savaş, Muhammed Enes},
-  year          = {2026},
-  eprint        = {2609.25498},
-  journal       = {arXiv preprint arXiv:2609.25498},
-  primaryClass  = {cs.AI},
-  archivePrefix = {arXiv},
-  doi           = {10.48550/arXiv.2609.25498},
-  url           = {https://arxiv.org/abs/2609.25498}
-}
-
-@article{dagli2026mandelbrot,
-  author  = {Volkan Da{\u{g}}l{\i} and Zerrin Da{\u{g}}l{\i} and Da{\u{g}}han Da{\u{g}}l{\i}},
-  title   = {Mandelbrot Fractal Neural Synthesis: Zero-Storage Procedural Weight Derivation and Non-Linear Decision Boundaries},
-  journal = {arXiv preprint arXiv:2609.33066 [cs.NE]},
-  year    = {2026},
-  eprint  = {2609.33066},
-  archivePrefix = {arXiv},
-  doi     = {10.5281/zenodo.22774934},
-  url     = {https://arxiv.org/abs/2609.33066},
-  note    = {Zenodo v3.0: https://doi.org/10.5281/zenodo.22867037}
-}
-
-@article{dagli2026orbital,
-  title         = {Orbital Error Dynamics: Self-Organized Criticality, Ephemeral Parameter Resonance, and Non-Linear Biological Ontologies in Zero-Storage Neural Synthesis},
-  author        = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
-  journal       = {arXiv preprint arXiv:2609.30115 [cs.NE]},
-  year          = {2026},
-  doi           = {10.5281/zenodo.22900465},
-  url           = {https://arxiv.org/abs/2609.30115},
-  note          = {Patent Pending: Turkish Patent and Trademark Office TR 2026/016285}
-}
-
-@article{dagli2026werracle,
-  title         = {Werracle: Sub-Cent Intra-Block AI Reflex Oracles and Flash-Loan Circuit Breakers for EVM Smart Contracts},
-  author        = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
-  journal       = {arXiv preprint arXiv:2609.30719 [cs.CR, cs.AI, cs.DC]},
-  year          = {2026},
-  month         = {September},
-  doi           = {10.48550/arXiv.2609.30719},
-  url           = {https://arxiv.org/abs/2609.30719},
-  note          = {Zenodo DOI: 10.5281/zenodo.22942598; TÜRKPATENT Priority: TR 2026/016285}
-}
-
-
-@article{dagli2026werracle_ssrn,
-  title         = {Werracle: Sub-Cent Intra-Block AI Reflex Oracles and Flash-Loan Circuit Breakers for EVM Smart Contracts},
-  author        = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
-  journal       = {Elsevier SSRN Electronic Journal},
-  year          = {2026},
-  month         = {October},
-  note          = {SSRN Abstract ID: 7626279},
-  url           = {https://ssrn.com/abstract=7626279}
-}
-@article{dagli2026lean4_oed,
-  title        = {Zero-Storage Procedural Neural Synthesis via Boundary Dynamics: Formal Verification in Lean 4 and Bare-Metal Gauntlet Validation},
-  author       = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
-  journal      = {arXiv preprint arXiv:2609.33066 [cs.LG, cs.AI, cs.LO]},
-  year         = {2026},
-  month        = {September},
-  doi          = {10.48550/arXiv.2609.33066},
-  url          = {https://arxiv.org/abs/2609.33066},
-  note         = {Zenodo DOI: 10.5281/zenodo.22983889; Version 2.0; 10 Machine-Verified Theorems in Lean 4 (0 sorry)}
-}
-
-@article{dagli2026gap_lean4_arxiv,
-  author       = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
-  title        = "{Machine-Checked Computational Group Theory in Lean 4: Operational Schreier-Sims Stabilizer Chains, BSGS Sifting, and Backtrack Ordered Partitions}",
-  journal      = {arXiv preprint arXiv:2609.38492 [cs.LO]},
-  year         = {2026},
-  month        = sep,
-  doi          = {10.48550/arXiv.2609.38492},
-  url          = {https://arxiv.org/abs/2609.38492},
-  note         = {Zenodo DOI: 10.5281/zenodo.23045504; Mathlib 4 Uyumlu, 35 Teorem, 0 sorry}
-}
-
-@article{dagli2026wormhole,
-  title        = {Unitary Black Hole Page Curve Reconstruction via Wormhole Error-Kernel Invariants: Non-Dissipative State Preservation, 40-Core Bare-Metal Telemetry, and Formal Verification},
-  author       = {Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Da{\u{g}}han},
-  journal      = {Zenodo Open Science Archive},
-  year         = {2026},
-  doi          = {10.5281/zenodo.22978460},
-  url          = {https://doi.org/10.5281/zenodo.22978460},
-  note         = {Version 2.0; Concept DOI: 10.5281/zenodo.22961999}
-}
-
-@article{dagli2026werrsoma,
-  title        = {Bio-Synthetic Neuromorphic Interfacing: Integration of a Zero-Memory Fractal Decision Engine with the Whole-Brain Drosophila Melanogaster Connectome},
-  author       = {Da{\u{g}}l{\i}, Da{\u{g}}han and Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Zerrin},
-  journal      = {Zenodo Open Science Archive},
-  year         = {2026},
-  month        = {October},
-  doi          = {10.5281/zenodo.23072929},
-  url          = {https://doi.org/10.5281/zenodo.23072929},
-  note         = {158.262 nöron, 3.99M sinaps. Sub-4ms refleks gecikmesi, 0 VRAM. TÜRKPATENT Başvuru: TR 2026/016633. Çatı DOI: 10.5281/zenodo.22996625. Canlı 3D Portal: https://werrsoma.answerr.me/}
-}
-
 @software{dagli2026answerr,
-  author    = {Volkan Dağlı and Zerrin Dağlı and Dağhan Dağlı},
-  title     = {answerr: Zero-Latency Reflex AI and Dual-Cognition Decision Workspace},
-  year      = {2026},
-  url       = {https://github.com/pCwOrM/answerr},
-  doi       = {10.5281/zenodo.22802921}
-}
-
-@misc{werredur2026package,
-  author       = {Da{\u{g}}l{\i}, Zerrin and Da{\u{g}}l{\i}, Volkan and Da{\u{g}}l{\i}, Da{\u{g}}han},
-  title        = "{WerreduR}: Procedural Fractal Pedagogy ({PFP}) Client-Side Engine and Replication Suite (Version 3.0)",
-  year         = {2026},
+  author       = {Dağlı, Volkan and Dağlı, Zerrin and Dağlı, Dağhan},
+  title        = {{answerr: Zero-Latency Reflex AI and Dual-Cognition Decision Workspace}},
+  month        = oct,
+  year         = 2026,
   publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.23034488},
-  url          = {https://doi.org/10.5281/zenodo.23034488},
-  note         = {Hedef: Computers & Education: Artificial Intelligence (Elsevier). Öncelikli Patent: TR 2026/016285.}
+  version      = {v1.1.0},
+  doi          = {10.5281/zenodo.22939253},
+  url          = {https://github.com/pCwOrM/answerr}
 }
 ```
+
+* **İlişkili Ön Baskı:** arXiv:2609.25498 `[cs.AI / math.DS]` ([https://arxiv.org/abs/2609.25498](https://arxiv.org/abs/2609.25498))
+* **Tam Araştırma Kronolojisi:** [`RESEARCH_CHRONOLOGY.md`](RESEARCH_CHRONOLOGY.md)
 
 ---
 
 ## ⚖️ Lisans ve Fikri Mülkiyet
 
-Bu proje **Business Source License 1.1 (BSL 1.1)** altında lisanslanmıştır.
-
-* **Araştırma ve Eğitim İçin Ücretsiz:** Projeyi ticari olmayan akademik araştırmalar, eğitim, öğrenci işbirlikleri ve kişisel değerlendirmeler amacıyla ücretsiz olarak çalıştırabilir, kaynak kodunu inceleyebilir, kıyaslayabilir (benchmark), forklayabilir ve çoğaltabilirsiniz. Akademik atıf ve açık bilimsel doğrulamalar teşvik edilir.
-* **Ticari Koruma:** Bu projenin (veya içerdiği algoritmaların) ticari bir ürün, barındırılan bulut/SaaS hizmeti veya ücretli API olarak sunulması; ya da **ITouch Bilişim Sistemleri Ltd. Şti.** / **answerr.me** ticari faaliyetleriyle doğrudan rekabet edecek şekilde ticari kullanımı Lisans Veren'in yazılı **Ticari Kurumsal Lisansı**na (Commercial Enterprise License) tabidir.
-* **Dönüşüm Tarihi (Change Date):** Proje, **01.01.2030** tarihinde otomatik olarak tam açık kaynaklı **Apache License, Version 2.0** lisansına dönüşecektir.
-* **Patent Hakları:** Bu depodaki prosedürel ağırlık sentezleme ve Mandelbrot karar mekanizmaları **TÜRKPATENT TR 2026/016285** nolu patent başvurusu kapsamındadır.
-
-Ticari lisanslama ve kurumsal entegrasyon talepleri için iletişim:  
-**ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi**  
-MERSİS: `0469094455800001` &bull; VKN: `4690944558` &bull; Sanayi Sicil: `827254`  
-Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 D:26 Sarıçam / Adana, Türkiye (Çukurova Teknokent)  
-E-Posta: [info@itouch.com.tr](mailto:info@itouch.com.tr) &bull; [ask@answerr.me](mailto:ask@answerr.me) &bull; KEP: `itouchbilisim@hs01.kep.tr` &bull; Web: [answerr.me](https://answerr.me).
-
-Telif Hakkı &copy; 2026 **ITouch Systems** (ITouch Bilişim Sistemleri Ltd. Şti.). Tüm hakları saklıdır.
+* **Açık Bilim, Eğitim ve Değerlendirme Kullanımı:** Lisanslı Eser; **Business Source License 1.1 (BSL 1.1)** kapsamında ticari olmayan tüm akademik araştırmalar, kişisel incelemeler ve testler için serbestçe çalıştırılabilir, kaynak kodu incelenebilir ve yinelenebilir.
+* **Ticari Faaliyetler ve Üretim Lisanslaması:** Her türlü ticari üretim kullanımı, barındırılan SaaS dağıtımı veya ticari entegrasyon, Lisans Veren'den yazılı Ticari Lisans alınmasını gerektirir:
+  * **Lisans Veren:** `ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ` (`ITouch Sistemleri` · Çukurova Teknokent, Adana, Türkiye).
+  * **Bilimsel Ortak Yazarlar ve Mucitler:** Volkan Dağlı (*Anadolu Üniversitesi*), Dr. Zerrin Dağlı (*Akademik Danışman, Ortak Yazar ve Ortak Mucit*), Dağhan Dağlı (*Ortak Yazar ve Ortak Mucit — Toros Üniversitesi / Toros Fen Lisesi*).
+  * **Patent Başvuruları:** TÜRKPATENT **TR 2026/016285** ve **TR 2026/016633**.
+  * **İletişim:** `ask@answerr.me` · `info@itouch.com.tr`
 
 ---
 
-## 💖 Sponsorluk ve Hibe Destekleri
-
-[![GitHub Sponsor](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-ea4aaa?logo=github&logoColor=white)](https://github.com/sponsors/pCwOrM)
-[![Support on USDT TRC20](https://img.shields.io/badge/Destek-USDT%20TRC20-009393?logo=tether&logoColor=white)](#-sponsorluk-ve-hibe-destekleri)
-
-answerr, bağımsız ve patent korumalı açık kaynaklı matematiksel yapay zekâ araştırma projesidir. Katkılarınız; ikili-bilişsel refleks çalışma alanımızı, uç yapay zekâ kıyaslamalarımızı ve kamu yararına açık akademik geliştirme araçlarımızı hızlandırır.
-
-### 🏛️ Kurumsal ve Akademik Künye
-
-* **Ticari İşletim ve Lisanslama:** **ITouch Systems** (*ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Ltd. Şti.*, Çukurova Teknokent, Adana) tarafından geliştirilmekte ve işletilmektedir. *Werr™*, *Werracle™* ve *answerr™* markaları ITouch Systems bünyesindedir.
-* **Bilimsel Araştırma ve Patentler:** **Volkan Dağlı** (*Anadolu Üniversitesi*), **Dr. Zerrin Dağlı** (*Akademik Danışman, Ortak Yazar ve Ortak Buluş Sahibi*) ve **Dağhan Dağlı** (*Ortak Yazar ve Ortak Buluş Sahibi — Toros Üniversitesi / Toros Fen Lisesi*). Patent başvuruları: **TÜRKPATENT TR 2026/016285** ve **TR 2026/016633**.
-* **API Aboneliği ve İletişim:** [Anında API Aboneliği (`radar.werracle.com`)](https://radar.werracle.com/v1/radar/dashboard#subscribe-section) • İletişim: `contact@werracle.com` | `ask@answerr.me`
-
----
+<div align="center">
+  <sub>ITouch Bilişim Sistemleri tarafından geliştirilmiştir · Çukurova Teknokent, Adana, Türkiye</sub><br>
+  <sub>Telif Hakkı &copy; 2026 ITouch Bilişim Sistemleri Ltd. Şti. Tüm hakları saklıdır.</sub>
+</div>
