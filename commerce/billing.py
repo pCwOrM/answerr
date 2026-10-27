@@ -564,7 +564,7 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
     c.drawString(21 * mm, bank_y + 17 * mm, "OFFICIAL CORPORATE BANK ACCOUNTS (TEB — TÜRK EKONOMİ BANKASI A.Ş. / ADANA TOROS ŞB. 446 | SWIFT: TEBUTRIS)")
     c.setFont(f_reg, 7.2)
     c.setFillColor(colors.HexColor("#0F172A"))
-    c.drawString(21 * mm, bank_y + 12.2 * mm, "Beneficiary (Alıcı): ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ (Müşteri No: 23764109)")
+    c.drawString(21 * mm, bank_y + 12.2 * mm, "Beneficiary (SWIFT): ITOUCH BILISIM SISTEMLERI LTD. STI.   |   Alıcı (Yurtiçi): ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ.")
     c.setFont(f_mono, 7.2)
     c.drawString(21 * mm, bank_y + 7.4 * mm, "TRY (TL) IBAN : TR92 0003 2000 0000 0070 5754 65   |   USD IBAN : TR83 0003 2000 0000 0088 9467 48")
     c.drawString(21 * mm, bank_y + 2.8 * mm, "EUR IBAN      : TR28 0003 2000 0000 0088 9467 68   |   EVM USDC : 0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7")
