@@ -523,6 +523,145 @@ def checkout(req: CheckoutReq, request: Request):
     return {"status": "success", **out, **q}
 
 
+class InstantCheckoutReq(BaseModel):
+    email: str = Field(..., max_length=254)
+    company: Optional[str] = Field(None, max_length=120)
+    tax_id: Optional[str] = Field(None, max_length=50)
+    address: Optional[str] = Field(None, max_length=200)
+    phone: Optional[str] = Field(None, max_length=30)
+    plan: str = "kesif"
+    cycle: str = "monthly"
+    method: str = "free"
+    tx_hash: Optional[str] = None
+    network: Optional[str] = "base"
+    token: Optional[str] = "USDC"
+    currency: Optional[str] = "USD"
+    accept_terms: bool = True
+    kvkk_ack: bool = True
+    marketing: bool = False
+    lang: Optional[str] = "tr"
+    website: Optional[str] = None
+
+
+@router.post("/v1/checkout/instant", tags=["Plans & billing"])
+def instant_checkout(req: InstantCheckoutReq, request: Request):
+    """Fast B2B API provisioning: instant free key, verified crypto, iyzico card, or bank transfer proforma invoice."""
+    email = (req.email or "").strip().lower()
+    if not AM.valid_email(email):
+        raise S.CommerceError(400, "bad_email", "Please enter a valid e-mail address.")
+    if not (req.accept_terms and req.kvkk_ack):
+        raise S.CommerceError(400, "consent_required", "Accept the terms of service and acknowledge the KVKK notice to continue.")
+    human_check(request)
+    if (req.website or "").strip():
+        return {"status": "success", "message": "OK"}
+    lang = req.lang if req.lang in ("tr", "en") else "tr"
+
+    b_info = {
+        "company": req.company or "answerr API User",
+        "email": email,
+        "tax_id": req.tax_id,
+        "address": req.address,
+        "phone": req.phone,
+        "consent_preinfo": True,
+        "consent_distance_sale": True,
+        "consent_ts": int(time.time()),
+        "legal_version": mail.legal_version()
+    }
+
+    target_plan = req.plan if req.plan in P.PLANS else "kesif"
+    cycle = req.cycle if req.cycle in ("monthly", "yearly") else "monthly"
+
+    prov = S.instant_provision_account(
+        email, company=req.company, plan="kesif" if req.method != "crypto" else target_plan,
+        ip=ip_of(request), lang=lang, billing_info=b_info
+    )
+    acc_id = prov["account_id"]
+    sess = prov["session"]
+    raw_api_key = prov["api_key"]
+
+    if req.method == "free" or target_plan == "kesif":
+        return {
+            "status": "success",
+            "session": sess,
+            "account_id": acc_id,
+            "api_key": raw_api_key,
+            "plan": "kesif",
+            "message": "API anahtarınız anında tahsis edildi. Konsola hemen giriş yapabilirsiniz." if lang == "tr" else "Your API key has been provisioned. You can enter the console now."
+        }
+
+    if req.method == "crypto":
+        tx_clean = (req.tx_hash or "").strip().lower()
+        if not tx_clean:
+            raise S.CommerceError(400, "bad_tx_hash", "Please provide a valid transaction hash (TXID).")
+        tok_key = "crypto:" + tx_clean
+        existing = S.get_payment(token=tok_key)
+        if existing and existing.get("status") == "paid":
+            raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
+        q_usd = billing.quote_usd(target_plan, cycle)
+        ver = billing.verify_crypto_payment(req.tx_hash, req.network or "base", req.token or "USDC", float(q_usd["total"]))
+        pay = S.create_payment(
+            acc_id, "plan", target_plan, cycle, q_usd["net"], "0.00", q_usd["total"],
+            "crypto_" + (req.network or "base").lower(), email, billing=b_info, currency=ver["currency"]
+        )
+        S.set_payment_token(pay["id"], tok_key)
+        out = S.complete_payment(pay["id"], ver["tx_hash"], 1, ver["network"][:16])
+        if out.get("first"):
+            mail.payment_paid(S.get_account(acc_id), out["payment"], b_info)
+        inv_url = f"/v1/account/payments/{pay['id']}/invoice.pdf?token={sess}"
+        inv_no = "INV-{}-{}".format(time.strftime("%Y"), str(pay["id"]).replace("pay_", "").upper()[:8])
+        return {
+            "status": "success",
+            "session": sess,
+            "account_id": acc_id,
+            "api_key": raw_api_key,
+            "plan": target_plan,
+            "invoice_no": inv_no,
+            "invoice_pdf_url": inv_url,
+            "message": "Ödemeniz zincir üstünde doğrulandı, planınız aktifleştirildi ve ticari faturanız hazırlandı." if lang == "tr" else "Payment verified on-chain, plan activated and commercial invoice generated."
+        }
+
+    if req.method == "bank":
+        q = billing.quote_try(target_plan, cycle) if req.currency == "TRY" else billing.quote_usd(target_plan, cycle)
+        curr = "TRY" if req.currency == "TRY" else "USD"
+        pay = S.create_payment(
+            acc_id, "plan", target_plan, cycle, q["net"], q.get("vat", "0.00"), q["total"],
+            "bank_wire", email, billing=b_info, currency=curr
+        )
+        inv_url = f"/v1/account/payments/{pay['id']}/invoice.pdf?token={sess}"
+        inv_no = "PRO-{}-{}".format(time.strftime("%Y"), str(pay["id"]).replace("pay_", "").upper()[:8])
+        return {
+            "status": "success",
+            "session": sess,
+            "account_id": acc_id,
+            "api_key": raw_api_key,
+            "plan": target_plan,
+            "payment": pay,
+            "invoice_no": inv_no,
+            "invoice_pdf_url": inv_url,
+            "proforma_pdf_url": inv_url,
+            "bank_accounts": P.CATALOG.get("bank_accounts", {}),
+            "message": "Kurumsal proforma faturanız oluşturuldu. Banka havalesi ardından resmi faturanız onaylanacaktır." if lang == "tr" else "Proforma invoice generated. Your payment will be confirmed upon bank transfer."
+        }
+
+    if req.method == "iyzico":
+        q = billing.quote_try(target_plan, cycle)
+        buyer = billing.buyer_from_account(S.get_account(acc_id), email, ip_of(request))
+        pay = S.create_payment(
+            acc_id, "plan", target_plan, cycle, q["net"], q["vat"], q["total"],
+            "iyzico", email, billing=dict(buyer["billing"], consent_preinfo=True, consent_distance_sale=True, consent_ts=int(time.time()), legal_version=mail.legal_version()),
+            currency="TRY"
+        )
+        prov_b = billing.provider()
+        chk = prov_b.init_checkout(pay, buyer, f"{billing.CALLBACK_BASE}/v1/billing/iyzico/callback?session={sess}")
+        return {
+            "status": "checkout",
+            "session": sess,
+            "account_id": acc_id,
+            "payment": pay,
+            "form": chk
+        }
+
+
 class CryptoCheckoutReq(BaseModel):
     plan: str
     cycle: str = "monthly"
@@ -573,12 +712,19 @@ def crypto_checkout(req: CryptoCheckoutReq, request: Request):
 
 
 @router.get("/v1/account/payments/{payment_id}/invoice.pdf", tags=["Plans & billing"])
-def account_payment_invoice_pdf(payment_id: str, request: Request):
-    p = need(request, roles=("owner", "admin"))
+@router.get("/v1/invoice/{payment_id}.pdf", tags=["Plans & billing"])
+def account_payment_invoice_pdf(payment_id: str, request: Request, token: Optional[str] = None):
+    p = principal(request)
+    if not p and token:
+        sess_rec = S.resolve_session(token)
+        if sess_rec:
+            p = {"account_id": sess_rec["account_id"], "email": sess_rec["email"], "role": sess_rec["role"], "via": "session"}
     pay = S.get_payment(pid=payment_id)
-    if not pay or pay.get("account_id") != p["account_id"]:
+    if not pay:
         raise S.CommerceError(404, "no_payment", "Payment or proforma invoice record not found.")
-    acc = S.get_account(p["account_id"])
+    if p and pay.get("account_id") != p["account_id"]:
+        raise S.CommerceError(403, "forbidden", "Payment record belongs to another account.")
+    acc = S.get_account(pay["account_id"]) if pay.get("account_id") else None
     pdf_bytes = billing.generate_answerr_invoice_pdf(acc, pay)
     return Response(
         content=pdf_bytes,

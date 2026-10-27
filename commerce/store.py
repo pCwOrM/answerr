@@ -216,6 +216,50 @@ def member_of(email: str) -> Optional[Dict[str, Any]]:
     return _row(conn().execute("SELECT * FROM members WHERE email = ?", (email.strip().lower(),)).fetchone())
 
 
+def instant_provision_account(email: str, company: Optional[str] = None, plan: str = "kesif",
+                              ip: str = "127.0.0.1", lang: str = "tr",
+                              billing_info: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """Provisions or retrieves an account immediately, returning an active session and API key."""
+    email_clean = (email or "").strip().lower()
+    t = now()
+    with tx() as c:
+        m = c.execute("SELECT * FROM members WHERE email = ?", (email_clean,)).fetchone()
+        first_key = None
+        if m is None:
+            acc_id = new_id("acc", 6)
+            b_json = json.dumps(billing_info or {}, ensure_ascii=False)
+            c.execute("INSERT INTO accounts (id, email, company, plan, created_at, lang, terms_version, terms_accepted_at, "
+                      "kvkk_ack_at, marketing_opt_in, signup_ip, plan_started_at, billing_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)",
+                      (acc_id, email_clean, (company or "")[:120], plan, t, lang if lang in ("tr", "en") else "tr",
+                       TERMS_VERSION, t, t, ip, t, b_json))
+            c.execute("INSERT INTO members (account_id, email, role, created_at, joined_at) VALUES (?, ?, 'owner', ?, ?)",
+                      (acc_id, email_clean, t, t))
+            event(c, acc_id, email_clean, "account.created", {"plan": plan, "ip": ip, "instant": True})
+            first_key = _create_key(c, acc_id, "default", email_clean)
+            m = c.execute("SELECT * FROM members WHERE email = ?", (email_clean,)).fetchone()
+            acc = _row(c.execute("SELECT * FROM accounts WHERE id = ?", (acc_id,)).fetchone())
+        else:
+            acc_id = m["account_id"]
+            acc = _row(c.execute("SELECT * FROM accounts WHERE id = ?", (acc_id,)).fetchone())
+            if acc is None or acc.get("status") == "closed":
+                raise CommerceError(403, "account_closed", "This account is closed.")
+            k_row = c.execute("SELECT id FROM api_keys WHERE account_id = ? AND revoked_at IS NULL ORDER BY created_at DESC LIMIT 1", (acc_id,)).fetchone()
+            if not k_row:
+                first_key = _create_key(c, acc_id, "default", email_clean)
+        sess = "ans_sess_" + secrets.token_urlsafe(32)
+        c.execute("INSERT INTO sessions (token_hash, account_id, email, role, created_at, expires_at) VALUES (?, ?, ?, ?, ?, ?)",
+                  (sha(sess), acc_id, email_clean, m["role"], t, t + SESSION_TTL))
+        event(c, acc_id, email_clean, "session.created", {"ip": ip, "instant": True})
+    return {
+        "account": acc,
+        "account_id": acc_id,
+        "session": sess,
+        "api_key": first_key[0] if first_key else None,
+        "role": m["role"],
+        "email": email_clean
+    }
+
+
 def verify_login(raw: str, ip: str) -> Dict[str, Any]:
     """Consumes a link token. Signs up (creating the account and a first API key) or logs in."""
     first_key = None

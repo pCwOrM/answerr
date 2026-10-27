@@ -340,3 +340,43 @@ def test_docs_compile_register_decide_flow(client):
     assert b["verdict"] == "REVIEW" and b["trace"]["rule_id"] == "r1_amount_gt"
     b = client.post("/v1/gates/acme_payments/decide", json={"state": {"amount": 100, "failed_attempts": 5}}, headers=auth(key)).json()
     assert b["verdict"] == "DENY"
+
+
+def test_instant_checkout_free_and_proforma(client):
+    # 1. Instant free explore signup
+    r = client.post("/v1/checkout/instant", json={
+        "email": "instant_dev@example.com",
+        "company": "FastDev Co",
+        "plan": "kesif",
+        "method": "free",
+        "accept_terms": True,
+        "kvkk_ack": True
+    })
+    assert r.status_code == 200, r.text
+    b = r.json()
+    assert b["status"] == "success"
+    assert b["api_key"].startswith("ans_live_")
+    assert b["session"].startswith("ans_sess_")
+
+    # 2. Instant bank wire proforma invoice
+    r_bank = client.post("/v1/checkout/instant", json={
+        "email": "corp_buyer@example.com",
+        "company": "Global Quant Inc.",
+        "plan": "pro",
+        "cycle": "monthly",
+        "method": "bank",
+        "currency": "USD",
+        "accept_terms": True,
+        "kvkk_ack": True
+    })
+    assert r_bank.status_code == 200, r_bank.text
+    b_bank = r_bank.json()
+    assert b_bank["status"] == "success"
+    assert "invoice_pdf_url" in b_bank
+    assert b_bank["invoice_no"].startswith("PRO-")
+
+    # 3. Download proforma invoice PDF directly using token
+    pdf_r = client.get(b_bank["invoice_pdf_url"])
+    assert pdf_r.status_code == 200, pdf_r.text
+    assert pdf_r.headers.get("content-type") == "application/pdf"
+    assert pdf_r.content.startswith(b"%PDF")
