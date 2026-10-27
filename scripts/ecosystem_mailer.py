@@ -225,7 +225,7 @@ TEMPLATES = {
 This is an automated verification of the ITouch Systems multi-repo ecosystem dispatch infrastructure.
 
 Active System Repositories:
-1. Mandelbrot Fractal Neural Synthesis (Core Research): https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis
+1. Mandelbrot Fractal Neural Synthesis (Core Research): https://github.com/pCwOrM/fractal-neural-synthesis
 2. WERR (Zero-VRAM Edge Engine): https://github.com/pCwOrM/werr
 3. Answerr (Dual-Cognition Platform & REST API): https://github.com/pCwOrM/answerr (https://answerr.me)
 4. Werracle (On-Chain AI Decision Oracle): https://github.com/pCwOrM/werracle
@@ -321,8 +321,8 @@ We are announcing Paper 2 in the Fractal Neural Synthesis series: "Orbital Error
 This research proves that iterative polynomial escape dynamics on the boundary of the Mandelbrot set M can replace static weight matrices in neural classification.
 
 Zenodo Record: https://doi.org/10.5281/zenodo.22896856
-Interactive 100% Client-Side Labs: https://pcworm.github.io/mandelbrot-fractal-neural-synthesis/
-GitHub Repository: https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis
+Interactive 100% Client-Side Labs: https://pcworm.github.io/fractal-neural-synthesis/
+GitHub Repository: https://github.com/pCwOrM/fractal-neural-synthesis
 
 Best regards,
 ITouch Systems Research Group (ask@answerr.me)

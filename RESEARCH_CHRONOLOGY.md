@@ -37,7 +37,7 @@
   <a href="https://werracle.com/"><img src="https://img.shields.io/badge/Corporate%20Portal-werracle.com-2b3bd1.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werracle.com Corporate"></a>
   <a href="https://elliptic-rank.icarm.cloud/user/114"><img src="https://img.shields.io/badge/NSF%20ICARM-230%20Curves%20Record-blue.svg?style=for-the-badge" alt="NSF ICARM Record"></a>
   <a href="https://werracle.com/"><img src="https://img.shields.io/badge/Cloud%20Vault-Cloudflare%20R2%20Active-f38020.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Cloud Vault R2"></a>
-  <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Base%20Research-Mandelbrot%20Neural%20Synthesis-green.svg?style=for-the-badge" alt="Base Research"></a>
+  <a href="https://github.com/pCwOrM/fractal-neural-synthesis"><img src="https://img.shields.io/badge/Base%20Research-Mandelbrot%20Neural%20Synthesis-green.svg?style=for-the-badge" alt="Base Research"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-100%25%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
   <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks"><img src="https://img.shields.io/badge/The%20Gauntlet-Official%20Benchmarks-brightgreen.svg?style=for-the-badge" alt="The Gauntlet Benchmarks"></a>
   <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20Faster-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
@@ -442,7 +442,7 @@ answerr/
 ## 📄 Citation & Academic References
 
 The mathematical foundations and zero-storage procedural weight derivations powering the reflex engine are documented across the twin scientific research repositories:
-* **Mathematical Theory:** [`mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis) (Zenodo: [10.5281/zenodo.22867037](https://doi.org/10.5281/zenodo.22867037))
+* **Mathematical Theory:** [`mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/fractal-neural-synthesis) (Zenodo: [10.5281/zenodo.22867037](https://doi.org/10.5281/zenodo.22867037))
 * **System-1 Reflex Engine:** [`werr`](https://github.com/pCwOrM/werr) (Zenodo: [10.5281/zenodo.22867426](https://doi.org/10.5281/zenodo.22867426))
 
 ```bibtex
@@ -591,10 +591,10 @@ answerr serves as the production zero-latency dual-cognition reflex platform pow
 
 | Pillar / Paper | Contribution & Focus | Latest Version DOI | Concept / Family DOI | arXiv / Verification & Status | Primary Repository |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Paper 1: MFNS** | Mandelbrot Fractal Neural Synthesis | [`10.5281/zenodo.22867037`](https://doi.org/10.5281/zenodo.22867037) | [`10.5281/zenodo.22774934`](https://doi.org/10.5281/zenodo.22774934) | Open Science Archive (In Revision) | [`pCwOrM/mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis) |
-| **Paper 2: OED** | Orbital Error Dynamics (OED v3) | [`10.5281/zenodo.22900465`](https://doi.org/10.5281/zenodo.22900465) | [`10.5281/zenodo.22896855`](https://doi.org/10.5281/zenodo.22896855) | [`arXiv:2609.30115`](https://arxiv.org/abs/2609.30115) • [HF Paper](https://huggingface.co/papers/2609.30115) (Claimed) | [`pCwOrM/mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis) |
+| **Paper 1: MFNS** | Mandelbrot Fractal Neural Synthesis | [`10.5281/zenodo.22867037`](https://doi.org/10.5281/zenodo.22867037) | [`10.5281/zenodo.22774934`](https://doi.org/10.5281/zenodo.22774934) | Open Science Archive (In Revision) | [`pCwOrM/fractal-neural-synthesis`](https://github.com/pCwOrM/fractal-neural-synthesis) |
+| **Paper 2: OED** | Orbital Error Dynamics (OED v3) | [`10.5281/zenodo.22900465`](https://doi.org/10.5281/zenodo.22900465) | [`10.5281/zenodo.22896855`](https://doi.org/10.5281/zenodo.22896855) | [`arXiv:2609.30115`](https://arxiv.org/abs/2609.30115) • [HF Paper](https://huggingface.co/papers/2609.30115) (Claimed) | [`pCwOrM/fractal-neural-synthesis`](https://github.com/pCwOrM/fractal-neural-synthesis) |
 | **Paper 3: WerreduR** | Procedural Fractal Pedagogy (v4.0) | [`10.5281/zenodo.23128224`](https://doi.org/10.5281/zenodo.23128224) | [`10.5281/zenodo.22999420`](https://doi.org/10.5281/zenodo.22999420) | Target: Q1 AIED / CAEAI • [Live Simulator](https://pcworm.github.io/WerreduR/) | [`jesmaat/WerreduR`](https://github.com/jesmaat/WerreduR) (Mirror: [`pCwOrM/WerreduR`](https://github.com/pCwOrM/WerreduR)) |
-| **Paper 4: BH Page** | Black Hole Page Curve & Quantum Gravity (v5) | [`10.5281/zenodo.23072120`](https://doi.org/10.5281/zenodo.23072120) | [`10.5281/zenodo.22961999`](https://doi.org/10.5281/zenodo.22961999) | CERN Record 22978460 • Quantum Stabilizers | [`pCwOrM/mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis) |
+| **Paper 4: BH Page** | Black Hole Page Curve & Quantum Gravity (v5) | [`10.5281/zenodo.23072120`](https://doi.org/10.5281/zenodo.23072120) | [`10.5281/zenodo.22961999`](https://doi.org/10.5281/zenodo.22961999) | CERN Record 22978460 • Quantum Stabilizers | [`pCwOrM/fractal-neural-synthesis`](https://github.com/pCwOrM/fractal-neural-synthesis) |
 | **Paper 5: Formal** | Lean 4 40-Core Gauntlet (v2) | [`10.5281/zenodo.22983889`](https://doi.org/10.5281/zenodo.22983889) | [`10.5281/zenodo.22974543`](https://doi.org/10.5281/zenodo.22974543) | [`arXiv:2609.33066`](https://arxiv.org/abs/2609.33066) • [HF Paper](https://huggingface.co/papers/2609.33066) (Claimed) | [`pCwOrM/werr`](https://github.com/pCwOrM/werr) & [`werracle`](https://github.com/pCwOrM/werracle) |
 | **Paper 6: WerrSoma** | Drosophila Connectome (158K Neurons, v1.1) | [`10.5281/zenodo.23072929`](https://doi.org/10.5281/zenodo.23072929) | [`10.5281/zenodo.22996625`](https://doi.org/10.5281/zenodo.22996625) | `arXiv:submit/8161759` [on hold] • [Live 3D Portal](https://werrsoma.answerr.me/) | [`Lexovian/WerrSoma`](https://github.com/Lexovian/WerrSoma) (Mirror: [`pCwOrM/WerrSoma`](https://github.com/pCwOrM/WerrSoma)) |
 | **Paper 7: Werracle** | Sub-Cent Intra-Block EVM AI Oracle (v1) | [`10.5281/zenodo.22942599`](https://doi.org/10.5281/zenodo.22942599) | [`10.5281/zenodo.22942598`](https://doi.org/10.5281/zenodo.22942598) | [`arXiv:2609.30719`](https://arxiv.org/abs/2609.30719) • [**SSRN: 7626279**](https://ssrn.com/abstract=7626279) • [HF Paper](https://huggingface.co/papers/2609.30719) (Claimed) | [`pCwOrM/werracle`](https://github.com/pCwOrM/werracle) & [`werralem`](https://github.com/pCwOrM/werralem) |
@@ -665,7 +665,7 @@ answerr is an independent, patented open-source mathematical AI research project
   <a href="https://werr.io/"><img src="https://img.shields.io/badge/Akademik%20Portal-werr.io-0284c7.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werr.io Portalı"></a>
   <a href="https://werracle.io/"><img src="https://img.shields.io/badge/Web3%20Protokol-werracle.io-f59e0b.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werracle.io Web3 Portalı"></a>
   <a href="https://werracle.com/"><img src="https://img.shields.io/badge/Kurumsal%20Portal-werracle.com-2b3bd1.svg?style=for-the-badge&logo=cloudflare&logoColor=white" alt="werracle.com Kurumsal"></a>
-  <a href="https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis"><img src="https://img.shields.io/badge/Temel%20Ara%C5%9Ft%C4%B1rma-Mandelbrot%20N%C3%B6ral%20Sentez-green.svg?style=for-the-badge" alt="Temel Araştırma"></a>
+  <a href="https://github.com/pCwOrM/fractal-neural-synthesis"><img src="https://img.shields.io/badge/Temel%20Ara%C5%9Ft%C4%B1rma-Mandelbrot%20N%C3%B6ral%20Sentez-green.svg?style=for-the-badge" alt="Temel Araştırma"></a>
   <a href="https://github.com/nekuda-ai/WindTunnel/issues/25"><img src="https://img.shields.io/badge/WindTunnel%20WebMCP-%25100%20(49%2F49)-brightgreen.svg?style=for-the-badge" alt="WindTunnel WebMCP"></a>
   <a href="https://github.com/pCwOrM/werr/tree/main/benchmarks"><img src="https://img.shields.io/badge/The%20Gauntlet-Resmi%20K%C4%B1yaslama%20Dizini-brightgreen.svg?style=for-the-badge" alt="The Gauntlet Kıyaslama Duvarı"></a>
   <a href="https://github.com/mmastrac/jevenator2/issues/1"><img src="https://img.shields.io/badge/Jevenator%202-27.8x%20H%C4%B1zl%C4%B1-brightgreen.svg?style=for-the-badge" alt="Jevenator 2"></a>
@@ -1062,7 +1062,7 @@ answerr/
 ## 📄 Akademik Atıf ve İkiz Araştırma Depoları
 
 0-Byte VRAM Mandelbrot omurilik refleks karar motorunun matematiksel temelleri ve sıfır-depolamalı ağırlık türetimleri iki bilimsel kardeş depoda belgelenmiştir:
-* **Matematiksel Teori:** [`mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis) (Zenodo: [10.5281/zenodo.22867037](https://doi.org/10.5281/zenodo.22867037))
+* **Matematiksel Teori:** [`mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/fractal-neural-synthesis) (Zenodo: [10.5281/zenodo.22867037](https://doi.org/10.5281/zenodo.22867037))
 * **Sistem-1 Refleks Motoru:** [`werr`](https://github.com/pCwOrM/werr) (Zenodo: [10.5281/zenodo.22867426](https://doi.org/10.5281/zenodo.22867426))
 
 ```bibtex
