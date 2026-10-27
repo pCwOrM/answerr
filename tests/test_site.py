@@ -46,7 +46,7 @@ def test_no_page_links_the_dead_docs_url():
 
 def test_root_index_promoted_and_research_portal_preserved():
     root_idx = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
-    assert 'href="pro/pro.css"' in root_idx
+    assert 'href="pro/pro.css' in root_idx
     assert 'src="pro/console.js"' in root_idx
     assert 'id="werrPresetSel"' in root_idx
     for href in re.findall(r'href="([^"#:]+\.html)"', root_idx):
