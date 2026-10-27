@@ -114,7 +114,7 @@ def footer(r: str) -> str:
         '    <div class="wrap foot-grid">',
         '      <div class="foot-brand"><a class="brand" href="{}index.html">{}<b>answerr</b><span class="tag">PRO</span></a>'.format(r, LOGO),
         '        <p data-i18n="footTag">Doğal dilde yazılan, deterministik çalışan karar politikaları. Çalışma anında model yok; her kararın izi var.</p>',
-        '        <p class="small-mono" data-i18n="footOrg">ITouch Systems · Çukurova University Science Park</p></div>',
+        '        <p class="small-mono" data-i18n="footOrg">ITouch Systems · Çukurova Üniversitesi Teknokent</p></div>',
         "      " + "\n      ".join(cols),
         "    </div>",
         '    <div class="wrap foot-legal">',
