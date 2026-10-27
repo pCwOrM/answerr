@@ -136,16 +136,22 @@
   const root = () => document.getElementById('csRoot');
 
   /* ------------------------------------------------------------------ auth */
-    let activeAuthPlan = 'kesif';
+    let activeAuthPlan = null;
   let activeAuthCycle = 'monthly';
-  let activeAuthPayTab = 'crypto';
+  let activeAuthPayTab = 'card';
 
-  function renderAuth(tab, initialPlan) {
+  function renderAuth(tab, planOverride) {
     tab = tab || (location.hash.indexOf('signup') >= 0 ? 'signup' : 'signin');
-    if (initialPlan) activeAuthPlan = initialPlan;
-    else {
+    if (planOverride) {
+      activeAuthPlan = planOverride;
+      try {
+        const u = new URL(location.href);
+        u.searchParams.set('plan', planOverride);
+        history.replaceState(null, '', u.toString());
+      } catch (e) {}
+    } else if (!activeAuthPlan) {
       const qp = new URLSearchParams(location.search).get('plan');
-      if (qp) activeAuthPlan = qp;
+      activeAuthPlan = (qp && ['kesif', 'gelistirici', 'pro', 'kurumsal'].includes(qp)) ? qp : 'kesif';
     }
 
     const prevEmail = ($('#auEmail') || {}).value || '';

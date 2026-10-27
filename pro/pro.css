@@ -485,7 +485,70 @@ footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
 .plan li::before { content: '◇'; position: absolute; left: 0; top: 0; color: var(--amber); font-size: 12px; line-height: 1.9; }
 .soon { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--amber); border: 1px solid rgba(255,176,72,0.5); padding: 0 5px; margin-left: 6px; white-space: nowrap; vertical-align: 1px; }
 .ribbon { align-self: flex-start; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; background: var(--amber); color: var(--amber-ink); padding: 3px 10px; }
-.plan .btn-primary, .plan .btn-ghost { width: 100%; }
+/* Plan Cards & Bottom-Anchored Buttons */
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; align-items: stretch; }
+.plan {
+  border: 1px solid rgba(140,222,236,0.2);
+  background: var(--deck, #0c101b);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  border-radius: 8px;
+  position: relative;
+}
+.plan ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-2, #94a3b8);
+  flex: 1 1 auto;
+  margin-bottom: 8px;
+}
+.plan .btn-primary,
+.plan .btn-ghost {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 12px 18px !important;
+  text-decoration: none !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  margin-top: auto !important;
+  border-radius: 6px !important;
+  clip-path: none !important;
+  letter-spacing: 0.02em !important;
+}
+.plan .btn-primary {
+  background: var(--amber, #FFB048) !important;
+  color: #05060A !important;
+  border: 1px solid #FFB048 !important;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.plan .btn-primary:hover {
+  background: #ffbe5e !important;
+  box-shadow: 0 0 20px rgba(255,176,72,0.4) !important;
+}
+.plan .btn-ghost {
+  background: rgba(255,255,255,0.03) !important;
+  border: 1px solid rgba(140,222,236,0.3) !important;
+  color: var(--text, #f1f5f9) !important;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.plan .btn-ghost:hover {
+  border-color: var(--amber, #FFB048) !important;
+  background: rgba(255,176,72,0.08) !important;
+  color: #fff !important;
+}
 .faq details { border-top: 1px solid var(--line); padding: 16px 0; }
 .faq summary { cursor: pointer; font-family: var(--display); font-size: 19px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
 .faq summary::after { content: '+'; color: var(--amber); font-family: var(--mono); }
