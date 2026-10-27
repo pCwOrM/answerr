@@ -56,3 +56,14 @@ turkpatent_*/
 _isolated_test_vault/
 _isolated_test_vault.*
 
+
+# Security & Credentials
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+*credentials*.json
+*credentials*.py
+*.secret*
