@@ -563,8 +563,8 @@ answerr, bağımsız ve patent korumalı açık kaynaklı matematiksel yapay zek
 
 ### 🏛️ Kurumsal ve Akademik Künye
 
-* **Ticari İşletim ve Lisanslama:** **ITouch Systems** (*ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Ltd. Şti.*, Çukurova Teknokent, Adana) tarafından geliştirilmekte ve işletilmektedir. *Werr®*, *Werracle®* ve *Answerr®* markaları ITouch Systems bünyesindedir.
-* **Bilimsel Araştırma ve Patentler:** **Volkan Dağlı** (*Anadolu Üniversitesi*), **Dr. Zerrin Dağlı** (*Mersin Üniversitesi*) ve **Dağhan Dağlı** (*Toros Üniversitesi — Toros Fen Lisesi*). Patent başvuruları: **TÜRKPATENT TR 2026/016285** ve **TR 2026/016633**.
+* **Ticari İşletim ve Lisanslama:** **ITouch Systems** (*ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Ltd. Şti.*, Çukurova Teknokent, Adana) tarafından geliştirilmekte ve işletilmektedir. *Werr™*, *Werracle™* ve *answerr™* markaları ITouch Systems bünyesindedir.
+* **Bilimsel Araştırma ve Patentler:** **Volkan Dağlı** (*Anadolu Üniversitesi*), **Dr. Zerrin Dağlı** (*Akademik Danışman, Ortak Yazar ve Ortak Buluş Sahibi*) ve **Dağhan Dağlı** (*Ortak Yazar ve Ortak Buluş Sahibi — Toros Üniversitesi / Toros Fen Lisesi*). Patent başvuruları: **TÜRKPATENT TR 2026/016285** ve **TR 2026/016633**.
 * **API Aboneliği ve İletişim:** [Anında API Aboneliği (`radar.werracle.com`)](https://radar.werracle.com/v1/radar/dashboard#subscribe-section) • İletişim: `contact@werracle.com` | `ask@answerr.me`
 
 ---

@@ -12,8 +12,8 @@ import access_mailer as AM
 
 CONSOLE_URL_ENV = "ANSWERR_CONSOLE_URL"
 OUTBOX: List[EmailMessage] = []      # last messages, for tests and diagnostics (never contains passwords)
-SIGNATURE_TR = "\n—\nanswerr · Werr Technology\nITouch Bilişim Sistemleri Ltd. Şti. · Çukurova Teknokent, Adana\nhttps://answerr.me/pro/\n"
-SIGNATURE_EN = "\n—\nanswerr · Werr Technology\nITouch Bilişim Sistemleri Ltd. Şti. · Çukurova Teknokent, Adana, Türkiye\nhttps://answerr.me/pro/\n"
+SIGNATURE_TR = "\n—\nanswerr · Werr Technology\nITouch Bilişim Sistemleri Ltd. Şti. · Çukurova Üniversitesi Teknokent, Adana\nhttps://answerr.me/pro/\n"
+SIGNATURE_EN = "\n—\nanswerr · Werr Technology\nITouch Systems · Cukurova University Science Park, Adana, Turkey\nhttps://answerr.me/pro/\n"
 
 
 def console_url() -> str:

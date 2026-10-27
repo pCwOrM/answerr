@@ -60,7 +60,7 @@ def nav(active: str, r: str) -> str:
         'viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h9" stroke="currentColor" stroke-width="1.6"/></svg></button>',
         '      <div class="nav-links">',
         *links,
-        '        <a href="https://radar.werracle.com/pricing#subscribe-section" target="_blank" rel="noopener" style="color:var(--amber);font-weight:600;" data-i18n="navRadar">Radar API ↗</a>',
+        '        <a href="https://radar.werracle.com/" target="_blank" rel="noopener" style="color:var(--amber);font-weight:600;" data-i18n="navRadar">Radar API ↗</a>',
         '        <a href="https://werracle.com" target="_blank" rel="noopener" data-i18n="navWerracleCom">werracle.com ↗</a>',
         '        <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>',
         '        <a class="btn-ghost btn-sm" href="{}console/"{} data-i18n="navLogin">Konsol</a>'.format(r, cons),

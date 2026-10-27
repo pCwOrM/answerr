@@ -618,7 +618,7 @@ answerr is an independent, patented open-source mathematical AI research project
 ### 🏛️ Corporate & Academic Attribution
 
 * **Commercial Operations & Licensing:** Developed and operated by **ITouch Systems** (*ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Ltd. Şti.*, Çukurova Teknokent, Adana, Türkiye). *Werr™*, *Werracle™*, and *Answerr™* are registered trademarks of ITouch Systems.
-* **Scientific Research & Patents:** Authored by **Volkan Dağlı** (*Anadolu University*), **Dr. Zerrin Dağlı** (*Mersin University*), and **Dağhan Dağlı** (*Toros University — Toros Science High School*). Patent applications: **TÜRKPATENT TR 2026/016285** & **TR 2026/016633**.
+* **Scientific Research & Patents:** Authored by **Volkan Dağlı** (*Anadolu University*), **Dr. Zerrin Dağlı** (*Academic Advisor, Co-Author & Co-Inventor*), and **Dağhan Dağlı** (*Co-Author & Co-Inventor — Toros University / Toros Science High School*). Patent applications: **TÜRKPATENT TR 2026/016285** & **TR 2026/016633**.
 * **API Subscriptions & Grants:** [Instant API Checkout (`radar.werracle.com`)](https://radar.werracle.com/pricing#subscribe-section) • Contact: `contact@werracle.com` | `ask@answerr.me`
 
 ---

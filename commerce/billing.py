@@ -428,7 +428,7 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
     c.drawRightString(width - 18 * mm, y_top + 6 * mm, "COMMERCIAL INVOICE" if is_paid else "COMMERCIAL INVOICE (PROFORMA)")
     c.setFont(f_reg, 7.8)
     c.setFillColor(colors.HexColor("#475569"))
-    c.drawRightString(width - 18 * mm, y_top + 1 * mm, "TİCARİ FATURA (%0 KDV — 3065 s. Kanun Geçici 20/1 Teknopark İstisnası)")
+    c.drawRightString(width - 18 * mm, y_top + 1 * mm, "TİCARİ FATURA / ÖDEME MAKBUZU (%0 KDV AR-GE)" if is_paid else "TİCARİ FATURA / ÖDEME BEKLEYEN TAHAKKUK")
 
     badge_w, badge_h = 54 * mm, 6.5 * mm
     badge_x, badge_y = width - 18 * mm - badge_w, y_top - 6.5 * mm
@@ -459,7 +459,7 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
     c.setFont(f_reg, 8)
     c.setFillColor(colors.HexColor("#334155"))
     for sl in [
-        "Operating Brand: answerr® & Werr® Technology (ITouch Systems)",
+        "Operating Brand: answerr™ & Werr™ Technology (ITouch Systems)",
         "Address: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26",
         "Çukurova Teknokent, 01330 Sarıçam / Adana, Türkiye",
         "Tax Office & ID (VKN): Yüreğir V.D. — 4690944558  |  MERSİS: 0469094455800001",

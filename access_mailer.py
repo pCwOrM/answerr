@@ -96,14 +96,14 @@ def build_messages(req: Dict[str, Any]) -> list:
             "Hello,\n\nThank you for your interest in the answerr Pro design-partner programme. "
             "We received your request and will get back to you within two working days.\n\n"
             "The pilot runs in shadow mode next to your current rules and is free of charge.\n\n"
-            "Volkan Dagli\nanswerr · Werr Technology — ITouch Bilişim, Çukurova Teknokent\nhttps://answerr.me/pro/\n")
+            "Volkan Dagli\nanswerr · Werr Technology · ITouch Systems · Cukurova University Science Park\nhttps://answerr.me/pro/\n")
     else:
         conf["Subject"] = "answerr Pro — talebinizi aldık"
         conf.set_content(
             "Merhaba,\n\nanswerr Pro tasarım ortaklığı programına gösterdiğiniz ilgi için teşekkür ederiz. "
             "Talebinizi aldık; en geç iki iş günü içinde size dönüş yapacağız.\n\n"
             "Pilot, mevcut kurallarınızın yanında gölge modda çalışır ve ücretsizdir.\n\n"
-            "Volkan Dağlı\nanswerr · Werr Technology — ITouch Bilişim, Çukurova Teknokent\nhttps://answerr.me/pro/\n")
+            "Volkan Dağlı\nanswerr · Werr Technology · ITouch Bilişim Sistemleri · Çukurova Üniversitesi Teknokent\nhttps://answerr.me/pro/\n")
     return [note, conf]
 
 
