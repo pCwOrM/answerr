@@ -1782,7 +1782,7 @@ def post_systemone(req: SystemOneRequest):
         "status": "success",
         "task_id": req.task or "werr-systemone",
         "wire_protocol": "POST /v1/systemone (JevBench TypeSafe Compatible)",
-        "system_level": "System-1 (Mandelbrot Boundary Wave Dynamics)",
+        "system_level": "System-1 (Fractal Boundary Wave Dynamics)",
         "vram_allocated_bytes": 0,
         "seed_footprint_bytes": 24,
         "model": req.model,

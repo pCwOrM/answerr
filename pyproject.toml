@@ -13,7 +13,7 @@ authors = [
     { name = "ITouch Systems", email = "info@itouch.com.tr" },
     { name = "Volkan Dağlı", email = "ask@answerr.me" }
 ]
-keywords = ["answerr", "werr", "fractal-ai", "gemini", "zero-memory", "mandelbrot", "system-1", "system-2", "dual-cognition"]
+keywords = ["answerr", "werr", "fractal-ai", "gemini", "zero-memory", "fractal-synthesis", "fractal-wave-dynamics", "system-1", "system-2", "dual-cognition"]
 dependencies = [
     "fastapi>=0.110.0",
     "uvicorn>=0.28.0",
