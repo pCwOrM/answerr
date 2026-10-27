@@ -388,7 +388,7 @@
       "navRadar": "Radar API ↗",
       "navWerracleCom": "werracle.com ↗",
       "fRadarApi": "radar.werracle.com · DeFi Risk DaaS",
-      "footOrg": "ITouch Systems · Çukurova University Science Park",
+      "footOrg": "ITouch Systems · Cukurova University Science Park",
       "fCompanyShort": "ITouch Systems",
       "prSisterTitle": "Sister Commercial B2B Service — Werracle Risk Radar DaaS (radar.werracle.com)",
       "prSisterDesc": "Real-time cross-chain DeFi liquidation surveillance, Chainlink SVR OEV analytics, and live MetaMorpho (Base L2 & Ethereum Mainnet) vault stress-testing API ($0 Open Access · 149 USDC Pro · 499 USDC Curator VIP).",
