@@ -22,7 +22,7 @@ answerr; yazılı karar politikalarını açık kurallara derleyen ve her istek 
 
 ## 3. Bedel ve ödeme
 
-- **Fiyat (%0 KDV — Teknopark Muafiyetli):** Geliştirici aylık **1.449,00 TL**, yıllık peşin **14.388,00 TL**; Pro aylık **4.899,00 TL**, yıllık peşin **48.588,00 TL**. Satıcı, Çukurova Teknokent'te faaliyet gösteren bir Ar-Ge yazılım firması olduğundan 4691 sayılı Teknoloji Geliştirme Bölgeleri Kanunu ve 3065 sayılı KDV Kanunu Geçici 20/1 maddesi (ve yurt dışı satışlarda Hizmet İhracatı istisnası) uyarınca tüm yazılım abonelik faturaları **%0 KDV (KDV muafiyetli)** olarak düzenlenir. Ödeyeceğiniz toplam tutar, ödemeyi onaylamadan önce konsolda ve ödeme sayfasında ayrıca gösterilir. Teslimat masrafı yoktur.
+- **Fiyat (%0 KDV — Teknopark Muafiyetli):** Geliştirici aylık **1.449,00 TL**, yıllık peşin **14.388,00 TL**; Pro aylık **4.899,00 TL**, yıllık peşin **48.588,00 TL**. Satıcı, Çukurova Üniversitesi Teknokent'te faaliyet gösteren bir Ar-Ge yazılım firması olduğundan 4691 sayılı Teknoloji Geliştirme Bölgeleri Kanunu ve 3065 sayılı KDV Kanunu Geçici 20/1 maddesi (ve yurt dışı satışlarda Hizmet İhracatı istisnası) uyarınca tüm yazılım abonelik faturaları **%0 KDV (KDV muafiyetli)** olarak düzenlenir. Ödeyeceğiniz toplam tutar, ödemeyi onaylamadan önce konsolda ve ödeme sayfasında ayrıca gösterilir. Teslimat masrafı yoktur.
 - **Ödeme zamanı:** Peşin. Aylık ödeme 31 gün, yıllık ödeme 366 gün kullanım hakkı verir.
 - **Ödeme yöntemi:** Kredi/banka kartıyla ödeme kuruluşu (iyzico 3D Secure) aracılığıyla tek çekim, blokzincir üzerinde kripto varlık (Base USDC / TRON TRC20 ve EVM ağlarında USDT-USDC) ya da banka havalesi/EFT.
 - **Kart bilgileri:** Satıcı'ya iletilmez ve Satıcı tarafından saklanmaz.

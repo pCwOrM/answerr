@@ -3,7 +3,7 @@
 > **Document Status:** Permanent Historical & Empirical Research Archive (Unabridged)  
 > **Repository:** [pCwOrM/answerr](https://github.com/pCwOrM/answerr)  
 > **Archival Snapshot Date:** October 2026  
-> **Licensor:** ITouch Bilişim Sistemleri Ltd. Şti. (`ITouch Systems` · Çukurova Teknokent / Cukurova University Science Park)  
+> **Licensor:** ITouch Bilişim Sistemleri Ltd. Şti. (`ITouch Systems` · Cukurova University Science Park)  
 > **Scientific Co-Authors & Inventors:** Volkan Dağlı (Anadolu University), Dr. Zerrin Dağlı (Mersin University), Dağhan Dağlı (Toros University)  
 >
 > *Notice: This document permanently preserves the cumulative historical research logs, ablation matrices, experimental hardware telemetry, and empirical benchmarks of the answerr initiative. It serves as an unalterable academic ledger supporting our published monographs, CERN Zenodo records, and patent disclosures.*
@@ -621,7 +621,7 @@ This project is licensed under the **Business Source License 1.1 (BSL 1.1)**.
 For commercial enterprise licensing inquiries, contact:  
 **ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi**  
 MERSİS: `0469094455800001` &bull; VKN: `4690944558` &bull; Sanayi Sicil: `827254`  
-Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 D:26 Sarıçam / Adana, Türkiye (Çukurova Teknokent)  
+Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 D:26 Sarıçam / Adana, Türkiye (Çukurova Üniversitesi Teknokent)  
 E-Posta: [info@itouch.com.tr](mailto:info@itouch.com.tr) &bull; [ask@answerr.me](mailto:ask@answerr.me) &bull; KEP: `itouchbilisim@hs01.kep.tr` &bull; Web: [answerr.me](https://answerr.me).
 
 Copyright &copy; 2026 **ITouch Systems** (ITouch Bilişim Sistemleri Ltd. Şti.). All rights reserved.
@@ -637,7 +637,7 @@ answerr is an independent, patented open-source mathematical AI research project
 
 ### 🏛️ Corporate & Academic Attribution
 
-* **Commercial Operations & Licensing:** Developed and operated by **ITouch Systems** (*ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Ltd. Şti.*, Çukurova Teknokent, Adana, Türkiye). *Werr™*, *Werracle™*, and *Answerr™* are registered trademarks of ITouch Systems.
+* **Commercial Operations & Licensing:** Developed and operated by **ITouch Systems** (*ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Ltd. Şti.*, Çukurova Üniversitesi Teknokent, Adana, Türkiye). *Werr™*, *Werracle™*, and *Answerr™* are registered trademarks of ITouch Systems.
 * **Scientific Research & Patents:** Authored by **Volkan Dağlı** (*Anadolu University*), **Dr. Zerrin Dağlı** (*Academic Advisor, Co-Author & Co-Inventor*), and **Dağhan Dağlı** (*Co-Author & Co-Inventor — Toros University / Toros Science High School*). Patent applications: **TÜRKPATENT TR 2026/016285** & **TR 2026/016633**.
 * **API Subscriptions & Grants:** [Instant API Checkout (`radar.werracle.com`)](https://radar.werracle.com/pricing#subscribe-section) • Contact: `contact@werracle.com` | `ask@answerr.me`
 
@@ -1197,7 +1197,7 @@ Bu proje **Business Source License 1.1 (BSL 1.1)** altında lisanslanmıştır.
 Ticari lisanslama ve kurumsal entegrasyon talepleri için iletişim:  
 **ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Limited Şirketi**  
 MERSİS: `0469094455800001` &bull; VKN: `4690944558` &bull; Sanayi Sicil: `827254`  
-Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 D:26 Sarıçam / Adana, Türkiye (Çukurova Teknokent)  
+Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 D:26 Sarıçam / Adana, Türkiye (Çukurova Üniversitesi Teknokent)  
 E-Posta: [info@itouch.com.tr](mailto:info@itouch.com.tr) &bull; [ask@answerr.me](mailto:ask@answerr.me) &bull; KEP: `itouchbilisim@hs01.kep.tr` &bull; Web: [answerr.me](https://answerr.me).
 
 Telif Hakkı &copy; 2026 **ITouch Systems** (ITouch Bilişim Sistemleri Ltd. Şti.). Tüm hakları saklıdır.
@@ -1213,7 +1213,7 @@ answerr, bağımsız ve patent korumalı açık kaynaklı matematiksel yapay zek
 
 ### 🏛️ Kurumsal ve Akademik Künye
 
-* **Ticari İşletim ve Lisanslama:** **ITouch Systems** (*ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Ltd. Şti.*, Çukurova Teknokent, Adana) tarafından geliştirilmekte ve işletilmektedir. *Werr™*, *Werracle™* ve *answerr™* markaları ITouch Systems bünyesindedir.
+* **Ticari İşletim ve Lisanslama:** **ITouch Systems** (*ITouch Bilişim Sistemleri Mühendislik Danışmanlık Sanayi ve Ticaret Ltd. Şti.*, Çukurova Üniversitesi Teknokent, Adana) tarafından geliştirilmekte ve işletilmektedir. *Werr™*, *Werracle™* ve *answerr™* markaları ITouch Systems bünyesindedir.
 * **Bilimsel Araştırma ve Patentler:** **Volkan Dağlı** (*Anadolu Üniversitesi*), **Dr. Zerrin Dağlı** (*Akademik Danışman, Ortak Yazar ve Ortak Buluş Sahibi*) ve **Dağhan Dağlı** (*Ortak Yazar ve Ortak Buluş Sahibi — Toros Üniversitesi / Toros Fen Lisesi*). Patent başvuruları: **TÜRKPATENT TR 2026/016285** ve **TR 2026/016633**.
 * **API Aboneliği ve İletişim:** [Anında API Aboneliği (`radar.werracle.com`)](https://radar.werracle.com/v1/radar/dashboard#subscribe-section) • İletişim: `contact@werracle.com` | `ask@answerr.me`
 

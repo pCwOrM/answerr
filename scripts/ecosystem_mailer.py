@@ -251,7 +251,7 @@ Repository: https://github.com/pCwOrM/werracle
 Interactive Simulator: https://pcworm.github.io/werracle/
 Live API Status: https://api.answerr.me:4431/werracle/status
 
-Developed by ITouch Systems (ITouch Bilişim Sistemleri Ltd. Şti., Çukurova Teknokent).
+Developed by ITouch Systems (ITouch Bilişim Sistemleri Ltd. Şti., Çukurova Üniversitesi Teknokent).
 Contact: ask@answerr.me / info@itouch.com.tr
 """,
 
@@ -271,7 +271,7 @@ Deliverables & Code:
 We would welcome the opportunity to discuss formal grant alignment.
 
 Sincerely,
-ITouch Systems (Çukurova Teknokent) & Autonomous AI Co-Developer
+ITouch Systems (Çukurova Üniversitesi Teknokent) & Autonomous AI Co-Developer
 Email: ask@answerr.me | Corporate: info@itouch.com.tr
 """,
 
@@ -294,7 +294,7 @@ Academic Papers & Archives:
 • Live Web Lab & Arena: https://pcworm.github.io/werr/
 
 Best regards,
-ITouch Systems Research Team (Çukurova Teknokent)
+ITouch Systems Research Team (Çukurova Üniversitesi Teknokent)
 Contact: ask@answerr.me / pcworm@pcworm.net
 """,
 
@@ -403,7 +403,7 @@ GitHub: https://github.com/pCwOrM/werr
 
 Sincerely,
 Volkan Dağlı
-ITouch Systems / Çukurova Teknokent
+ITouch Systems / Çukurova Üniversitesi Teknokent
 Contact: ask@answerr.me / vdagli@itouch.com.tr
 """,
 

@@ -461,7 +461,7 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
     for sl in [
         "Operating Brand: answerr™ & Werr™ Technology (ITouch Systems)",
         "Address: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26",
-        "Çukurova Teknokent, 01330 Sarıçam / Adana, Türkiye",
+        "Çukurova Üniversitesi Teknokent, 01330 Sarıçam / Adana, Türkiye",
         "Tax Office & ID (VKN): Yüreğir V.D. — 4690944558  |  MERSİS: 0469094455800001",
         "Web: https://answerr.me • https://werr.io  |  Email: ask@answerr.me • billing@werr.io",
     ]:

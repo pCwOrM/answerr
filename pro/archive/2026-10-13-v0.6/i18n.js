@@ -8,7 +8,7 @@
   const I18N_DICT = {
     tr: {
       // Top Ribbon
-      ribbonCorp: "Resmi Kurumsal Ürün: <a href=\"https://itouch.com.tr\" target=\"_blank\" rel=\"noopener\" class=\"corp-link\">ITouch Bilişim Sistemleri Ltd. Şti.</a> (Çukurova Teknokent)",
+      ribbonCorp: "Resmi Kurumsal Ürün: <a href=\"https://itouch.com.tr\" target=\"_blank\" rel=\"noopener\" class=\"corp-link\">ITouch Bilişim Sistemleri Ltd. Şti.</a> (Çukurova Üniversitesi Teknokent)",
       ribbonVault: "Kasa: <strong style=\"color:var(--emerald-bright)\">WERR-24B™ EGEMEN ÇEKİRDEK</strong>",
       ribbonApi: "API: <strong style=\"color:var(--cyan-bright)\">api.answerr.me (:443)</strong>",
       ribbonStatus: "DURUM: AKTİF • SIFIR VRAM",
@@ -83,7 +83,7 @@
       // Pricing Section
       pricingTag: "KURUMSAL LİSANSLAMA — ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ.",
       pricingTitle: "Geliştirici Çekirdeğinden Egemen Kurumsal Kasaya",
-      pricingDesc: "<strong>answerr.me</strong>, Çukurova Teknokent bünyesindeki <strong>ITouch Bilişim Sistemleri Mühendislik Danışmanlık San. ve Tic. Ltd. Şti.</strong> tarafından geliştirilmekte ve BSL 1.1 ticari lisansıyla sunulmaktadır.",
+      pricingDesc: "<strong>answerr.me</strong>, Çukurova Üniversitesi Teknokent bünyesindeki <strong>ITouch Bilişim Sistemleri Mühendislik Danışmanlık San. ve Tic. Ltd. Şti.</strong> tarafından geliştirilmekte ve BSL 1.1 ticari lisansıyla sunulmaktadır.",
       tier1Badge: "DEVELOPER RUNTIME",
       tier1Title: "werr Open SDK",
       tier1Price: "Ücretsiz",
@@ -118,7 +118,7 @@
 
       // Footer
       footerCorp: "<strong>answerr.me</strong> — Resmi Ticari Sağlayıcı: <a href=\"https://itouch.com.tr\" target=\"_blank\" rel=\"noopener\" class=\"corp-link\">ITouch Bilişim Sistemleri Mühendislik Danışmanlık San. ve Tic. Ltd. Şti.</a>",
-      footerLegal: "Çukurova Teknokent (Adana) • MERSİS: <code>0469094455800001</code> • Patentler: <code>TR 2026/016285</code> & <code>TR 2026/016633</code>",
+      footerLegal: "Çukurova Üniversitesi Teknokent (Adana) • MERSİS: <code>0469094455800001</code> • Patentler: <code>TR 2026/016285</code> & <code>TR 2026/016633</code>",
 
       // Studio Page
       studioTitle: "Doğal Dilden WERR-24B™ Mühürlü Karar Kapısına",
@@ -191,7 +191,7 @@
 
     en: {
       // Top Ribbon
-      ribbonCorp: "Official Corporate Product: <a href=\"https://itouch.com.tr\" target=\"_blank\" rel=\"noopener\" class=\"corp-link\">ITouch Information Systems Ltd.</a> (Cukurova Technopark)",
+      ribbonCorp: "Official Corporate Product: <a href=\"https://itouch.com.tr\" target=\"_blank\" rel=\"noopener\" class=\"corp-link\">ITouch Information Systems Ltd.</a> (Cukurova University Science Park)",
       ribbonVault: "Vault: <strong style=\"color:var(--emerald-bright)\">WERR-24B™ SOVEREIGN CORE</strong>",
       ribbonApi: "API: <strong style=\"color:var(--cyan-bright)\">api.answerr.me (:443)</strong>",
       ribbonStatus: "STATUS: ACTIVE • ZERO VRAM",
@@ -266,7 +266,7 @@
       // Pricing Section
       pricingTag: "ENTERPRISE LICENSING — ITOUCH INFORMATION SYSTEMS LTD.",
       pricingTitle: "From Developer Runtime to Sovereign Air-Gapped Vault",
-      pricingDesc: "<strong>answerr.me</strong> is engineered by <strong>ITouch Information Systems Engineering Consulting Industry & Trade Ltd.</strong> (Cukurova Technopark) and licensed under the BSL 1.1 commercial license.",
+      pricingDesc: "<strong>answerr.me</strong> is engineered by <strong>ITouch Information Systems Engineering Consulting Industry & Trade Ltd.</strong> (Cukurova University Science Park) and licensed under the BSL 1.1 commercial license.",
       tier1Badge: "DEVELOPER RUNTIME",
       tier1Title: "werr Open SDK",
       tier1Price: "Free",
@@ -301,7 +301,7 @@
 
       // Footer
       footerCorp: "<strong>answerr.me</strong> — Official Commercial Entity: <a href=\"https://itouch.com.tr\" target=\"_blank\" rel=\"noopener\" class=\"corp-link\">ITouch Information Systems Ltd.</a>",
-      footerLegal: "Cukurova Technopark (Adana, Turkiye) • MERSIS: <code>0469094455800001</code> • Patents: <code>TR 2026/016285</code> & <code>TR 2026/016633</code>",
+      footerLegal: "Cukurova University Science Park (Adana, Turkiye) • MERSIS: <code>0469094455800001</code> • Patents: <code>TR 2026/016285</code> & <code>TR 2026/016633</code>",
 
       // Studio Page
       studioTitle: "From Natural Language to WERR-24B™ Sealed Gate",

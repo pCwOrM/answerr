@@ -10,7 +10,7 @@ Bu form, Mesafeli Sözleşmeler Yönetmeliği m.5 uyarınca, ücretli bir plan s
 ## 1. Satıcı
 
 - Unvan: ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ
-- Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26 (Çukurova Teknokent), 01330 Sarıçam / Adana, Türkiye
+- Adres: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26 (Çukurova Üniversitesi Teknokent), 01330 Sarıçam / Adana, Türkiye
 - MERSİS: 0469094455800001 · Vergi: Yüreğir V.D. 4690944558
 - Ticaret sicili: Adana Ticaret Sicil No: 77766 · Adana Ticaret Odası Sicil No: 74292
 - E-posta: ask@answerr.me · Telefon: +90 850 311 52 03 · KEP: itouchbilisim@hs01.kep.tr
@@ -21,7 +21,7 @@ answerr; yazılı karar politikalarını açık kurallara derleyen ve her istek 
 
 ## 3. Bedel ve ödeme
 
-- Fiyat (%0 KDV — Teknopark Muafiyetli): Geliştirici aylık 1.449,00 TL, yıllık peşin 14.388,00 TL; Pro aylık 4.899,00 TL, yıllık peşin 48.588,00 TL. Satıcı, Çukurova Teknokent'te faaliyet gösteren bir Ar-Ge yazılım firması olduğundan 4691 sayılı Teknoloji Geliştirme Bölgeleri Kanunu ve 3065 sayılı KDV Kanunu Geçici 20/1 maddesi (ve yurt dışı satışlarda Hizmet İhracatı istisnası) uyarınca tüm yazılım abonelik faturaları %0 KDV (KDV muafiyetli) olarak düzenlenir. Ödeyeceğiniz toplam tutar, ödemeyi onaylamadan önce konsolda ve ödeme sayfasında ayrıca gösterilir. Teslimat masrafı yoktur.
+- Fiyat (%0 KDV — Teknopark Muafiyetli): Geliştirici aylık 1.449,00 TL, yıllık peşin 14.388,00 TL; Pro aylık 4.899,00 TL, yıllık peşin 48.588,00 TL. Satıcı, Çukurova Üniversitesi Teknokent'te faaliyet gösteren bir Ar-Ge yazılım firması olduğundan 4691 sayılı Teknoloji Geliştirme Bölgeleri Kanunu ve 3065 sayılı KDV Kanunu Geçici 20/1 maddesi (ve yurt dışı satışlarda Hizmet İhracatı istisnası) uyarınca tüm yazılım abonelik faturaları %0 KDV (KDV muafiyetli) olarak düzenlenir. Ödeyeceğiniz toplam tutar, ödemeyi onaylamadan önce konsolda ve ödeme sayfasında ayrıca gösterilir. Teslimat masrafı yoktur.
 - Ödeme zamanı: Peşin. Aylık ödeme 31 gün, yıllık ödeme 366 gün kullanım hakkı verir.
 - Ödeme yöntemi: Kredi/banka kartıyla ödeme kuruluşu (iyzico 3D Secure) aracılığıyla tek çekim, blokzincir üzerinde kripto varlık (Base USDC / TRON TRC20 ve EVM ağlarında USDT-USDC) ya da banka havalesi/EFT.
 - Kart bilgileri: Satıcı'ya iletilmez ve Satıcı tarafından saklanmaz.
@@ -42,7 +42,7 @@ Mesafeli Sözleşmeler Yönetmeliği m.15/1-(ğ) uyarınca, elektronik ortamda a
 
 ## 7. Şikâyet ve itiraz
 
-- Başvuru adresi: Şikâyetlerinizi ask@answerr.me adresine ya da Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26 (Çukurova Teknokent), 01330 Sarıçam / Adana, Türkiye adresine yazılı olarak iletebilirsiniz; en geç 30 gün içinde yanıtlanır.
+- Başvuru adresi: Şikâyetlerinizi ask@answerr.me adresine ya da Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26 (Çukurova Üniversitesi Teknokent), 01330 Sarıçam / Adana, Türkiye adresine yazılı olarak iletebilirsiniz; en geç 30 gün içinde yanıtlanır.
 - Tüketici başvuruları: Tüketiciler, Ticaret Bakanlığınca her yıl ilan edilen parasal sınırlar içinde Tüketici Hakem Heyetlerine, bu sınırları aşan uyuşmazlıklarda Tüketici Mahkemelerine başvurabilir; başvurular e-Devlet üzerinden TÜBİS ile de yapılabilir.
 
 ## 8. Kişisel veriler
