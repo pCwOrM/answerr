@@ -760,7 +760,7 @@ class QuestionSpec(BaseModel):
 
 
 class WerrParamsSpec(BaseModel):
-    """Full werr v0.5.1 parameter configuration (auto/preset or explicit overrides)."""
+    """Full werr v0.5.2 parameter configuration (auto/preset or explicit overrides)."""
     preset: Optional[str] = Field(
         None,
         description="'auto' (default, purpose-aligned by gate/domain), 'smart_router', 'security_guard', "
@@ -1211,7 +1211,7 @@ def _dispatch_public_telemetry(
             state_summary["_kernel_verdict"] = str(kernel_verdict)[:16]
         payload = json.dumps({
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "version": "werr-{}-{}".format(getattr(werr, "__version__", "0.5.1"), werr_meta.get("preset", "auto"))[:48],
+            "version": "werr-{}-{}".format(getattr(werr, "__version__", "0.5.2"), werr_meta.get("preset", "auto"))[:48],
             "source": source[:32],
             "seed": {
                 "cx": round(float(coords.get("cx", -0.10109636)), 8),
@@ -1342,10 +1342,10 @@ def get_presets():
 
 @app.get("/v1/werr/parameters", tags=["Catalog"])
 def get_werr_parameters():
-    """Returns the complete werr v0.5.1 parameter catalog, 8-state orthogonal cube, and purpose-aligned profiles."""
+    """Returns the complete werr v0.5.2 parameter catalog, 8-state orthogonal cube, and purpose-aligned profiles."""
     return {
         "status": "success",
-        "werr_version": getattr(werr, "__version__", "0.5.1"),
+        "werr_version": getattr(werr, "__version__", "0.5.2"),
         "default_selection": "auto",
         "gate_profiles": GATE_WERR_PROFILES,
         "presets": WERR_PRESETS,
@@ -1842,7 +1842,7 @@ def chat_completions(req: ChatCompletionRequest):
     ans_score = result.answers["threat"]
 
     decision_label = "APPROVED (İzin Verildi)" if ans_noul.decision else "DENIED (Engellendi)"
-    werr_ver = getattr(werr, "__version__", "0.5.1")
+    werr_ver = getattr(werr, "__version__", "0.5.2")
 
     content_text = (
         f"answerr research reflex ({total_ms:.2f} ms)\n"
