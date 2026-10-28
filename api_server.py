@@ -1947,6 +1947,22 @@ CROUTER.configure(client_ip=client_ip, limit_form=_limit_form, require_human=_re
 app.include_router(CROUTER.router)
 
 
+# Keep /v1/admin/* out of the public API reference (endpoints stay key-protected).
+_answerr_full_openapi = app.openapi
+
+
+def _answerr_public_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    schema = _answerr_full_openapi()
+    schema["paths"] = {k: v for k, v in schema.get("paths", {}).items() if not k.startswith("/v1/admin")}
+    app.openapi_schema = schema
+    return schema
+
+
+app.openapi = _answerr_public_openapi
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8560, log_level="info")
