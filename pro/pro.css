@@ -708,3 +708,12 @@ input[type="checkbox"], input[type="radio"] { width: 20px; height: 20px; accent-
 .card a.small-mono, .card > a.btn-sm, .tech a.small-mono { display: inline-flex; align-items: center; min-height: 40px; }
 @media (max-width: 640px) { .planet { font-size: 0; } }
 .card > a[href^="http"], .card p + a, .card .tpl-row a { display: inline-flex; align-items: center; min-height: 40px; }
+
+/* ---- mobile touch targets (audit 29 Oct 2026): >=44px primary controls, >=40px footer links ---- */
+@media (max-width: 900px) {
+  .btn-primary, .btn-ghost { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .planet::after { content: ''; position: absolute; inset: -9px; }
+  input[type="range"] { min-height: 32px; touch-action: manipulation; }
+  .site-foot a { display: inline-block; padding: 10px 0; }
+  .site-foot ul { gap: 0; }
+}
