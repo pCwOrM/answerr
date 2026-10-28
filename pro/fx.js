@@ -229,6 +229,7 @@
     planets.forEach(p => p.addEventListener('click', () => {
       const card = document.getElementById(p.dataset.target);
       if (!card) return;
+      const grp = card.closest('details'); if (grp) grp.open = true;   // records are grouped and collapsible
       card.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' });
       card.classList.remove('flash'); void card.offsetWidth; card.classList.add('flash');
     }));

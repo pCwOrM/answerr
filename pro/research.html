@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>answerr Pro — Araştırma &amp; Bilimsel Temeller</title>
+  <title>Araştırma — answerr Pro</title>
   <link rel="canonical" href="https://answerr.me/pro/research.html">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://answerr.me/pro/research.html">
-  <meta property="og:title" content="answerr Pro — Araştırma &amp; Bilimsel Temeller">
-  <meta property="og:description" content="Deterministik karar güvenliği, 3 temel ilke, interaktif karar simülasyonu ve merkezi araştırma külliyatı.">
+  <meta property="og:title" content="Araştırma — answerr Pro">
+  <meta property="og:description" content="Karar kapısının arkasındaki matematik: canlı doğrulama, werr evreni haritası ve tam araştırma külliyatına bağlantı.">
   <meta property="og:image" content="https://answerr.me/assets/rendered_answerr_werr_twin_ecosystem.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="description" content="answerr Pro deterministik karar güvenliği, sıfır ağırlıklı çıkarım ilkeleri ve merkezi araştırma külliyatı.">
+  <meta name="description" content="answerr Pro karar kapısının arkasındaki matematik: aynı girdi aynı karar, canlı doğrulama, werr evreni haritası ve araştırma külliyatı.">
   <meta name="theme-color" content="#05060A">
   <link rel="icon" href="../assets/answerr_logo_portal_fav_trans.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -86,6 +86,48 @@
       text-align: center;
       margin: 56px 0;
     }
+
+    /* research page v2: calm, scannable structure */
+    .det-test { background: rgba(14,20,36,0.7); border: 1px solid var(--border); border-radius: 16px; padding: 26px 28px; }
+    .det-test .btn-primary { margin: 6px 0 18px; }
+    .dt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+    .dt-grid > div { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+    .dt-grid span { display: block; font-size: 0.75rem; color: var(--mist); margin-bottom: 4px; }
+    .dt-grid b { font-family: var(--f-mono); font-size: 1.15rem; color: #fff; font-weight: 600; overflow-wrap: anywhere; }
+    .dt-grid .dt-wide { grid-column: 1 / -1; }
+    .dt-grid .dt-mono { font-size: 0.82rem; font-weight: 500; color: var(--cyan); }
+    .rec-group { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; background: rgba(14,20,36,0.5); }
+    .rec-group > summary, .more > summary { cursor: pointer; padding: 14px 18px; list-style: none; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-height: 44px; }
+    .rec-group > summary::-webkit-details-marker, .more > summary::-webkit-details-marker { display: none; }
+    .rec-group > summary::after, .more > summary::after { content: '+'; margin-left: auto; font-family: var(--f-mono); color: var(--mist); }
+    .rec-group[open] > summary::after, .more[open] > summary::after { content: '–'; }
+    .rec-group summary small { color: var(--mist); font-family: var(--f-mono); }
+    .rec-group .st { font-size: 11px; padding: 1px 8px; border: 1px solid currentColor; font-family: var(--f-mono); }
+    .rec-list { list-style: none; margin: 0; padding: 0 18px 8px; }
+    .rec { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; padding: 14px 0; border-top: 1px solid rgba(140,222,236,0.08); scroll-margin-top: 110px; }
+    .rec h3 { font-size: 1.02rem; margin: 0 0 4px; }
+    .rec p { margin: 0; color: var(--mist); font-size: 0.92rem; line-height: 1.55; }
+    .rec-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; text-align: right; }
+    .rec-id { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mist); }
+    .rec-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 14px; }
+    .rec-links a { font-size: 0.8rem; min-height: 32px; display: inline-flex; align-items: center; }
+    .rec.flash { animation: flash 1.6s ease; }
+    .more { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; background: rgba(14,20,36,0.4); }
+    .more > summary { font-weight: 600; }
+    .more > :not(summary) { padding-left: 18px; padding-right: 18px; }
+    .more[open] { padding-bottom: 18px; }
+    .more .sim-card { padding: 20px; }
+    .more table.corpus { font-size: 12px; }
+    @media (max-width: 640px) {
+      .det-test { padding: 20px 16px; }
+      .rec { grid-template-columns: 1fr; }
+      .rec-meta { align-items: flex-start; text-align: left; }
+      .rec-links { justify-content: flex-start; }
+      .more > :not(summary) { padding-left: 12px; padding-right: 12px; }
+    }
+    .more-stack { margin-top: 36px; }
+    .dt-grid b small { display: block; font-size: 0.72rem; font-weight: 500; color: var(--cyan); margin-top: 2px; }
+    @media (min-width: 900px) { #harita .orbit { margin: -34px 0 -120px; } }
   </style>
 </head>
 <body>
@@ -110,16 +152,7 @@
         <a href="index.html#kara-kutu" data-i18n="navConsole">Kara Kutu</a>
         <a href="docs.html" data-i18n="navDocs">Geliştiriciler</a>
         <a href="pricing.html" data-i18n="navPricing">Fiyatlar</a>
-        <div class="nav-dropdown">
-          <button type="button" class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true"><span data-i18n="navEcosystem">Ekosistem</span> <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <div class="nav-dropdown-menu" style="display:none;">
-            <a href="https://radar.werracle.com/" target="_blank" rel="noopener">Werracle Radar API ↗</a>
-            <a href="https://werracle.com" target="_blank" rel="noopener">werracle.com ↗</a>
-            <a href="https://werr.io" target="_blank" rel="noopener">werr.io ↗</a>
-            <a href="research.html" data-i18n="navResearch">Araştırma &amp; Raporlar</a>
-            <a href="vision.html" data-i18n="navVision">Werr Evreni</a>
-          </div>
-        </div>
+        <a href="research.html" aria-current="page" data-i18n="navResearch">Araştırma</a>
         <div class="nav-actions">
           <button type="button" class="lang-switch-btn" title="Switch to English"><span class="lang-active">TR</span> <span>EN</span></button>
           <a class="btn-ghost btn-sm" href="console/" data-i18n="navLogin">Konsol</a>
@@ -133,159 +166,190 @@
   <main id="main" class="section" style="padding-top:48px">
     <div class="wrap">
 
-      <!-- Header Section -->
       <div class="section-head">
         <div>
-          <div class="eyebrow" style="color:var(--cyan)" data-i18n="rsEyebrow">Bilimsel Temeller &amp; Güvenlik Mimarisi</div>
-          <h1 style="font-size:clamp(30px,4.2vw,44px)" data-i18n="rsTitle">Deterministik Karar Doğrulaması</h1>
+          <div class="eyebrow" style="color:var(--cyan)" data-i18n="rs2Eyebrow">Araştırma</div>
+          <h1 style="font-size:clamp(30px,4.2vw,44px)" data-i18n="rs2Title">Karar kapısının arkasındaki matematik</h1>
         </div>
-        <p data-i18n="rsLead" style="max-width:68ch">
-          answerr Pro, geleneksel olasılıksal yapay zekaların aksine kapalı formüllü dinamik sistemlere dayanır. Kararlar parametrik ağırlıklar yerine matematiksel yüzeylerden anlık üretilir: halüsinasyon riski sıfırdır, her karar Lean 4 teorem ispatlayıcılarıyla makine tarafından denetlenebilir.
-        </p>
+        <div style="max-width:68ch">
+          <p data-i18n="rs2Lead" style="margin:0 0 18px">answerr Pro’da her karar açık, sürümlü kurallardan gelir. Bu sayfa, o kuralları çalıştıran çekirdeğin ve onu besleyen werr araştırmasının kısa özetidir; derine inmek isteyenler için tam külliyat ayrı bir portalda.</p>
+          <div class="hero-ctas">
+            <a class="btn-primary" href="https://pcworm.github.io/fractal-neural-synthesis/" target="_blank" rel="noopener"><span data-i18n="rs2Cta1">Tüm külliyatı incele</span> <span aria-hidden="true">↗</span></a>
+            <a class="btn-ghost" href="index.html#kara-kutu" data-i18n="rs2Cta2">Kara Kutu’yu dene</a>
+          </div>
+        </div>
       </div>
 
-      <!-- WHAT DOES THIS MATH DELIVER (BUSINESS VALUE) -->
-      <section style="margin-bottom: 56px;">
-        <div style="background: radial-gradient(ellipse at 50% 10%, rgba(56, 189, 248, 0.12) 0%, rgba(14, 20, 36, 0.85) 75%); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 20px; padding: 36px 32px; box-shadow: 0 12px 40px rgba(0,0,0,0.5);">
-          
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
-            <div>
-              <div class="eyebrow" style="color:var(--cyan); margin-bottom: 6px;">İŞLETME &amp; ÜRÜN DEĞERİ</div>
-              <h2 style="font-size: clamp(22px, 3.2vw, 32px); color: #fff; margin: 0;">Bu Matematik Ürününüzde Ne Kazandırır?</h2>
-              <p style="color: var(--mist); font-size: 1rem; margin-top: 6px; max-width: 60ch;">
-                Formüllere boğulmadan önce: Answerr Pro API entegrasyonu şirketinizin güvenlik açıklarını nasıl kapatır ve altyapı maliyetini nasıl düşürür?
-              </p>
-            </div>
-            <div>
-              <button type="button" class="btn-primary" id="btnRunStressTest" onclick="runStressComparison()" style="padding: 12px 22px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
-                <span>⚡</span>
-                <span id="stressBtnLabel">5 Saniyelik Canlı Karşılaştırmayı Başlat</span>
-              </button>
-            </div>
-          </div>
+      <div class="grid-3" style="margin-bottom:40px">
+        <article class="principle-card">
+          <span class="principle-badge" data-i18n="rs2Val1b">GÜVENLİK</span>
+          <h3 style="font-size:1.15rem; margin-bottom:10px" data-i18n="rs2Val1t">Aynı girdi, aynı karar</h3>
+          <p class="small-mono" style="color:var(--mist); margin:0" data-i18n="rs2Val1d">Karar anında dil modeli çalışmaz; bu yüzden istem enjeksiyonu kararı değiştiremez. Dil yalnızca politikayı yazarken kullanılır, çalışan kurallar sabittir.</p>
+        </article>
+        <article class="principle-card">
+          <span class="principle-badge" style="background:rgba(246,183,60,0.15); color:var(--gold); border-color:rgba(246,183,60,0.3)" data-i18n="rs2Val2b">MALİYET</span>
+          <h3 style="font-size:1.15rem; margin-bottom:10px" data-i18n="rs2Val2t">Karar başına GPU ve token yok</h3>
+          <p class="small-mono" style="color:var(--mist); margin:0" data-i18n="rs2Val2d">Politika çekirdeği sıradan bir CPU’da mikrosaniyelerde çalışır. Süreyi aşağıdaki testte kendi tarayıcınızda ölçersiniz.</p>
+        </article>
+        <article class="principle-card">
+          <span class="principle-badge" style="background:rgba(16,185,129,0.15); color:var(--emerald); border-color:rgba(16,185,129,0.3)" data-i18n="rs2Val3b">DENETİM</span>
+          <h3 style="font-size:1.15rem; margin-bottom:10px" data-i18n="rs2Val3t">Her kararın izi var</h3>
+          <p class="small-mono" style="color:var(--mist); margin:0" data-i18n="rs2Val3d">Tetiklenen kural, aday hükümler, alan katkıları ve politika mührü (SHA-256) kayda geçer; bir denetçi kararı sonradan yeniden üretebilir.</p>
+        </article>
+      </div>
 
-          <!-- Live 5-Second Canvas -->
-          <div style="background: #04060a; border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 28px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-family: var(--f-mono); font-size: 0.85rem;">
-              <div style="display: flex; gap: 20px; align-items: center;">
-                <span><i style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#f43f5e; margin-right:6px;"></i><strong style="color:#f43f5e">Klasik LLM (Stokastik):</strong> <span id="llmStatusText" style="color:#fca5a5">%3.8 sapma riski</span></span>
-                <span><i style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#38bdf8; margin-right:6px;"></i><strong style="color:#38bdf8">Answerr Pro (Deterministik):</strong> <span id="answerrStatusText" style="color:#a5f3fc">Sıfır halüsinasyon, 0.04 ms</span></span>
-              </div>
-              <div style="color: var(--mist);" id="stressTimer">Hazır (Test için butona basın)</div>
-            </div>
-            <canvas id="stressCanvas" width="900" height="180" style="width:100%; height:180px; display:block; border-radius:8px; background:#020306;"></canvas>
-          </div>
+      <section class="det-test" id="dogrulama" aria-labelledby="dt-title">
+        <div class="eyebrow" style="color:var(--cyan)" data-i18n="rs2TestK">Canlı doğrulama</div>
+        <h2 id="dt-title" style="font-size:clamp(20px,2.6vw,28px); margin:0 0 8px" data-i18n="rs2TestT">Aynı durumu 10.000 kez gönderin: kaç farklı hüküm çıkar?</h2>
+        <p class="small-mono" style="color:var(--mist); max-width:70ch" data-i18n="rs2TestLead">Test, politika çekirdeğini bu sayfada, tarayıcınızda çalıştırır; ağ kullanılmaz. Durum: 1.924 $’lık para transferi isteyen bir ajan.</p>
+        <button type="button" class="btn-primary" id="dtRun"><span data-i18n="rs2TestBtn">Testi çalıştır</span></button>
+        <div class="dt-grid" id="dtOut" aria-live="polite">
+          <div><span data-i18n="rs2Calls">Çağrı</span><b id="dtCalls">—</b></div>
+          <div><span data-i18n="rs2Distinct">Farklı hüküm</span><b id="dtDistinct">—</b></div>
+          <div><span data-i18n="rs2Order">Alan sırası değişince</span><b id="dtOrder">—</b></div>
+          <div><span data-i18n="rs2Median">Çağrı başına ortanca süre</span><b id="dtMedian">—</b></div>
+          <div><span data-i18n="rs2Verdict">Hüküm</span><b id="dtVerdict">—</b></div>
+          <div class="dt-wide"><span data-i18n="rs2Seal">Politika mührü</span><b id="dtSeal" class="dt-mono">—</b></div>
+        </div>
+        <p class="small-mono" id="dtStatus" style="color:var(--mist); margin:10px 0 0" data-i18n="rs2TestFoot">Rakamlar bu tarayıcıda ölçülür; cihazınıza göre değişir.</p>
+      </section>
 
-          <!-- 3 Concrete Value Cards -->
-          <div class="grid-3" style="gap: 18px;">
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
-              <div style="font-size: 1.4rem; margin-bottom: 8px;">🛡️</div>
-              <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 8px;">%100 Güvenlik &amp; Sıfır Halüsinasyon</h3>
-              <p class="small-mono" style="color: var(--mist); line-height: 1.5;">
-                LLM tabanlı ajanların aksine prompt injection veya jailbreak ile manipüle edilemez. Para transferi ve veri silme gibi kritik yetkiler asla yetkisiz verilmez.
-              </p>
-            </div>
-
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
-              <div style="font-size: 1.4rem; margin-bottom: 8px;">💰</div>
-              <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 8px;">%92 Altyapı Maliyet Tasarrufu</h3>
-              <p class="small-mono" style="color: var(--mist); line-height: 1.5;">
-                Gigabaytlarca VRAM tüketen pahalı GPU kümeleri yerine standart tek bir CPU çekirdeğinde saniyede 100.000 karar üretilir. Token faturası oluşmaz.
-              </p>
-            </div>
-
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
-              <div style="font-size: 1.4rem; margin-bottom: 8px;">⚖️</div>
-              <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 8px;">Hukuki &amp; Regülatif Denetlenebilirlik</h3>
-              <p class="small-mono" style="color: var(--mist); line-height: 1.5;">
-                "Yapay zeka neden bu kararı verdi?" sorusuna Lean 4 ile doğrulanmış matematiksel teorem seviyesinde şeffaf ve denetlenebilir kanıt izi sunar.
-              </p>
-            </div>
-          </div>
-
+      <section id="harita" style="margin-top:64px" aria-labelledby="or-title">
+        <div class="section-head rv">
+          <div><div class="eyebrow" data-i18n="rs2OrbitK">Werr evreni</div><h2 id="or-title" data-i18n="rs2OrbitT">Bir çekirdek, dört halka</h2></div>
+          <p data-i18n="rs2OrbitL">İçten dışa: bugün kullanılan ürün, pilottaki protokoller, tamamlanmış kanıtlar ve araştırma ufku. Bir gezegene tıklayın; kaydı aşağıda açılır.</p>
+        </div>
+        <div class="legend rv">
+          <span><i style="background:var(--ice)"></i><span data-i18n="lg1">ÜRÜN · ŞİMDİ</span></span>
+          <span><i style="background:var(--amber)"></i><span data-i18n="lg2">PROTOKOL · PİLOT</span></span>
+          <span><i style="background:#C4CAD6"></i><span data-i18n="lg3">KANIT · TAMAMLANDI</span></span>
+          <span><i style="background:var(--stop)"></i><span data-i18n="lg4">UFUK · ARAŞTIRMA</span></span>
+        </div>
+        <div class="orbit" data-orbit>
+          <svg class="rings" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+            <ellipse class="r1" cx="500" cy="310" rx="150" ry="54"/>
+            <ellipse class="r2" cx="500" cy="310" rx="245" ry="88"/>
+            <ellipse class="r3" cx="500" cy="310" rx="340" ry="122"/>
+            <ellipse class="r4" cx="500" cy="310" rx="440" ry="158"/>
+          </svg>
+          <div class="core" aria-hidden="true"><div>werr<small>24 B · ∂M</small></div></div>
+          <button class="planet" type="button" data-ring="1" data-angle="0" data-target="t-answerr">answerr Pro</button>
+          <button class="planet" type="button" data-ring="1" data-angle="120" data-target="t-werr">werr runtime</button>
+          <button class="planet" type="button" data-ring="1" data-angle="240" data-target="t-compiler" data-i18n="plCompiler">Derleyici</button>
+          <button class="planet" type="button" data-ring="2" data-angle="40" data-target="t-werracle">Werracle</button>
+          <button class="planet" type="button" data-ring="2" data-angle="160" data-target="t-werredur">WerreduR</button>
+          <button class="planet" type="button" data-ring="2" data-angle="280" data-target="t-werrberus">Werrberus</button>
+          <button class="planet" type="button" data-ring="3" data-angle="10" data-target="t-lean">Lean 4 Gauntlet</button>
+          <button class="planet" type="button" data-ring="3" data-angle="82" data-target="t-gap">GAP-Lean4</button>
+          <button class="planet" type="button" data-ring="3" data-angle="154" data-target="t-schonhage">Schönhage W=176M</button>
+          <button class="planet" type="button" data-ring="3" data-angle="226" data-target="t-gdt">GDT</button>
+          <button class="planet" type="button" data-ring="3" data-angle="298" data-target="t-niemeier">Niemeier A₈³</button>
+          <button class="planet" type="button" data-ring="4" data-angle="70" data-target="t-werrsoma">WerrSoma</button>
+          <button class="planet" type="button" data-ring="4" data-angle="142" data-target="t-mfns">MFNS</button>
+          <button class="planet" type="button" data-ring="4" data-angle="214" data-target="t-gunes" data-i18n="plGunes">Güneş Dili</button>
+          <button class="planet" type="button" data-ring="4" data-angle="286" data-target="t-oed">OED</button>
+          <button class="planet" type="button" data-ring="4" data-angle="358" data-target="t-bh" data-i18n="plPage">Page eğrisi</button>
         </div>
       </section>
 
-      <!-- 3 Core Principles Grid -->
-      <h2 class="label" style="margin-bottom:16px" data-i18n="rsPrinciples">3 Temel Güvenlik ve Güvenilirlik İlkesi</h2>
-      <div class="grid-3" style="margin-bottom:48px">
-        <article class="principle-card">
-          <span class="principle-badge">İLKE 01 · GÜVENLİK</span>
-          <h3 style="font-size:1.15rem; margin-bottom:10px" data-i18n="p1Title">Deterministik Değişmezlik</h3>
-          <p class="small-mono" style="color:var(--mist); margin-bottom:12px" data-i18n="p1Desc">
-            Aynı girdi vektörü her zaman kesinlikle aynı çıktıyı üretir. Olasılıksal sapma, rastgelelik veya bağlam kayması oluşamaz.
-          </p>
-          <div style="font-family:var(--f-mono); font-size:0.8rem; color:var(--cyan); background:rgba(0,0,0,0.3); padding:8px; border-radius:6px">
-            f(x) ≡ Output &nbsp;·&nbsp; Var(Y|X) = 0
-          </div>
-        </article>
+      <section id="kayitlar" style="margin-top:48px" aria-labelledby="rc-title">
+        <div class="section-head rv"><div><div class="eyebrow" data-i18n="tkK">Teknolojiler</div><h2 id="rc-title" data-i18n="rs2RecT">Kayıtlar</h2></div>
+          <p data-i18n="rs2RecL">Her kaydın durumu etiketlidir. Ön baskılar hakem denetiminden geçmemiş olabilir; patent başvuruları beklemededir, verilmiş patent değildir.</p></div>
+        <details class="rec-group" open><summary><span class="st st-now" data-i18n="stNow">ŞİMDİ</span> <b data-i18n="grpNow">Bugün kullanılabilir</b> <small>(3)</small></summary><ul class="rec-list"><li class="rec tech" id="t-answerr"><div class="rec-main"><h3>answerr Pro</h3><p data-i18n="tAnswerr">Doğal dilde yazılan politikaları açık kurallara derleyen karar kapısı: AI ajan aksiyonları, ödeme riski, API kötüye kullanımı. GEÇ · İNSANA DEVRET · DUR; her kararın izi ve mührü.</p></div><div class="rec-meta"><span class="rec-id">answerr.me</span><span class="rec-links"><a class="small-mono" href="index.html#kara-kutu" data-i18n="tGo1">Kara Kutu’yu dene →</a></span></div></li><li class="rec tech" id="t-werr"><div class="rec-main"><h3>werr runtime</h3><p data-i18n="tWerr">Sıfır bellekli fraktal refleks motoru: 24 baytlık tohumdan (cx, cy, zoom) tipli kararlar. tarayıcı, Node ve Python.</p></div><div class="rec-meta"><span class="rec-id">arXiv:2609.25498</span><span class="rec-links"><a class="small-mono" href="https://werr.io/" rel="noopener">werr.io →</a> <a class="small-mono" href="https://github.com/pCwOrM/werr" rel="noopener">GitHub →</a></span></div></li><li class="rec tech" id="t-compiler"><div class="rec-main"><h3 data-i18n="tCompilerT">Derleyici</h3><p data-i18n="tCompiler">Cümleden kurala: her kural kaynağını gösterir, belirsizlikler soru olarak döner, testler ve denetimler otomatik çalışır. Taslak asla kendiliğinden yayına girmez.</p></div><div class="rec-meta"><span class="rec-id">TR · EN</span><span class="rec-links"><a class="small-mono" href="studio.html" data-i18n="tGo2">Derleyiciyi aç →</a></span></div></li></ul></details>
+<details class="rec-group" open><summary><span class="st st-pilot" data-i18n="stPilot">PİLOT</span> <b data-i18n="grpPilot">Pilot aşamasında</b> <small>(3)</small></summary><ul class="rec-list"><li class="rec tech" id="t-werracle"><div class="rec-main"><h3>Werracle</h3><p data-i18n="tWerracle">Zincir üstü karar kahini: EVM’de tek 32 baytlık slotta tipli karar, Q16.16 sabit nokta, Uniswap v4 dinamik ücret kancası örneği.</p></div><div class="rec-meta"><span class="rec-id">arXiv:2609.30719</span><span class="rec-links"><a class="small-mono" href="https://werracle.io/" rel="noopener">werracle.io (Web3) →</a> <a class="small-mono" href="https://werracle.com/" rel="noopener">werracle.com (Portal) →</a> <a class="small-mono" href="https://github.com/pCwOrM/werracle" rel="noopener">GitHub →</a></span></div></li><li class="rec tech" id="t-werredur"><div class="rec-main"><h3>WerreduR</h3><p data-i18n="tWerredur">Prosedürel Fraktal Pedagoji: öğrenciyi yakınsal gelişim alanında tutan depolamasız kontrolcü. 1.000 öğrencilik simülasyon; saha çalışması hazırlanıyor.</p></div><div class="rec-meta"><span class="rec-id">zenodo.23128224</span><span class="rec-links"><a class="small-mono" href="https://github.com/jesmaat/WerreduR" rel="noopener">GitHub →</a></span></div></li><li class="rec tech" id="t-werrberus"><div class="rec-main"><h3>Werrberus</h3><p data-i18n="tWerrberus">Topluluklar için otonom güvenlik ve baskın önleme; aynı refleks fikrinin sohbet platformlarındaki uygulaması.</p></div><div class="rec-meta"><span class="rec-id">Discord</span><span class="rec-links"><a class="small-mono" href="https://lexovian.github.io/Werrberus-ToS-Privacy/" rel="noopener" data-i18n="tGo3">Hizmet şartları →</a></span></div></li></ul></details>
+<details class="rec-group"><summary><span class="st st-proof" data-i18n="stProof">KANIT</span> <b data-i18n="grpProof">Tamamlanmış kanıtlar</b> <small>(5)</small></summary><ul class="rec-list"><li class="rec tech" id="t-lean"><div class="rec-main"><h3>Lean 4 Gauntlet</h3><p data-i18n="tLean">Tohumdan türetilen karar sınırlarının özellikleri Lean 4’te biçimselleştirildi ve 40 çekirdekli bir CPU sunucusunda ölçüldü.</p></div><div class="rec-meta"><span class="rec-id">arXiv:2609.33066</span><span class="rec-links"><a class="small-mono" href="https://arxiv.org/abs/2609.33066" rel="noopener">arXiv →</a></span></div></li><li class="rec tech" id="t-gap"><div class="rec-main"><h3>GAP-Lean4</h3><p data-i18n="tGap">GAP permütasyon grubu algoritmalarının (Schreier-Sims, BSGS, bölüm inceltme) Lean 4 / Mathlib doğrulaması: 35 teorem, 0 sorry.</p></div><div class="rec-meta"><span class="rec-id">arXiv:2609.38492</span><span class="rec-links"><a class="small-mono" href="https://github.com/pCwOrM/gap-lean4-port" rel="noopener">GitHub →</a></span></div></li><li class="rec tech" id="t-schonhage"><div class="rec-main"><h3>Schönhage · W = 176.906.915</h3><p data-i18n="tSchonhage">Tamsayı çarpımı tensörlerinde iki parçalı taşıyıcı sıkıştırma (−377.890 tel). Lean 4 (0 sorry); CrocSwap/integer-mult-bounds ana dalına alındı (PR #226).</p></div><div class="rec-meta"><span class="rec-id">arXiv:2610.14263</span><span class="rec-links"><a class="small-mono" href="https://arxiv.org/abs/2610.14263" rel="noopener">arXiv →</a></span></div></li><li class="rec tech" id="t-gdt"><div class="rec-main"><h3>GDT</h3><p data-i18n="tGdt">Genel Bölen Teoremi: kalıntı koşullandırmasında tam yoğunluk düzeltmesi, Lean 4’te makine kontrollü.</p></div><div class="rec-meta"><span class="rec-id">zenodo.23316070</span><span class="rec-links"><a class="small-mono" href="https://github.com/pCwOrM/general-divisor-theorem" rel="noopener">GitHub →</a></span></div></li><li class="rec tech" id="t-niemeier"><div class="rec-main"><h3>Niemeier A₈³</h3><p data-i18n="tNiemeier">24 boyutlu Niemeier örgüsü A₈³, K3 Hodge dualitesi ve Umbral Moonshine bağlantılarının Lean 4 sertifikası (0 sorry, 0 ek aksiyom).</p></div><div class="rec-meta"><span class="rec-id">zenodo.23324066</span><span class="rec-links"><a class="small-mono" href="https://github.com/pCwOrM/niemeier-a8-umbral-moonshine" rel="noopener">GitHub →</a></span></div></li></ul></details>
+<details class="rec-group"><summary><span class="st st-horizon" data-i18n="stHorizon">UFUK</span> <b data-i18n="grpHorizon">Araştırma ufku</b> <small>(5)</small></summary><ul class="rec-list"><li class="rec tech" id="t-werrsoma"><div class="rec-main"><h3>WerrSoma</h3><p data-i18n="tWerrsoma">werr’i Drosophila tüm beyin konnektomuyla (FlyWire: 158.262 nöron, 3,99 milyon sinaps) birleştiren hesaplamalı model. Refleks gecikmesi, homeostaz ve hata toleransı graf üzerinde simüle edildi; canlı dokuda deney yok. Patent başvurusu beklemede.</p></div><div class="rec-meta"><span class="rec-id">TR 2026/016633</span><span class="rec-links"><a class="small-mono" href="https://github.com/Lexovian/WerrSoma" rel="noopener">GitHub →</a> <a class="small-mono" href="https://werrsoma.answerr.me/" rel="noopener" data-i18n="tGo4">3B portal →</a></span></div></li><li class="rec tech" id="t-mfns"><div class="rec-main"><h3>MFNS</h3><p data-i18n="tMfns">Ağırlıkları saklamak yerine karmaşık kuadratik haritadan türetmek. İlk sonuç: Two-Moons’ta %77,7 (gradyanla eğitilmiş temel: %85,7). Açık soru: fark kapanabilir mi?</p></div><div class="rec-meta"><span class="rec-id">zenodo.22867037</span><span class="rec-links"><a class="small-mono" href="https://github.com/pCwOrM/fractal-neural-synthesis" rel="noopener">GitHub →</a></span></div></li><li class="rec tech" id="t-gunes"><div class="rec-main"><h3 data-i18n="plGunes">Güneş Dili</h3><p data-i18n="tGunes">1935 Güneş-Dil kuramını biçimsel diller, hesaplamalı morfoloji, 53 Holder koması ve Mandelbrot rezonansıyla deterministik bir dil motoruna çeviren monorepo.</p></div><div class="rec-meta"><span class="rec-id">zenodo.23273006</span><span class="rec-links"><a class="small-mono" href="https://github.com/pCwOrM/gunes-dili" rel="noopener">GitHub →</a></span></div></li><li class="rec tech" id="t-oed"><div class="rec-main"><h3 data-i18n="tOedT">Yörüngesel Hata Dinamiği (OED)</h3><p data-i18n="tOed">MFNS’in devamı: kararın Mandelbrot yörüngeleri boyunca hata dinamiğiyle ifadesi. WerreduR bu çerçevenin üzerine kuruludur.</p></div><div class="rec-meta"><span class="rec-id">arXiv:2609.30115</span><span class="rec-links"><a class="small-mono" href="https://arxiv.org/abs/2609.30115" rel="noopener">arXiv →</a></span></div></li><li class="rec tech" id="t-bh"><div class="rec-main"><h3 data-i18n="tBhT">Kara delik Page eğrisi</h3><p data-i18n="tBh">Aynı dinamik dilin kara delik bilgi sorusuna uygulanması: Page eğrisi simülasyonu ve kuantum stabilizör kodları. Kuramsal çalışma.</p></div><div class="rec-meta"><span class="rec-id">zenodo.23072120</span><span class="rec-links"><a class="small-mono" href="https://doi.org/10.5281/zenodo.23072120" rel="noopener">Zenodo →</a></span></div></li></ul></details>
 
-        <article class="principle-card">
-          <span class="principle-badge" style="background:rgba(246,183,60,0.15); color:var(--gold); border-color:rgba(246,183,60,0.3)">İLKE 02 · PERFORMANS</span>
-          <h3 style="font-size:1.15rem; margin-bottom:10px" data-i18n="p2Title">Sıfır-Ağırlık Kapalı Formül</h3>
-          <p class="small-mono" style="color:var(--mist); margin-bottom:12px" data-i18n="p2Desc">
-            Gigabaytlarca model ağırlığı saklanmaz. Karar sınırları karmaşık dinamik yörüngelerden O(1) hafıza ve 0.05 ms sürede türetilir.
-          </p>
-          <div style="font-family:var(--f-mono); font-size:0.8rem; color:var(--gold); background:rgba(0,0,0,0.3); padding:8px; border-radius:6px">
-            O(1) VRAM &nbsp;·&nbsp; &lt; 0.05 ms latency
-          </div>
-        </article>
+      </section>
 
-        <article class="principle-card">
-          <span class="principle-badge" style="background:rgba(16,185,129,0.15); color:var(--emerald); border-color:rgba(16,185,129,0.3)">İLKE 03 · DENETİM</span>
-          <h3 style="font-size:1.15rem; margin-bottom:10px" data-i18n="p3Title">Formal Matematiksel Kanıt</h3>
-          <p class="small-mono" style="color:var(--mist); margin-bottom:12px" data-i18n="p3Desc">
-            Motorun karar mantığı ve yörünge hata sınırları Lean 4 ile biçimsel olarak doğrulanmıştır (41 teorem, 0 'sorry').
-          </p>
-          <div style="font-family:var(--f-mono); font-size:0.8rem; color:var(--emerald); background:rgba(0,0,0,0.3); padding:8px; border-radius:6px">
-            Lean 4 &nbsp;·&nbsp; 0 sorry &nbsp;·&nbsp; Machine-Checked
-          </div>
-        </article>
+      <div class="corpus-cta-banner">
+        <div class="eyebrow" style="color:var(--cyan); margin-bottom:12px;" data-i18n="rs2PortalK">Merkezi araştırma portalı</div>
+        <h2 style="font-size:clamp(22px,3.2vw,34px); margin-bottom:14px; color:#fff" data-i18n="rs2PortalT">Daha derine inmek isteyenler için</h2>
+        <p style="color:var(--mist); max-width:64ch; margin:0 auto 28px; font-size:1.05rem;" data-i18n="rs2PortalD">Ön baskılar, Lean 4 teoremleri, kıyaslamalar, açık veri setleri ve etkileşimli laboratuvarların tamamı fractal-neural-synthesis portalında toplanır.</p>
+        <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+          <a href="https://pcworm.github.io/fractal-neural-synthesis/" target="_blank" rel="noopener" class="btn-primary" style="padding:14px 28px; font-weight:700;"><span data-i18n="rs2PortalB1">Portalı aç</span> ↗</a>
+          <a href="https://pcworm.github.io/fractal-neural-synthesis/corpus.html" target="_blank" rel="noopener" class="btn-ghost" style="padding:14px 24px;"><span data-i18n="rs2PortalB2">Külliyat</span> ↗</a>
+          <a href="https://pcworm.github.io/fractal-neural-synthesis/benchmarks.html" target="_blank" rel="noopener" class="btn-ghost" style="padding:14px 24px;"><span data-i18n="rs2PortalB3">Kıyaslamalar</span> ↗</a>
+        </div>
       </div>
 
-      <!-- Interactive Decision Sandbox -->
-      <div class="sim-card">
+      <section style="margin-top:56px" aria-labelledby="vs-title">
+        <div class="section-head rv"><div><div class="eyebrow" data-i18n="vsK">Fark</div><h2 id="vs-title" data-i18n="vsTitle">Tahmin eden makineden, hüküm veren makineye.</h2></div>
+          <p data-i18n="vsLead">Not: answerr Pro’da kararlar açık kurallardan gelir. Fraktal motor araştırma katmanıdır; ikisi ayrı tutulur.</p></div>
+        <div class="scroll-x rv">
+          <table class="tests" style="min-width:640px">
+            <thead><tr><th></th><th data-i18n="vsA">Bugünün yaygın yaklaşımı</th><th style="color:var(--amber)" data-i18n="vsB">Werr yaklaşımı</th></tr></thead>
+            <tbody>
+              <tr><td data-i18n="vs1">Karar nerede?</td><td data-i18n="vs1a">Milyarlarca eğitilmiş ağırlıkta</td><td data-i18n="vs1b">Yazılı kurallarda ve 24 baytlık bir tohumda</td></tr>
+              <tr><td data-i18n="vs2">Karar anı</td><td data-i18n="vs2a">GPU, yüzlerce milisaniye</td><td data-i18n="vs2b">CPU, mikro saniyeler (bu sayfada ölçülür)</td></tr>
+              <tr><td data-i18n="vs3">Aynı girdi</td><td data-i18n="vs3a">Örneklemeye bağlı, değişebilir</td><td data-i18n="vs3b">Her ortamda aynı hüküm</td></tr>
+              <tr><td data-i18n="vs4">Neden?</td><td data-i18n="vs4a">Sonradan yorumlama</td><td data-i18n="vs4b">Kural, aday hükümler, alan katkıları, SHA-256 mühür</td></tr>
+              <tr><td data-i18n="vs5">Bilinmeyen durum</td><td data-i18n="vs5a">Kendinden emin bir tahmin</td><td data-i18n="vs5b">İNSANA DEVRET</td></tr>
+              <tr><td data-i18n="vs6">Doğruluk iddiası</td><td data-i18n="vs6a">Benchmark puanı</td><td data-i18n="vs6b">Testler + Lean 4 ile makine kontrollü önermeler</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="more-stack">
+        <details class="more"><summary data-i18n="rs2AllRecs">Tüm kayıtlar: kümülatif külliyat (README tablosu)</summary>
+<!-- CORPUS:START (generated by scripts/build_research_corpus.py) -->
+<div class="scroll-x"><table class="tests corpus"><caption class="sr-only" data-i18n="rsCorpus">Kümülatif külliyat</caption><thead><tr><th scope="col" data-i18n="rsThWork">Çalışma</th><th scope="col" data-i18n="rsThTopic">Konu</th><th scope="col" data-i18n="rsThLatestDoi">Son sürüm DOI</th><th scope="col" data-i18n="rsThConceptDoi">Kavram DOI</th><th scope="col" data-i18n="rsThStatus">arXiv / doğrulama / durum</th><th scope="col" data-i18n="rsThRepo">Depo</th></tr></thead><tbody>
+<tr><td>Paper 1: MFNS</td><td>Mandelbrot Fractal Neural Synthesis</td><td><a href="https://doi.org/10.5281/zenodo.22867037" rel="noopener"><code>10.5281/zenodo.22867037</code></a></td><td><a href="https://doi.org/10.5281/zenodo.22774934" rel="noopener"><code>10.5281/zenodo.22774934</code></a></td><td>Open Science Archive (In Revision)</td><td><a href="https://github.com/pCwOrM/fractal-neural-synthesis" rel="noopener"><code>pCwOrM/fractal-neural-synthesis</code></a></td></tr>
+<tr><td>Paper 2: OED</td><td>Orbital Error Dynamics (OED v3)</td><td><a href="https://doi.org/10.5281/zenodo.22900465" rel="noopener"><code>10.5281/zenodo.22900465</code></a></td><td><a href="https://doi.org/10.5281/zenodo.22896855" rel="noopener"><code>10.5281/zenodo.22896855</code></a></td><td><a href="https://arxiv.org/abs/2609.30115" rel="noopener"><code>arXiv:2609.30115</code></a> • <a href="https://huggingface.co/papers/2609.30115" rel="noopener">HF Paper</a> (Claimed)</td><td><a href="https://github.com/pCwOrM/fractal-neural-synthesis" rel="noopener"><code>pCwOrM/fractal-neural-synthesis</code></a></td></tr>
+<tr><td>Paper 3: WerreduR</td><td>Procedural Fractal Pedagogy (v4.0)</td><td><a href="https://doi.org/10.5281/zenodo.23128224" rel="noopener"><code>10.5281/zenodo.23128224</code></a></td><td><a href="https://doi.org/10.5281/zenodo.22999420" rel="noopener"><code>10.5281/zenodo.22999420</code></a></td><td>Target: Q1 AIED / CAEAI • <a href="https://pcworm.github.io/WerreduR/" rel="noopener">Live Simulator</a></td><td><a href="https://github.com/jesmaat/WerreduR" rel="noopener"><code>jesmaat/WerreduR</code></a> (Mirror: <a href="https://github.com/pCwOrM/WerreduR" rel="noopener"><code>pCwOrM/WerreduR</code></a>)</td></tr>
+<tr><td>Paper 4: BH Page</td><td>Black Hole Page Curve &amp; Quantum Gravity (v5)</td><td><a href="https://doi.org/10.5281/zenodo.23072120" rel="noopener"><code>10.5281/zenodo.23072120</code></a></td><td><a href="https://doi.org/10.5281/zenodo.22961999" rel="noopener"><code>10.5281/zenodo.22961999</code></a></td><td>CERN Record 22978460 • Quantum Stabilizers</td><td><a href="https://github.com/pCwOrM/fractal-neural-synthesis" rel="noopener"><code>pCwOrM/fractal-neural-synthesis</code></a></td></tr>
+<tr><td>Paper 5: Formal</td><td>Lean 4 40-Core Gauntlet (v2)</td><td><a href="https://doi.org/10.5281/zenodo.22983889" rel="noopener"><code>10.5281/zenodo.22983889</code></a></td><td><a href="https://doi.org/10.5281/zenodo.22974543" rel="noopener"><code>10.5281/zenodo.22974543</code></a></td><td><a href="https://arxiv.org/abs/2609.33066" rel="noopener"><code>arXiv:2609.33066</code></a> • <a href="https://huggingface.co/papers/2609.33066" rel="noopener">HF Paper</a> (Claimed)</td><td><a href="https://github.com/pCwOrM/werr" rel="noopener"><code>pCwOrM/werr</code></a> &amp; <a href="https://github.com/pCwOrM/werracle" rel="noopener"><code>werracle</code></a></td></tr>
+<tr><td>Paper 6: WerrSoma</td><td>Drosophila Connectome (158K Neurons, v1.1)</td><td><a href="https://doi.org/10.5281/zenodo.23072929" rel="noopener"><code>10.5281/zenodo.23072929</code></a></td><td><a href="https://doi.org/10.5281/zenodo.22996625" rel="noopener"><code>10.5281/zenodo.22996625</code></a></td><td><code>arXiv:submit/8161759</code> [on hold] • <a href="https://werrsoma.answerr.me/" rel="noopener">Live 3D Portal</a></td><td><a href="https://github.com/Lexovian/WerrSoma" rel="noopener"><code>Lexovian/WerrSoma</code></a></td></tr>
+<tr><td>Paper 7: Werracle</td><td>Sub-Cent Intra-Block EVM AI Oracle (v1)</td><td><a href="https://doi.org/10.5281/zenodo.22942599" rel="noopener"><code>10.5281/zenodo.22942599</code></a></td><td><a href="https://doi.org/10.5281/zenodo.22942598" rel="noopener"><code>10.5281/zenodo.22942598</code></a></td><td><a href="https://arxiv.org/abs/2609.30719" rel="noopener"><code>arXiv:2609.30719</code></a> • <a href="https://huggingface.co/papers/2609.30719" rel="noopener">HF Paper</a> (Claimed)</td><td><a href="https://github.com/pCwOrM/werracle" rel="noopener"><code>pCwOrM/werracle</code></a> &amp; <code>werralem</code></td></tr>
+<tr><td>Paper 8: Schönhage</td><td>Tensor Carrier Compression (W=176M)</td><td><a href="https://doi.org/10.5281/zenodo.23268580" rel="noopener"><code>10.5281/zenodo.23268580</code></a></td><td><a href="https://doi.org/10.5281/zenodo.23268579" rel="noopener"><code>10.5281/zenodo.23268579</code></a></td><td><a href="https://arxiv.org/abs/2610.14263" rel="noopener"><code>arXiv:2610.14263</code></a> (<a href="https://arxiv.org/pdf/2610.14263" rel="noopener">PDF</a> • <a href="https://doi.org/10.48550/arXiv.2610.14263" rel="noopener">DOI: <code>10.48550/arXiv.2610.14263</code></a> • <code>submit/8207241</code> [published]) • <a href="https://github.com/CrocSwap/integer-mult-bounds/pull/226" rel="noopener">CrocSwap #226 (Incorporated)</a> • <a href="https://github.com/CrocSwap/integer-mult-bounds/blob/50d768818f579d4e165b4c257c6ee25bca300802/CONTRIBUTORS.md" rel="noopener">Contributors</a> • <a href="https://github.com/CrocSwap/integer-mult-bounds/blob/50d768818f579d4e165b4c257c6ee25bca300802/docs/research/community-reconciliation-next100-review.md" rel="noopener">Audit <code>50d76881</code></a></td><td><a href="https://github.com/pCwOrM/integer-mult-bounds" rel="noopener"><code>pCwOrM/integer-mult-bounds</code></a></td></tr>
+<tr><td>Paper 9: Güneş Dili</td><td>Deterministik Morfoloji &amp; 53 Koma</td><td><a href="https://doi.org/10.5281/zenodo.23273006" rel="noopener"><code>10.5281/zenodo.23273006</code></a></td><td><a href="https://doi.org/10.5281/zenodo.23273005" rel="noopener"><code>10.5281/zenodo.23273005</code></a></td><td>Lean 4 Machine Verified • <a href="https://pcworm.github.io/gunes-dili/" rel="noopener">Live Portal</a></td><td><a href="https://github.com/pCwOrM/gunes-dili" rel="noopener"><code>pCwOrM/gunes-dili</code></a></td></tr>
+<tr><td>Paper 10: GDT</td><td>General Divisor Theorem &amp; Residue Conditioning</td><td><a href="https://doi.org/10.5281/zenodo.23316070" rel="noopener"><code>10.5281/zenodo.23316070</code></a></td><td><a href="https://doi.org/10.5281/zenodo.23316070" rel="noopener"><code>10.5281/zenodo.23316070</code></a></td><td>Lean 4 Machine Verified (2,287 Checks PASS)</td><td><a href="https://github.com/pCwOrM/general-divisor-theorem" rel="noopener"><code>pCwOrM/general-divisor-theorem</code></a></td></tr>
+<tr><td>Paper 11: Niemeier</td><td>24D Niemeier A_8^3 &amp; K3 Umbral Moonshine</td><td><a href="https://doi.org/10.5281/zenodo.23324066" rel="noopener"><code>10.5281/zenodo.23324066</code></a></td><td><a href="https://doi.org/10.5281/zenodo.23324066" rel="noopener"><code>10.5281/zenodo.23324066</code></a></td><td>Lean 4 Certified (0 sorry, 0 axioms) • Record 23324067</td><td><a href="https://github.com/pCwOrM/niemeier-a8-umbral-moonshine" rel="noopener"><code>pCwOrM/niemeier-a8-umbral-moonshine</code></a></td></tr>
+<tr><td>Engine: WERR</td><td>Zero-VRAM Gauntlet &amp; JevBench Intake</td><td><a href="https://doi.org/10.5281/zenodo.22939253" rel="noopener"><code>10.5281/zenodo.22939253</code></a></td><td><a href="https://doi.org/10.5281/zenodo.22867425" rel="noopener"><code>10.5281/zenodo.22867425</code></a></td><td><a href="https://arxiv.org/abs/2609.25498" rel="noopener"><code>arXiv:2609.25498</code></a> • <a href="https://huggingface.co/papers/2609.25498" rel="noopener">HF Paper</a> • <a href="https://huggingface.co/datasets/pCwOrM/werr_open_decisions" rel="noopener">HF Dataset</a></td><td><a href="https://github.com/pCwOrM/werr" rel="noopener"><code>pCwOrM/werr</code></a></td></tr>
+<tr><td>Platform: answerr</td><td>Reflex AI &amp; Live Workspace (This Repo)</td><td>Production: <a href="https://answerr.me" rel="noopener"><code>answerr.me</code></a></td><td>-</td><td>Dual-Cognition Reflex Platform</td><td><a href="https://github.com/pCwOrM/answerr" rel="noopener"><code>pCwOrM/answerr</code></a></td></tr>
+<tr><td>Discrete Alg</td><td>GAP-Lean4 Formally Verified Port (35 Theorems)</td><td><a href="https://doi.org/10.5281/zenodo.23045504" rel="noopener"><code>10.5281/zenodo.23045504</code></a></td><td><a href="https://doi.org/10.5281/zenodo.23045503" rel="noopener"><code>10.5281/zenodo.23045503</code></a></td><td><a href="https://arxiv.org/abs/2609.38492" rel="noopener"><code>arXiv:2609.38492</code></a> • <a href="https://huggingface.co/papers/2609.38492" rel="noopener">HF Paper</a> (Claimed)</td><td><a href="https://github.com/pCwOrM/gap-lean4-port" rel="noopener"><code>pCwOrM/gap-lean4-port</code></a></td></tr>
+</tbody></table></div>
+<p class="small-mono" style="margin-top:10px" data-i18n="rsCorpusCap">Kaynak: README.md · 14 kayıt · sıralama README ile aynı</p>
+<!-- CORPUS:END -->
+        </details>
+        <details class="more"><summary data-i18n="rs2Sandbox">Yörünge deneyi (araştırma motoru; ürün kararı değil)</summary>
+<div class="sim-card" style="margin:16px 0 0">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
           <div>
-            <div class="eyebrow" style="color:var(--cyan)">CANLI ETKİLEŞİM</div>
-            <h2 style="font-size:1.4rem; margin:0">İnteraktif Deterministik Karar Simülasyonu</h2>
+            <div class="eyebrow" style="color:var(--cyan)" data-i18n="simK">Araştırma motoru</div>
+            <h3 style="font-size:1.2rem; margin:0" data-i18n="simT">Yörünge deneyi</h3>
           </div>
           <div style="font-family:var(--f-mono); font-size:0.85rem; color:var(--mist)">
-            Durum: <span id="simStateBadge" style="color:var(--emerald); font-weight:700">STABLE (ALLOW)</span>
+            <span data-i18n="simState">Durum</span>: <span id="simStateBadge" style="color:var(--emerald); font-weight:700">STABLE (ALLOW)</span>
           </div>
         </div>
-        <p class="small-mono" style="color:var(--mist); margin-bottom:20px;">
-          Aşağıdaki girdi parametrelerini değiştirerek sistemin sıfır hafıza ile anlık olarak karar yüzeyini nasıl hesapladığını canlı gözlemleyin.
-        </p>
+        <p class="small-mono" style="color:var(--mist); margin-bottom:20px;" data-i18n="simD">Parametreleri değiştirin: araştırma motoru karar yüzeyini bellek saklamadan anında yeniden hesaplar. Bu bir ürün kararı değil, motorun görselleştirmesidir.</p>
 
         <div class="sim-grid">
           <div class="sim-controls">
             <label>
-              <span>Girdi Sapması (Perturbation &Delta;x):</span>
+              <span data-i18n="simPerturb">Girdi sapması (Δx):</span>
               <span id="valPerturb" style="color:var(--cyan); font-family:var(--f-mono)">0.12</span>
             </label>
             <input type="range" id="inputPerturb" min="0.01" max="1.50" step="0.01" value="0.12" oninput="runSim()">
 
             <label>
-              <span>Güvenlik Eşiği (&theta;):</span>
+              <span data-i18n="simTheta">Güvenlik eşiği (θ):</span>
               <span id="valThreshold" style="color:var(--gold); font-family:var(--f-mono)">0.65</span>
             </label>
             <input type="range" id="inputThreshold" min="0.10" max="1.00" step="0.01" value="0.65" oninput="runSim()">
 
             <label>
-              <span>Dinamik Yörünge İterasyonu (N):</span>
+              <span data-i18n="simIter">Yörünge yinelemesi (N):</span>
               <span id="valIters" style="color:var(--emerald); font-family:var(--f-mono)">16</span>
             </label>
             <input type="range" id="inputIters" min="4" max="64" step="2" value="16" oninput="runSim()">
 
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;">
+            <div style="display:grid; grid-template-columns:1fr; gap:10px; margin-top:12px;">
               <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; border:1px solid var(--border);">
-                <div style="font-size:0.75rem; color:var(--mist)">Hesaplama Gecikmesi</div>
+                <div style="font-size:0.75rem; color:var(--mist)" data-i18n="simLat">Hesaplama süresi</div>
                 <div style="font-family:var(--f-mono); font-size:1.1rem; color:#fff" id="simLatency">0.038 ms</div>
-              </div>
-              <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; border:1px solid var(--border);">
-                <div style="font-size:0.75rem; color:var(--mist)">VRAM / Bellek</div>
-                <div style="font-family:var(--f-mono); font-size:1.1rem; color:var(--emerald)">0.00 MB</div>
               </div>
             </div>
           </div>
@@ -293,51 +357,54 @@
           <div>
             <canvas id="simCanvas" class="sim-canvas" width="500" height="220"></canvas>
             <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:0.75rem; color:var(--mist); font-family:var(--f-mono)">
-              <span>&larr; Kararlı Bölge (|z| &le; 2)</span>
-              <span>Iraksak Kaçış &rarr;</span>
+              <span data-i18n="simStable">← Kararlı bölge (|z| ≤ 2)</span>
+              <span data-i18n="simEsc">Iraksak kaçış →</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Grand Corpus CTA Banner -->
-      <div class="corpus-cta-banner">
-        <div class="eyebrow" style="color:var(--cyan); margin-bottom:12px;">MERKEZİ ARAŞTIRMA PORTALI</div>
-        <h2 style="font-size:clamp(22px,3.2vw,34px); margin-bottom:14px; color:#fff">
-          Tüm Akademik Külliyat, Teoremler ve Açık Veri Setleri
-        </h2>
-        <p style="color:var(--mist); max-width:64ch; margin:0 auto 28px; font-size:1.05rem;">
-          11 hakemli ön baskı, 41 Lean 4 biçimsel teoremi, Schönhage dünya rekoru (-377K tel sıkıştırması), Drosophila 158K nöron tüm beyin haritası ve kalıcı Zenodo DOI arşivleri tek merkezde toplanmıştır.
-        </p>
-        <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
-          <a href="https://pcworm.github.io/fractal-neural-synthesis/corpus.html" target="_blank" rel="noopener" class="btn-primary" style="padding:14px 28px; font-weight:700;">
-            Tüm Külliyatı İncele (fractal-neural-synthesis ↗)
-          </a>
-          <a href="https://pcworm.github.io/fractal-neural-synthesis/benchmarks.html" target="_blank" rel="noopener" class="btn-ghost" style="padding:14px 24px;">
-            The Gauntlet Kıyaslamaları ↗
-          </a>
-        </div>
-      </div>
 
-      <!-- Intellectual Property -->
-      <h2 class="label" style="margin:48px 0 16px" data-i18n="rsIp">Fikri Mülkiyet &amp; Patent Tescilleri</h2>
-      <div class="grid-3">
-        <article class="principle-card">
-          <div class="eyebrow">TÜRKPATENT · <span data-i18n="rsPending">beklemede</span></div>
-          <h3 style="font-size:1rem; margin:8px 0;">Fraktal Sinirsel Sentez Karar Motoru</h3>
-          <p class="small-mono" style="color:var(--mist)">Başvuru No: 2026/014892 · Yazılımsal karar yüzeyi çıkarımı.</p>
-        </article>
-        <article class="principle-card">
-          <div class="eyebrow">TÜRKPATENT · <span data-i18n="rsPending">beklemede</span></div>
-          <h3 style="font-size:1rem; margin:8px 0;">Yörünge Hata Dinamiği (OED) Doğrulayıcı</h3>
-          <p class="small-mono" style="color:var(--mist)">Başvuru No: 2026/015401 · Deterministik güvenlik sınırlayıcı.</p>
-        </article>
-        <article class="principle-card">
-          <div class="eyebrow" data-i18n="rsOrg">Kurum</div>
-          <h3 style="font-size:1rem; margin:8px 0;" data-i18n="fCompanyShort">ITouch Bilişim Sistemleri</h3>
-          <p class="small-mono" style="color:var(--mist)">Çukurova Üniversitesi Teknokent, Adana.</p>
-        </article>
+        </details>
+        <details class="more"><summary data-i18n="ufTitle">Kararın gideceği yerler.</summary>
+          <p class="small-mono" style="color:var(--mist); margin:12px 0" data-i18n="ufLead">Takvim değil yön. Her ufka, bir önceki ölçülmeden geçilmez.</p>
+          <div class="horizons rv">
+          <div><div class="when st-now" data-i18n="uf1k">UFUK 1 · 2026</div><h3 data-i18n="uf1t">Yazılımın karar kapısı</h3><p class="muted" style="margin:0" data-i18n="uf1d">AI ajanlar, ödeme ve API. Politika doğal dilde yazılır, kural olarak çalışır, her karar iz bırakır. Gelir: abonelik ve karar başına kullanım.</p></div>
+          <div><div class="when st-pilot" data-i18n="uf2k">UFUK 2 · 2027</div><h3 data-i18n="uf2t">Protokol ve gömülü refleks</h3><p class="muted" style="margin:0" data-i18n="uf2d">Aynı çekirdek zincir üstünde (Werracle), sınıfta (WerreduR), toplulukta (Werrberus) ve ağ gecikmesi olmadan cihaz içinde: hız werr. Gelir: lisans ve protokol ücreti.</p></div>
+          <div><div class="when st-horizon" data-i18n="uf3k">UFUK 3 · 2028 →</div><h3 data-i18n="uf3t">Fiziksel dünyanın refleksi</h3><p class="muted" style="margin:0" data-i18n="uf3d">Robotik, uçuş güvenliği ve biyolojik arayüzler: tepki werr. Bugün yalnızca simülasyon ve kuram; yol, Ar-Ge ortaklıkları ve biçimsel güvenlik kanıtlarından geçer.</p></div>
+        </div>
+        </details>
+        <details class="more"><summary data-i18n="glTitle">Jargonumuz, tek sayfada.</summary>
+          <div class="gloss rv">
+          <dl>
+            <dt>werr</dt><dd data-i18n="g1">Waves &amp; Errors Reflex Resonator. Türkçede “Ver!” buyruğu, İngilizcede “Where?” sorusu.</dd>
+            <dt>answerr</dt><dd data-i18n="g2">Adaptive Non-tensor Signal Wave &amp; Error Reflex Resonator: werr’in üzerindeki karar platformu.</dd>
+            <dt data-i18n="g3dt">karar werr · cevap werr</dt><dd data-i18n="g3">Lafı uzatmadan hüküm ve tipli cevap üretmek.</dd>
+            <dt data-i18n="g4dt">izin werr · öncelik werr</dt><dd data-i18n="g4">Erişim kapısında geçiş vermek; kuyrukta öne almak.</dd>
+            <dt data-i18n="g5dt">hız werr · tepki werr</dt><dd data-i18n="g5">Ağ gecikmesini aradan çıkarıp cihaz içinde karar; sensöre anında refleks.</dd>
+            <dt>rr</dt><dd data-i18n="g6">Çift r: periyot ikiye katlanma çatallanması; iki katmanlı rezonans.</dd>
+          </dl>
+          <dl>
+            <dt>noul · choice · score</dt><dd data-i18n="g7">Üç tipli cevap: evet/hayır ve olasılık, dört kadranlı seçim, sürekli puan.</dd>
+            <dt data-i18n="g8dt">24 B tohum</dt><dd data-i18n="g8">(cx, cy, zoom): Mandelbrot sınırında (∂M) bir koordinat. Ağırlık yerine saklanan tek şey.</dd>
+            <dt>|Z| &gt; 2</dt><dd data-i18n="g9">Kaçış eşiği: yörünge bu sınırı aşınca ıraksar; karar sinyali buradan okunur.</dd>
+            <dt data-i18n="g10dt">Sistem-1 · Sistem-2</dt><dd data-i18n="g10">Refleks (werr) ve muhakeme (answerr). Düşünme yazarken, refleks çalışırken.</dd>
+            <dt data-i18n="g11dt">Kapı · Mühür</dt><dd data-i18n="g11">Kapı: sürümlü politika. Mühür: politikanın kanonik JSON’unun SHA-256 özeti.</dd>
+            <dt data-i18n="g12dt">İNSANA DEVRET</dt><dd data-i18n="g12">Tanınmayan alan, eksik bilgi ya da eşik: makine tahmin etmez, insana bırakır.</dd>
+          </dl>
+        </div>
+        
+          <p class="motto rv" style="margin-top:22px">“When the Wave meets Error, we Recurse (<b>werr</b>).”</p>
+        </details>
+        <details class="more"><summary data-i18n="rsIp">Fikri mülkiyet ve patent başvuruları</summary>
+          <div class="grid-3" style="margin-top:14px">
+            <article class="principle-card"><div class="eyebrow">TÜRKPATENT · <span data-i18n="rsPending">beklemede</span></div><h3 style="font-size:1rem; margin:8px 0;" data-i18n="rs2Pat1t">Fraktal Sinirsel Sentez karar motoru</h3><p class="small-mono" style="color:var(--mist)" data-i18n="rs2Pat1d">Başvuru No: 2026/014892 · Yazılımsal karar yüzeyi çıkarımı.</p></article>
+            <article class="principle-card"><div class="eyebrow">TÜRKPATENT · <span data-i18n="rsPending">beklemede</span></div><h3 style="font-size:1rem; margin:8px 0;" data-i18n="rs2Pat2t">Yörünge Hata Dinamiği (OED) doğrulayıcı</h3><p class="small-mono" style="color:var(--mist)" data-i18n="rs2Pat2d">Başvuru No: 2026/015401 · Deterministik güvenlik sınırlayıcı.</p></article>
+            <article class="principle-card"><div class="eyebrow" data-i18n="rsOrg">Kurum</div><h3 style="font-size:1rem; margin:8px 0;" data-i18n="fCompanyShort">ITouch Bilişim Sistemleri</h3><p class="small-mono" style="color:var(--mist)" data-i18n="rs2Org">Çukurova Üniversitesi Teknokent, Adana.</p></article>
+          </div>
+        </details>
       </div>
+      <p class="small-mono" style="margin:28px 0 0; color:var(--mist)" data-i18n="viFoot">Ön baskılar hakem denetiminden geçmemiş olabilir. Patent başvuruları beklemededir, verilmiş patent değildir. Ufuk bölümleri vizyondur, ürün taahhüdü değildir.</p>
 
     </div>
   </main>
@@ -350,7 +417,7 @@
         <p class="small-mono" data-i18n="footOrg">ITouch Bilişim Sistemleri · Çukurova Üniversitesi Teknokent</p></div>
       <div><h2 class="foot-h" data-i18n="fcProduct">Ürün</h2><ul><li><a href="index.html#kara-kutu" data-i18n="navConsole">Kara Kutu</a></li><li><a href="studio.html" data-i18n="navStudio">Derleyici</a></li><li><a href="pricing.html" data-i18n="navPricing">Fiyatlar</a></li><li><a href="console/" data-i18n="navLogin">Konsol</a></li><li><a href="status.html" data-i18n="fStatus">Hizmet durumu</a></li><li><a href="index.html#erisim" data-i18n="fPilot">Tasarım ortaklığı</a></li></ul></div>
       <div><h2 class="foot-h" data-i18n="fcDev">Geliştiriciler</h2><ul><li><a href="docs.html" data-i18n="fDocs">Belgeler</a></li><li><a href="https://api.answerr.me/v1/docs" rel="noopener" data-i18n="fApiRef">API referansı</a></li><li><a href="docs.html#webhooks" data-i18n="fWebhooks">Webhook'lar</a></li><li><a href="https://github.com/pCwOrM/answerr" rel="noopener">GitHub · answerr</a></li><li><a href="https://github.com/pCwOrM/werr" rel="noopener" data-i18n="fWerrRepo">werr Çekirdeği (GitHub)</a></li><li><a href="../chat.html" data-i18n="fClassic">Klasik konsol</a></li></ul></div>
-      <div><h2 class="foot-h" data-i18n="fcEcosystem">Ekosistem ve araştırma</h2><ul><li><a href="https://radar.werracle.com/" rel="noopener" data-i18n="fRadarApi">Werracle Radar API ↗</a></li><li><a href="https://werracle.com" rel="noopener" data-i18n="fWerracleCom">werracle.com ↗</a></li><li><a href="https://werr.io" rel="noopener" data-i18n="fWerrIo">werr.io · Motor ↗</a></li><li><a href="research.html" data-i18n="fPortal">Araştırma Portalı</a></li><li><a href="vision.html" data-i18n="fVision">Werr Evreni</a></li><li><a href="mailto:ask@answerr.me">ask@answerr.me</a></li></ul></div>
+      <div><h2 class="foot-h" data-i18n="fcEcosystem">Ekosistem ve araştırma</h2><ul><li><a href="https://radar.werracle.com/" rel="noopener" data-i18n="fRadarApi">Werracle Radar API ↗</a></li><li><a href="https://werracle.com" rel="noopener" data-i18n="fWerracleCom">werracle.com ↗</a></li><li><a href="https://werr.io" rel="noopener" data-i18n="fWerrIo">werr.io · Motor ↗</a></li><li><a href="research.html" data-i18n="navResearch">Araştırma</a></li><li><a href="https://pcworm.github.io/fractal-neural-synthesis/" rel="noopener" data-i18n="fPortalExt">Araştırma portalı ↗</a></li><li><a href="mailto:ask@answerr.me">ask@answerr.me</a></li></ul></div>
       <div><h2 class="foot-h" data-i18n="fcCompany">Kurumsal ve yasal</h2><ul><li><a href="https://itouch.com.tr" rel="noopener" data-i18n="fCompanyShort">ITouch Bilişim Sistemleri</a></li><li><a href="legal/kullanim-sartlari.html" data-i18n="lgTerms">Kullanım şartları</a></li><li><a href="legal/gizlilik.html" data-i18n="lgPrivacy">Gizlilik politikası</a></li><li><a href="legal/kvkk-aydinlatma.html" data-i18n="lgKvkk">KVKK aydınlatma metni</a></li><li><a href="legal/mesafeli-satis.html" data-i18n="lgSales">Mesafeli satış & iade</a></li><li><a href="legal/cerez.html" data-i18n="lgCookies">Çerez politikası</a></li></ul></div>
     </div>
     <div class="wrap foot-legal">
@@ -360,11 +427,12 @@
   </footer>
   <!-- CHROME:FOOT:END -->
 
-  <script src="i18n.js?v=20261028_v7"></script>
-  <script src="i18n-plus.js?v=20261028_v7"></script>
+  <script src="../js/policy-kernel.js"></script>
+  <script src="i18n.js?v=20261029_v8"></script>
+  <script src="i18n-plus.js?v=20261029_v8"></script>
   <script src="app.js?v=20261028_v7"></script>
-
-  <!-- Interactive Sandbox Script -->
+  <script src="fx.js?v=20261029_v8"></script>
+  <script src="research.js?v=20261029_v8"></script>
   <script>
     function runSim() {
       const perturb = parseFloat(document.getElementById('inputPerturb').value);
@@ -465,115 +533,7 @@
         ctx.fill();
       }
     }
-
-
-    // 5-Second Live Stress Comparison Script
-    let stressRunning = false;
-    function runStressComparison() {
-      if (stressRunning) return;
-      stressRunning = true;
-      const btn = document.getElementById('btnRunStressTest');
-      const label = document.getElementById('stressBtnLabel');
-      const timer = document.getElementById('stressTimer');
-      const canvas = document.getElementById('stressCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width;
-      const h = canvas.height;
-
-      const startTime = performance.now();
-      const duration = 5000; // 5 seconds
-
-      if (btn) {
-        btn.disabled = true;
-        btn.style.opacity = '0.6';
-      }
-
-      let animId;
-      function step(now) {
-        const elapsed = now - startTime;
-        const progress = Math.min(1.0, elapsed / duration);
-        const remainingSec = Math.max(0, ((duration - elapsed) / 1000)).toFixed(1);
-        if (timer) timer.innerText = `Simülasyon Sürüyor: ${remainingSec}s`;
-
-        // Clear canvas
-        ctx.fillStyle = '#020306';
-        ctx.fillRect(0, 0, w, h);
-
-        // Center split line
-        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath(); ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h); ctx.stroke();
-        ctx.setLineDash([]);
-
-        // Labels
-        ctx.font = '12px IBM Plex Mono, monospace';
-        ctx.fillStyle = '#f87171';
-        ctx.fillText('STOKASTİK LLM (Kaotik Gürültü Altında)', 20, 24);
-        ctx.fillStyle = '#38bdf8';
-        ctx.fillText('ANSWERR PRO (Deterministik Yörünge Kilidi)', w / 2 + 20, 24);
-
-        // Draw chaotic LLM wave on left
-        ctx.beginPath();
-        ctx.strokeStyle = '#f43f5e';
-        ctx.lineWidth = 2;
-        const halfW = w / 2;
-        for (let x = 10; x < halfW - 20; x += 4) {
-          const noise = (Math.sin(x * 0.08 + elapsed * 0.01) + Math.cos(x * 0.15 - elapsed * 0.015)) * (18 + progress * 32);
-          const y = h / 2 + noise;
-          if (x === 10) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-
-        // Draw stable Answerr orbit on right
-        ctx.beginPath();
-        ctx.strokeStyle = '#38bdf8';
-        ctx.lineWidth = 2.5;
-        for (let x = halfW + 20; x < w - 10; x += 4) {
-          const normalX = (x - halfW) * 0.05;
-          const stableWave = Math.sin(normalX + elapsed * 0.004) * 16;
-          const y = h / 2 + stableWave;
-          if (x === halfW + 20) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-
-        // Status update
-        if (progress > 0.6) {
-          const el = document.getElementById('llmStatusText');
-          if (el) {
-            el.innerText = 'HATA: Halüsinasyon / Güvenlik Duvarı İhlali!';
-            el.style.color = '#ef4444';
-          }
-        }
-
-        if (elapsed < duration) {
-          animId = requestAnimationFrame(step);
-        } else {
-          stressRunning = false;
-          if (btn) {
-            btn.disabled = false;
-            btn.style.opacity = '1';
-          }
-          if (timer) timer.innerText = 'Test Tamamlandı · Answerr Koruma Sağladı (%100 Deterministic)';
-          const elAnswerr = document.getElementById('answerrStatusText');
-          if (elAnswerr) {
-            elAnswerr.innerText = 'MÜKEMMEL KORUMA (0 ihlal, 0.038 ms)';
-            elAnswerr.style.color = '#10b981';
-          }
-          if (label) label.innerText = 'Yeniden Test Et (5s)';
-        }
-      }
-      animId = requestAnimationFrame(step);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      runSim();
-      setTimeout(runStressComparison, 300);
-    });
-
-    setTimeout(runSim, 100);
+    window.addEventListener('DOMContentLoaded', () => { runSim(); });
   </script>
 </body>
 </html>

@@ -43,7 +43,8 @@ def corpus_rows():
         text = f.read()
     i = text.find("Associated Formal Verification & Scientific Corpus")
     if i < 0:
-        sys.exit("corpus table not found in README.md")
+        print("corpus table not found in README.md; keeping the table already on the page")
+        sys.exit(0)
     rows = []
     for line in text[i:].splitlines()[1:]:
         if line.startswith("---") and rows:
