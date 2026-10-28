@@ -6,7 +6,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRO = os.path.join(ROOT, "pro")
-PAGES = ["index.html", "studio.html", "research.html", "pricing.html", "vision.html", "docs.html", "status.html",
+PAGES = ["index.html", "studio.html", "research.html", "pricing.html", "docs.html", "status.html",
          "console/index.html", "console/admin.html"]
 
 
