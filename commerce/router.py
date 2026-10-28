@@ -596,7 +596,7 @@ def instant_checkout(req: InstantCheckoutReq, request: Request):
         tok_key = "crypto:" + tx_clean
         if S.get_payment(token=tok_key):
             raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
-        q_usd = billing.quote_usd(target_plan, cycle)
+        q_usd = billing.quote_usd(target_plan, cycle, email=email)
         ver = billing.verify_crypto_payment(req.tx_hash, req.network or "base", req.token or "USDC", float(q_usd["total"]))
 
     # New accounts always start on Explore; a paid plan is set only by a verified payment.
@@ -676,7 +676,8 @@ def crypto_checkout(req: CryptoCheckoutReq, request: Request):
     tok_key = "crypto:" + tx_clean
     if S.get_payment(token=tok_key):
         raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
-    q_usd = billing.quote_usd(req.plan, req.cycle)
+    email = p.get("email")
+    q_usd = billing.quote_usd(req.plan, req.cycle, email=email)
     ver = billing.verify_crypto_payment(req.tx_hash, req.network, req.token, float(q_usd["total"]))
     b_info = json.loads(acc.get("billing_json") or "{}")
     b_info.update({"consent_preinfo": True, "consent_distance_sale": True, "consent_ts": int(time.time()), "legal_version": mail.legal_version()})

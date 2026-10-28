@@ -8,6 +8,15 @@
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const $ = (sel, el) => (el || document).querySelector(sel);
   const $$ = (sel, el) => Array.from((el || document).querySelectorAll(sel));
+  function cryptoCents(email) {
+    const s = (email || '').trim().toLowerCase();
+    if (!s) return 0;
+    let h = 0;
+    for (let i = 0; i < s.length; i++) {
+      h = Math.imul(31, h) + s.charCodeAt(i) | 0;
+    }
+    return ((Math.abs(h) % 90 + 10) / 100);
+  }
 
   /* ------------------------------------------------------------------ dictionary */
   const T = {
@@ -89,7 +98,7 @@
       crAmount: '{p} ({c}) — amount due: {a} USDC / USDT (0% VAT)', crNoWallet: 'No Web3 wallet (MetaMask / Rabby) found in this browser. Choose a network below and verify with the transaction hash.', crConnecting: 'Connecting to Base Mainnet (chain ID 8453)…', crConfirm: 'Confirm the {a} USDC transfer in your wallet…', crSent: 'Transfer sent, waiting for confirmation…', crNeedTx: 'Enter the transaction hash (TXID).', crVerifying: 'Verifying on-chain…', crErr: 'Error: ',
       bankReq: 'Your bank-transfer request is in. Beneficiary: ITOUCH BILISIM SISTEMLERI LTD. STI. (TEB, SWIFT TEBUTRIS) · TRY IBAN <code>TR92 0003 2000 0000 0070 5754 65</code> · USD IBAN <code>TR83 0003 2000 0000 0088 9467 48</code> · EUR IBAN <code>TR28 0003 2000 0000 0088 9467 68</code>. Put your account e-mail in the reference. Download the proforma invoice from the payments table below; the plan activates when the payment arrives.',
       invPdf: '📄 Invoice (PDF)', proPdf: '📄 Proforma (PDF)', pendingCard: 'Your account is ready. To pay by card, first save the billing details below (including address, city and phone), then press “Pay by card” on the {p} plan.', st: { paid: 'paid', initiated: 'pending', failed: 'failed', pending_review: 'in review', refunded: 'refunded' }, perThousand: 'per 1,000 decisions',
-      errs: { bad_email: 'Enter a valid e-mail address.', consent_required: 'Tick the consent boxes to continue.', billing_incomplete: 'Complete your billing details first.', bad_tx_hash: 'The transaction hash (TXID) is not valid.', tx_already_used: 'This transaction hash has already been used.', tx_not_found: 'Transaction not found or not confirmed yet; try again in a few minutes.', transfer_not_found: 'No USDC/USDT transfer to our payment address was found in this transaction.', insufficient_amount: 'The amount sent is lower than the plan price.', tx_reverted: 'The transaction failed on-chain.', tx_too_old: 'This transfer is too old to be used for a new purchase. Enter the transaction hash within 72 hours of paying.', unsupported_network: 'This network is not supported.', verification_error: 'On-chain verification is not available right now; try again shortly.', card_payments_off: 'Card payments are closed right now; choose bank transfer or crypto.', payment_init_failed: 'The payment page could not be opened; try again shortly.', rate: 'Too many attempts; please try again later.', recaptcha: 'Bot check failed; reload the page and try again.' },
+      errs: { bad_email: 'Enter a valid e-mail address.', consent_required: 'Tick the consent boxes to continue.', billing_incomplete: 'Complete your billing details first.', bad_tx_hash: 'The transaction hash (TXID) is not valid.', tx_already_used: 'This transaction hash has already been used.', tx_not_found: 'Transaction not found or not confirmed yet; try again in a few minutes.', transfer_not_found: 'No USDC/USDT transfer to our payment address was found in this transaction.', insufficient_amount: 'The amount sent is lower than the plan price.', mismatched_amount: 'Transfer amount does not match your account quote. Please send the exact amount including cents.', tx_reverted: 'The transaction failed on-chain.', tx_too_old: 'This transfer is too old to be used for a new purchase. Enter the transaction hash within 72 hours of paying.', unsupported_network: 'This network is not supported.', verification_error: 'On-chain verification is not available right now; try again shortly.', card_payments_off: 'Card payments are closed right now; choose bank transfer or crypto.', payment_init_failed: 'The payment page could not be opened; try again shortly.', rate: 'Too many attempts; please try again later.', recaptcha: 'Bot check failed; reload the page and try again.' },
       when: 'Date', scheduled: 'Your plan moves to Explore at the end of the paid period; no renewal is charged.', payCard: 'Pay by card', payCrypto: '⚡ Pay with Crypto (USDC / USDT)', payBank: 'Request bank transfer', renew: 'Renew by card', plusVat: '(0% VAT)', vatIncl: '0% VAT · Technopark Exempt',
       payOpening: 'Opening the payment page…', payNeedBilling: 'To pay by card, fill in and save the billing details below first.',
       payPaid: 'Payment received; your plan is active. The invoice arrives by e-mail within two working days.', payFailed: 'The payment was not completed and nothing was charged. You can try again.',
@@ -171,7 +180,7 @@
       companyPh: 'Şirket unvanı ya da ad soyad', taxId: 'Vergi no / TCKN', taxPh: 'Fatura için VKN / TCKN', addr: 'Fatura şehri / ülke', addrPh: 'Adana, Türkiye',
       method: 'Ödeme yöntemi', mCard: '💳 Kart (iyzico 3D)', mBank: '🏦 Havale / EFT', mCrypto: '⚡ Kripto (USDC / USDT)',
       net: 'Ağ ve token', copy: 'Kopyala', copied: 'Kopyalandı', txid: 'İşlem kodu (TXID) *', txPh: '0x… ya da TRON işlem kodu',
-      cryptoNote: 'Tutar: <b>{a} USDC/USDT</b> (%0 KDV). Bu adrese gönderip işlem kodunu girin; zincirde doğrulanınca planınız ve ödendi damgalı faturanız hemen hazır olur.',
+      cryptoNote: 'Tutar: <b>{a} USDC/USDT</b> (%0 KDV). İşleminizin hesabınızla güvenli ve otomatik eşleşmesi için lütfen küsurat dahil tam tutarı ({a}) gönderiniz. Zincirde doğrulanınca planınız hemen etkinleşir.',
       bankCur: 'Fatura para birimi', bankBenef: 'Alıcı', bankNote: 'Hesabınız ve API anahtarınız hemen açılır (Keşif). Proforma faturanız (PDF) hazırlanır; havale ulaşınca planınız etkinleşir ve fatura ödendi olarak damgalanır.',
       cardTitle: '💳 iyzico 3D Secure ile kart ödemesi', cardNote: 'Tutar: <b>{a}</b> (%0 KDV, Teknokent istisnası), tek çekim. Hesabınız hemen açılır; ardından fatura adresinizi tamamlayıp iyzico ödeme sayfasına geçersiniz.',
       talk: '✉️ Kurumsal görüşme planla', btnFree: '🚀 Ücretsiz API anahtarımı al', btnCrypto: '✓ Ödemeyi doğrula ve API anahtarımı al', btnBank: '📄 Proforma fatura oluştur ve API anahtarımı al', btnCard: '💳 Devam et: kartla öde',
@@ -186,7 +195,7 @@
       companyPh: 'Company name or full name', taxId: 'Tax ID', taxPh: 'Tax ID for the invoice', addr: 'Billing city / country', addrPh: 'Berlin, Germany',
       method: 'Payment method', mCard: '💳 Card (iyzico 3D)', mBank: '🏦 Bank transfer', mCrypto: '⚡ Crypto (USDC / USDT)',
       net: 'Network and token', copy: 'Copy', copied: 'Copied', txid: 'Transaction hash (TXID) *', txPh: '0x… or TRON transaction id',
-      cryptoNote: 'Amount: <b>{a} USDC/USDT</b> (0% VAT). Send it to this address and enter the transaction hash; once verified on-chain your plan and PAID invoice are ready at once.',
+      cryptoNote: 'Amount: <b>{a} USDC/USDT</b> (0% VAT). To ensure secure and instant automated binding to your account, please send the exact amount including cents ({a}). Once verified on-chain your plan activates at once.',
       bankCur: 'Invoice currency', bankBenef: 'Beneficiary', bankNote: 'Your account and API key open immediately (Explore). A proforma invoice (PDF) is prepared; the plan activates when the transfer arrives and the invoice is stamped PAID.',
       cardTitle: '💳 Card payment with iyzico 3D Secure', cardNote: 'Amount: <b>{a}</b> (0% VAT, Technopark exemption), single charge. Your account opens immediately; then you complete your billing address and continue to the iyzico payment page.',
       talk: '✉️ Book an enterprise call', btnFree: '🚀 Get my free API key', btnCrypto: '✓ Verify payment and get my API key', btnBank: '📄 Create proforma invoice and get my API key', btnCard: '💳 Continue: pay by card',
@@ -235,7 +244,8 @@
     const isPaid = ['gelistirici', 'pro'].includes(activeAuthPlan);
     const P = AUTH_PLANS[activeAuthPlan];
     const yearly = activeAuthCycle === 'yearly';
-    const amtUsd = isPaid ? (yearly ? P.usd_y * 12 : P.usd_m) : 0;
+    const baseUsd = isPaid ? (yearly ? P.usd_y * 12 : P.usd_m) : 0;
+    const amtUsd = isPaid ? (baseUsd + cryptoCents(prevEmail)).toFixed(2) : '0.00';
     const amtTry = isPaid ? (yearly ? P.try_y * 12 : P.try_m) : 0;
     const pill = (on, color) => `padding:8px 4px;border-radius:8px;border:1px solid ${on ? color : 'var(--line,#1e293b)'};background:${on ? 'rgba(245,158,11,0.12)' : 'transparent'};color:${on ? '#fff' : 'var(--muted,#94a3b8)'};cursor:pointer;text-align:center;`;
     const tabBtn = (m, color) => `flex:1;padding:8px;border-radius:6px;border:1px solid ${activeAuthPayTab === m ? color : '#334155'};background:${activeAuthPayTab === m ? 'rgba(56,189,248,0.10)' : 'transparent'};color:#fff;cursor:pointer;font-size:12px;font-weight:600;min-height:40px;`;
@@ -300,7 +310,7 @@
               </div>
               <div class="field" style="margin-bottom:0"><label for="auTxHash" style="font-size:11px">${esc(u('txid'))}</label>
                 <input id="auTxHash" type="text" value="${esc(prevTx)}" placeholder="${esc(u('txPh'))}" style="font-family:monospace;font-size:12px;"></div>
-              <div style="font-size:11px;color:var(--muted);margin-top:6px;">${u('cryptoNote', { a: '$' + amtUsd })}</div>
+              <div id="auCryptoNote" style="font-size:11px;color:var(--muted);margin-top:6px;">${u('cryptoNote', { a: '$' + amtUsd })}</div>
             </div>` : ''}
             ${activeAuthPayTab === 'bank' ? `
             <div style="background:#080c14;border:1px solid #1e293b;border-radius:8px;padding:12px;margin-bottom:12px;font-size:12px;line-height:1.6;">
@@ -844,7 +854,7 @@
     const EVM_ADDR = '0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7';
     const TRON_ADDR = 'TLMhaDJTVYBHBSGJ9nCQGLvqnYFPsBgLJu';
     const BASE_USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
-    const usdFor = (pl, cy) => { const p = plans[pl] || {}; return cy === 'yearly' ? (p.price_yearly_per_month * 12) : p.price_monthly; };
+    const usdFor = (pl, cy) => { const p = plans[pl] || {}; const base = cy === 'yearly' ? (p.price_yearly_per_month * 12) : p.price_monthly; const em = (a && a.email) || ''; return (base + cryptoCents(em)).toFixed(2); };
     const updCrInfo = () => {
       const amt = usdFor(curCryptoPlan, cycle);
       const pName = plans[curCryptoPlan] ? (L() === 'en' ? plans[curCryptoPlan].name_en : plans[curCryptoPlan].name_tr) : curCryptoPlan;

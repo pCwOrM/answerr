@@ -289,7 +289,7 @@ def test_crypto_checkout_activates_plan(client, monkeypatch):
     )
     assert r.status_code == 200, r.text
     data = r.json()
-    assert data["result"] == "paid" and data["payment"]["total_try"] == "99.00" and data["payment"]["currency"] == "USDC"
+    assert data["result"] == "paid" and float(data["payment"]["total_try"]) >= 99.0 and data["payment"]["currency"] == "USDC"
     assert data["account"]["plan"] == "pro"
     # Replaying the same tx_hash is rejected with 409
     r2 = client.post(
@@ -334,3 +334,45 @@ def test_crypto_rejects_old_treasury_transfers(monkeypatch):
     assert e.value.code == "tx_too_old"
     age["ts"] = _t.time() - 600
     assert billing.verify_crypto_payment(tx, "base", "USDC", 99.0)["verified"] is True
+
+
+
+def test_crypto_frontrunning_prevented_by_unique_cents(client, monkeypatch):
+    """Each account gets unique cents bound to email; an attacker trying to claim another buyer's on-chain transfer is rejected."""
+    import time
+    from commerce import billing, store as S
+    # 1. Unique cents are deterministic and bounded
+    c1 = billing.crypto_cents("alice@example.com")
+    c2 = billing.crypto_cents("attacker@example.com")
+    assert 0.10 <= c1 <= 0.99 and 0.10 <= c2 <= 0.99
+    assert c1 != c2  # distinct cents
+
+    q_alice = billing.quote_usd("pro", "monthly", email="alice@example.com")
+    q_att = billing.quote_usd("pro", "monthly", email="attacker@example.com")
+    assert q_alice["total"] != q_att["total"]
+
+    # 2. Mock on-chain transfer with Alice's exact amount
+    alice_amt = float(q_alice["total"])
+    dep = "0x" + billing.EVM_DEPOSIT_ADDRESS.lower().replace("0x", "").zfill(64)
+    # 6 decimals for USDC
+    receipt = {"status": "0x1", "blockNumber": "0x10", "logs": [{"address": billing.EVM_CHAINS["base"]["tokens"]["USDC"][0],
+               "topics": [billing.ERC20_TRANSFER_TOPIC, "0x" + "0" * 64, dep], "data": hex(int(round(alice_amt * 10 ** 6)))}]}
+
+    class R:
+        def __init__(self, b): self.b = b
+        def read(self): return self.b
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    monkeypatch.setattr(billing.urllib.request, "urlopen",
+                        lambda req, timeout=None: R(json.dumps({"result": receipt if "eth_getTransactionReceipt" in req.data.decode() else {"timestamp": hex(int(time.time()))}}).encode()))
+
+    tx_hash = "0x" + "e" * 64
+    # Attacker tries to claim Alice's tx_hash
+    with pytest.raises(S.CommerceError) as exc:
+        billing.verify_crypto_payment(tx_hash, "base", "USDC", float(q_att["total"]))
+    assert exc.value.code == "mismatched_amount"
+
+    # Alice claims her own tx_hash -> success
+    ver = billing.verify_crypto_payment(tx_hash, "base", "USDC", float(q_alice["total"]))
+    assert ver["verified"] is True

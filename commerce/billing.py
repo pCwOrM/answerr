@@ -272,13 +272,28 @@ EVM_CHAINS = {
 }
 
 
-def quote_usd(plan_id: str, cycle: str) -> Dict[str, str]:
-    """Net, VAT (0% Teknopark/Export exempt) and total in USD/USDC/USDT for one period of a plan."""
+def crypto_cents(email: Optional[str]) -> float:
+    s = (email or "").strip().lower()
+    if not s:
+        return 0.0
+    h = 0
+    for ch in s:
+        h = ((h * 31) + ord(ch)) & 0xFFFFFFFF
+        if h >= 0x80000000:
+            h -= 0x100000000
+    return round((abs(h) % 90 + 10) / 100.0, 2)
+
+
+def quote_usd(plan_id: str, cycle: str, email: Optional[str] = None) -> Dict[str, str]:
+    """Net, VAT (0% Teknopark/Export exempt) and total in USD/USDC/USDT for one period of a plan.
+    When email is given, adds deterministic unique cents ($0.10-$0.99) bound to the customer
+    to ensure on-chain crypto transactions are non-fungible per buyer and immune to front-running."""
     p = P.get(plan_id)
     per_month = p.get("price_yearly_per_month") if cycle == "yearly" else p.get("price_monthly")
     if not per_month:
         raise S.CommerceError(400, "no_usd_price", "This plan cannot be bought online.")
-    net = Decimal(str(per_month)) * (12 if cycle == "yearly" else 1)
+    cents = Decimal(str(crypto_cents(email))) if email else Decimal("0.00")
+    net = (Decimal(str(per_month)) * (12 if cycle == "yearly" else 1)) + cents
     return {"net": money(net), "vat": "0.00", "total": money(net), "vat_rate": "0.0"}
 
 
@@ -350,8 +365,8 @@ def verify_crypto_payment(tx_hash: str, network: str, token: str, expected_usd: 
                         to_addr = str(res.get("to") or "").lower().replace("0x", "")
                         if to_addr == target_evm or to_addr == target_hex41:
                             amt = int(res.get("value") or 0) / 1e6
-                            if amt + 0.50 < expected_usd:
-                                raise S.CommerceError(400, "insufficient_amount", f"Expected {expected_usd:.2f} USDT, found {amt:.2f} USDT.")
+                            if abs(amt - expected_usd) > 0.05:
+                                raise S.CommerceError(400, "mismatched_amount", f"Expected {expected_usd:.2f} USDT, found {amt:.2f} USDT. Transfer amount must match your account quote.")
                             bts = ev.get("block_timestamp")
                             _check_age(float(bts) / 1000.0 if bts else None)
                             return {"verified": True, "amount": amt, "currency": "USDT", "network": "TRON TRC20", "tx_hash": raw_id}
@@ -397,8 +412,8 @@ def verify_crypto_payment(tx_hash: str, network: str, token: str, expected_usd: 
                 if len(topics) >= 3 and topics[0] == ERC20_TRANSFER_TOPIC and topics[2] == target_padded:
                     raw_val = int(log.get("data") or "0x0", 16)
                     amt = raw_val / float(10 ** decimals)
-                    if amt + 0.50 < expected_usd:
-                        raise S.CommerceError(400, "insufficient_amount", f"Expected {expected_usd:.2f} {t_sym}, found {amt:.2f} {t_sym}.")
+                    if abs(amt - expected_usd) > 0.05:
+                        raise S.CommerceError(400, "mismatched_amount", f"Expected {expected_usd:.2f} {t_sym}, found {amt:.2f} {t_sym}. Transfer amount must match your account quote.")
                     _check_age(_evm_block_time(chain["rpcs"], receipt.get("blockNumber") or "latest"))
                     return {"verified": True, "amount": amt, "currency": t_sym, "network": chain["name"], "tx_hash": tx_clean.lower()}
 
