@@ -18,6 +18,7 @@ def client(monkeypatch):
     monkeypatch.setenv("ANSWERR_API_KEYS", "acme:{},globex:{}".format(KEY_A, KEY_B))
     monkeypatch.setenv("ANSWERR_GATES_PATH", os.path.join(tmp, "gates.json"))
     monkeypatch.setenv("ANSWERR_RATELIMIT_DB", os.path.join(tmp, "rl.sqlite"))
+    monkeypatch.setenv("ANSWERR_COMMERCE_DB", os.path.join(tmp, "commerce.sqlite"))
     monkeypatch.setenv("ANSWERR_WERR_PATH", os.environ.get("ANSWERR_WERR_PATH", os.path.join(ROOT, "..", "werr")))
     monkeypatch.delenv("RECAPTCHA_SECRET", raising=False)
     sys.path.insert(0, ROOT)
