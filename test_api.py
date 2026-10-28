@@ -42,22 +42,22 @@ def test_api(name, url, payload=None, method=None):
         print(f"[-] ERROR: {e}")
 
 if __name__ == "__main__":
-    # 1. Health Check via api.answerr.me:4431
+    # 1. Health Check via api.answerr.me
     test_api(
         "Health & Zero-VRAM Status (api.answerr.me)",
-        "https://api.answerr.me:4431/v1/health"
+        "https://api.answerr.me/v1/health"
     )
 
-    # 2. Presets Catalog via api.answerr.me:4431
+    # 2. Presets Catalog via api.answerr.me
     test_api(
         "Preset Scenarios Catalog (api.answerr.me)",
-        "https://api.answerr.me:4431/v1/presets"
+        "https://api.answerr.me/v1/presets"
     )
 
-    # 3. Simple Instant Reflex Decision via api.answerr.me:4431
+    # 3. Simple Instant Reflex Decision via api.answerr.me
     test_api(
         "Instant Reflex Decision (Single Question)",
-        "https://api.answerr.me:4431/v1/decide",
+        "https://api.answerr.me/v1/decide",
         payload={
             "question": "Allow privileged API transaction?",
             "state": {
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     # 4. Multi-Question Typed Decision (werr / System-1 Specification)
     test_api(
         "Multi-Question Typed Decision (Noul + Choice + Score)",
-        "https://api.answerr.me:4431/v1/decide",
+        "https://api.answerr.me/v1/decide",
         payload={
             "domain": "api_security",
             "state": {
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # 5. OpenAI-compatible /v1/chat/completions adapter
     test_api(
         "OpenAI SDK Compatible Adapter (/v1/chat/completions)",
-        "https://api.answerr.me:4431/v1/chat/completions",
+        "https://api.answerr.me/v1/chat/completions",
         payload={
             "model": "werr-reflex-v1",
             "messages": [
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     # 6. JevBench TypeSafe Wire Endpoint (/v1/systemone)
     test_api(
         "JevBench TypeSafe Wire Endpoint (/v1/systemone)",
-        "https://api.answerr.me:4431/v1/systemone",
+        "https://api.answerr.me/v1/systemone",
         payload={
             "task": "jevbench-agentic-security-check",
             "state": {
