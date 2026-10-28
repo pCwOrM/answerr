@@ -143,6 +143,23 @@ def _tl(x) -> str:
     return s + " ₺"
 
 
+def _amt(pay: dict, field: str) -> str:
+    """Amount in the payment's own currency (TRY card/transfer, USD transfer, USDC/USDT on-chain)."""
+    cur = (pay.get("currency") or "TRY").upper()
+    if cur == "TRY":
+        return _tl(pay.get(field) or 0)
+    return "{:,.2f} {}".format(float(pay.get(field) or 0), cur)
+
+
+def _method(pay: dict) -> str:
+    prov = pay.get("provider") or "iyzico"
+    if prov == "iyzico":
+        return "kart **** {} · iyzico işlem no {}".format(pay.get("card_last4") or "----", pay.get("payment_id") or "-")
+    if prov.startswith("crypto_"):
+        return "{} · {} · TXID {}".format(prov[7:].upper(), pay.get("card_last4") or "", pay.get("payment_id") or "-")
+    return "havale / EFT · referans {}".format(pay.get("payment_id") or pay.get("id"))
+
+
 def payment_paid(account: Optional[dict], pay: dict, billing: dict) -> None:
     """Card payment received: invoice details to ITouch (for the e-Arşiv/e-Fatura in Paraşüt) and a receipt to the buyer.
     Never contains card data; iyzico only returns the last four digits."""
@@ -151,16 +168,15 @@ def payment_paid(account: Optional[dict], pay: dict, billing: dict) -> None:
     until = _tr_date(pay["period_end"]) if pay.get("period_end") else "-"
     who = (account or {}).get("company") or billing.get("legal_name") or (account or {}).get("email") or "-"
     lines = [
-        "Kartla ödeme alındı — fatura kesilmeli (Paraşüt).", "",
+        "Ödeme alındı — fatura kesilmeli (Paraşüt).", "",
         "Ödeme no      : {}".format(pay["id"]),
-        "iyzico ödeme  : {}".format(pay.get("payment_id") or "-"),
+        "Yöntem        : {}".format(_method(pay)),
         "Tarih         : {}".format(when),
         "Ürün          : answerr {} / {}".format(pay.get("plan") or pay.get("kind"), pay.get("cycle") or "-"),
         "Dönem sonu    : {}".format(until),
-        "Tutar (KDV h.): {}".format(_tl(pay["net_try"])),
-        "KDV (%0 Muaf) : {} (4691 s. Kanun & 3065 s. KDV K. Geçici 20/1 Teknopark İstisnası)".format(_tl(pay["vat_try"])),
-        "Toplam        : {}".format(_tl(pay["total_try"])),
-        "Kart          : **** {}".format(pay.get("card_last4") or "----"), "",
+        "Tutar (KDV h.): {}".format(_amt(pay, "net_try")),
+        "KDV (%0 Muaf) : {} (4691 s. Kanun & 3065 s. KDV K. Geçici 20/1 Teknopark İstisnası)".format(_amt(pay, "vat_try")),
+        "Toplam        : {}".format(_amt(pay, "total_try")), "",
         "Fatura bilgileri",
         "Unvan / Ad    : {}".format(billing.get("legal_name") or "-"),
         "Vergi dairesi : {}".format(billing.get("tax_office") or "-"),
@@ -172,7 +188,7 @@ def payment_paid(account: Optional[dict], pay: dict, billing: dict) -> None:
         "Hesap         : {} {}".format((account or {}).get("id") or "-", (account or {}).get("email") or ""), "",
         "Fatura kesildikten sonra numarasını ekstreye işleyin: konsol › Yönetim.",
     ]
-    msgs = [_msg(c["notify_to"], "[answerr] Ödeme alındı — {} — {}".format(who, _tl(pay["total_try"])), "\n".join(lines))]
+    msgs = [_msg(c["notify_to"], "[answerr] Ödeme alındı — {} — {}".format(who, _amt(pay, "total_try")), "\n".join(lines))]
     to = billing.get("invoice_email") or (account or {}).get("email")
     if to and pay.get("kind") == "plan":
         msgs.append(order_confirmation(to, account, pay, billing, until))
@@ -209,10 +225,10 @@ def order_confirmation(to: str, account: Optional[dict], pay: dict, billing: dic
         "Referans        : {}".format(pay["id"]),
         "Ürün            : answerr {} planı, {}".format(plan, cycle),
         "Plan bitişi     : {}".format(until),
-        "Tutar (KDV h.)  : {}".format(_tl(pay["net_try"])),
-        "KDV (%0 Muaf)   : {} (3065 s. KDV K. Geçici 20/1 Teknopark İstisnası)".format(_tl(pay["vat_try"])),
-        "Toplam          : {} (%0 KDV — Teknopark Muafiyetli)".format(_tl(pay["total_try"])),
-        "Ödeme           : kart **** {} · iyzico işlem no {}".format(pay.get("card_last4") or "----", pay.get("payment_id") or "-"),
+        "Tutar (KDV h.)  : {}".format(_amt(pay, "net_try")),
+        "KDV (%0 Muaf)   : {} (3065 s. KDV K. Geçici 20/1 Teknopark İstisnası)".format(_amt(pay, "vat_try")),
+        "Toplam          : {} (%0 KDV — Teknopark Muafiyetli)".format(_amt(pay, "total_try")),
+        "Ödeme           : {}".format(_method(pay)),
         "Ödeme tarihi    : {}".format(_tr_date(pay.get("paid_at") or 0, "%d.%m.%Y %H:%M")), "",
         "Alıcı",
         "Unvan / ad      : {}".format(billing.get("legal_name") or "-"),
@@ -224,7 +240,7 @@ def order_confirmation(to: str, account: Optional[dict], pay: dict, billing: dic
         "Ön bilgilendirme ve mesafeli satış onayı: {} · metin sürümü {}".format(consent, billing.get("legal_version") or legal_version()),
         "Cayma hakkı: Hizmet elektronik ortamda anında ifa edildiği için cayma hakkı yoktur (Mesafeli Sözleşmeler Yönetmeliği m.15/1-ğ).",
         "Gönüllü iade koşulları: https://answerr.me/pro/legal/iade-iptal.html", "",
-        "Kartınızdan otomatik çekim yapılmaz. Plan bitmeden 7 gün önce hatırlatırız.",
+        "Otomatik çekim yapılmaz. Plan bitmeden 7 gün önce hatırlatırız.",
         "e-Arşiv / e-Faturanız iki iş günü içinde bu adrese gönderilecek.", "",
         "Konsol: {}".format(console_url()),
     ]) + SIGNATURE_TR

@@ -306,3 +306,31 @@ def test_crypto_checkout_activates_plan(client, monkeypatch):
         headers=auth(s),
     )
     assert r2.status_code == 409 and r2.json()["error"] == "tx_already_used"
+
+
+def test_crypto_rejects_old_treasury_transfers(monkeypatch):
+    """An old USDC transfer into the treasury wallet must not buy a plan; a fresh one does."""
+    import time as _t
+    from commerce import billing, store as S
+    dep = "0x" + billing.EVM_DEPOSIT_ADDRESS.lower().replace("0x", "").zfill(64)
+    receipt = {"status": "0x1", "blockNumber": "0x10", "logs": [{"address": billing.EVM_CHAINS["base"]["tokens"]["USDC"][0],
+               "topics": [billing.ERC20_TRANSFER_TOPIC, "0x" + "0" * 64, dep], "data": hex(99 * 10 ** 6)}]}
+    age = {"ts": _t.time() - 10 * 86400}
+
+    class R:
+        def __init__(self, body): self.body = body
+        def read(self): return self.body
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def fake_urlopen(req, timeout=None):
+        m = json.loads(req.data.decode())["method"]
+        res = receipt if m == "eth_getTransactionReceipt" else {"timestamp": hex(int(age["ts"]))}
+        return R(json.dumps({"result": res}).encode())
+    monkeypatch.setattr(billing.urllib.request, "urlopen", fake_urlopen)
+    tx = "0x" + "d" * 64
+    with pytest.raises(S.CommerceError) as e:
+        billing.verify_crypto_payment(tx, "base", "USDC", 99.0)
+    assert e.value.code == "tx_too_old"
+    age["ts"] = _t.time() - 600
+    assert billing.verify_crypto_payment(tx, "base", "USDC", 99.0)["verified"] is True

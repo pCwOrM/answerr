@@ -73,7 +73,7 @@
   const latencies = [];
 
   async function loadGates() {
-    for (const url of ['policies/builtin_gates.json', '../policies/builtin_gates.json', '/policies/builtin_gates.json']) {
+    for (const url of (/\/pro\//.test(location.pathname) ? ['../policies/builtin_gates.json', '/policies/builtin_gates.json'] : ['policies/builtin_gates.json', '/policies/builtin_gates.json'])) {
       try {
         const r = await fetch(url);
         if (r.ok) { gates = await r.json(); return; }

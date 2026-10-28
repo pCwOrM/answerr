@@ -78,7 +78,9 @@
       fArchive06: 'Arşiv · v0.6',
       fcProduct: 'Ürün',
       fcDev: 'Geliştiriciler',
-      fcCompany: 'Şirket',
+      fcCompany: 'Kurumsal ve yasal',
+      fcEcosystem: 'Ekosistem ve araştırma',
+      fVision: 'Werr Evreni',
       fcLegal: 'Yasal',
       fStatus: 'Hizmet durumu',
       fPilot: 'Tasarım ortaklığı',
@@ -92,6 +94,9 @@
       fRecaptcha: 'Bu site reCAPTCHA ile korunur; Google <a href="https://policies.google.com/privacy">Gizlilik Politikası</a> ve <a href="https://policies.google.com/terms">Hizmet Şartları</a> geçerlidir.',
       lgTerms: 'Kullanım şartları',
       lgKvkk: 'KVKK aydınlatma metni',
+      navMenu: 'Menü', navMain: 'Ana gezinme', navHome: 'answerr Pro ana sayfa',
+      a11yToc: 'İçindekiler', a11yFeatures: 'Temel özellikler', a11yTriad: 'Üç hüküm', a11yTele: 'Canlı ufuk telemetrisi', a11yBill: 'Faturalama dönemi', a11yTpl: 'Şablonlar',
+      rsOrgP: 'Çukurova Üniversitesi Teknokent, Adana. Werr&trade;, Werracle&trade; ve Answerr&trade; teknolojilerinin geliştiricisi.',
       lgPrivacy: 'Gizlilik politikası',
       lgPre: 'Ön bilgilendirme formu',
       lgSales: 'Mesafeli satış sözleşmesi',
@@ -134,7 +139,7 @@
       m4b: 'Not yet', m4: 'Shadow-mode pilot: caught / missed', m4n: 'published after the design-partner pilot',
       yoTitle: 'Three orbits', yo1k: 'Main orbit', yo1t: 'AI agent action gate',
       yo1d: 'The agent asks before it runs a tool. Delete and privilege tools stop, writes and money movements go to a human, reads pass.',
-      yo2k: 'Orbit 2', yo2t: 'Payment and order risk', yo2d: 'Rules in Turkish, shadow-mode trials next to your current rules, KVKK-compliant hosting option.',
+      yo2k: 'Orbit 2', yo2t: 'Payment and order risk', yo2d: 'Rules in Turkish, shadow-mode trials next to your current rules, GDPR- and KVKK-compliant hosting options.',
       yo3k: 'Orbit 3', yo3t: 'API abuse', yo3d: 'Access decisions with reasons, from error, rate and identity signals.',
       erK: 'Design partnership · 5 seats', erTitle: 'Let’s start in shadow mode, next to your current rules.',
       erLead: 'The pilot is free. Pricing will be announced with the pilot results.', erMail: 'Work e-mail', erPh: 'name@company.com', erBtn: 'Request a seat', erSending: 'Sending…', erOk: 'Request received; a confirmation is on its way. We will reply within two working days.', erBad: 'Please enter a valid work e-mail address.', erFallback: 'The server is unreachable; opening your mail client.',
@@ -176,7 +181,9 @@
       fArchive06: 'Archive · v0.6',
       fcProduct: 'Product',
       fcDev: 'Developers',
-      fcCompany: 'Company',
+      fcCompany: 'Company & legal',
+      fcEcosystem: 'Ecosystem & research',
+      fVision: 'Werr Universe',
       fcLegal: 'Legal',
       fStatus: 'Service status',
       fPilot: 'Design partnership',
@@ -189,7 +196,10 @@
       footOrg: 'ITouch Systems · Cukurova University Science Park',
       fRecaptcha: 'This site is protected by reCAPTCHA; Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.',
       lgTerms: 'Terms of service',
-      lgKvkk: 'KVKK notice',
+      lgKvkk: 'GDPR privacy notice',
+      navMenu: 'Menu', navMain: 'Main navigation', navHome: 'answerr Pro home',
+      a11yToc: 'Contents', a11yFeatures: 'Key features', a11yTriad: 'Three verdicts', a11yTele: 'Live horizon telemetry', a11yBill: 'Billing period', a11yTpl: 'Templates',
+      rsOrgP: 'Cukurova University Science Park, Adana. Developer of the Werr&trade;, Werracle&trade; and Answerr&trade; technologies.',
       lgPrivacy: 'Privacy policy',
       lgPre: 'Pre-contract information',
       lgSales: 'Distance sales agreement',
@@ -229,6 +239,9 @@
         }
       });
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.setAttribute('placeholder', this.t(el.getAttribute('data-i18n-placeholder'))));
+      ['aria-label', 'title'].forEach(a => document.querySelectorAll('[data-i18n-' + a + ']').forEach(el => {
+        const k = el.getAttribute('data-i18n-' + a); const v = this.t(k); if (v && v !== k) el.setAttribute(a, v);
+      }));
       document.querySelectorAll('.lang-switch-btn').forEach(btn => {
         btn.innerHTML = this.lang === 'tr' ? '<span class="lang-active">TR</span> <span>EN</span>' : '<span>TR</span> <span class="lang-active">EN</span>';
         btn.setAttribute('title', this.lang === 'tr' ? 'Switch to English' : 'Türkçeye geç');

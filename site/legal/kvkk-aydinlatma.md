@@ -20,7 +20,7 @@ order: 2
 | --- | --- | --- | --- |
 | Kimlik ve iletişim | e-posta, şirket adı, üye e-postaları | Hesap açma, giriş bağlantısı, bildirim | Sözleşmenin kurulması ve ifası (m.5/2-c) |
 | Müşteri işlem | plan, plan talepleri, fatura bilgileri (unvan, yetkili kişi, VKN/TCKN, vergi dairesi, adres, telefon), kullanım sayıları | Faturalama, kota, destek | Sözleşmenin ifası; hukuki yükümlülük (VUK, TTK) (m.5/2-c, ç) |
-| Finans | ödeme tutarı, ödeme durumu, iyzico işlem numarası, kartın son 4 hanesi (kart numarasının tamamı ITouch'a ulaşmaz) | Tahsilat, iade, muhasebe, dolandırıcılığın önlenmesi | Sözleşmenin ifası; hukuki yükümlülük (VUK, 6493 s. Kanun) (m.5/2-c, ç) |
+| Finans | ödeme tutarı, ödeme durumu, ödeme referansı (iyzico işlem numarası, banka referansı ya da blokzincir işlem kodu), kartın son 4 hanesi (kart numarasının tamamı ITouch'a ulaşmaz) | Tahsilat, iade, muhasebe, dolandırıcılığın önlenmesi | Sözleşmenin ifası; hukuki yükümlülük (VUK, 6493 s. Kanun) (m.5/2-c, ç) |
 | Hukuki işlem | ön bilgilendirme ve mesafeli satış onayının tarihi, saati ve metin sürümü | Sözleşmenin ispatı, tüketici mevzuatına uyum | Hukuki yükümlülük; hakkın tesisi ve korunması (m.5/2-ç, e) |
 | İşlem güvenliği | IP adresi, API anahtarı ön eki, oturum kayıtları, olay günlüğü | Güvenlik, kötüye kullanımın önlenmesi, hız sınırı | Meşru menfaat (m.5/2-f); hukuki yükümlülük (5651) (m.5/2-ç) |
 | Pazarlama (isteğe bağlı) | e-posta | Ürün duyuruları | Açık rıza (m.5/1) — yalnızca onay verirseniz |
@@ -36,6 +36,7 @@ Veriler; answerr.me formları, konsol, API çağrıları ve e-posta yazışmalar
 - **Barındırma (yurt dışı):** API ve veritabanı sunucuları Avrupa Birliği'nde, Contabo GmbH'ye (Almanya) ait veri merkezinde bulunur. Hesap, işlem güvenliği ve müşteri işlem verileri bu nedenle yurt dışına aktarılır. Aktarım, KVKK m.9/4 uyarınca Kurul'un ilan ettiği standart sözleşme imzalanarak ve Kurul'a bildirilerek yapılır.
 - **Google LLC (yurt dışı):** answerr.me'deki formlarda reCAPTCHA v3 ve yazı tipleri için IP adresi ve tarayıcı bilgileri Google'a iletilir. reCAPTCHA, formu gönderdiğinizde bot koruması amacıyla çalışır.
 - **Ödeme kuruluşu:** Kartla ödemede ad soyad / unvan, e-posta, telefon, fatura adresi, IP adresi ve ödeme tutarı; ödemenin alınması, 3D Secure doğrulaması ve dolandırıcılığın önlenmesi amacıyla iyzi Ödeme ve Elektronik Para Hizmetleri A.Ş.'ye (iyzico, Türkiye) aktarılır. Kart bilgileri doğrudan iyzico tarafından işlenir; ITouch'a yalnızca kartın son 4 hanesi ulaşır.
+- **Havale ve kripto ödemeler:** Havaleler ilgili bankalarca işlenir. Blokzincir işlemleri doğası gereği herkese açıktır; ITouch yalnızca doğrulama için bildirdiğiniz işlemi okur.
 - **e-Fatura / e-Arşiv:** Fatura bilgileri, faturanın düzenlenmesi için e-belge hizmet sağlayıcımıza (Paraşüt) ve mevzuat gereği Gelir İdaresi Başkanlığı'na iletilir.
 - **E-posta:** İşlem e-postaları ITouch'un kendi e-posta sunucusu üzerinden gönderilir.
 - **Kamu kurumları:** Kanunen yetkili kamu kurum ve kuruluşlarına, talep hâlinde ve mevzuatın gerektirdiği ölçüde.

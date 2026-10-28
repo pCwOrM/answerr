@@ -419,6 +419,8 @@ def test_instant_crypto_success_and_replay(client, monkeypatch):
     assert b["status"] == "success" and b["plan"] == "pro" and b["invoice_no"].startswith("INV-")
     a = client.get("/v1/account", headers=auth(b["session"])).json()["account"]
     assert a["plan"] == "pro" and a["plan_expires_at"]
+    note = next(m for m in client.mail.OUTBOX if "Ödeme alındı" in m["Subject"])
+    assert "99.00 USDC" in note["Subject"] and "₺" not in note.get_content()
     r = client.post("/v1/checkout/instant", json=dict(body, email="other@example.com"))
     assert r.status_code == 409 and client.store.member_of("other@example.com") is None
 

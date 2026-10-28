@@ -49,13 +49,13 @@ def nav(active: str, r: str) -> str:
     cons = ' aria-current="page"' if active == "console" else ""
     return "\n".join([
         NAV_START,
-        '  <nav class="nav" aria-label="Ana gezinme">',
+        '  <nav class="nav" aria-label="Ana gezinme" data-i18n-aria-label="navMain">',
         '    <div class="wrap">',
-        f'      <a class="brand" href="{r}index.html" aria-label="answerr Pro ana sayfa">',
+        f'      <a class="brand" href="{r}index.html" aria-label="answerr Pro ana sayfa" data-i18n-aria-label="navHome">',
         f"        {LOGO}",
         '        <b>answerr</b><span class="tag">PRO</span>',
         "      </a>",
-        '      <button class="nav-toggle" type="button" aria-label="Menü" aria-expanded="false">'
+        '      <button class="nav-toggle" type="button" aria-label="Menü" data-i18n-aria-label="navMenu" aria-expanded="false">'
         '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h9" stroke="currentColor" stroke-width="1.6"/></svg></button>',
         '      <div class="nav-links">',
         *links,
@@ -108,15 +108,15 @@ def footer(r: str) -> str:
             ("https://github.com/pCwOrM/werr", "fWerrRepo", "werr Çekirdeği (GitHub)"),
             ("../chat.html", "fClassic", "Klasik konsol")
         ]),
-        col("fcEcosystem", "Ekosistem & Araştırma", [
+        col("fcEcosystem", "Ekosistem ve araştırma", [
             ("https://radar.werracle.com/", "fRadarApi", "Werracle Radar API ↗"),
             ("https://werracle.com", "fWerracleCom", "werracle.com ↗"),
             ("https://werr.io", "fWerrIo", "werr.io · Motor ↗"),
             ("research.html", "fPortal", "Araştırma Portalı"),
             ("vision.html", "fVision", "Werr Evreni"),
-            ("mailto:" + CO["email"], "fContact", CO["email"])
+            ("mailto:" + CO["email"], None, CO["email"])
         ]),
-        col("fcCompany", "Kurumsal & Yasal", [
+        col("fcCompany", "Kurumsal ve yasal", [
             (CO["website"], "fCompanyShort", "ITouch Bilişim Sistemleri"),
             ("legal/kullanim-sartlari.html", "lgTerms", "Kullanım şartları"),
             ("legal/gizlilik.html", "lgPrivacy", "Gizlilik politikası"),
@@ -241,7 +241,7 @@ LEGAL_HEAD = """<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../pro.css">
+  <link rel="stylesheet" href="../pro.css?v={asset_v}">
 </head>
 <body>
   <a class="sr-only" href="#main">İçeriğe geç</a>
@@ -261,9 +261,9 @@ LEGAL_HEAD = """<!DOCTYPE html>
     </div>
   </main>
 {foot}
-  <script src="../i18n.js"></script>
-  <script src="../i18n-plus.js"></script>
-  <script src="../app.js"></script>
+  <script src="../i18n.js?v={asset_v}"></script>
+  <script src="../i18n-plus.js?v={asset_v}"></script>
+  <script src="../app.js?v={asset_v}"></script>
 </body>
 </html>
 """
@@ -279,6 +279,16 @@ LEGAL_I18N_MAP = {
     "cerez": "lgCookies",
     "veri-isleme": "lgDpa",
 }
+
+
+def legal_body(slug: str, tr_body: str) -> str:
+    """Turkish text, plus the English translation (site/legal/en/<slug>.md) shown when the page is in English."""
+    en_path = os.path.join(ROOT, "site", "legal", "en", slug + ".md")
+    if not os.path.exists(en_path):
+        return md(fill(tr_body))
+    en_body = open(en_path, encoding="utf-8").read().partition("\n---\n")[2]
+    return ('<div data-lang="tr" lang="tr">\n' + md(fill(tr_body)) + '\n</div>\n<div data-lang="en" lang="en">\n'
+            + md(fill(en_body)) + '\n</div>')
 
 
 def legal_pages():
@@ -304,11 +314,14 @@ def legal_pages():
         )
         page = LEGAL_HEAD.format(
             title=html.escape(m["title"]), desc=html.escape(m.get("description", m["title"])),
-            version_label="SÜRÜM " + CFG["legal_version"], nav=nav("legal", "../"), foot=footer("../"), side=side,
+            version_label='<span data-lang="tr">SÜRÜM {0}</span><span data-lang="en">VERSION {0}</span>'.format(CFG["legal_version"]), nav=nav("legal", "../"), foot=footer("../"), side=side,
             status_tr=html.escape(CFG["legal_status_tr"]), status_en=html.escape(CFG["legal_status_en"]),
-            body=md(fill(body)))
+            body=legal_body(slug, body), asset_v=ASSET_V)
         out["legal/{}.html".format(slug)] = page
     return out
+
+
+ASSET_V = "20261028_v7"   # cache-busting token for the shared pro assets; keep in step with the pages
 
 
 MAIL_TEXTS = ("on-bilgilendirme", "mesafeli-satis")

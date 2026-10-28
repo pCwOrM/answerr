@@ -148,7 +148,7 @@
     const cls = { ALLOW: 'v-allow', REVIEW: 'v-review', DENY: 'v-deny' };
 
     (async () => {
-      for (const u of ['policies/builtin_gates.json', '../policies/builtin_gates.json', '/policies/builtin_gates.json']) {
+      for (const u of (/\/pro\//.test(location.pathname) ? ['../policies/builtin_gates.json', '/policies/builtin_gates.json'] : ['policies/builtin_gates.json', '/policies/builtin_gates.json'])) {
         try {
           const r = await fetch(u);
           if (r.ok) {

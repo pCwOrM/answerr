@@ -12,7 +12,7 @@
   /* ------------------------------------------------------------------ dictionary */
   const T = {
     tr: {
-      signin: 'Giriş', signup: 'Hesap aç', email: 'İş e-postası', company: 'Şirket (isteğe bağlı)',
+      signin: 'Giriş', signup: 'Hesap aç', email: 'İş e-postası', company: 'Şirket (isteğe bağlı)', companyLabel: 'Şirket / ad soyad',
       terms: '<a href="../legal/kullanim-sartlari.html" target="_blank" rel="noopener">Kullanım şartlarını</a> ve <a href="../legal/veri-isleme.html" target="_blank" rel="noopener">veri işleme sözleşmesini</a> kabul ediyorum.',
       kvkk: '<a href="../legal/kvkk-aydinlatma.html" target="_blank" rel="noopener">KVKK aydınlatma metnini</a> okudum.',
       marketing: 'Ürün duyurularını e-postayla almak istiyorum (isteğe bağlı).',
@@ -38,6 +38,11 @@
       current: 'Mevcut plan', choose: 'Bu plana geç', monthly: 'Aylık', yearly: 'Yıllık', perMonth: '/ ay', perYear: '/ yıl', contact: 'Görüşelim',
       salesOk: '<a href="../legal/on-bilgilendirme.html" target="_blank" rel="noopener">Ön bilgilendirme formunu</a> ve <a href="../legal/mesafeli-satis.html" target="_blank" rel="noopener">mesafeli satış sözleşmesini</a> okudum, onaylıyorum; hizmetin anında ifa edildiğini ve bu nedenle cayma hakkının bulunmadığını biliyorum.',
       reqSent: 'Talebiniz alındı. Ödeme bilgilerini bir iş günü içinde e-postayla gönderiyoruz; plan ödemeyle etkinleşir.',
+      crTitle: '⚡ USDC / USDT ile ödeme (%0 KDV)', crWeb3: '⚡ Base USDC ile tek tıkla öde (MetaMask / Rabby)', crNet: 'Ağ', crAddr: 'Ödeme adresi', crTx: 'İşlem kodu (TXID)', crTxPh: '0x… ya da 64 karakterlik TRON işlem kodu', crVerify: '✓ Doğrula ve planı etkinleştir',
+      crAmount: '{p} ({c}) — ödenecek tutar: {a} USDC / USDT (%0 KDV)', crNoWallet: 'Tarayıcıda Web3 cüzdanı (MetaMask / Rabby) bulunamadı. Aşağıdan ağı seçip işlem koduyla doğrulayabilirsiniz.', crConnecting: 'Base Mainnet (Chain ID 8453) cüzdanına bağlanılıyor…', crConfirm: 'Cüzdanınızda {a} USDC transferini onaylayın…', crSent: 'Transfer gönderildi, blok onayı bekleniyor…', crNeedTx: 'İşlem kodunu (TXID) girin.', crVerifying: 'Blokzincirde doğrulanıyor…', crErr: 'Hata: ',
+      bankReq: 'Havale/EFT talebiniz alındı. Alıcı: ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ. (TEB) · TL IBAN <code>TR92 0003 2000 0000 0070 5754 65</code> · USD IBAN <code>TR83 0003 2000 0000 0088 9467 48</code> · EUR IBAN <code>TR28 0003 2000 0000 0088 9467 68</code>. Açıklamaya hesap e-postanızı yazın. Proforma faturanızı aşağıdaki ödemeler tablosundan indirebilirsiniz; ödeme ulaşınca planınız etkinleşir.',
+      invPdf: '📄 Fatura (PDF)', proPdf: '📄 Proforma (PDF)', pendingCard: 'Hesabınız açıldı. Kartla ödemek için önce aşağıdaki fatura bilgilerini (adres, şehir, telefon dahil) kaydedin, sonra {p} planında “Kartla öde”ye basın.', st: { paid: 'ödendi', initiated: 'bekliyor', failed: 'başarısız', pending_review: 'incelemede', refunded: 'iade edildi' }, perThousand: '1.000 karar başına',
+      errs: { bad_email: 'Geçerli bir e-posta adresi girin.', consent_required: 'Devam etmek için onay kutularını işaretleyin.', billing_incomplete: 'Önce fatura bilgilerinizi tamamlayın.', bad_tx_hash: 'İşlem kodu (TXID) geçersiz.', tx_already_used: 'Bu işlem kodu daha önce kullanıldı.', tx_not_found: 'İşlem bulunamadı ya da henüz onaylanmadı; birkaç dakika sonra yeniden deneyin.', transfer_not_found: 'Bu işlemde ödeme adresimize USDC/USDT transferi bulunamadı.', insufficient_amount: 'Gönderilen tutar plan bedelinden az.', tx_reverted: 'İşlem zincirde başarısız olmuş.', tx_too_old: 'Bu transfer çok eski; yeni bir satın alma için kullanılamaz. Ödemeyi yapıp işlem kodunu 72 saat içinde girin.', unsupported_network: 'Bu ağ desteklenmiyor.', verification_error: 'Zincir doğrulaması şu an yapılamadı; biraz sonra yeniden deneyin.', card_payments_off: 'Kartla ödeme şu an kapalı; havale ya da kripto seçin.', payment_init_failed: 'Ödeme sayfası açılamadı; biraz sonra yeniden deneyin.', rate: 'Çok fazla deneme yapıldı; bir süre sonra yeniden deneyin.', recaptcha: 'Bot doğrulaması başarısız oldu; sayfayı yenileyip tekrar deneyin.' },
       when: 'Tarih', scheduled: 'Planınız ödenmiş dönem sonunda Keşif’e geçecek; yenileme ücreti alınmaz.', payCard: 'Kartla öde', payCrypto: '⚡ Kripto ile öde (USDC / USDT)', payBank: 'Havale / EFT ile talep et', renew: 'Kartla yenile', plusVat: '(%0 KDV)', vatIncl: '%0 KDV · Teknopark Muafiyetli',
       payOpening: 'Ödeme sayfası açılıyor…', payNeedBilling: 'Kartla ödeme için önce aşağıdaki fatura bilgilerini doldurup kaydedin.',
       payPaid: 'Ödemeniz alındı; planınız etkin. Faturanız iki iş günü içinde e-postayla gelir.', payFailed: 'Ödeme tamamlanmadı; karttan para çekilmedi. Yeniden deneyebilirsiniz.',
@@ -54,9 +59,9 @@
       prefix: 'Ön ek', version: 'Sürüm', seal: 'Mühür', rules: 'Kurallar', emailCol: 'E-posta', webhooksTitle: 'Webhook’lar'
     },
     en: {
-      signin: 'Sign in', signup: 'Create account', email: 'Work e-mail', company: 'Company (optional)',
+      signin: 'Sign in', signup: 'Create account', email: 'Work e-mail', company: 'Company (optional)', companyLabel: 'Company / full name',
       terms: 'I accept the <a href="../legal/kullanim-sartlari.html" target="_blank" rel="noopener">terms of service</a> and the <a href="../legal/veri-isleme.html" target="_blank" rel="noopener">data processing agreement</a>.',
-      kvkk: 'I have read the <a href="../legal/kvkk-aydinlatma.html" target="_blank" rel="noopener">KVKK privacy notice</a>.',
+      kvkk: 'I have read the <a href="../legal/kvkk-aydinlatma.html" target="_blank" rel="noopener">GDPR privacy notice</a>.',
       marketing: 'Send me product announcements by e-mail (optional).',
       sendLink: 'Send sign-in link', createAcc: 'Create free account', sent: 'Link sent. Check your inbox (valid for 20 minutes).',
       authLead: 'No passwords: we e-mail you a single-use link.', signupLead: 'The Explore plan is free: 10,000 decisions a month, no card.',
@@ -80,6 +85,11 @@
       current: 'Current plan', choose: 'Switch to this plan', monthly: 'Monthly', yearly: 'Yearly', perMonth: '/ mo', perYear: '/ yr', contact: 'Talk to us',
       salesOk: 'I have read and accept the <a href="../legal/on-bilgilendirme.html" target="_blank" rel="noopener">pre-contract information form</a> and the <a href="../legal/mesafeli-satis.html" target="_blank" rel="noopener">distance sales agreement</a>; I understand the service is performed immediately and therefore has no withdrawal right.',
       reqSent: 'Request received. We will e-mail payment details within one working day; the plan activates on payment.',
+      crTitle: '⚡ Pay with USDC / USDT (0% VAT)', crWeb3: '⚡ One-click pay with Base USDC (MetaMask / Rabby)', crNet: 'Network', crAddr: 'Payment address', crTx: 'Transaction hash (TXID)', crTxPh: '0x… or 64-character TRON transaction id', crVerify: '✓ Verify and activate the plan',
+      crAmount: '{p} ({c}) — amount due: {a} USDC / USDT (0% VAT)', crNoWallet: 'No Web3 wallet (MetaMask / Rabby) found in this browser. Choose a network below and verify with the transaction hash.', crConnecting: 'Connecting to Base Mainnet (chain ID 8453)…', crConfirm: 'Confirm the {a} USDC transfer in your wallet…', crSent: 'Transfer sent, waiting for confirmation…', crNeedTx: 'Enter the transaction hash (TXID).', crVerifying: 'Verifying on-chain…', crErr: 'Error: ',
+      bankReq: 'Your bank-transfer request is in. Beneficiary: ITOUCH BILISIM SISTEMLERI LTD. STI. (TEB, SWIFT TEBUTRIS) · TRY IBAN <code>TR92 0003 2000 0000 0070 5754 65</code> · USD IBAN <code>TR83 0003 2000 0000 0088 9467 48</code> · EUR IBAN <code>TR28 0003 2000 0000 0088 9467 68</code>. Put your account e-mail in the reference. Download the proforma invoice from the payments table below; the plan activates when the payment arrives.',
+      invPdf: '📄 Invoice (PDF)', proPdf: '📄 Proforma (PDF)', pendingCard: 'Your account is ready. To pay by card, first save the billing details below (including address, city and phone), then press “Pay by card” on the {p} plan.', st: { paid: 'paid', initiated: 'pending', failed: 'failed', pending_review: 'in review', refunded: 'refunded' }, perThousand: 'per 1,000 decisions',
+      errs: { bad_email: 'Enter a valid e-mail address.', consent_required: 'Tick the consent boxes to continue.', billing_incomplete: 'Complete your billing details first.', bad_tx_hash: 'The transaction hash (TXID) is not valid.', tx_already_used: 'This transaction hash has already been used.', tx_not_found: 'Transaction not found or not confirmed yet; try again in a few minutes.', transfer_not_found: 'No USDC/USDT transfer to our payment address was found in this transaction.', insufficient_amount: 'The amount sent is lower than the plan price.', tx_reverted: 'The transaction failed on-chain.', tx_too_old: 'This transfer is too old to be used for a new purchase. Enter the transaction hash within 72 hours of paying.', unsupported_network: 'This network is not supported.', verification_error: 'On-chain verification is not available right now; try again shortly.', card_payments_off: 'Card payments are closed right now; choose bank transfer or crypto.', payment_init_failed: 'The payment page could not be opened; try again shortly.', rate: 'Too many attempts; please try again later.', recaptcha: 'Bot check failed; reload the page and try again.' },
       when: 'Date', scheduled: 'Your plan moves to Explore at the end of the paid period; no renewal is charged.', payCard: 'Pay by card', payCrypto: '⚡ Pay with Crypto (USDC / USDT)', payBank: 'Request bank transfer', renew: 'Renew by card', plusVat: '(0% VAT)', vatIncl: '0% VAT · Technopark Exempt',
       payOpening: 'Opening the payment page…', payNeedBilling: 'To pay by card, fill in and save the billing details below first.',
       payPaid: 'Payment received; your plan is active. The invoice arrives by e-mail within two working days.', payFailed: 'The payment was not completed and nothing was charged. You can try again.',
@@ -122,6 +132,10 @@
     const d = r.data || {};
     if (d.error === 'feature_unavailable') return t('upgrade');
     if (d.error === 'quota_exceeded') return t('quotaFull');
+    if (d.error && t('errs.' + d.error) !== 'errs.' + d.error) return t('errs.' + d.error) + (d.error === 'billing_incomplete' || d.error === 'insufficient_amount' ? ' (' + (d.message || '') + ')' : '');
+    if (r.status === 429) return t('errs.rate');
+    if (/recaptcha/i.test(String(d.error || d.message || ''))) return t('errs.recaptcha');
+    if (Array.isArray(d.detail)) return t('err') + ' (' + r.status + ')';
     return d.message || d.detail || (t('err') + ' (' + r.status + ')');
   }
   function toast(text) {
@@ -136,297 +150,279 @@
   const root = () => document.getElementById('csRoot');
 
   /* ------------------------------------------------------------------ auth */
-    let activeAuthPlan = null;
+  let activeAuthPlan = null;
   let activeAuthCycle = 'monthly';
   let activeAuthPayTab = 'card';
+  let activeBankCur = null;
+  const EVM_DEPOSIT = '0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7';
+  const TRON_DEPOSIT = 'TLMhaDJTVYBHBSGJ9nCQGLvqnYFPsBgLJu';
+  const AUTH_PLANS = {
+    kesif: { usd_m: 0, usd_y: 0, try_m: 0, try_y: 0, quota: 10000 },
+    gelistirici: { usd_m: 29, usd_y: 24, try_m: 1449, try_y: 1199, quota: 250000 },
+    pro: { usd_m: 99, usd_y: 82, try_m: 4899, try_y: 4049, quota: 1000000 },
+    kurumsal: { usd_m: null, quota: null }
+  };
+  const U = {
+    tr: {
+      names: { kesif: 'Keşif', gelistirici: 'Geliştirici', pro: 'Pro', kurumsal: 'Kurumsal' },
+      desc: { kesif: 'Ayda 10.000 karar · kart gerekmez', gelistirici: 'Ayda 250.000 karar · 10 özel kapı', pro: 'Ayda 1.000.000 karar · gölge mod ve insan onayı', kurumsal: 'Özel hacim · SLA · yerinde kurulum' },
+      free: 'Ücretsiz', custom: 'Teklif', perMo: '/ay', planApi: '{p} planı ve API anahtarı', paidLead: '{d}. API anahtarınız hemen verilir; fatura %0 KDV (Teknokent istisnası).',
+      cycle: 'Faturalama dönemi', monthly: 'Aylık', yearly: 'Yıllık (%17 indirim)', optional: '(isteğe bağlı)',
+      companyPh: 'Şirket unvanı ya da ad soyad', taxId: 'Vergi no / TCKN', taxPh: 'Fatura için VKN / TCKN', addr: 'Fatura şehri / ülke', addrPh: 'Adana, Türkiye',
+      method: 'Ödeme yöntemi', mCard: '💳 Kart (iyzico 3D)', mBank: '🏦 Havale / EFT', mCrypto: '⚡ Kripto (USDC / USDT)',
+      net: 'Ağ ve token', copy: 'Kopyala', copied: 'Kopyalandı', txid: 'İşlem kodu (TXID) *', txPh: '0x… ya da TRON işlem kodu',
+      cryptoNote: 'Tutar: <b>{a} USDC/USDT</b> (%0 KDV). Bu adrese gönderip işlem kodunu girin; zincirde doğrulanınca planınız ve ödendi damgalı faturanız hemen hazır olur.',
+      bankCur: 'Fatura para birimi', bankBenef: 'Alıcı', bankNote: 'Hesabınız ve API anahtarınız hemen açılır (Keşif). Proforma faturanız (PDF) hazırlanır; havale ulaşınca planınız etkinleşir ve fatura ödendi olarak damgalanır.',
+      cardTitle: '💳 iyzico 3D Secure ile kart ödemesi', cardNote: 'Tutar: <b>{a}</b> (%0 KDV, Teknokent istisnası), tek çekim. Hesabınız hemen açılır; ardından fatura adresinizi tamamlayıp iyzico ödeme sayfasına geçersiniz.',
+      talk: '✉️ Kurumsal görüşme planla', btnFree: '🚀 Ücretsiz API anahtarımı al', btnCrypto: '✓ Ödemeyi doğrula ve API anahtarımı al', btnBank: '📄 Proforma fatura oluştur ve API anahtarımı al', btnCard: '💳 Devam et: kartla öde',
+      working: 'İşleniyor…', opening: 'Ödeme sayfası açılıyor…', ready: 'API anahtarınız hazır', keyLead: 'API anahtarınız (isteklerde <code>Authorization: Bearer</code> başlığıyla gönderin). Yalnızca şimdi gösteriliyor:',
+      copyKey: '📋 Anahtarı kopyala', enter: '➡️ Konsola gir', invPaid: '📄 Faturayı indir (PDF)', invPro: '📄 Proforma faturayı indir (PDF)', invNo: 'Fatura no', linkSent: 'E-postanızı kontrol edin'
+    },
+    en: {
+      names: { kesif: 'Explore', gelistirici: 'Developer', pro: 'Pro', kurumsal: 'Enterprise' },
+      desc: { kesif: '10,000 decisions a month · no card needed', gelistirici: '250,000 decisions a month · 10 custom gates', pro: '1,000,000 decisions a month · shadow mode and human review', kurumsal: 'Custom volume · SLA · on-premise' },
+      free: 'Free', custom: 'Quote', perMo: '/mo', planApi: '{p} plan and API key', paidLead: '{d}. Your API key is issued immediately; invoices carry 0% VAT (Technopark exemption).',
+      cycle: 'Billing period', monthly: 'Monthly', yearly: 'Yearly (17% off)', optional: '(optional)',
+      companyPh: 'Company name or full name', taxId: 'Tax ID', taxPh: 'Tax ID for the invoice', addr: 'Billing city / country', addrPh: 'Berlin, Germany',
+      method: 'Payment method', mCard: '💳 Card (iyzico 3D)', mBank: '🏦 Bank transfer', mCrypto: '⚡ Crypto (USDC / USDT)',
+      net: 'Network and token', copy: 'Copy', copied: 'Copied', txid: 'Transaction hash (TXID) *', txPh: '0x… or TRON transaction id',
+      cryptoNote: 'Amount: <b>{a} USDC/USDT</b> (0% VAT). Send it to this address and enter the transaction hash; once verified on-chain your plan and PAID invoice are ready at once.',
+      bankCur: 'Invoice currency', bankBenef: 'Beneficiary', bankNote: 'Your account and API key open immediately (Explore). A proforma invoice (PDF) is prepared; the plan activates when the transfer arrives and the invoice is stamped PAID.',
+      cardTitle: '💳 Card payment with iyzico 3D Secure', cardNote: 'Amount: <b>{a}</b> (0% VAT, Technopark exemption), single charge. Your account opens immediately; then you complete your billing address and continue to the iyzico payment page.',
+      talk: '✉️ Book an enterprise call', btnFree: '🚀 Get my free API key', btnCrypto: '✓ Verify payment and get my API key', btnBank: '📄 Create proforma invoice and get my API key', btnCard: '💳 Continue: pay by card',
+      working: 'Working…', opening: 'Opening the payment page…', ready: 'Your API key is ready', keyLead: 'Your API key (send it as <code>Authorization: Bearer</code>). It is shown only now:',
+      copyKey: '📋 Copy key', enter: '➡️ Enter the console', invPaid: '📄 Download invoice (PDF)', invPro: '📄 Download proforma invoice (PDF)', invNo: 'Invoice no', linkSent: 'Check your e-mail'
+    }
+  };
+  const u = (k, vars) => { let s = (U[L()] || U.tr)[k]; if (s == null) s = U.tr[k]; if (vars) Object.keys(vars).forEach(v => { s = String(s).split('{' + v + '}').join(vars[v]); }); return s; };
+  const uName = (p) => u('names')[p] || p;
+  const fmtTry = (v) => Number(v).toLocaleString(L() === 'tr' ? 'tr-TR' : 'en-US', { maximumFractionDigits: 2 }) + ' ₺';
+
+  async function downloadInvoice(path, btn) {
+    // fetch with the session header (no credentials in URLs), then open the PDF; a window opened before the await
+    // keeps popup blockers quiet
+    const w = window.open('', '_blank');
+    const res = await call('GET', path, null, { raw: true });
+    if (!res.ok) { if (w) w.close(); toast(t('err')); return; }
+    const url = URL.createObjectURL(await res.blob());
+    if (w) w.location.href = url; else { const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove(); }
+    if (btn) btn.blur();
+  }
 
   function renderAuth(tab, planOverride) {
     tab = tab || (location.hash.indexOf('signup') >= 0 ? 'signup' : 'signin');
     if (planOverride) {
-      activeAuthPlan = planOverride;
+      activeAuthPlan = AUTH_PLANS[planOverride] ? planOverride : 'kesif';
       try {
-        const u = new URL(location.href);
-        u.searchParams.set('plan', planOverride);
-        history.replaceState(null, '', u.toString());
-      } catch (e) {}
+        const url = new URL(location.href);
+        url.searchParams.set('plan', activeAuthPlan);
+        history.replaceState(null, '', url.toString());
+      } catch (e) { /* ignore */ }
     } else if (!activeAuthPlan) {
       const qp = new URLSearchParams(location.search).get('plan');
-      activeAuthPlan = (qp && ['kesif', 'gelistirici', 'pro', 'kurumsal'].includes(qp)) ? qp : 'kesif';
+      activeAuthPlan = (qp && AUTH_PLANS[qp]) ? qp : 'kesif';
     }
+    if (!activeBankCur) activeBankCur = L() === 'tr' ? 'TRY' : 'USD';
 
-    const prevEmail = ($('#auEmail') || {}).value || '';
-    const prevCo = ($('#auCo') || {}).value || '';
-    const prevTax = ($('#auTax') || {}).value || '';
-    const prevAddr = ($('#auAddr') || {}).value || '';
-    const prevTerms = Boolean(($('#auTerms') || {}).checked);
-    const prevKvkk = Boolean(($('#auKvkk') || {}).checked);
-    const prevMkt = Boolean(($('#auMkt') || {}).checked);
+    const prev = (id) => ($('#' + id) || {}).value || '';
+    const prevChk = (id) => Boolean(($('#' + id) || {}).checked);
+    const prevEmail = prev('auEmail'), prevCo = prev('auCo'), prevTax = prev('auTax'), prevAddr = prev('auAddr'), prevTx = prev('auTxHash');
+    const prevNet = prev('auNet') || 'base';
+    const prevTerms = prevChk('auTerms'), prevKvkk = prevChk('auKvkk'), prevMkt = prevChk('auMkt');
     const who = document.getElementById('csWho');
     if (who) who.textContent = '';
 
     const isPaid = ['gelistirici', 'pro'].includes(activeAuthPlan);
-    const prices = {
-      kesif: { usd_m: 0, try_m: 0, name: 'Keşif', desc: '10.000 Karar/ay · $0' },
-      gelistirici: { usd_m: 29, usd_y: 24, try_m: '1.449 ₺', try_y: '1.199 ₺', name: 'Geliştirici', desc: '250.000 Karar/ay · 5 Anahtar' },
-      pro: { usd_m: 99, usd_y: 82, try_m: '4.899 ₺', try_y: '4.049 ₺', name: 'Pro 🔥', desc: '1.000.000 Karar/ay · Gölge Mod' },
-      kurumsal: { usd_m: null, name: 'Kurumsal', desc: 'Özel Hacim · 7/24 SLA' }
-    };
-
-    const curP = prices[activeAuthPlan] || prices.kesif;
-    const curAmtUsd = activeAuthCycle === 'yearly' && curP.usd_y ? curP.usd_y * 12 : (curP.usd_m || 0);
-    const curAmtTry = activeAuthCycle === 'yearly' && curP.try_y ? curP.try_y : (curP.try_m || '0 ₺');
+    const P = AUTH_PLANS[activeAuthPlan];
+    const yearly = activeAuthCycle === 'yearly';
+    const amtUsd = isPaid ? (yearly ? P.usd_y * 12 : P.usd_m) : 0;
+    const amtTry = isPaid ? (yearly ? P.try_y * 12 : P.try_m) : 0;
+    const pill = (on, color) => `padding:8px 4px;border-radius:8px;border:1px solid ${on ? color : 'var(--line,#1e293b)'};background:${on ? 'rgba(245,158,11,0.12)' : 'transparent'};color:${on ? '#fff' : 'var(--muted,#94a3b8)'};cursor:pointer;text-align:center;`;
+    const tabBtn = (m, color) => `flex:1;padding:8px;border-radius:6px;border:1px solid ${activeAuthPayTab === m ? color : '#334155'};background:${activeAuthPayTab === m ? 'rgba(56,189,248,0.10)' : 'transparent'};color:#fff;cursor:pointer;font-size:12px;font-weight:600;min-height:40px;`;
+    const submitLabel = tab !== 'signup' ? t('sendLink') : (!isPaid ? u('btnFree') : (activeAuthPayTab === 'crypto' ? u('btnCrypto') : activeAuthPayTab === 'bank' ? u('btnBank') : u('btnCard')));
 
     root().innerHTML = `
-      <div class="auth-box cs-card" style="max-width:${tab === 'signup' && isPaid ? '620px' : '480px'};margin:0 auto;transition:max-width 0.2s ease">
+      <div class="auth-box cs-card" style="max-width:${tab === 'signup' && isPaid ? '620px' : '480px'};margin:0 auto">
         <div class="tabs" role="tablist">
           <button role="tab" type="button" data-at="signin" aria-selected="${tab === 'signin'}">${esc(t('signin'))}</button>
           <button role="tab" type="button" data-at="signup" aria-selected="${tab === 'signup'}">${esc(t('signup'))} &amp; API</button>
         </div>
-        <h1 style="font-size:26px;margin:8px 0 4px">${esc(tab === 'signup' ? (isPaid ? curP.name + ' Planı & API Tahsisi' : t('signup')) : t('signin'))}</h1>
-        <p class="muted" style="margin:0 0 16px;font-size:13px">${esc(tab === 'signup' ? (isPaid ? curP.desc + ' · Anında API anahtarı ve resmi ticari fatura (%0 KDV).' : t('signupLead')) : t('authLead'))}</p>
+        <h1 style="font-size:26px;margin:8px 0 4px">${esc(tab === 'signup' ? (isPaid ? u('planApi', { p: uName(activeAuthPlan) }) : t('signup')) : t('signin'))}</h1>
+        <p class="muted" style="margin:0 0 16px;font-size:13px">${esc(tab === 'signup' ? (isPaid ? u('paidLead', { d: u('desc')[activeAuthPlan] }) : t('signupLead')) : t('authLead'))}</p>
 
         ${tab === 'signup' ? `
-        <!-- Plan Selector Pills -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;" role="group" aria-label="Plan">
           ${['kesif', 'gelistirici', 'pro', 'kurumsal'].map(pId => {
-            const pInfo = prices[pId];
-            const sel = activeAuthPlan === pId;
-            return `
-            <button type="button" data-plan-pick="${pId}" style="padding:8px 4px;border-radius:8px;border:1px solid ${sel ? 'var(--amber,#f59e0b)' : 'var(--line,#1e293b)'};background:${sel ? 'rgba(245,158,11,0.12)' : 'transparent'};color:${sel ? '#fff' : 'var(--muted,#94a3b8)'};cursor:pointer;text-align:center;">
-              <div style="font-weight:700;font-size:12px;">${esc(pInfo.name)}</div>
-              <div style="font-size:10px;margin-top:2px;">${pInfo.usd_m == null ? 'Özel' : (pInfo.usd_m === 0 ? 'Ücretsiz' : '$' + pInfo.usd_m + '/ay')}</div>
+            const pi = AUTH_PLANS[pId];
+            return `<button type="button" data-plan-pick="${pId}" aria-pressed="${activeAuthPlan === pId}" style="${pill(activeAuthPlan === pId, 'var(--amber,#f59e0b)')}">
+              <div style="font-weight:700;font-size:12px;">${esc(uName(pId))}</div>
+              <div style="font-size:10px;margin-top:2px;">${pi.usd_m == null ? esc(u('custom')) : (pi.usd_m === 0 ? esc(u('free')) : '$' + pi.usd_m + esc(u('perMo')))}</div>
             </button>`;
           }).join('')}
         </div>
-
         ${isPaid ? `
-        <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.03);border:1px solid var(--line,#1e293b);padding:8px 12px;border-radius:8px;margin-bottom:14px;font-size:12px;">
-          <span style="color:var(--muted)">Faturalama Dönemi:</span>
-          <div style="display:flex;gap:6px;">
-            <button type="button" id="cyMonthly" style="padding:4px 8px;border-radius:6px;border:1px solid ${activeAuthCycle === 'monthly' ? 'var(--amber)' : '#334155'};background:${activeAuthCycle === 'monthly' ? 'rgba(245,158,11,0.15)' : 'transparent'};color:#fff;cursor:pointer;font-size:11px;">Aylık ($${curP.usd_m}/ay)</button>
-            <button type="button" id="cyYearly" style="padding:4px 8px;border-radius:6px;border:1px solid ${activeAuthCycle === 'yearly' ? 'var(--amber)' : '#334155'};background:${activeAuthCycle === 'yearly' ? 'rgba(245,158,11,0.15)' : 'transparent'};color:#fff;cursor:pointer;font-size:11px;">Yıllık (-17% İndirim)</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,0.03);border:1px solid var(--line,#1e293b);padding:8px 12px;border-radius:8px;margin-bottom:14px;font-size:12px;">
+          <span style="color:var(--muted)">${esc(u('cycle'))}</span>
+          <div style="display:flex;gap:6px;" role="group" aria-label="${esc(u('cycle'))}">
+            <button type="button" id="cyMonthly" aria-pressed="${!yearly}" style="padding:6px 10px;border-radius:6px;border:1px solid ${!yearly ? 'var(--amber)' : '#334155'};background:${!yearly ? 'rgba(245,158,11,0.15)' : 'transparent'};color:#fff;cursor:pointer;font-size:11px;">${esc(u('monthly'))} · $${P.usd_m}</button>
+            <button type="button" id="cyYearly" aria-pressed="${yearly}" style="padding:6px 10px;border-radius:6px;border:1px solid ${yearly ? 'var(--amber)' : '#334155'};background:${yearly ? 'rgba(245,158,11,0.15)' : 'transparent'};color:#fff;cursor:pointer;font-size:11px;">${esc(u('yearly'))} · $${P.usd_y * 12}</button>
           </div>
-        </div>` : ''}
-        ` : ''}
+        </div>` : ''}` : ''}
 
         <form id="authForm" style="display:flex;flex-direction:column;gap:12px">
           <div class="field"><label for="auEmail">${esc(t('email'))} *</label><input id="auEmail" type="email" required autocomplete="email" value="${esc(prevEmail)}" placeholder="developer@company.com"></div>
-
           ${tab === 'signup' ? `
-          <div class="field"><label for="auCo">${esc(t('company'))} ${isPaid ? '*' : '(İsteğe bağlı)'}</label><input id="auCo" type="text" ${isPaid ? 'required' : ''} maxlength="120" autocomplete="organization" value="${esc(prevCo)}" placeholder="Şirket / Bireysel İsim"></div>
-
+          <div class="field"><label for="auCo">${esc(t('companyLabel'))} ${isPaid ? '*' : esc(u('optional'))}</label><input id="auCo" type="text" ${isPaid ? 'required' : ''} maxlength="120" autocomplete="organization" value="${esc(prevCo)}" placeholder="${esc(u('companyPh'))}"></div>
           ${isPaid ? `
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <div class="field"><label for="auTax">Vergi No / TCKN</label><input id="auTax" type="text" maxlength="50" value="${esc(prevTax)}" placeholder="Fatura için VKN/TCKN"></div>
-            <div class="field"><label for="auAddr">Fatura Şehri / Ülke</label><input id="auAddr" type="text" maxlength="120" value="${esc(prevAddr)}" placeholder="Adana, Türkiye"></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+            <div class="field"><label for="auTax">${esc(u('taxId'))}</label><input id="auTax" type="text" maxlength="50" value="${esc(prevTax)}" placeholder="${esc(u('taxPh'))}"></div>
+            <div class="field"><label for="auAddr">${esc(u('addr'))}</label><input id="auAddr" type="text" maxlength="120" value="${esc(prevAddr)}" placeholder="${esc(u('addrPh'))}"></div>
           </div>
-
-          <!-- Payment Method Tabs -->
           <div style="border-top:1px solid var(--line,#1e293b);padding-top:12px;margin-top:4px;">
-            <label style="font-size:12px;font-weight:600;display:block;margin-bottom:8px;color:#cbd5e1;">Ödeme Yöntemi:</label>
-            <div style="display:flex;gap:6px;margin-bottom:12px;">
-              <button type="button" data-pay-m="crypto" style="flex:1;padding:8px;border-radius:6px;border:1px solid ${activeAuthPayTab === 'crypto' ? '#38bdf8' : '#334155'};background:${activeAuthPayTab === 'crypto' ? 'rgba(56,189,248,0.12)' : 'transparent'};color:#fff;cursor:pointer;font-size:11px;font-weight:600;">⚡ Kripto (USDC/USDT)</button>
-              <button type="button" data-pay-m="bank" style="flex:1;padding:8px;border-radius:6px;border:1px solid ${activeAuthPayTab === 'bank' ? '#f59e0b' : '#334155'};background:${activeAuthPayTab === 'bank' ? 'rgba(245,158,11,0.12)' : 'transparent'};color:#fff;cursor:pointer;font-size:11px;font-weight:600;">🏦 Havale / Proforma</button>
-              <button type="button" data-pay-m="card" style="flex:1;padding:8px;border-radius:6px;border:1px solid ${activeAuthPayTab === 'card' ? '#10b981' : '#334155'};background:${activeAuthPayTab === 'card' ? 'rgba(16,185,129,0.12)' : 'transparent'};color:#fff;cursor:pointer;font-size:11px;font-weight:600;">💳 Kart (iyzico 3D)</button>
+            <div style="font-size:12px;font-weight:600;margin-bottom:8px;color:#cbd5e1;" id="payMethodLbl">${esc(u('method'))}</div>
+            <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap" role="group" aria-labelledby="payMethodLbl">
+              <button type="button" data-pay-m="card" aria-pressed="${activeAuthPayTab === 'card'}" style="${tabBtn('card', '#10b981')}">${esc(u('mCard'))}</button>
+              <button type="button" data-pay-m="bank" aria-pressed="${activeAuthPayTab === 'bank'}" style="${tabBtn('bank', '#f59e0b')}">${esc(u('mBank'))}</button>
+              <button type="button" data-pay-m="crypto" aria-pressed="${activeAuthPayTab === 'crypto'}" style="${tabBtn('crypto', '#38bdf8')}">${esc(u('mCrypto'))}</button>
             </div>
-
-            <!-- Pane: Crypto -->
-            <div id="paneCrypto" style="display:${activeAuthPayTab === 'crypto' ? 'block' : 'none'};background:#080c14;border:1px solid #1e293b;border-radius:8px;padding:12px;margin-bottom:12px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <span style="font-size:11px;color:var(--muted)">Yatırma Ağı &amp; Token:</span>
-                <select id="auNet" style="padding:4px 8px;border-radius:6px;border:1px solid #334155;background:#0f1422;color:#fff;font-size:11px;">
-                  <option value="base">Base Mainnet (USDC)</option>
-                  <option value="trc20">TRON TRC20 (USDT)</option>
-                  <option value="arbitrum">Arbitrum One (USDC)</option>
-                  <option value="ethereum">Ethereum ERC20 (USDC/USDT)</option>
+            ${activeAuthPayTab === 'crypto' ? `
+            <div style="background:#080c14;border:1px solid #1e293b;border-radius:8px;padding:12px;margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+                <label for="auNet" style="font-size:11px;color:var(--muted)">${esc(u('net'))}</label>
+                <select id="auNet" style="padding:6px 8px;border-radius:6px;border:1px solid #334155;background:#0f1422;color:#fff;font-size:12px;">
+                  ${[['base', 'Base Mainnet (USDC)'], ['trc20', 'TRON TRC20 (USDT)'], ['arbitrum', 'Arbitrum One (USDC)'], ['ethereum', 'Ethereum ERC20 (USDC / USDT)'], ['bsc', 'BNB Smart Chain BEP20 (USDT / USDC)']]
+                    .map(([v, l]) => `<option value="${v}" ${prevNet === v ? 'selected' : ''}>${l}</option>`).join('')}
                 </select>
               </div>
               <div style="background:#05070c;border:1px solid #334155;border-radius:6px;padding:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:6px;">
-                <code id="auDepositAddr" style="font-size:11px;color:#10b981;word-break:break-all;">0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7</code>
-                <button type="button" id="btnCopyDep" style="padding:3px 8px;font-size:10px;border-radius:4px;border:1px solid #334155;background:#1e293b;color:#fff;cursor:pointer;">Kopyala</button>
+                <code id="auDepositAddr" style="font-size:11px;color:#10b981;word-break:break-all;">${prevNet === 'trc20' ? TRON_DEPOSIT : EVM_DEPOSIT}</code>
+                <button type="button" id="btnCopyDep" style="padding:6px 10px;font-size:11px;border-radius:4px;border:1px solid #334155;background:#1e293b;color:#fff;cursor:pointer;">${esc(u('copy'))}</button>
               </div>
-              <div class="field" style="margin-bottom:0">
-                <label for="auTxHash" style="font-size:11px">İşlem Kodu / TXID *</label>
-                <input id="auTxHash" type="text" placeholder="0x... veya TRON Tx Hash" style="font-family:monospace;font-size:11px;padding:7px;">
+              <div class="field" style="margin-bottom:0"><label for="auTxHash" style="font-size:11px">${esc(u('txid'))}</label>
+                <input id="auTxHash" type="text" value="${esc(prevTx)}" placeholder="${esc(u('txPh'))}" style="font-family:monospace;font-size:12px;"></div>
+              <div style="font-size:11px;color:var(--muted);margin-top:6px;">${u('cryptoNote', { a: '$' + amtUsd })}</div>
+            </div>` : ''}
+            ${activeAuthPayTab === 'bank' ? `
+            <div style="background:#080c14;border:1px solid #1e293b;border-radius:8px;padding:12px;margin-bottom:12px;font-size:12px;line-height:1.6;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+                <label for="auBankCur" style="color:var(--muted)">${esc(u('bankCur'))}</label>
+                <select id="auBankCur" style="padding:6px 8px;border-radius:6px;border:1px solid #334155;background:#0f1422;color:#fff;font-size:12px;">
+                  <option value="TRY" ${activeBankCur === 'TRY' ? 'selected' : ''}>TRY · ${fmtTry(amtTry)}</option>
+                  <option value="USD" ${activeBankCur === 'USD' ? 'selected' : ''}>USD · $${amtUsd}</option>
+                </select>
               </div>
-              <div style="font-size:10px;color:var(--muted);margin-top:6px;">Tutar: <b>$${curAmtUsd} USDC/USDT</b> (%0 KDV). İşlem onaylandığında API anahtarınız ve PAID ticari faturanız anında üretilir.</div>
-            </div>
-
-            <!-- Pane: Bank -->
-            <div id="paneBank" style="display:${activeAuthPayTab === 'bank' ? 'block' : 'none'};background:#080c14;border:1px solid #1e293b;border-radius:8px;padding:12px;margin-bottom:12px;font-size:11px;line-height:1.6;">
-              <div style="color:#f59e0b;font-weight:700;margin-bottom:4px;">🏦 TEB (Türk Ekonomi Bankası) — Adana Toros Şb. (446) &bull; SWIFT: TEBUTRIS</div>
-              <div style="color:#e2e8f0;margin-bottom:4px;"><b>Alıcı:</b> ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ.</div>
-              <div style="font-family:monospace;color:#10b981;"><b>TRY IBAN:</b> TR92 0003 2000 0000 0070 5754 65</div>
-              <div style="font-family:monospace;color:#38bdf8;"><b>USD IBAN:</b> TR83 0003 2000 0000 0088 9467 48</div>
-              <div style="color:var(--muted);margin-top:6px;">Butona bastığınızda kurumsal proforma faturanız (PDF) anında indirilecek ve deneme API anahtarınız teslim edilecektir.</div>
-            </div>
-
-            <!-- Pane: Card -->
-            <div id="paneCard" style="display:${activeAuthPayTab === 'card' ? 'block' : 'none'};background:#080c14;border:1px solid #1e293b;border-radius:8px;padding:12px;margin-bottom:12px;font-size:12px;">
-              <div style="color:#10b981;font-weight:700;margin-bottom:4px;">💳 iyzico 3D Secure ile Güvenli Kart Ödemesi</div>
-              <p style="color:var(--muted);margin:0 0 6px;font-size:11px;">Tutar: <b>${curAmtTry}</b> (%0 KDV Teknokent Muafiyeti). Ödeme tamamlandığında API anahtarınız ve faturanız anında aktifleşir.</p>
-            </div>
+              <div style="color:#f59e0b;font-weight:700;margin-bottom:4px;">🏦 TEB — Türk Ekonomi Bankası A.Ş. · Adana Toros (446) · SWIFT TEBUTRIS</div>
+              <div style="color:#e2e8f0;margin-bottom:4px;"><b>${esc(u('bankBenef'))}:</b> ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ.</div>
+              <div style="font-family:monospace;color:#10b981;word-break:break-all"><b>TRY IBAN:</b> TR92 0003 2000 0000 0070 5754 65</div>
+              <div style="font-family:monospace;color:#38bdf8;word-break:break-all"><b>USD IBAN:</b> TR83 0003 2000 0000 0088 9467 48</div>
+              <div style="color:var(--muted);margin-top:6px;">${esc(u('bankNote'))}</div>
+            </div>` : ''}
+            ${activeAuthPayTab === 'card' ? `
+            <div style="background:#080c14;border:1px solid #1e293b;border-radius:8px;padding:12px;margin-bottom:12px;font-size:12px;">
+              <div style="color:#10b981;font-weight:700;margin-bottom:4px;">${esc(u('cardTitle'))}</div>
+              <p style="color:var(--muted);margin:0;font-size:12px;">${u('cardNote', { a: esc(fmtTry(amtTry)) })}</p>
+            </div>` : ''}
           </div>` : ''}
-
           <label class="check-line"><input type="checkbox" id="auTerms" required ${prevTerms ? 'checked' : ''}><span>${t('terms')}</span></label>
           <label class="check-line"><input type="checkbox" id="auKvkk" required ${prevKvkk ? 'checked' : ''}><span>${t('kvkk')}</span></label>
+          ${isPaid ? `<label class="check-line"><input type="checkbox" id="auSales" required ${prevChk('auSales') ? 'checked' : ''}><span>${t('salesOk')}</span></label>` : ''}
           <label class="check-line"><input type="checkbox" id="auMkt" ${prevMkt ? 'checked' : ''}><span>${esc(t('marketing'))}</span></label>` : ''}
-
           <div class="sr-only" aria-hidden="true"><label for="auWeb">Website</label><input id="auWeb" type="text" tabindex="-1" autocomplete="off"></div>
-
-          ${activeAuthPlan === 'kurumsal' ? `
-          <a class="btn-primary" href="mailto:ask@answerr.me?subject=answerr%20Kurumsal%20Plan%20Talebi" style="text-align:center;text-decoration:none;padding:12px;">✉️ Kurumsal Görüşme Planla</a>`
-          : `<button class="btn-primary" type="submit" style="padding:12px;font-size:14px;font-weight:600;">
-              ${esc(tab === 'signup' ? (isPaid ? (activeAuthPayTab === 'crypto' ? '✓ Ödemeyi Doğrula & API Anahtarını Al' : (activeAuthPayTab === 'bank' ? '📄 Proforma Fatura Oluştur & API Al' : '💳 Kartla Güvenli Öde')) : '🚀 Anında Ücretsiz API Anahtarını Al') : t('sendLink'))}
-            </button>`}
-
+          ${tab === 'signup' && activeAuthPlan === 'kurumsal'
+            ? `<a class="btn-primary" href="mailto:ask@answerr.me?subject=answerr%20Enterprise" style="text-align:center;text-decoration:none;padding:12px;">${esc(u('talk'))}</a>`
+            : `<button class="btn-primary" type="submit" style="padding:12px;font-size:14px;font-weight:600;">${esc(submitLabel)}</button>`}
           <p class="small-mono" id="auStatus" role="status" style="margin:4px 0 0"></p>
         </form>
-
         <div id="auResultBox" style="display:none;margin-top:16px;padding:16px;border-radius:10px;border:1px solid #10b981;background:#05070c;"></div>
       </div>`;
 
-    // Event listeners for tabs and plan selector
     $$('[data-at]').forEach(b => b.addEventListener('click', () => {
-      history.replaceState(null, '', b.dataset.at === 'signup' ? '#signup' : '#');
+      history.replaceState(null, '', location.pathname + location.search + (b.dataset.at === 'signup' ? '#signup' : ''));
       renderAuth(b.dataset.at);
     }));
-
-    $$('[data-plan-pick]').forEach(b => b.addEventListener('click', () => {
-      renderAuth('signup', b.dataset.planPick);
-    }));
-
-    const btnMonthly = $('#cyMonthly'), btnYearly = $('#cyYearly');
-    if (btnMonthly) btnMonthly.addEventListener('click', () => { activeAuthCycle = 'monthly'; renderAuth('signup'); });
-    if (btnYearly) btnYearly.addEventListener('click', () => { activeAuthCycle = 'yearly'; renderAuth('signup'); });
-
-    $$('[data-pay-m]').forEach(b => b.addEventListener('click', () => {
-      activeAuthPayTab = b.dataset.payM;
-      renderAuth('signup');
-    }));
-
+    $$('[data-plan-pick]').forEach(b => b.addEventListener('click', () => renderAuth('signup', b.dataset.planPick)));
+    const cm = $('#cyMonthly'), cy = $('#cyYearly');
+    if (cm) cm.addEventListener('click', () => { activeAuthCycle = 'monthly'; renderAuth('signup'); });
+    if (cy) cy.addEventListener('click', () => { activeAuthCycle = 'yearly'; renderAuth('signup'); });
+    $$('[data-pay-m]').forEach(b => b.addEventListener('click', () => { activeAuthPayTab = b.dataset.payM; renderAuth('signup'); }));
+    const bc = $('#auBankCur');
+    if (bc) bc.addEventListener('change', () => { activeBankCur = bc.value; });
     const netSel = $('#auNet');
-    if (netSel) {
-      netSel.addEventListener('change', () => {
-        const addrBox = $('#auDepositAddr');
-        if (addrBox) {
-          addrBox.textContent = netSel.value === 'trc20' ? 'TLMhaDJTVYBHBSGJ9nCQGLvqnYFPsBgLJu' : '0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7';
-        }
-      });
-    }
+    if (netSel) netSel.addEventListener('change', () => { $('#auDepositAddr').textContent = netSel.value === 'trc20' ? TRON_DEPOSIT : EVM_DEPOSIT; });
+    const cp = $('#btnCopyDep');
+    if (cp) cp.addEventListener('click', () => {
+      try { navigator.clipboard.writeText($('#auDepositAddr').textContent.trim()); } catch (e) { /* ignore */ }
+      cp.textContent = u('copied'); setTimeout(() => { cp.textContent = u('copy'); }, 2000);
+    });
 
-    const btnCopyDep = $('#btnCopyDep');
-    if (btnCopyDep) {
-      btnCopyDep.addEventListener('click', () => {
-        const addrBox = $('#auDepositAddr');
-        if (addrBox) {
-          navigator.clipboard.writeText(addrBox.textContent.trim());
-          btnCopyDep.textContent = 'Kopyalandı!';
-          setTimeout(() => { btnCopyDep.textContent = 'Kopyala'; }, 2000);
-        }
-      });
-    }
-
-    // Form submission
     const form = $('#authForm');
-    if (form) {
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const st = $('#auStatus'), btn = e.target.querySelector('button[type=submit]');
-        if (btn) btn.disabled = true;
-        st.textContent = 'İşlem yapılıyor…';
-
-        const email = $('#auEmail').value.trim();
-        const website = $('#auWeb').value;
-
-        if (tab === 'signin') {
-          const r = await call('POST', '/v1/auth/login', { email, lang: L(), website }, { anon: true, recaptcha: 'access' });
-          if (btn) btn.disabled = false;
-          st.textContent = r.ok ? t('sent') : msg(r);
-          return;
-        }
-
-        // Signup / Instant checkout
-        const company = ($('#auCo') || {}).value ? $('#auCo').value.trim() : null;
-        const tax_id = ($('#auTax') || {}).value ? $('#auTax').value.trim() : null;
-        const address = ($('#auAddr') || {}).value ? $('#auAddr').value.trim() : null;
-        const terms = ($('#auTerms') || {}).checked;
-        const kvkk = ($('#auKvkk') || {}).checked;
-        const mkt = Boolean(($('#auMkt') || {}).checked);
-
-        const method = isPaid ? activeAuthPayTab : 'free';
-        const tx_hash = ($('#auTxHash') || {}).value ? $('#auTxHash').value.trim() : null;
-        const network = ($('#auNet') || {}).value || 'base';
-
-        const reqBody = {
-          email, company, tax_id, address,
-          plan: activeAuthPlan, cycle: activeAuthCycle,
-          method, tx_hash, network, token: network === 'trc20' ? 'USDT' : 'USDC',
-          accept_terms: terms, kvkk_ack: kvkk, marketing: mkt,
-          lang: L(), website
-        };
-
-        const res = await call('POST', '/v1/checkout/instant', reqBody, { anon: true, recaptcha: 'access' });
+    if (!form) return;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const st = $('#auStatus'), btn = e.target.querySelector('button[type=submit]');
+      if (btn) btn.disabled = true;
+      st.textContent = u('working');
+      const email = $('#auEmail').value.trim();
+      const website = $('#auWeb').value;
+      if (tab === 'signin') {
+        const r = await call('POST', '/v1/auth/login', { email, lang: L(), website }, { anon: true, recaptcha: 'access' });
         if (btn) btn.disabled = false;
-
-        if (!res.ok) {
-          st.textContent = msg(res);
-          return;
-        }
-
-        const data = res.data;
-
-        // If card checkout, redirect to iyzico
-        if (data.status === 'checkout' && data.form && data.form.payment_page_url) {
-          st.textContent = 'Ödeme sayfası açılıyor…';
-          location.href = data.form.payment_page_url;
-          return;
-        }
-
-        // Store session if provided
-        if (data.session) {
-          S.session = data.session;
-          localStorage.setItem('ans_session', data.session);
-        }
-
-        // Render success card
-        form.style.display = 'none';
+        st.textContent = r.ok ? t('sent') : msg(r);
+        return;
+      }
+      const val = (id) => { const x = $('#' + id); return x && x.value.trim() ? x.value.trim() : null; };
+      const network = val('auNet') || 'base';
+      const method = isPaid ? activeAuthPayTab : 'free';
+      const reqBody = {
+        email, company: val('auCo'), tax_id: val('auTax'), address: val('auAddr'),
+        plan: activeAuthPlan, cycle: activeAuthCycle, method,
+        tx_hash: val('auTxHash'), network, token: network === 'trc20' ? 'USDT' : 'USDC', currency: activeBankCur,
+        accept_terms: $('#auTerms').checked, kvkk_ack: $('#auKvkk').checked, marketing: $('#auMkt').checked,
+        lang: L(), website
+      };
+      const res = await call('POST', '/v1/checkout/instant', reqBody, { anon: true, recaptcha: 'access' });
+      if (btn) btn.disabled = false;
+      if (!res.ok) { st.textContent = msg(res); return; }
+      const data = res.data || {};
+      if (data.status === 'login_link_sent') {
         st.textContent = '';
-        const resBox = $('#auResultBox');
-        resBox.style.display = 'block';
-
-        const invLink = data.invoice_pdf_url
-          ? `<a href="${esc(data.invoice_pdf_url)}" target="_blank" class="btn btn-primary" style="text-decoration:none;font-size:12px;">📄 ${data.invoice_no && data.invoice_no.startsWith('INV') ? 'Resmi Faturayı İndir (PAID PDF)' : 'Proforma Faturayı İndir (PDF)'}</a>`
-          : '';
-
-        resBox.innerHTML = `
-          <div style="color:#10b981;font-weight:700;font-size:16px;margin-bottom:8px;">✓ ${esc(data.message || 'API Anahtarınız Tahsis Edildi!')}</div>
-          ${data.invoice_no ? `<div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Fatura No: <b>${esc(data.invoice_no)}</b></div>` : ''}
-          ${data.api_key ? `
-          <p style="color:var(--muted);font-size:12px;margin:0 0 6px;">Tahsis edilen API anahtarınız (isteklerinize <code>Authorization: Bearer</code> ile ekleyin):</p>
-          <div style="background:#000;border:1px solid #1e293b;padding:10px;border-radius:6px;font-family:monospace;color:#38bdf8;word-break:break-all;font-size:13px;margin-bottom:12px;">${esc(data.api_key)}</div>
-          ` : ''}
-          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-            ${data.api_key ? `<button type="button" id="btnCopyProvisionedKey" class="btn" style="cursor:pointer;font-size:12px;">📋 Anahtarı Kopyala</button>` : ''}
-            ${invLink}
-            <button type="button" id="btnEnterConsole" class="btn btn-primary" style="cursor:pointer;font-size:12px;">➡️ Konsola Gir</button>
-          </div>`;
-
-        if (data.api_key && $('#btnCopyProvisionedKey')) {
-          $('#btnCopyProvisionedKey').addEventListener('click', () => {
-            navigator.clipboard.writeText(data.api_key);
-            $('#btnCopyProvisionedKey').textContent = 'Kopyalandı!';
-            setTimeout(() => { $('#btnCopyProvisionedKey').textContent = '📋 Anahtarı Kopyala'; }, 2000);
-          });
-        }
-
-        if ($('#btnEnterConsole')) {
-          $('#btnEnterConsole').addEventListener('click', async () => {
-            await boot();
-          });
-        }
-      });
-    }
+        form.style.display = 'none';
+        const box = $('#auResultBox');
+        box.style.display = 'block';
+        box.innerHTML = `<div style="color:#f59e0b;font-weight:700;margin-bottom:6px">✉️ ${esc(u('linkSent'))}</div><p class="muted" style="margin:0">${esc(data.message || t('sent'))}</p>`;
+        return;
+      }
+      if (data.session) saveSession(data.session);
+      S.firstKey = data.api_key || null;
+      if (data.status === 'billing_required') {
+        // card: continue in Plan & billing with this plan preselected
+        S.pendingPay = { plan: data.requested_plan || activeAuthPlan, cycle: data.cycle || activeAuthCycle };
+        history.replaceState(null, '', location.pathname + location.search + '#billing');
+        await boot();
+        return;
+      }
+      form.style.display = 'none';
+      st.textContent = '';
+      const box = $('#auResultBox');
+      box.style.display = 'block';
+      const invBtn = data.invoice_pdf_url
+        ? `<button type="button" id="btnInv" class="btn-ghost btn-sm">${esc(String(data.invoice_no || '').startsWith('INV') ? u('invPaid') : u('invPro'))}</button>` : '';
+      box.innerHTML = `
+        <div style="color:#10b981;font-weight:700;font-size:16px;margin-bottom:8px;">✓ ${esc(data.message || u('ready'))}</div>
+        ${data.invoice_no ? `<div style="font-size:12px;color:var(--muted);margin-bottom:10px;">${esc(u('invNo'))}: <b>${esc(data.invoice_no)}</b></div>` : ''}
+        ${data.api_key ? `<p style="color:var(--muted);font-size:12px;margin:0 0 6px;">${u('keyLead')}</p>
+          <div style="background:#000;border:1px solid #1e293b;padding:10px;border-radius:6px;font-family:monospace;color:#38bdf8;word-break:break-all;font-size:13px;margin-bottom:12px;">${esc(data.api_key)}</div>` : ''}
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          ${data.api_key ? `<button type="button" id="btnCopyKey" class="btn-ghost btn-sm">${esc(u('copyKey'))}</button>` : ''}
+          ${invBtn}
+          <button type="button" id="btnEnterConsole" class="btn-primary btn-sm">${esc(u('enter'))}</button>
+        </div>`;
+      const ck = $('#btnCopyKey');
+      if (ck) ck.addEventListener('click', () => { try { navigator.clipboard.writeText(data.api_key); } catch (e2) { /* ignore */ } ck.textContent = u('copied'); setTimeout(() => { ck.textContent = u('copyKey'); }, 2000); });
+      const ib = $('#btnInv');
+      if (ib) ib.addEventListener('click', () => downloadInvoice(data.invoice_pdf_url, ib));
+      $('#btnEnterConsole').addEventListener('click', async () => { S.firstKey = null; history.replaceState(null, '', location.pathname + location.search); await boot(); });
+    });
   }
 
 
@@ -754,15 +750,15 @@
           <div class="cs-row" style="gap:8px;flex-wrap:wrap">${act}</div></article>`; }).join('')}</div>
         <div id="cryptoBox" class="cs-card" style="display:none;margin-top:14px;border-color:#38bdf8;background:rgba(14,22,40,0.9)">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-            <h3 id="crTitle" style="margin:0;color:#38bdf8">⚡ USDC / USDT Kripto Ödeme (%0 KDV)</h3>
-            <button type="button" class="btn-ghost btn-sm" id="crClose">✕</button>
+            <h3 id="crTitle" style="margin:0;color:#38bdf8">${esc(t('crTitle'))}</h3>
+            <button type="button" class="btn-ghost btn-sm" id="crClose" aria-label="Close">✕</button>
           </div>
           <p class="small-mono" id="crAmountInfo" style="margin:8px 0"></p>
           <div class="cs-row" style="gap:10px;flex-wrap:wrap;margin-bottom:10px">
-            <button type="button" class="btn-primary btn-sm" id="crWeb3Btn" style="background:#38bdf8;border-color:#38bdf8;color:#05060a">⚡ 1-Tık Base USDC Cüzdan ile Öde (MetaMask / Rabby)</button>
+            <button type="button" class="btn-primary btn-sm" id="crWeb3Btn" style="background:#38bdf8;border-color:#38bdf8;color:#05060a">${esc(t('crWeb3'))}</button>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px">
-            <div class="field"><label for="crNet">Ağ (Network)</label>
+            <div class="field"><label for="crNet">${esc(t('crNet'))}</label>
               <select id="crNet">
                 <option value="trc20">TRON (TRC20) — USDT</option>
                 <option value="base">Base Mainnet — USDC / USDT</option>
@@ -775,21 +771,21 @@
               <select id="crTok"><option value="USDT">USDT</option><option value="USDC">USDC</option></select>
             </div>
           </div>
-          <div class="small-mono" style="margin:8px 0">Hazine Adresi: <code id="crAddr" style="color:#10b981;word-break:break-all">TLMhaDJTVYBHBSGJ9nCQGLvqnYFPsBgLJu</code></div>
+          <div class="small-mono" style="margin:8px 0">${esc(t('crAddr'))}: <code id="crAddr" style="color:#10b981;word-break:break-all">TLMhaDJTVYBHBSGJ9nCQGLvqnYFPsBgLJu</code></div>
           <div class="cs-row" style="gap:8px;align-items:flex-end;flex-wrap:wrap">
-            <div class="field" style="flex:1 1 280px"><label for="crTx">İşlem Hash (TXID)</label><input id="crTx" type="text" placeholder="0x... veya 64 karakter TRON TXID"></div>
-            <button type="button" class="btn-primary btn-sm" id="crVerifyBtn">✓ Doğrula &amp; Planı Etkinleştir</button>
+            <div class="field" style="flex:1 1 280px"><label for="crTx">${esc(t('crTx'))}</label><input id="crTx" type="text" placeholder="${esc(t('crTxPh'))}"></div>
+            <button type="button" class="btn-primary btn-sm" id="crVerifyBtn">${esc(t('crVerify'))}</button>
           </div>
           <p class="small-mono" id="crStatus" style="margin:8px 0 0"></p>
         </div>
         <label class="check-line"><input type="checkbox" id="salesOk"><span>${t('salesOk')}</span></label>
         ${card ? `<p class="small-mono" style="margin:0">${esc(t('cardNote'))}</p>` : ''}
         <p class="small-mono" id="planStatus" aria-live="polite"></p>
-        ${a.limits.overage_per_1000 ? `<label class="check-line"><input type="checkbox" id="ovr" ${a.overage_enabled ? 'checked' : ''}><span>${esc(t('overageToggle'))} ($${esc(a.limits.overage_per_1000)} / 1.000)</span></label>` : ''}
+        ${a.limits.overage_per_1000 ? `<label class="check-line"><input type="checkbox" id="ovr" ${a.overage_enabled ? 'checked' : ''}><span>${esc(t('overageToggle'))} ($${esc(a.limits.overage_per_1000)} ${esc(t('perThousand'))})</span></label>` : ''}
       </div>
       ${plist.length ? `<div class="cs-card"><h2>${esc(t('payments'))}</h2>
         <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('when'))}</th><th>${esc(t('plan'))}</th><th>${esc(t('total'))} (${esc(t('vatIncl'))})</th><th>${esc(t('status'))}</th><th>${esc(t('paidUntil'))}</th></tr></thead>
-        <tbody>${plist.map(x => `<tr><td>${fmtT(x.paid_at || x.created_at)}</td><td>${esc(x.plan || x.kind)} · ${esc(x.cycle || '')}</td><td>${(x.currency && x.currency !== 'TRY') ? esc(x.total_try + ' ' + x.currency) : tl(x.total_try)}</td><td>${esc(x.status)}${x.card_last4 ? ' · ' + esc(x.card_last4) : ''}</td><td>${x.period_end ? fmtT(x.period_end) : '—'} <button type="button" class="btn-ghost btn-sm" data-inv="${esc(x.id)}" style="margin-left:6px">📄 ${x.status === 'paid' ? 'Fatura (PDF)' : 'Proforma (PDF)'}</button></td></tr>`).join('')}</tbody></table></div></div>` : ''}
+        <tbody>${plist.map(x => `<tr><td>${fmtT(x.paid_at || x.created_at)}</td><td>${esc(x.plan || x.kind)} · ${esc(x.cycle || '')}</td><td>${(x.currency && x.currency !== 'TRY') ? esc(x.total_try + ' ' + x.currency) : tl(x.total_try)}</td><td>${esc(t('st.' + x.status) !== 'st.' + x.status ? t('st.' + x.status) : x.status)}${x.card_last4 ? ' · ' + esc(/^\d{4}$/.test(x.card_last4) ? '****' + x.card_last4 : x.card_last4) : ''}</td><td>${x.period_end ? fmtT(x.period_end) : '—'} <button type="button" class="btn-ghost btn-sm" data-inv="${esc(x.id)}" style="margin-left:6px">${esc(x.status === 'paid' ? t('invPdf') : t('proPdf'))}</button></td></tr>`).join('')}</tbody></table></div></div>` : ''}
       <div class="cs-card"><h2>${esc(t('statements'))}</h2>
         ${est ? `<p class="small-mono" style="margin:0">${esc(t('estimate'))} (${esc(est.period)}): ${esc(t('base'))} ${money(est.base_cents, est.currency)} + ${esc(t('overage'))} ${money(est.overage_cents, est.currency)} = <b>${money(est.total_cents, est.currency)}</b> · ${fmtN(est.used)} / ${est.quota == null ? '—' : fmtN(est.quota)}</p>` : ''}
         <div class="scroll-x"><table class="cs-table"><thead><tr><th>${esc(t('period'))}</th><th>${esc(t('plan'))}</th><th>${esc(t('total'))}</th><th>${esc(t('status'))}</th><th>${esc(t('einv'))}</th></tr></thead>
@@ -800,12 +796,20 @@
           ${Object.keys(T.tr.bf).map(k => `<div class="field"><label for="bf_${k}">${esc(t('bf.' + k))}</label><input id="bf_${k}" type="text" maxlength="300" value="${esc(b[k] || '')}"></div>`).join('')}
           <button class="btn-primary btn-sm" type="submit" style="align-self:end">${esc(t('save'))}</button></form></div>`;
     let cycle = 'monthly';
+    const pending = S.pendingPay; S.pendingPay = null;
     $$('[data-cy]', el).forEach(btn => btn.addEventListener('click', () => {
       cycle = btn.dataset.cy;
       $$('[data-cy]', el).forEach(x => x.setAttribute('aria-pressed', String(x === btn)));
       $$('[data-pm]', el).forEach(s => { const v = cycle === 'yearly' ? s.dataset.py : s.dataset.pm; s.textContent = s.dataset.tl ? tl(v) : '$' + v; });
       $$('[data-pmu]', el).forEach(s => { s.textContent = '$' + (cycle === 'yearly' ? s.dataset.pyu : s.dataset.pmu); });
     }));
+    if (pending) {
+      const pb = $('[data-cy="' + pending.cycle + '"]', el); if (pb) pb.click();
+      const pn = plans[pending.plan] ? (L() === 'en' ? plans[pending.plan].name_en : plans[pending.plan].name_tr) : pending.plan;
+      $('#planStatus').textContent = t('pendingCard').replace('{p}', pn);
+      const sc = $('#salesOk'); if (sc) sc.checked = true;
+      setTimeout(() => { $('#bfCard').scrollIntoView({ behavior: 'smooth', block: 'start' }); const f = $('#bf_address'); if (f) f.focus(); }, 300);
+    }
     const needConsent = () => {
       if ($('#salesOk').checked) return false;
       $('#planStatus').textContent = '☐ ' + t('salesOk').replace(/<[^>]+>/g, ''); $('#salesOk').focus(); return true;
@@ -815,7 +819,7 @@
       if (id !== 'kesif' && needConsent()) return;
       const d = await call('POST', '/v1/account/plan-request', { plan: id, cycle, note: 'mesafeli-satis onayi ' + new Date().toISOString() });
       if (d.ok && d.data.proforma_invoice_pdf_url) {
-        $('#planStatus').innerHTML = `⏳ Havale/EFT Talebi Alındı — <b>TEB TL IBAN:</b> <code>TR92 0003 2000 0000 0070 5754 65</code> · <b>USD IBAN:</b> <code>TR83 0003 2000 0000 0088 9467 48</code> · <b>EUR IBAN:</b> <code>TR28 0003 2000 0000 0088 9467 68</code> (Alıcı: ITouch Bilişim Sistemleri Ltd. Şti.). Ödeme sonrası faturanız PAID damgalanır. Aşağıdaki Ödemeler tablosundan <b>UNPAID Proforma (PDF)</b> faturanızı indirebilirsiniz.`;
+        $('#planStatus').innerHTML = '⏳ ' + t('bankReq');
         setTimeout(() => viewBilling(el), 1800);
         return;
       }
@@ -844,7 +848,7 @@
     const updCrInfo = () => {
       const amt = usdFor(curCryptoPlan, cycle);
       const pName = plans[curCryptoPlan] ? (L() === 'en' ? plans[curCryptoPlan].name_en : plans[curCryptoPlan].name_tr) : curCryptoPlan;
-      if ($('#crAmountInfo')) $('#crAmountInfo').textContent = `${pName} (${cycle === 'yearly' ? t('yearly') : t('monthly')}) — Ödenecek Tutar: ${amt} USDC / USDT (%0 KDV · Teknopark Muafiyetli)`;
+      if ($('#crAmountInfo')) $('#crAmountInfo').textContent = t('crAmount').replace('{p}', pName).replace('{c}', cycle === 'yearly' ? t('yearly') : t('monthly')).replace('{a}', amt);
       if ($('#crAddr') && $('#crNet')) $('#crAddr').textContent = $('#crNet').value === 'trc20' ? TRON_ADDR : EVM_ADDR;
     };
     if ($('#crNet')) $('#crNet').addEventListener('change', () => {
@@ -861,9 +865,9 @@
     }));
     if ($('#crWeb3Btn')) $('#crWeb3Btn').addEventListener('click', async () => {
       if (needConsent()) return;
-      if (!window.ethereum) { $('#crStatus').textContent = 'Web3 cüzdanı (MetaMask / Rabby) bulunamadı. Aşağıdan ağ seçip TXID ile doğrulayabilirsiniz.'; return; }
+      if (!window.ethereum) { $('#crStatus').textContent = t('crNoWallet'); return; }
       try {
-        $('#crStatus').textContent = 'Base Mainnet (Chain ID 8453) cüzdanına bağlanılıyor…';
+        $('#crStatus').textContent = t('crConnecting');
         const accs = await window.ethereum.request({ method: 'eth_requestAccounts' });
         try { await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x2105' }] }); }
         catch (sw) {
@@ -871,25 +875,25 @@
           else throw sw;
         }
         const amt = usdFor(curCryptoPlan, cycle);
-        const units = (BigInt(amt) * 1000000n).toString(16).padStart(64, '0');
+        const units = BigInt(Math.round(Number(amt) * 1e6)).toString(16).padStart(64, '0');
         const dataHex = '0xa9059cbb' + EVM_ADDR.toLowerCase().replace(/^0x/, '').padStart(64, '0') + units;
-        $('#crStatus').textContent = `Cüzdanınızda ${amt} USDC transferini onaylayın…`;
+        $('#crStatus').textContent = t('crConfirm').replace('{a}', amt);
         const txHash = await window.ethereum.request({ method: 'eth_sendTransaction', params: [{ from: accs[0], to: BASE_USDC, data: dataHex }] });
         $('#crTx').value = txHash; $('#crNet').value = 'base'; $('#crTok').value = 'USDC';
-        $('#crStatus').textContent = 'Transfer gönderildi, blok onayı bekleniyor…';
+        $('#crStatus').textContent = t('crSent');
         for (let i = 0; i < 40; i++) {
           await new Promise(r => setTimeout(r, 2000));
           const rec = await window.ethereum.request({ method: 'eth_getTransactionReceipt', params: [txHash] });
           if (rec && rec.status === '0x1') break;
         }
         $('#crVerifyBtn').click();
-      } catch (e) { $('#crStatus').textContent = 'Hata: ' + (e.message || String(e)); }
+      } catch (e) { $('#crStatus').textContent = t('crErr') + (e.message || String(e)); }
     });
     if ($('#crVerifyBtn')) $('#crVerifyBtn').addEventListener('click', async () => {
       if (needConsent()) return;
       const txHash = ($('#crTx').value || '').trim();
-      if (!txHash) { $('#crStatus').textContent = 'Lütfen işlem hash (TXID) girin.'; return; }
-      $('#crVerifyBtn').disabled = true; $('#crStatus').textContent = 'Blokzincir üzerinde doğrulanıyor…';
+      if (!txHash) { $('#crStatus').textContent = t('crNeedTx'); return; }
+      $('#crVerifyBtn').disabled = true; $('#crStatus').textContent = t('crVerifying');
       const d = await call('POST', '/v1/account/crypto-checkout', {
         plan: curCryptoPlan, cycle, tx_hash: txHash, network: $('#crNet').value, token: $('#crTok').value,
         accept_preinfo: true, accept_distance_sale: true
@@ -899,13 +903,7 @@
       toast(t('payPaid'));
       viewBilling(el);
     });
-    $$('[data-inv]', el).forEach(btn => btn.addEventListener('click', async () => {
-      const res = await call('GET', '/v1/account/payments/' + encodeURIComponent(btn.dataset.inv) + '/invoice.pdf', null, { raw: true });
-      if (!res.ok) { toast(t('err')); return; }
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
-    }));
+    $$('[data-inv]', el).forEach(btn => btn.addEventListener('click', () => downloadInvoice('/v1/account/payments/' + encodeURIComponent(btn.dataset.inv) + '/invoice.pdf', btn)));
 
     const ovr = $('#ovr');
     if (ovr) ovr.addEventListener('change', async () => { const d = await call('PATCH', '/v1/account', { overage_enabled: ovr.checked }); toast(d.ok ? t('saved') : msg(d)); });

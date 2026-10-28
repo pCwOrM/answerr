@@ -36,7 +36,7 @@ E-posta, şirket adı, üyeler, plan, fatura bilgileri ve kullanım sayıları h
 
 ## Ödemeler
 
-Kartla ödemeler iyzico'nun güvenli ödeme sayfasında yapılır. Kart numarası, son kullanma tarihi ve güvenlik kodu answerr'a hiç ulaşmaz; yalnızca ödeme tutarı, durumu, iyzico işlem numarası ve kartın son 4 hanesi saklanır. Fatura bilgileriniz e-Arşiv / e-Fatura düzenlemek için kullanılır.
+Kartla ödemeler iyzico'nun güvenli ödeme sayfasında yapılır. Kart numarası, son kullanma tarihi ve güvenlik kodu answerr'a hiç ulaşmaz; yalnızca ödeme tutarı, durumu, iyzico işlem numarası ve kartın son 4 hanesi saklanır. Havalede transfer referansı, kripto ödemede işlem kodu (TXID) ve ağ saklanır. Fatura bilgileriniz e-Arşiv / e-Fatura düzenlemek için kullanılır.
 
 ## Güvenlik
 

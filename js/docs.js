@@ -90,6 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
     langBtn.addEventListener('click', () => {
       const nextLang = currentLang === 'tr' ? 'en' : 'tr';
       updateDocsLang(nextLang);
+      try { localStorage.setItem('answerr_pro_lang', nextLang); } catch (e) { /* ignore */ }
+      // this legacy page is Turkish only; the bilingual developer docs live at /pro/docs.html
+      if (nextLang === 'en') location.href = 'pro/docs.html';
     });
   }
 

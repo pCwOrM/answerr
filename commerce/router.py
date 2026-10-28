@@ -115,7 +115,7 @@ def signup(req: SignupRequest, request: Request):
     if not AM.valid_email(email):
         raise S.CommerceError(400, "bad_email", "Please enter a valid e-mail address.")
     if not (req.accept_terms and req.kvkk_ack):
-        raise S.CommerceError(400, "consent_required", "Accept the terms of service and acknowledge the KVKK notice to continue.")
+        raise S.CommerceError(400, "consent_required", "Accept the terms of service and acknowledge the privacy notice (GDPR / KVKK) to continue.")
     human_check(request)
     if (req.website or "").strip():
         return SENT
@@ -550,7 +550,7 @@ def instant_checkout(req: InstantCheckoutReq, request: Request):
     if not AM.valid_email(email):
         raise S.CommerceError(400, "bad_email", "Please enter a valid e-mail address.")
     if not (req.accept_terms and req.kvkk_ack):
-        raise S.CommerceError(400, "consent_required", "Accept the terms of service and acknowledge the KVKK notice to continue.")
+        raise S.CommerceError(400, "consent_required", "Accept the terms of service and acknowledge the privacy notice (GDPR / KVKK) to continue.")
     human_check(request)
     if (req.website or "").strip():
         return {"status": "success", "message": "OK"}

@@ -297,8 +297,35 @@ def _tron_hex41(addr: str) -> str:
     return addr.lower().replace("0x", "")
 
 
+CRYPTO_MAX_AGE = float(os.environ.get("ANSWERR_CRYPTO_MAX_AGE_HOURS", "72")) * 3600
+
+
+def _check_age(ts: Optional[float]) -> None:
+    """The deposit addresses are long-lived treasury wallets: only a transfer made for this purchase (recent) may be
+    claimed, never an older transfer that happens to sit in the wallet's history."""
+    if ts is None:
+        raise S.CommerceError(502, "verification_error", "Could not read the transaction time.")
+    if time.time() - ts > CRYPTO_MAX_AGE:
+        raise S.CommerceError(400, "tx_too_old", "This transfer is older than {} hours; it cannot be used for a new purchase.".format(
+            int(CRYPTO_MAX_AGE // 3600)))
+
+
+def _evm_block_time(rpcs, block_number: str) -> Optional[float]:
+    for rpc in rpcs:
+        try:
+            body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "eth_getBlockByNumber", "params": [block_number, False]}).encode()
+            req = urllib.request.Request(rpc, data=body, headers={"Content-Type": "application/json", "User-Agent": "answerr-billing/1.0"})
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                blk = json.loads(r.read().decode("utf-8")).get("result") or {}
+            if blk.get("timestamp"):
+                return float(int(blk["timestamp"], 16))
+        except Exception:
+            continue
+    return None
+
+
 def verify_crypto_payment(tx_hash: str, network: str, token: str, expected_usd: float) -> Dict[str, Any]:
-    """Verifies an on-chain USDC/USDT payment on Base, Ethereum, Arbitrum, BSC, or TRON TRC20."""
+    """Verifies a recent on-chain USDC/USDT payment on Base, Ethereum, Arbitrum, BSC, or TRON TRC20."""
     tx_clean = (tx_hash or "").strip()
     net = (network or "base").strip().lower()
     tok = (token or "USDC").strip().upper()
@@ -325,6 +352,8 @@ def verify_crypto_payment(tx_hash: str, network: str, token: str, expected_usd: 
                             amt = int(res.get("value") or 0) / 1e6
                             if amt + 0.50 < expected_usd:
                                 raise S.CommerceError(400, "insufficient_amount", f"Expected {expected_usd:.2f} USDT, found {amt:.2f} USDT.")
+                            bts = ev.get("block_timestamp")
+                            _check_age(float(bts) / 1000.0 if bts else None)
                             return {"verified": True, "amount": amt, "currency": "USDT", "network": "TRON TRC20", "tx_hash": raw_id}
         except S.CommerceError:
             raise
@@ -370,6 +399,7 @@ def verify_crypto_payment(tx_hash: str, network: str, token: str, expected_usd: 
                     amt = raw_val / float(10 ** decimals)
                     if amt + 0.50 < expected_usd:
                         raise S.CommerceError(400, "insufficient_amount", f"Expected {expected_usd:.2f} {t_sym}, found {amt:.2f} {t_sym}.")
+                    _check_age(_evm_block_time(chain["rpcs"], receipt.get("blockNumber") or "latest"))
                     return {"verified": True, "amount": amt, "currency": t_sym, "network": chain["name"], "tx_hash": tx_clean.lower()}
 
     raise S.CommerceError(400, "transfer_not_found", f"No USDC/USDT transfer to {EVM_DEPOSIT_ADDRESS} found in transaction logs.")

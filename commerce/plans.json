@@ -1,7 +1,7 @@
 {
   "version": "2026-10-27",
   "currency": "USD",
-  "vat_note": "All prices are exempt from VAT (0% KDV) under Turkish Law No. 4691 & VAT Law No. 3065 Temporary Art. 20/1 (Technopark R&D Software Exemption). Customers can pay via iyzico 3D Secure Card, 1-Click Base USDC wallet, multi-chain USDT/USDC (TRC20/EVM), or TEB corporate bank transfer (TRY/USD/EUR); e-Arşiv / e-Fatura and Commercial Invoice (PDF — PAID / UNPAID) are issued by ITouch.",
+  "vat_note": "All prices are exempt from VAT (0% KDV) under Turkish Law No. 4691 & VAT Law No. 3065 Temporary Art. 20/1 (Technopark R&D Software Exemption). Customers can pay via iyzico 3D Secure Card, 1-Click Base USDC wallet, multi-chain USDT/USDC (TRC20/EVM), or TEB corporate bank transfer (TRY/USD/EUR); e-Archive / e-Invoice and the commercial invoice (PDF — PAID / UNPAID) are issued by ITouch.",
   "vat_note_tr": "Tüm fiyatlar 4691 sayılı Teknoloji Geliştirme Bölgeleri Kanunu ve 3065 sayılı KDV Kanunu Geçici 20/1 maddesi (Teknopark Ar-Ge Yazılım İstisnası) kapsamında %0 KDV (KDV muafiyetli) olarak faturalanır. Kredi kartı (iyzico 3D Secure), 1-Tık Base USDC cüzdanı, çoklu ağ USDT/USDC (TRC20/EVM) veya TEB kurumsal banka havale/EFT (TL/USD/EUR) ile ödeme yapılabilir; e-Arşiv / e-Fatura ve Ticari Fatura (PDF — PAID / UNPAID) ITouch tarafından kesilir.",
   "decision_definition": "One decision = one call to /v1/decide or /v1/gates/{id}/decide, or one record in /v1/backtest. Compiling, reading, health checks and the open kernel running locally are not counted.",
   "plans": {
