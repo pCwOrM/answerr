@@ -80,9 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log("[answerr-telemetry] Payload prepared:", payload);
 
       const endpoints = [
-        "https://api.answerr.me/werr/telemetry",
-        "https://mechsrv.itouch.fi:4431/werr/telemetry",
-        "https://api.answerr.me:4431/werr/telemetry"
+        "https://api.answerr.me/werr/telemetry"
       ];
 
       for (const endpoint of endpoints) {
