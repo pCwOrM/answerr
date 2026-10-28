@@ -85,7 +85,7 @@ istek → middleware: kimlik (anahtar/oturum → acct:<id>), hız sınırı (api
 ## 7. Geri dönülebilirlik
 
 - **Site:**
-  - Önceki /pro sürümleri `pro/archive/` altında.
+  - Önceki /pro ve site sürümleri depodaki `archive/site/` altında arşivlenmiştir (canlı yayından hariç tutulur).
   - Etiketler: `pro-v1.2.0`, `pro-v1.3.0`.
   - Bu sürüm tek commit olarak `git revert` ile geri alınabilir.
 - **API:**

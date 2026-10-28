@@ -44,14 +44,19 @@ def test_no_page_links_the_dead_docs_url():
         assert "api.answerr.me/docs" not in s, rel
 
 
-def test_root_index_promoted_and_research_portal_preserved():
+def test_root_index_promoted_and_archives_kept_off_pages():
     root_idx = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
     assert 'href="pro/pro.css' in root_idx
     assert 'src="pro/console.js' in root_idx
     assert 'id="werrPresetSel"' in root_idx
     for href in re.findall(r'href="([^"#:]+\.html)"', root_idx):
         assert os.path.exists(os.path.normpath(os.path.join(ROOT, href))), href
-    assert os.path.exists(os.path.join(ROOT, "research", "portal.html"))
-    assert os.path.exists(os.path.join(ROOT, "research", "index.html"))
-    assert os.path.exists(os.path.join(PRO, "archive", "2026-10-15-root-v4.1", "index.html"))
-
+    # Old versions are removed from the public web tree
+    assert not os.path.exists(os.path.join(PRO, "archive")), "pro/archive must not exist in web root"
+    assert not os.path.exists(os.path.join(ROOT, "research")), "research folder must not exist in web root"
+    # Old versions are safely preserved in repo archive/site/
+    assert os.path.exists(os.path.join(ROOT, "archive", "site", "2026-10-15-root-v4.1", "index.html"))
+    assert os.path.exists(os.path.join(ROOT, "archive", "site", "2026-10-14-v1.2", "index.html"))
+    assert os.path.exists(os.path.join(ROOT, "archive", "site", "2026-10-13-v0.6", "index.html"))
+    assert os.path.exists(os.path.join(ROOT, "archive", "site", "research-portal", "portal.html"))
+    assert os.path.exists(os.path.join(ROOT, "archive", "site", "docs-v1.0.html"))
