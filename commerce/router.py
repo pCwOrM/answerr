@@ -309,10 +309,15 @@ def decisions_csv(request: Request, days: int = 30, verdict: Optional[str] = Non
     cols = ["id", "ts_iso", "gate_id", "verdict", "rule_id", "reason", "latency_ms", "mode", "observed", "key_prefix",
             "policy_seal", "external_id", "state_fields"]
     w.writerow(cols)
+
+    def cell(v):
+        # spreadsheet formula injection: a value starting with = + - @ (or tab/CR) is shown as text
+        v = "" if v is None else str(v)
+        return "'" + v if v[:1] in ("=", "+", "-", "@", "\t", "\r") else v
     for r in rows:
-        w.writerow([r["id"], time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(r["ts"])), r["gate_id"], r["verdict"], r["rule_id"],
+        w.writerow([cell(x) for x in [r["id"], time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(r["ts"])), r["gate_id"], r["verdict"], r["rule_id"],
                     r["reason"], r["latency_ms"], r["mode"], r["observed"] or "", r["key_prefix"] or "", r["policy_seal"] or "",
-                    r["external_id"] or "", " ".join(r["state_fields"])])
+                    r["external_id"] or "", " ".join(r["state_fields"])]])
     return Response(content=buf.getvalue(), media_type="text/csv; charset=utf-8",
                     headers={"Content-Disposition": 'attachment; filename="answerr-decisions-{}.csv"'.format(S.day_of())})
 
@@ -533,6 +538,7 @@ class InstantCheckoutReq(BaseModel):
     cycle: str = "monthly"
     method: str = "free"
     tx_hash: Optional[str] = None
+    quote_id: Optional[str] = Field(None, max_length=40, description="Crypto: id from POST /v1/checkout/crypto-quote")
     network: Optional[str] = "base"
     token: Optional[str] = "USDC"
     currency: Optional[str] = "USD"
@@ -596,8 +602,9 @@ def instant_checkout(req: InstantCheckoutReq, request: Request):
         tok_key = "crypto:" + tx_clean
         if S.get_payment(token=tok_key):
             raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
-        q_usd = billing.quote_usd(target_plan, cycle, email=email)
-        ver = billing.verify_crypto_payment(req.tx_hash, req.network or "base", req.token or "USDC", float(q_usd["total"]))
+        quote = _open_quote(req.quote_id, target_plan, cycle, email=email)
+        ver = billing.verify_crypto_payment(req.tx_hash, req.network or "base", req.token or "USDC", float(quote["total_try"]),
+                                            not_before=quote["created_at"] - 120)
 
     # New accounts always start on Explore; a paid plan is set only by a verified payment.
     prov = S.instant_provision_account(email, company=req.company, plan="kesif", ip=ip_of(request), lang=lang,
@@ -611,14 +618,8 @@ def instant_checkout(req: InstantCheckoutReq, request: Request):
             else "Your API key has been provisioned. You can enter the console now."))
 
     if method == "crypto":
-        pay = S.create_payment(acc_id, "plan", target_plan, cycle, q_usd["net"], "0.00", q_usd["total"],
-                               "crypto_" + (req.network or "base").lower(), email, billing=dict(b_info, **consent),
-                               currency=ver["currency"])
-        try:
-            S.set_payment_token(pay["id"], tok_key)
-        except Exception:
-            S.fail_payment(pay["id"], "tx_already_used")
-            raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
+        pay = S.claim_crypto_quote(quote["id"], acc_id, tok_key, "crypto_" + (req.network or "base").lower(), ver["currency"],
+                                   billing=dict(b_info, **consent))
         out = S.complete_payment(pay["id"], ver["tx_hash"], 1, ver["network"][:16])
         if out.get("first"):
             mail.payment_paid(S.get_account(acc_id), out["payment"], dict(b_info, **consent))
@@ -649,9 +650,52 @@ def instant_checkout(req: InstantCheckoutReq, request: Request):
                          else "Your account is ready. Complete your billing details to continue to the card payment page."))
 
 
+class CryptoQuoteReq(BaseModel):
+    plan: str
+    cycle: str = "monthly"
+    email: Optional[str] = Field(None, max_length=254, description="New customers (no session): the sign-up e-mail")
+    website: Optional[str] = Field(None, max_length=200, description="honeypot")
+
+
+def _open_quote(quote_id: Optional[str], plan: str, cycle: str, account_id: Optional[str] = None,
+                email: Optional[str] = None) -> Dict[str, Any]:
+    q = S.get_payment(quote_id) if quote_id else None
+    if not q or q["provider"] != "crypto" or q["status"] != "quoted":
+        raise S.CommerceError(400, "quote_required", "Get the exact payment amount first (crypto quote), then send that amount.")
+    if time.time() - q["created_at"] > billing.QUOTE_TTL:
+        raise S.CommerceError(400, "quote_expired", "This payment amount has expired; get a new one.")
+    if q["plan"] != plan or q["cycle"] != cycle:
+        raise S.CommerceError(400, "quote_mismatch", "This payment amount was issued for another plan or period.")
+    owner_ok = (account_id and q["account_id"] == account_id) or (email and (q["created_by"] or "").lower() == email.lower())
+    if not owner_ok:
+        raise S.CommerceError(403, "quote_not_yours", "This payment amount belongs to another order.")
+    return q
+
+
+@router.post("/v1/checkout/crypto-quote", tags=["Plans & billing"])
+def crypto_quote(req: CryptoQuoteReq, request: Request):
+    """Exact USDC/USDT amount for one order (plan price + unique cents), valid 72 h. Signed-in console users get it for
+    their account; new customers for their sign-up e-mail (reCAPTCHA and rate limits apply)."""
+    if req.plan not in P.PAID_PLANS or req.cycle not in ("monthly", "yearly"):
+        raise S.CommerceError(400, "bad_plan", "Crypto payment is available for the Developer and Pro plans.")
+    p = principal(request)
+    if p and p.get("via") == "session" and p["role"] in ("owner", "admin"):
+        return {"status": "success", **billing.crypto_quote(p["account_id"], p.get("email") or "", req.plan, req.cycle)}
+    email = (req.email or "").strip().lower()
+    if not AM.valid_email(email):
+        raise S.CommerceError(400, "bad_email", "Please enter a valid e-mail address.")
+    human_check(request)
+    if (req.website or "").strip():
+        raise S.CommerceError(400, "bad_request", "Invalid request.")
+    if S.member_of(email):
+        raise S.CommerceError(409, "member_exists", "This e-mail already has an account; sign in and pay from Plan & billing.")
+    return {"status": "success", **billing.crypto_quote(None, email, req.plan, req.cycle)}
+
+
 class CryptoCheckoutReq(BaseModel):
     plan: str
     cycle: str = "monthly"
+    quote_id: Optional[str] = Field(None, max_length=40)
     tx_hash: str = Field(..., max_length=160)
     network: str = "base"
     token: str = "USDC"
@@ -676,20 +720,12 @@ def crypto_checkout(req: CryptoCheckoutReq, request: Request):
     tok_key = "crypto:" + tx_clean
     if S.get_payment(token=tok_key):
         raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
-    email = p.get("email")
-    q_usd = billing.quote_usd(req.plan, req.cycle, email=email)
-    ver = billing.verify_crypto_payment(req.tx_hash, req.network, req.token, float(q_usd["total"]))
+    quote = _open_quote(req.quote_id, req.plan, req.cycle, account_id=acc["id"])
+    ver = billing.verify_crypto_payment(req.tx_hash, req.network, req.token, float(quote["total_try"]),
+                                        not_before=quote["created_at"] - 120)
     b_info = json.loads(acc.get("billing_json") or "{}")
     b_info.update({"consent_preinfo": True, "consent_distance_sale": True, "consent_ts": int(time.time()), "legal_version": mail.legal_version()})
-    pay = S.create_payment(
-        acc["id"], "plan", req.plan, req.cycle, q_usd["net"], "0.00", q_usd["total"],
-        "crypto_" + req.network.lower(), p["email"], billing=b_info, currency=ver["currency"]
-    )
-    try:
-        S.set_payment_token(pay["id"], tok_key)
-    except Exception:
-        S.fail_payment(pay["id"], "tx_already_used")
-        raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
+    pay = S.claim_crypto_quote(quote["id"], acc["id"], tok_key, "crypto_" + req.network.lower(), ver["currency"], billing=b_info)
     out = S.complete_payment(pay["id"], ver["tx_hash"], 1, ver["network"][:16])
     if out.get("first"):
         mail.payment_paid(acc, out["payment"], b_info)
@@ -737,7 +773,8 @@ def account_payments(request: Request):
     p = need(request, roles=("owner", "admin"))
     keep = ("id", "kind", "plan", "cycle", "net_try", "vat_try", "total_try", "currency", "status", "card_last4",
             "created_at", "paid_at", "period_start", "period_end")
-    return {"status": "success", "payments": [{k: r.get(k) for k in keep} for r in S.list_payments(p["account_id"], 100)]}
+    rows = [r for r in S.list_payments(p["account_id"], 100) if r.get("status") not in ("quoted", "expired")]
+    return {"status": "success", "payments": [{k: r.get(k) for k in keep} for r in rows]}
 
 
 async def _form_body(request: Request) -> Dict[str, str]:

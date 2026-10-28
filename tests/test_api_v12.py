@@ -247,3 +247,29 @@ def test_werr_parameters_catalog_and_custom_decide(client):
     assert wd["werr_config"]["preset"] == "security_guard"
 
 
+
+
+def test_cloudflare_edge_is_skipped_for_the_real_client(client):
+    def req(peer, xff):
+        r = type("R", (), {})()
+        r.client = type("C", (), {"host": peer})()
+        r.headers = {"x-forwarded-for": xff}
+        return r
+    ip = client.mod.client_ip
+    # visitor -> Cloudflare (appends the visitor) -> IIS (appends the edge:port) -> Apache (10.0.2.2)
+    assert ip(req("127.0.0.1", "198.51.100.23, 172.70.1.9:443, 10.0.2.2")) == "198.51.100.23"
+    # a spoofed left-most entry is still ignored: Cloudflare appends the real address after it
+    assert ip(req("127.0.0.1", "1.1.1.1, 198.51.100.23, 162.158.4.4:443, 10.0.2.2")) == "198.51.100.23"
+    # a non-Cloudflare caller hitting the origin directly is used as is
+    assert ip(req("127.0.0.1", "1.2.3.4, 203.0.113.50:5555, 10.0.2.2")) == "203.0.113.50"
+
+
+def test_recaptcha_token_opens_one_form(client, monkeypatch):
+    monkeypatch.setattr(client.mod, "RECAPTCHA_SECRET", "x")
+    monkeypatch.setattr(client.mod, "verify_recaptcha", lambda token, ip: "verified")
+    body = {"email": "", "plan": "kesif", "method": "free", "accept_terms": True, "kvkk_ack": True}
+    h = {"X-Recaptcha-Token": "tok-abc"}
+    r1 = client.post("/v1/checkout/instant", json=dict(body, email="once1@example.com"), headers=h)
+    r2 = client.post("/v1/checkout/instant", json=dict(body, email="once2@example.com"), headers=h)
+    assert r1.status_code == 200, r1.text
+    assert r2.status_code == 403 and r2.json()["error"] == "recaptcha_failed"

@@ -403,7 +403,8 @@ def test_instant_crypto_failure_creates_nothing(client, monkeypatch):
     def boom(*a, **k):
         raise client.store.CommerceError(400, "transfer_not_found", "no transfer")
     monkeypatch.setattr(billing, "verify_crypto_payment", boom)
-    r = client.post("/v1/checkout/instant", json={"email": "cr@example.com", "plan": "pro", "method": "crypto",
+    q = client.post("/v1/checkout/crypto-quote", json={"email": "cr@example.com", "plan": "pro", "cycle": "monthly"}).json()
+    r = client.post("/v1/checkout/instant", json={"email": "cr@example.com", "plan": "pro", "method": "crypto", "quote_id": q["quote_id"],
                                                   "tx_hash": "0x" + "b" * 64, "accept_terms": True, "kvkk_ack": True})
     assert r.status_code == 400 and r.json()["error"] == "transfer_not_found"
     assert client.store.member_of("cr@example.com") is None
@@ -411,9 +412,10 @@ def test_instant_crypto_failure_creates_nothing(client, monkeypatch):
 
 def test_instant_crypto_success_and_replay(client, monkeypatch):
     from commerce import billing
-    monkeypatch.setattr(billing, "verify_crypto_payment", lambda tx_hash, network, token, expected_usd: {
+    monkeypatch.setattr(billing, "verify_crypto_payment", lambda tx_hash, network, token, expected_usd, not_before=None: {
         "verified": True, "amount": expected_usd, "currency": "USDC", "network": "Base Mainnet", "tx_hash": tx_hash.lower()})
-    body = {"email": "cr2@example.com", "plan": "pro", "method": "crypto", "tx_hash": "0x" + "c" * 64,
+    q = client.post("/v1/checkout/crypto-quote", json={"email": "cr2@example.com", "plan": "pro", "cycle": "monthly"}).json()
+    body = {"email": "cr2@example.com", "plan": "pro", "method": "crypto", "tx_hash": "0x" + "c" * 64, "quote_id": q["quote_id"],
             "accept_terms": True, "kvkk_ack": True}
     b = client.post("/v1/checkout/instant", json=body).json()
     assert b["status"] == "success" and b["plan"] == "pro" and b["invoice_no"].startswith("INV-")
@@ -421,8 +423,11 @@ def test_instant_crypto_success_and_replay(client, monkeypatch):
     assert a["plan"] == "pro" and a["plan_expires_at"]
     note = next(m for m in client.mail.OUTBOX if "Ödeme alındı" in m["Subject"])
     assert "USDC" in note["Subject"] and "₺" not in note.get_content()
-    r = client.post("/v1/checkout/instant", json=dict(body, email="other@example.com"))
+    q2 = client.post("/v1/checkout/crypto-quote", json={"email": "other@example.com", "plan": "pro", "cycle": "monthly"}).json()
+    r = client.post("/v1/checkout/instant", json=dict(body, email="other@example.com", quote_id=q2["quote_id"]))
     assert r.status_code == 409 and client.store.member_of("other@example.com") is None
+    # an existing customer is sent to the console instead of getting a sign-up quote
+    assert client.post("/v1/checkout/crypto-quote", json={"email": "cr2@example.com", "plan": "pro"}).status_code == 409
 
 
 def test_instant_card_goes_to_billing(client):
@@ -464,3 +469,24 @@ def test_bank_transfer_mark_paid_and_approve_give_a_period(client):
     client.post("/v1/admin/plan-requests/{}/approve".format(rid), headers=H_ADMIN)
     a = client.get("/v1/account", headers=auth(s)).json()["account"]
     assert a["plan"] == "gelistirici" and a["plan_expires_at"]
+
+
+def test_webhook_targets_must_be_public_and_redirects_are_not_followed(client, monkeypatch):
+    from commerce import webhooks
+    import socket
+    for addr in ("100.64.1.1", "10.0.2.2", "127.0.0.1", "169.254.169.254", "::ffff:127.0.0.1"):
+        monkeypatch.setattr(socket, "getaddrinfo", lambda h, p, proto=0, a=addr: [(0, 0, 0, "", (a, 443))])
+        with pytest.raises(client.store.CommerceError):
+            webhooks.validate_url("https://hook.example.com/x")
+    assert any(isinstance(h, webhooks._NoRedirect) for h in webhooks._OPENER.handlers)
+
+
+def test_csv_export_neutralises_formulas_and_mail_headers_survive_newlines(client):
+    from commerce import mail
+    m = mail._msg("a@example.com", "Plan talebi — Evil\r\nBcc: x@example.com", "body")
+    assert "\n" not in m["Subject"] and "Bcc" not in str(m.keys())
+    s, key, acc = signup(client, email="csv@example.com")
+    client.post("/v1/admin/accounts/{}/plan".format(acc), json={"plan": "pro"}, headers=H_ADMIN)
+    decide(client, key, external_id="=HYPERLINK(\"http://x\")")
+    csv_txt = client.get("/v1/account/decisions.csv", headers=auth(s)).text
+    assert "'=HYPERLINK" in csv_txt

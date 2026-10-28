@@ -909,6 +909,44 @@ def create_payment(account_id: Optional[str], kind: str, plan: Optional[str], cy
     return get_payment(pid)
 
 
+def create_crypto_quote(account_id: Optional[str], email: str, plan: str, cycle: str, base: Any, ttl: float) -> Dict[str, Any]:
+    """Reserves base + 0.01..0.99 USD that no other open crypto quote of the same base uses (atomic)."""
+    from decimal import Decimal
+    base = Decimal(str(base))
+    t = now()
+    pid = new_id("pay", 8)
+    with tx() as c:
+        c.execute("UPDATE payments SET status = 'expired' WHERE provider = 'crypto' AND status = 'quoted' AND created_at < ?", (t - ttl,))
+        used = {r[0] for r in c.execute("SELECT total_try FROM payments WHERE provider = 'crypto' AND status = 'quoted'").fetchall()}
+        cents = list(range(1, 100))
+        secrets.SystemRandom().shuffle(cents)
+        total = next((str((base + Decimal(k) / 100).quantize(Decimal("0.01"))) for k in cents
+                      if str((base + Decimal(k) / 100).quantize(Decimal("0.01"))) not in used), None)
+        if total is None:
+            raise CommerceError(503, "quotes_busy", "Too many open crypto orders right now; try again later or pay by card or transfer.")
+        c.execute("INSERT INTO payments (id, account_id, kind, plan, cycle, net_try, vat_try, total_try, currency, provider, "
+                  "conversation_id, status, created_by, created_at, billing_json) VALUES (?, ?, 'plan', ?, ?, ?, '0.00', ?, 'USD', "
+                  "'crypto', ?, 'quoted', ?, ?, '{}')",
+                  (pid, account_id, plan, cycle, total, total, "ans-" + secrets.token_hex(10), (email or "")[:254], t))
+        event(c, account_id, email, "crypto.quoted", {"payment_id": pid, "plan": plan, "cycle": cycle, "amount": total})
+    return get_payment(pid)
+
+
+def claim_crypto_quote(pid: str, account_id: str, token_key: str, provider: str, currency: str,
+                       billing: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """Binds a verified transaction to its quote (once). The UNIQUE token column makes a second claim fail."""
+    with tx() as c:
+        pay = _row(c.execute("SELECT * FROM payments WHERE id = ?", (pid,)).fetchone())
+        if not pay or pay["provider"] != "crypto" or pay["status"] != "quoted":
+            raise CommerceError(409, "quote_used", "This payment amount has already been used or has expired.")
+        try:
+            c.execute("UPDATE payments SET account_id = ?, token = ?, provider = ?, currency = ?, billing_json = ? WHERE id = ?",
+                      (account_id, token_key, provider, currency, json.dumps(billing or {}, ensure_ascii=False), pid))
+        except sqlite3.IntegrityError:
+            raise CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
+    return get_payment(pid)
+
+
 def get_payment(pid: str = None, token: str = None, conversation_id: str = None) -> Optional[Dict[str, Any]]:
     if pid:
         r = conn().execute("SELECT * FROM payments WHERE id = ?", (pid,)).fetchone()
