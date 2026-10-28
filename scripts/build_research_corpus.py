@@ -39,11 +39,17 @@ def _plain(s: str) -> str:
 
 
 def corpus_rows():
-    with open(README, encoding="utf-8") as f:
-        text = f.read()
+    text = ""
+    for target in (README, os.path.join(ROOT, "RESEARCH_CHRONOLOGY.md")):
+        if os.path.isfile(target):
+            with open(target, encoding="utf-8") as f:
+                content = f.read()
+                if "Associated Formal Verification & Scientific Corpus" in content:
+                    text = content
+                    break
     i = text.find("Associated Formal Verification & Scientific Corpus")
     if i < 0:
-        print("corpus table not found in README.md; keeping the table already on the page")
+        print("corpus table not found; keeping the table already on the page")
         sys.exit(0)
     rows = []
     for line in text[i:].splitlines()[1:]:
