@@ -27,7 +27,7 @@ def _msg(to: str, subject: str, body: str, reply_to: Optional[str] = None) -> Em
     m["From"] = formataddr((c["from_name"], c["user"]))
     m["To"] = to
     m["Reply-To"] = reply_to or c["reply_to"]
-    m["Subject"] = subject
+    m["Subject"] = " ".join(str(subject).split())[:200]     # customer-supplied names must not break the header
     m["Message-ID"] = make_msgid(domain="answerr.me")
     m.set_content(body)
     return m

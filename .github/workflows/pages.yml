@@ -28,9 +28,12 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Exclude archive from Pages deployment
+      - name: Exclude archive and server-side files from Pages deployment
+        # The website needs only HTML/CSS/JS, assets and policies/; backend code, deploy scripts and internal docs
+        # stay in the repository and are not served from answerr.me.
         run: |
-          rm -rf archive
+          rm -rf archive deploy server tests scripts site commerce docs __pycache__
+          rm -f ./*.py ./*.sh ./*.service requirements.txt pyproject.toml package.json
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

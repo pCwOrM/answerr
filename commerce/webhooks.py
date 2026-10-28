@@ -16,6 +16,7 @@ import json
 import socket
 import threading
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from typing import Any, Dict
@@ -36,8 +37,10 @@ def validate_url(url: str) -> None:
     except socket.gaierror:
         raise S.CommerceError(400, "bad_webhook_url", "Webhook host does not resolve.")
     for info in infos:
-        ip = ipaddress.ip_address(info[4][0])
-        if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved or ip.is_multicast or ip.is_unspecified:
+        ip = ipaddress.ip_address(info[4][0].split("%")[0])
+        if getattr(ip, "ipv4_mapped", None):
+            ip = ip.ipv4_mapped
+        if not ip.is_global or ip.is_multicast:
             raise S.CommerceError(400, "bad_webhook_url", "Webhook host must be a public address.")
 
 
@@ -58,6 +61,15 @@ def verify(secret: str, body: bytes, header: str, tolerance: int = 300) -> bool:
     return hmac.compare_digest(sign(secret, body, ts).split("v1=")[1], parts.get("v1", ""))
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """A webhook endpoint must answer itself: following a redirect would let it point the server at internal addresses."""
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise urllib.error.HTTPError(req.full_url, code, "redirects are not followed", headers, fp)
+
+
+_OPENER = urllib.request.build_opener(_NoRedirect)
+
+
 def _deliver(account_id: str, url: str, secret: str, event: str, payload: Dict[str, Any]) -> None:
     body = json.dumps({"event": event, "created": int(time.time()), "data": payload}, ensure_ascii=False).encode("utf-8")
     status, err, attempt = None, None, 0
@@ -70,7 +82,7 @@ def _deliver(account_id: str, url: str, secret: str, event: str, payload: Dict[s
             req = urllib.request.Request(url, data=body, method="POST", headers={
                 "Content-Type": "application/json", "User-Agent": "answerr-webhooks/1.0",
                 "X-Answerr-Event": event, "X-Answerr-Signature": sign(secret, body, ts)})
-            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+            with _OPENER.open(req, timeout=TIMEOUT) as r:
                 status = r.status
             if 200 <= status < 300:
                 err = None

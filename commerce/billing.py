@@ -272,29 +272,29 @@ EVM_CHAINS = {
 }
 
 
-def crypto_cents(email: Optional[str]) -> float:
-    s = (email or "").strip().lower()
-    if not s:
-        return 0.0
-    h = 0
-    for ch in s:
-        h = ((h * 31) + ord(ch)) & 0xFFFFFFFF
-        if h >= 0x80000000:
-            h -= 0x100000000
-    return round((abs(h) % 90 + 10) / 100.0, 2)
+def quote_usd(plan_id: str, cycle: str) -> Dict[str, str]:
+    """Net, VAT (0% Teknopark/Export exempt) and total in USD for one period of a plan (bank transfer in USD).
+    Crypto orders use crypto_quote(), which adds order-specific cents."""
+    net = base_usd(plan_id, cycle)
+    return {"net": money(net), "vat": "0.00", "total": money(net), "vat_rate": "0.0"}
 
 
-def quote_usd(plan_id: str, cycle: str, email: Optional[str] = None) -> Dict[str, str]:
-    """Net, VAT (0% Teknopark/Export exempt) and total in USD/USDC/USDT for one period of a plan.
-    When email is given, adds deterministic unique cents ($0.10-$0.99) bound to the customer
-    to ensure on-chain crypto transactions are non-fungible per buyer and immune to front-running."""
+def base_usd(plan_id: str, cycle: str) -> Decimal:
     p = P.get(plan_id)
     per_month = p.get("price_yearly_per_month") if cycle == "yearly" else p.get("price_monthly")
     if not per_month:
         raise S.CommerceError(400, "no_usd_price", "This plan cannot be bought online.")
-    cents = Decimal(str(crypto_cents(email))) if email else Decimal("0.00")
-    net = (Decimal(str(per_month)) * (12 if cycle == "yearly" else 1)) + cents
-    return {"net": money(net), "vat": "0.00", "total": money(net), "vat_rate": "0.0"}
+    return Decimal(str(per_month)) * (12 if cycle == "yearly" else 1)
+
+
+def crypto_quote(account_id: Optional[str], email: str, plan_id: str, cycle: str) -> Dict[str, Any]:
+    """Issues an order-specific USDC/USDT amount: the plan price plus cents that no other open quote uses. Only a
+    transfer of exactly this amount, made after this moment, can pay this order — a stranger cannot claim it with
+    their own quote (amounts are unique while open) and an older transfer is refused (time check)."""
+    q = S.create_crypto_quote(account_id, email, plan_id, cycle, base_usd(plan_id, cycle), QUOTE_TTL)
+    return {"quote_id": q["id"], "amount": q["total_try"], "currency": "USDC / USDT", "plan": plan_id, "cycle": cycle,
+            "evm_address": EVM_DEPOSIT_ADDRESS, "trc20_address": TRC20_DEPOSIT_ADDRESS,
+            "created_at": q["created_at"], "expires_at": q["created_at"] + QUOTE_TTL}
 
 
 def _base58_decode(s: str) -> bytes:
@@ -312,14 +312,19 @@ def _tron_hex41(addr: str) -> str:
     return addr.lower().replace("0x", "")
 
 
+AMOUNT_TOLERANCE = 0.004          # quotes differ by whole cents, so a transfer can only match one open quote
+QUOTE_TTL = 72 * 3600              # a quote can be paid and claimed for 72 hours
 CRYPTO_MAX_AGE = float(os.environ.get("ANSWERR_CRYPTO_MAX_AGE_HOURS", "72")) * 3600
 
 
-def _check_age(ts: Optional[float]) -> None:
-    """The deposit addresses are long-lived treasury wallets: only a transfer made for this purchase (recent) may be
-    claimed, never an older transfer that happens to sit in the wallet's history."""
+def _check_age(ts: Optional[float], not_before: Optional[float] = None) -> None:
+    """The deposit addresses are long-lived treasury wallets: only a transfer made for this purchase may be claimed —
+    never one older than the order's quote, nor one older than CRYPTO_MAX_AGE."""
     if ts is None:
         raise S.CommerceError(502, "verification_error", "Could not read the transaction time.")
+    if not_before is not None and ts < not_before:
+        raise S.CommerceError(400, "tx_before_quote", "This transfer was made before the payment amount was issued; "
+                                                      "it cannot be used for this order.")
     if time.time() - ts > CRYPTO_MAX_AGE:
         raise S.CommerceError(400, "tx_too_old", "This transfer is older than {} hours; it cannot be used for a new purchase.".format(
             int(CRYPTO_MAX_AGE // 3600)))
@@ -339,7 +344,8 @@ def _evm_block_time(rpcs, block_number: str) -> Optional[float]:
     return None
 
 
-def verify_crypto_payment(tx_hash: str, network: str, token: str, expected_usd: float) -> Dict[str, Any]:
+def verify_crypto_payment(tx_hash: str, network: str, token: str, expected_usd: float,
+                          not_before: Optional[float] = None) -> Dict[str, Any]:
     """Verifies a recent on-chain USDC/USDT payment on Base, Ethereum, Arbitrum, BSC, or TRON TRC20."""
     tx_clean = (tx_hash or "").strip()
     net = (network or "base").strip().lower()
@@ -365,10 +371,10 @@ def verify_crypto_payment(tx_hash: str, network: str, token: str, expected_usd: 
                         to_addr = str(res.get("to") or "").lower().replace("0x", "")
                         if to_addr == target_evm or to_addr == target_hex41:
                             amt = int(res.get("value") or 0) / 1e6
-                            if abs(amt - expected_usd) > 0.05:
+                            if abs(amt - expected_usd) > AMOUNT_TOLERANCE:
                                 raise S.CommerceError(400, "mismatched_amount", f"Expected {expected_usd:.2f} USDT, found {amt:.2f} USDT. Transfer amount must match your account quote.")
                             bts = ev.get("block_timestamp")
-                            _check_age(float(bts) / 1000.0 if bts else None)
+                            _check_age(float(bts) / 1000.0 if bts else None, not_before)
                             return {"verified": True, "amount": amt, "currency": "USDT", "network": "TRON TRC20", "tx_hash": raw_id}
         except S.CommerceError:
             raise
@@ -412,9 +418,9 @@ def verify_crypto_payment(tx_hash: str, network: str, token: str, expected_usd: 
                 if len(topics) >= 3 and topics[0] == ERC20_TRANSFER_TOPIC and topics[2] == target_padded:
                     raw_val = int(log.get("data") or "0x0", 16)
                     amt = raw_val / float(10 ** decimals)
-                    if abs(amt - expected_usd) > 0.05:
+                    if abs(amt - expected_usd) > AMOUNT_TOLERANCE:
                         raise S.CommerceError(400, "mismatched_amount", f"Expected {expected_usd:.2f} {t_sym}, found {amt:.2f} {t_sym}. Transfer amount must match your account quote.")
-                    _check_age(_evm_block_time(chain["rpcs"], receipt.get("blockNumber") or "latest"))
+                    _check_age(_evm_block_time(chain["rpcs"], receipt.get("blockNumber") or "latest"), not_before)
                     return {"verified": True, "amount": amt, "currency": t_sym, "network": chain["name"], "tx_hash": tx_clean.lower()}
 
     raise S.CommerceError(400, "transfer_not_found", f"No USDC/USDT transfer to {EVM_DEPOSIT_ADDRESS} found in transaction logs.")

@@ -593,7 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const errCard = document.createElement('div');
       errCard.className = 'gemini-commentary-card';
       errCard.style.borderColor = 'var(--rose)';
-      errCard.innerHTML = `<strong style="color:var(--rose)">İşlem Hatası:</strong> ${err.message}`;
+      errCard.innerHTML = `<strong style="color:var(--rose)">İşlem Hatası:</strong> ${escapeHtml(String(err && err.message || err))}`;
       contentEl.appendChild(errCard);
     } finally {
       isGenerating = false;
@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateStepper(stepperEl, text) {
     if (!stepperEl) return;
-    stepperEl.innerHTML = `<div class="spinner"></div><span>${text}</span>`;
+    stepperEl.innerHTML = `<div class="spinner"></div><span>${escapeHtml(String(text))}</span>`;
   }
 
   function appendUserMessage(text) {
@@ -653,20 +653,20 @@ document.addEventListener('DOMContentLoaded', () => {
       verdictTitle = ans.decision ? t.approved : t.denied;
       verdictSub = `p=${ans.noul} • ${t.confidence}: %${(ans.confidence * 100).toFixed(0)}`;
       smartCodeSnippet = ans.decision
-        ? `<span class="kw">if</span> response.<span class="fn">boolean</span>(<span class="str">"${ansKey}"</span>): <span class="fn">EXECUTE_DIRECT</span>(request)`
-        : `<span class="kw">if not</span> response.<span class="fn">boolean</span>(<span class="str">"${ansKey}"</span>): <span class="fn">BLOCK_OR_QUARANTINE</span>(request)`;
+        ? `<span class="kw">if</span> response.<span class="fn">boolean</span>(<span class="str">"${escapeHtml(ansKey)}"</span>): <span class="fn">EXECUTE_DIRECT</span>(request)`
+        : `<span class="kw">if not</span> response.<span class="fn">boolean</span>(<span class="str">"${escapeHtml(ansKey)}"</span>): <span class="fn">BLOCK_OR_QUARANTINE</span>(request)`;
     } else if (ans.type === 'choice') {
       verdictClass = 'routed';
       const choiceDisplay = ans.label || ans.choice;
       const cleanIdent = toAsciiUpper(ans.choice).replace(/[^A-Z0-9_]/g, '_').substring(0, 32);
-      verdictTitle = `${t.routed || 'SEÇİLEN'}: ${choiceDisplay}`;
+      verdictTitle = `${t.routed || 'SEÇİLEN'}: ${escapeHtml(String(choiceDisplay))}`;
       verdictSub = `${t.confidence}: %${(ans.confidence * 100).toFixed(0)}`;
-      smartCodeSnippet = `<span class="kw">match</span> response.<span class="fn">choice</span>(<span class="str">"${ansKey}"</span>): <span class="kw">case</span> <span class="str">"${escapeHtml(ans.choice)}"</span>: <span class="fn">HANDLE_${cleanIdent}</span>(payload)`;
+      smartCodeSnippet = `<span class="kw">match</span> response.<span class="fn">choice</span>(<span class="str">"${escapeHtml(ansKey)}"</span>): <span class="kw">case</span> <span class="str">"${escapeHtml(ans.choice)}"</span>: <span class="fn">HANDLE_${cleanIdent}</span>(payload)`;
     } else if (ans.type === 'score') {
       verdictClass = 'scored';
-      verdictTitle = `${t.scored}: ${ans.score} / ${ans.scaleMax} (${ans.selectedLevel})`;
+      verdictTitle = `${t.scored}: ${escapeHtml(String(ans.score))} / ${escapeHtml(String(ans.scaleMax))} (${escapeHtml(String(ans.selectedLevel))})`;
       verdictSub = `${t.confidence}: %${(ans.confidence * 100).toFixed(0)}`;
-      smartCodeSnippet = `<span class="kw">if</span> response.<span class="fn">score</span>(<span class="str">"${ansKey}"</span>) &lt; 1.5: <span class="fn">NORMAL_PIPELINE</span>() <span class="kw">else</span>: <span class="fn">TRIGGER_${toAsciiUpper(ans.selectedLevel || 'ALERT')}</span>()`;
+      smartCodeSnippet = `<span class="kw">if</span> response.<span class="fn">score</span>(<span class="str">"${escapeHtml(ansKey)}"</span>) &lt; 1.5: <span class="fn">NORMAL_PIPELINE</span>() <span class="kw">else</span>: <span class="fn">TRIGGER_${escapeHtml(toAsciiUpper(ans.selectedLevel || 'ALERT'))}</span>()`;
     }
 
     const cxStr = result.coordinates.cx.toFixed(6);

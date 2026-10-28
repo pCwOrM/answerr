@@ -35,6 +35,7 @@ Configuration (environment, e.g. /etc/answerr/answerr.env):
   ANSWERR_PAYMENT_PROVIDER  manual (default) | iyzico (see docs/commerce/IYZICO_ENTEGRASYONU.md)
 """
 import hashlib
+import ipaddress
 import hmac
 import json
 import math
@@ -146,6 +147,26 @@ def _strip_port(entry: str) -> str:
     return e
 
 
+# Cloudflare edge ranges (https://www.cloudflare.com/ips/). api.answerr.me is proxied by Cloudflare, so without these
+# every visitor would share the edge's address for rate limits; with them the real client (which Cloudflare appends to
+# X-Forwarded-For) is used.
+CLOUDFLARE_NETS = [ipaddress.ip_network(n) for n in os.environ.get("ANSWERR_CLOUDFLARE_NETS", ",".join([
+    "173.245.48.0/20", "103.21.244.0/22", "103.22.200.0/22", "103.31.4.0/22", "141.101.64.0/18", "108.162.192.0/18",
+    "190.93.240.0/20", "188.114.96.0/20", "197.234.240.0/22", "198.41.128.0/17", "162.158.0.0/15", "104.16.0.0/13",
+    "104.24.0.0/14", "172.64.0.0/13", "131.0.72.0/22", "2400:cb00::/32", "2606:4700::/32", "2803:f800::/32",
+    "2405:b500::/32", "2405:8100::/32", "2a06:98c0::/29", "2c0f:f248::/32"])).split(",") if n.strip()]
+
+
+def _trusted_hop(hop: str) -> bool:
+    if hop in TRUSTED_PROXIES:
+        return True
+    try:
+        ip = ipaddress.ip_address(hop)
+    except ValueError:
+        return False
+    return any(ip in n for n in CLOUDFLARE_NETS)
+
+
 def client_ip(request: Request) -> str:
     """Real client address behind IIS (ARR) -> VirtualBox NAT -> Apache -> uvicorn.
 
@@ -158,7 +179,7 @@ def client_ip(request: Request) -> str:
         return peer
     chain = [_strip_port(p) for p in (request.headers.get("x-forwarded-for") or "").split(",") if p.strip()]
     for hop in reversed(chain):
-        if hop and hop not in TRUSTED_PROXIES:
+        if hop and not _trusted_hop(hop):
             return hop
     real = (request.headers.get("x-real-ip") or "").strip()
     return real or peer
@@ -179,7 +200,8 @@ class SlidingWindowLimiter:
         "verified": (120, 20),     # reCAPTCHA-verified browser
         "api_key": (600, 50),
         "direct_shared": (300, 30),   # all non-IIS (direct :4431) anonymous traffic together
-        "access_form": (5, 5),        # early-access form: 5 per hour per IP (window set below)
+        "access_form": (int(os.environ.get("ANSWERR_FORM_LIMIT_PER_HOUR", "5")), 5),   # sign-up/login/checkout forms per IP per hour
+        "token_once": (1, 1),         # a reCAPTCHA token may unlock one form submission
     }
 
     def __init__(self, window_seconds: int = 60, name: str = "rl"):
@@ -1930,6 +1952,12 @@ def _require_human(request: Request) -> None:
     sec = _security(request)
     if RECAPTCHA_SECRET and sec["recaptcha"] != "verified" and not sec["tenant"]:
         raise CS.CommerceError(403, "recaptcha_failed", "reCAPTCHA verification failed; reload the page and try again.")
+    if RECAPTCHA_SECRET and not sec["tenant"]:
+        # Google tokens are single-use; the verification cache must not let one token open many forms
+        tok = request.headers.get("x-recaptcha-token") or ""
+        ok, _, _, _ = SIGNUP_LIMITER.check("tok:" + hashlib.sha256(tok.encode()).hexdigest(), "token_once")
+        if not ok:
+            raise CS.CommerceError(403, "recaptcha_failed", "This verification was already used; reload the page and try again.")
 
 
 def _load_policy(gate_id: Optional[str], inline: Optional[Dict[str, Any]], tenant: str) -> Optional[Dict[str, Any]]:
