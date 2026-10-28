@@ -375,6 +375,14 @@ def verify_crypto_payment(tx_hash: str, network: str, token: str, expected_usd: 
     raise S.CommerceError(400, "transfer_not_found", f"No USDC/USDT transfer to {EVM_DEPOSIT_ADDRESS} found in transaction logs.")
 
 
+def invoice_number(pay: Dict[str, Any]) -> str:
+    """INV-YYYY-XXXXXXXX for a paid payment, PRO-YYYY-XXXXXXXX (proforma) otherwise; same rule as the PDF."""
+    paid = str(pay.get("status") or "").lower() in ("paid", "verified", "completed", "active")
+    ts = pay.get("paid_at") or pay.get("created_at") or time.time()
+    return "{}-{}-{}".format("INV" if paid else "PRO", time.strftime("%Y", time.gmtime(ts)),
+                             str(pay.get("id") or "").replace("pay_", "").upper()[:8])
+
+
 def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, Any]) -> bytes:
     """Generates an official A4 Commercial Invoice PDF (0% KDV under Law No. 4691 & 3065 Temporary Art. 20/1) with PAID or UNPAID stamp for answerr.me."""
     import io
@@ -403,14 +411,9 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
     c = canvas.Canvas(buf, pagesize=A4)
     width, height = A4
 
-    pay_status = str(pay.get("status") or "paid").lower()
+    pay_status = str(pay.get("status") or "").lower()
     is_paid = pay_status in ("paid", "verified", "completed", "active")
-    prefix = "INV" if is_paid else "PRO"
-    inv_no = "{}-{}-{}".format(
-        prefix,
-        time.strftime("%Y", time.gmtime(pay.get("paid_at") or pay.get("created_at") or time.time())),
-        str(pay.get("id") or "SAMPLE").replace("pay_", "").replace("req_", "").upper()[:8],
-    )
+    inv_no = invoice_number(pay)
     c.setTitle(f"Commercial Invoice {inv_no} ({'PAID' if is_paid else 'UNPAID'}) - ITouch Systems / answerr")
 
     c.setFillColor(colors.HexColor("#0A1230"))

@@ -375,8 +375,71 @@ def test_instant_checkout_free_and_proforma(client):
     assert "invoice_pdf_url" in b_bank
     assert b_bank["invoice_no"].startswith("PRO-")
 
-    # 3. Download proforma invoice PDF directly using token
-    pdf_r = client.get(b_bank["invoice_pdf_url"])
+    # 3. Download proforma invoice PDF with the session
+    pdf_r = client.get(b_bank["invoice_pdf_url"], headers=auth(b_bank["session"]))
     assert pdf_r.status_code == 200, pdf_r.text
     assert pdf_r.headers.get("content-type") == "application/pdf"
     assert pdf_r.content.startswith(b"%PDF")
+
+
+def test_instant_checkout_never_hands_out_an_existing_account(client):
+    s, key, acc = signup(client, email="victim@example.com")
+    n = len(client.mail.OUTBOX)
+    r = client.post("/v1/checkout/instant", json={"email": "victim@example.com", "plan": "kesif", "method": "free",
+                                                  "accept_terms": True, "kvkk_ack": True})
+    b = r.json()
+    assert r.status_code == 200 and b["status"] == "login_link_sent"
+    assert "session" not in b and "api_key" not in b
+    assert len(client.mail.OUTBOX) == n + 1 and client.mail.OUTBOX[-1]["To"] == "victim@example.com"
+
+
+def test_instant_checkout_requires_consent(client):
+    r = client.post("/v1/checkout/instant", json={"email": "x@example.com", "plan": "kesif", "method": "free"})
+    assert r.status_code == 400 and r.json()["error"] == "consent_required"
+
+
+def test_instant_crypto_failure_creates_nothing(client, monkeypatch):
+    from commerce import billing
+    def boom(*a, **k):
+        raise client.store.CommerceError(400, "transfer_not_found", "no transfer")
+    monkeypatch.setattr(billing, "verify_crypto_payment", boom)
+    r = client.post("/v1/checkout/instant", json={"email": "cr@example.com", "plan": "pro", "method": "crypto",
+                                                  "tx_hash": "0x" + "b" * 64, "accept_terms": True, "kvkk_ack": True})
+    assert r.status_code == 400 and r.json()["error"] == "transfer_not_found"
+    assert client.store.member_of("cr@example.com") is None
+
+
+def test_instant_crypto_success_and_replay(client, monkeypatch):
+    from commerce import billing
+    monkeypatch.setattr(billing, "verify_crypto_payment", lambda tx_hash, network, token, expected_usd: {
+        "verified": True, "amount": expected_usd, "currency": "USDC", "network": "Base Mainnet", "tx_hash": tx_hash.lower()})
+    body = {"email": "cr2@example.com", "plan": "pro", "method": "crypto", "tx_hash": "0x" + "c" * 64,
+            "accept_terms": True, "kvkk_ack": True}
+    b = client.post("/v1/checkout/instant", json=body).json()
+    assert b["status"] == "success" and b["plan"] == "pro" and b["invoice_no"].startswith("INV-")
+    a = client.get("/v1/account", headers=auth(b["session"])).json()["account"]
+    assert a["plan"] == "pro" and a["plan_expires_at"]
+    r = client.post("/v1/checkout/instant", json=dict(body, email="other@example.com"))
+    assert r.status_code == 409 and client.store.member_of("other@example.com") is None
+
+
+def test_instant_card_goes_to_billing(client):
+    b = client.post("/v1/checkout/instant", json={"email": "card@example.com", "plan": "gelistirici", "method": "card",
+                                                  "company": "Kart A.Ş.", "accept_terms": True, "kvkk_ack": True}).json()
+    assert b["status"] == "billing_required" and b["next"] == "billing" and b["session"].startswith("ans_sess_")
+    a = client.get("/v1/account", headers=auth(b["session"])).json()["account"]
+    assert a["plan"] == "kesif" and a["billing"]["legal_name"] == "Kart A.Ş."
+
+
+def test_invoice_pdf_needs_the_owner(client):
+    b = client.post("/v1/checkout/instant", json={"email": "bank@example.com", "plan": "pro", "method": "bank",
+                                                  "accept_terms": True, "kvkk_ack": True}).json()
+    url = b["invoice_pdf_url"]
+    assert client.get(url).status_code == 401
+    assert client.get(url, headers=auth(b["session"])).content.startswith(b"%PDF")
+    assert client.get(url + "?token=" + b["session"]).status_code == 200
+    s2, _, _ = signup(client, email="stranger@example.com")
+    assert client.get(url, headers=auth(s2)).status_code == 404
+    assert client.get(url, headers=H_ADMIN).status_code == 200
+    # a bank transfer does not activate anything by itself
+    assert client.get("/v1/account", headers=auth(b["session"])).json()["account"]["plan"] == "kesif"

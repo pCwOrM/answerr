@@ -109,8 +109,6 @@ def _bearer(request: Request) -> str:
     auth = request.headers.get("authorization") or ""
     if not key and auth.lower().startswith("bearer "):
         key = auth[7:].strip()
-    if not key and request.query_params.get("token"):
-        key = request.query_params.get("token").strip()
     return key
 
 

@@ -536,8 +536,8 @@ class InstantCheckoutReq(BaseModel):
     network: Optional[str] = "base"
     token: Optional[str] = "USDC"
     currency: Optional[str] = "USD"
-    accept_terms: bool = True
-    kvkk_ack: bool = True
+    accept_terms: bool = False
+    kvkk_ack: bool = False
     marketing: bool = False
     lang: Optional[str] = "tr"
     website: Optional[str] = None
@@ -556,110 +556,97 @@ def instant_checkout(req: InstantCheckoutReq, request: Request):
         return {"status": "success", "message": "OK"}
     lang = req.lang if req.lang in ("tr", "en") else "tr"
 
-    b_info = {
-        "company": req.company or "answerr API User",
-        "email": email,
-        "tax_id": req.tax_id,
-        "address": req.address,
-        "phone": req.phone,
-        "consent_preinfo": True,
-        "consent_distance_sale": True,
-        "consent_ts": int(time.time()),
-        "legal_version": mail.legal_version()
-    }
-
+    method = {"iyzico": "card"}.get(req.method, req.method)
+    if method not in ("free", "crypto", "bank", "card"):
+        raise S.CommerceError(400, "bad_method", "Choose free, card, bank or crypto.")
     target_plan = req.plan if req.plan in P.PLANS else "kesif"
     cycle = req.cycle if req.cycle in ("monthly", "yearly") else "monthly"
+    if target_plan not in P.PAID_PLANS:
+        target_plan, method = "kesif", "free"
+    if method == "free":
+        target_plan = "kesif"
 
-    prov = S.instant_provision_account(
-        email, company=req.company, plan="kesif" if req.method != "crypto" else target_plan,
-        ip=ip_of(request), lang=lang, billing_info=b_info
-    )
-    acc_id = prov["account_id"]
-    sess = prov["session"]
-    raw_api_key = prov["api_key"]
+    # An address that already has an account never gets a session from this public form: that would let anyone who
+    # knows a customer's e-mail sign in as them. The owner receives a sign-in link instead.
+    if S.member_of(email):
+        tok = S.create_login_token(email, "login", {}, ip_of(request))
+        mail.login_link(email, tok, "login", lang)
+        return {"status": "login_link_sent", "message": (
+            "Bu e-posta adresiyle bir hesap zaten var. Giriş bağlantısını e-postanıza gönderdik; ödemeyi konsoldaki "
+            "Plan ve fatura bölümünden yapabilirsiniz." if lang == "tr" else
+            "An account with this e-mail already exists. We sent a sign-in link to it; you can pay from Plan & billing in the console.")}
 
-    if req.method == "free" or target_plan == "kesif":
-        return {
-            "status": "success",
-            "session": sess,
-            "account_id": acc_id,
-            "api_key": raw_api_key,
-            "plan": "kesif",
-            "message": "API anahtarınız anında tahsis edildi. Konsola hemen giriş yapabilirsiniz." if lang == "tr" else "Your API key has been provisioned. You can enter the console now."
-        }
+    b_info = {
+        "legal_name": (req.company or "").strip()[:120],
+        "invoice_email": email,
+        "tax_id": (req.tax_id or "").strip()[:50],
+        "address": (req.address or "").strip()[:200],
+        "phone": (req.phone or "").strip()[:30],
+    }
+    b_info = {k: v for k, v in b_info.items() if v}
+    consent = {"consent_preinfo": True, "consent_distance_sale": True, "consent_ts": int(time.time()),
+               "legal_version": mail.legal_version()}
 
-    if req.method == "crypto":
+    # Crypto: verify on-chain first, so a failed or reused transaction never creates an account or a plan.
+    ver = tok_key = None
+    if method == "crypto":
         tx_clean = (req.tx_hash or "").strip().lower()
         if not tx_clean:
             raise S.CommerceError(400, "bad_tx_hash", "Please provide a valid transaction hash (TXID).")
         tok_key = "crypto:" + tx_clean
-        existing = S.get_payment(token=tok_key)
-        if existing and existing.get("status") == "paid":
+        if S.get_payment(token=tok_key):
             raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
         q_usd = billing.quote_usd(target_plan, cycle)
         ver = billing.verify_crypto_payment(req.tx_hash, req.network or "base", req.token or "USDC", float(q_usd["total"]))
-        pay = S.create_payment(
-            acc_id, "plan", target_plan, cycle, q_usd["net"], "0.00", q_usd["total"],
-            "crypto_" + (req.network or "base").lower(), email, billing=b_info, currency=ver["currency"]
-        )
-        S.set_payment_token(pay["id"], tok_key)
+
+    # New accounts always start on Explore; a paid plan is set only by a verified payment.
+    prov = S.instant_provision_account(email, company=req.company, plan="kesif", ip=ip_of(request), lang=lang,
+                                       billing_info=b_info)
+    acc_id, sess, raw_api_key = prov["account_id"], prov["session"], prov["api_key"]
+    base = {"session": sess, "account_id": acc_id, "api_key": raw_api_key}
+
+    if method == "free":
+        return dict(base, status="success", plan="kesif", message=(
+            "API anahtarınız anında tahsis edildi. Konsola hemen giriş yapabilirsiniz." if lang == "tr"
+            else "Your API key has been provisioned. You can enter the console now."))
+
+    if method == "crypto":
+        pay = S.create_payment(acc_id, "plan", target_plan, cycle, q_usd["net"], "0.00", q_usd["total"],
+                               "crypto_" + (req.network or "base").lower(), email, billing=dict(b_info, **consent),
+                               currency=ver["currency"])
+        try:
+            S.set_payment_token(pay["id"], tok_key)
+        except Exception:
+            S.fail_payment(pay["id"], "tx_already_used")
+            raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
         out = S.complete_payment(pay["id"], ver["tx_hash"], 1, ver["network"][:16])
         if out.get("first"):
-            mail.payment_paid(S.get_account(acc_id), out["payment"], b_info)
-        inv_url = f"/v1/account/payments/{pay['id']}/invoice.pdf?token={sess}"
-        inv_no = "INV-{}-{}".format(time.strftime("%Y"), str(pay["id"]).replace("pay_", "").upper()[:8])
-        return {
-            "status": "success",
-            "session": sess,
-            "account_id": acc_id,
-            "api_key": raw_api_key,
-            "plan": target_plan,
-            "invoice_no": inv_no,
-            "invoice_pdf_url": inv_url,
-            "message": "Ödemeniz zincir üstünde doğrulandı, planınız aktifleştirildi ve ticari faturanız hazırlandı." if lang == "tr" else "Payment verified on-chain, plan activated and commercial invoice generated."
-        }
+            mail.payment_paid(S.get_account(acc_id), out["payment"], dict(b_info, **consent))
+        return dict(base, status="success", plan=target_plan, payment_id=pay["id"],
+                    invoice_no=billing.invoice_number(out["payment"]),
+                    invoice_pdf_url="/v1/account/payments/{}/invoice.pdf".format(pay["id"]),
+                    message=("Ödemeniz zincir üstünde doğrulandı, planınız etkinleştirildi ve faturanız hazırlandı." if lang == "tr"
+                             else "Payment verified on-chain, plan activated and invoice generated."))
 
-    if req.method == "bank":
-        q = billing.quote_try(target_plan, cycle) if req.currency == "TRY" else billing.quote_usd(target_plan, cycle)
+    if method == "bank":
         curr = "TRY" if req.currency == "TRY" else "USD"
-        pay = S.create_payment(
-            acc_id, "plan", target_plan, cycle, q["net"], q.get("vat", "0.00"), q["total"],
-            "bank_wire", email, billing=b_info, currency=curr
-        )
-        inv_url = f"/v1/account/payments/{pay['id']}/invoice.pdf?token={sess}"
-        inv_no = "PRO-{}-{}".format(time.strftime("%Y"), str(pay["id"]).replace("pay_", "").upper()[:8])
-        return {
-            "status": "success",
-            "session": sess,
-            "account_id": acc_id,
-            "api_key": raw_api_key,
-            "plan": target_plan,
-            "payment": pay,
-            "invoice_no": inv_no,
-            "invoice_pdf_url": inv_url,
-            "proforma_pdf_url": inv_url,
-            "bank_accounts": P.CATALOG.get("bank_accounts", {}),
-            "message": "Kurumsal proforma faturanız oluşturuldu. Banka havalesi ardından resmi faturanız onaylanacaktır." if lang == "tr" else "Proforma invoice generated. Your payment will be confirmed upon bank transfer."
-        }
+        q = billing.quote_try(target_plan, cycle) if curr == "TRY" else billing.quote_usd(target_plan, cycle)
+        pay = S.create_payment(acc_id, "plan", target_plan, cycle, q["net"], q.get("vat", "0.00"), q["total"],
+                               "bank_wire", email, billing=dict(b_info, **consent), currency=curr)
+        r = S.request_plan(acc_id, target_plan, cycle, "havale/EFT proforma " + pay["id"], email)
+        mail.plan_request(S.get_account(acc_id), r, email)
+        return dict(base, status="success", plan="kesif", requested_plan=target_plan, payment_id=pay["id"],
+                    invoice_no=billing.invoice_number(pay),
+                    invoice_pdf_url="/v1/account/payments/{}/invoice.pdf".format(pay["id"]),
+                    bank_accounts=P.CATALOG.get("bank_accounts", {}),
+                    message=("Proforma faturanız hazır. Havale/EFT ulaştığında planınız etkinleşir; bu arada Keşif planıyla başlayabilirsiniz."
+                             if lang == "tr" else
+                             "Your proforma invoice is ready. The plan activates when the transfer arrives; meanwhile you can start on Explore."))
 
-    if req.method == "iyzico":
-        q = billing.quote_try(target_plan, cycle)
-        buyer = billing.buyer_from_account(S.get_account(acc_id), email, ip_of(request))
-        pay = S.create_payment(
-            acc_id, "plan", target_plan, cycle, q["net"], q["vat"], q["total"],
-            "iyzico", email, billing=dict(buyer["billing"], consent_preinfo=True, consent_distance_sale=True, consent_ts=int(time.time()), legal_version=mail.legal_version()),
-            currency="TRY"
-        )
-        prov_b = billing.provider()
-        chk = prov_b.init_checkout(pay, buyer, f"{billing.CALLBACK_BASE}/v1/billing/iyzico/callback?session={sess}")
-        return {
-            "status": "checkout",
-            "session": sess,
-            "account_id": acc_id,
-            "payment": pay,
-            "form": chk
-        }
+    # card: iyzico needs the full billing address; the console's Plan & billing view collects it and opens the payment page
+    return dict(base, status="billing_required", plan="kesif", requested_plan=target_plan, cycle=cycle, next="billing",
+                message=("Hesabınız açıldı. Kartla ödeme için fatura bilgilerinizi tamamlayıp ödeme sayfasına geçin." if lang == "tr"
+                         else "Your account is ready. Complete your billing details to continue to the card payment page."))
 
 
 class CryptoCheckoutReq(BaseModel):
@@ -687,8 +674,7 @@ def crypto_checkout(req: CryptoCheckoutReq, request: Request):
     if not tx_clean:
         raise S.CommerceError(400, "bad_tx_hash", "Please provide a valid transaction hash (TXID).")
     tok_key = "crypto:" + tx_clean
-    existing = S.get_payment(token=tok_key)
-    if existing and existing.get("status") == "paid":
+    if S.get_payment(token=tok_key):
         raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
     q_usd = billing.quote_usd(req.plan, req.cycle)
     ver = billing.verify_crypto_payment(req.tx_hash, req.network, req.token, float(q_usd["total"]))
@@ -698,7 +684,11 @@ def crypto_checkout(req: CryptoCheckoutReq, request: Request):
         acc["id"], "plan", req.plan, req.cycle, q_usd["net"], "0.00", q_usd["total"],
         "crypto_" + req.network.lower(), p["email"], billing=b_info, currency=ver["currency"]
     )
-    S.set_payment_token(pay["id"], tok_key)
+    try:
+        S.set_payment_token(pay["id"], tok_key)
+    except Exception:
+        S.fail_payment(pay["id"], "tx_already_used")
+        raise S.CommerceError(409, "tx_already_used", "This transaction hash has already been claimed.")
     out = S.complete_payment(pay["id"], ver["tx_hash"], 1, ver["network"][:16])
     if out.get("first"):
         mail.payment_paid(acc, out["payment"], b_info)
@@ -714,22 +704,30 @@ def crypto_checkout(req: CryptoCheckoutReq, request: Request):
 @router.get("/v1/account/payments/{payment_id}/invoice.pdf", tags=["Plans & billing"])
 @router.get("/v1/invoice/{payment_id}.pdf", tags=["Plans & billing"])
 def account_payment_invoice_pdf(payment_id: str, request: Request, token: Optional[str] = None):
+    """PDF for one of the caller's payments (PAID invoice or UNPAID proforma). Needs the account's session or API key
+    (Authorization header), an ITouch admin key, or — for plain links opened in a browser — ?token=<session>."""
     p = principal(request)
-    if not p and token:
+    if not p and token and token.startswith("ans_sess_"):
         sess_rec = S.resolve_session(token)
         if sess_rec:
             p = {"account_id": sess_rec["account_id"], "email": sess_rec["email"], "role": sess_rec["role"], "via": "session"}
+    is_admin = False
+    if not p:
+        try:
+            admin(request)
+            is_admin = True
+        except S.CommerceError:
+            raise S.CommerceError(401, "unauthorized", "Sign in to download this invoice.")
     pay = S.get_payment(pid=payment_id)
-    if not pay:
+    if not pay or (not is_admin and pay.get("account_id") != p["account_id"]):
         raise S.CommerceError(404, "no_payment", "Payment or proforma invoice record not found.")
-    if p and pay.get("account_id") != p["account_id"]:
-        raise S.CommerceError(403, "forbidden", "Payment record belongs to another account.")
     acc = S.get_account(pay["account_id"]) if pay.get("account_id") else None
     pdf_bytes = billing.generate_answerr_invoice_pdf(acc, pay)
     return Response(
         content=pdf_bytes,
         media_type="application/pdf",
-        headers={"Content-Disposition": f'inline; filename="answerr-invoice-{payment_id}.pdf"', "Cache-Control": "no-store"},
+        headers={"Content-Disposition": 'inline; filename="answerr-invoice-{}.pdf"'.format(payment_id), "Cache-Control": "no-store",
+                 "Referrer-Policy": "no-referrer"},
     )
 
 
