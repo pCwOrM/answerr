@@ -918,7 +918,41 @@ def a_approve(request_id: str, request: Request):
     r = next((x for x in S.list_plan_requests(None, "pending") if x["id"] == request_id), None)
     if not r:
         raise S.CommerceError(404, "no_request", "Pending request not found.")
-    return {"status": "success", "account": S.set_plan(r["account_id"], r["plan"], r["cycle"], who, request_id=request_id)}
+    # a bank-transfer request has an unpaid proforma: settle that payment, so the plan gets a paid period
+    # (31/366 days, not open-ended), the invoice turns PAID and the customer receives the confirmation
+    pend = [x for x in S.list_payments(r["account_id"], 50)
+            if x["status"] == "initiated" and x["provider"] == "bank_wire" and x["plan"] == r["plan"] and x["cycle"] == r["cycle"]]
+    if pend:
+        out = _mark_paid(pend[0]["id"], "approved " + request_id)
+        return {"status": "success", "payment": out["payment"], "account": S.account_view(r["account_id"])}
+    days = S.PAYMENT_PERIOD_DAYS.get(r["cycle"], 31) if r["plan"] in P.PAID_PLANS else None
+    return {"status": "success", "account": S.set_plan(r["account_id"], r["plan"], r["cycle"], who, request_id=request_id,
+                                                       expires_at=(time.time() + days * 86400) if days else None)}
+
+
+def _mark_paid(payment_id: str, reference: str) -> Dict[str, Any]:
+    pay = S.get_payment(payment_id)
+    if not pay:
+        raise S.CommerceError(404, "no_payment", "Payment not found.")
+    if pay["status"] not in ("initiated", "pending_review", "paid"):
+        raise S.CommerceError(409, "not_payable", "This payment is {}.".format(pay["status"]))
+    out = S.complete_payment(payment_id, (reference or "manual")[:120], 1, "havale" if pay["provider"] == "bank_wire" else None)
+    if out.get("first"):
+        acc = S.get_account(pay["account_id"]) if pay.get("account_id") else None
+        mail.payment_paid(acc, out["payment"], json.loads(out["payment"].get("billing_json") or "{}"))
+    return out
+
+
+class AdminMarkPaid(BaseModel):
+    reference: Optional[str] = Field(None, max_length=120, description="Bank transfer reference / dekont no")
+
+
+@router.post("/v1/admin/payments/{payment_id}/mark-paid", tags=["Admin"])
+def a_mark_paid(payment_id: str, req: AdminMarkPaid, request: Request):
+    """Bank transfer received: marks the proforma paid, activates the plan for its period, e-mails the confirmation."""
+    admin(request)
+    out = _mark_paid(payment_id, req.reference or "havale")
+    return {"status": "success", "first": out.get("first"), "payment": out["payment"]}
 
 
 @router.post("/v1/admin/plan-requests/{request_id}/reject", tags=["Admin"])

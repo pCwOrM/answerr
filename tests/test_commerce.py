@@ -445,3 +445,22 @@ def test_invoice_pdf_needs_the_owner(client):
     assert client.get(url, headers=H_ADMIN).status_code == 200
     # a bank transfer does not activate anything by itself
     assert client.get("/v1/account", headers=auth(b["session"])).json()["account"]["plan"] == "kesif"
+
+
+def test_bank_transfer_mark_paid_and_approve_give_a_period(client):
+    b = client.post("/v1/checkout/instant", json={"email": "wire@example.com", "plan": "pro", "method": "bank", "currency": "TRY",
+                                                  "accept_terms": True, "kvkk_ack": True}).json()
+    pid = b["payment_id"]
+    r = client.post("/v1/admin/payments/{}/mark-paid".format(pid), json={"reference": "TEB-123"}, headers=H_ADMIN)
+    assert r.status_code == 200 and r.json()["payment"]["status"] == "paid"
+    a = client.get("/v1/account", headers=auth(b["session"])).json()["account"]
+    assert a["plan"] == "pro" and a["plan_expires_at"] and a["plan_expires_at"] - time.time() < 32 * 86400
+    assert client.get(b["invoice_pdf_url"], headers=auth(b["session"])).status_code == 200
+    assert any("Ödeme alındı" in m["Subject"] for m in client.mail.OUTBOX)
+    # approving a plain plan request also sets an expiry instead of an open-ended paid plan
+    s, _, acc = signup(client, email="req@example.com")
+    client.post("/v1/account/plan-request", json={"plan": "gelistirici", "cycle": "monthly"}, headers=auth(s))
+    rid = client.get("/v1/admin/plan-requests", headers=H_ADMIN).json()["requests"][0]["id"]
+    client.post("/v1/admin/plan-requests/{}/approve".format(rid), headers=H_ADMIN)
+    a = client.get("/v1/account", headers=auth(s)).json()["account"]
+    assert a["plan"] == "gelistirici" and a["plan_expires_at"]
