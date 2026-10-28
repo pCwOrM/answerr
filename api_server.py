@@ -665,6 +665,7 @@ async def _commerce_error(request: Request, exc: CS.CommerceError):
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://answerr.me", "https://www.answerr.me", "https://api.answerr.me",
+                   "https://werr.io", "https://www.werr.io",  # 28 Oct 2026: werr.io live demos (systemone, chat/completions)
                    "https://pcworm.github.io", "http://localhost:3000", "http://localhost:8000",
                    "http://127.0.0.1:8000", "http://127.0.0.1:5500"],
     allow_origin_regex=r"https://([a-z0-9-]+\.)?answerr\.me",
