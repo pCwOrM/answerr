@@ -63,6 +63,7 @@
           <a href="#karar" data-i18n="dcT3">Karar isteği</a>
           <a href="#kapilar" data-i18n="dcT4">Kapılar ve derleyici</a>
           <a href="#ajan" data-i18n="dcT5">AI ajan entegrasyonu</a>
+          <a href="#otonom" data-i18n="dcTOtonom"><span data-lang="tr">Otonom &amp; Edge AI Modu</span><span data-lang="en">Autonomous &amp; Edge AI Mode</span></a>
           <a href="#inceleme" data-i18n="dcT6">İnsan incelemesi</a>
           <a href="#golge" data-i18n="dcT7">Gölge mod ve geri test</a>
           <a href="#webhooks" data-i18n="dcT8">Webhook’lar</a>
@@ -209,34 +210,60 @@ def guarded(tool_name, args, run, user_role="member", wait_s=300):
             raise PermissionError("rejected by reviewer: " + (r.get("note") or ""))
         time.sleep(3)
     raise TimeoutError("review still pending")</code></pre>
-                        <div class="callout" style="margin-top:1.25rem;border-left:3px solid var(--accent);padding:0.75rem 1rem;background:rgba(255,176,72,0.06);">
-              <h3 style="font-size:1.05rem;margin:0 0 0.5rem 0;" data-lang="tr">⚡ Otonom Refleks &amp; Edge AI Modu (İnsana Sor Katmanını Bastırma)</h3>
-              <h3 style="font-size:1.05rem;margin:0 0 0.5rem 0;" data-lang="en">⚡ Autonomous Reflex &amp; Edge AI Mode (Bypassing Human Escalation)</h3>
-              <p data-lang="tr">Ajan döngülerinde veya mikro-saniyelik edge sistemlerde bir insanın onayını beklemek otonomiyi kırar. İstekte <code>"autonomous": true</code> veya <code>"allow_review": false</code> gönderildiğinde, <code>REVIEW</code> durumu deterministik olarak mutlak <code>ALLOW</code> ya da <code>DENY</code> kararına çözümlenir.</p>
-              <p data-lang="en">In agent loops or sub-millisecond edge systems, waiting for human escalation halts autonomy. By providing <code>"autonomous": true</code> or <code>"allow_review": false</code>, any <code>REVIEW</code> verdict is deterministically resolved into a binary <code>ALLOW</code> or <code>DENY</code>.</p>
-<pre><code>// Karar isteği gövdesi (Autonomous Edge AI)
+                        </section>
+
+          <section id="otonom">
+            <h2 data-i18n="dcTOtonom"><span data-lang="tr">⚡ Otonom Refleks &amp; Edge AI Modu (Sıfır İnsan Beklemesi)</span><span data-lang="en">⚡ Autonomous Reflex &amp; Edge AI Mode (Zero Human Dependency)</span></h2>
+            <p data-lang="tr">IoT aygıtları, gömülü sistemler, robotik veya yüksek frekanslı otonom ajanlarda bir insanın onayı beklenemez (air-gapped veya offline ortamlarda insan erişimi mümkün değildir). answerr karar motoru bu senaryolar için <strong>parametrik otonom refleks çözümü</strong> sunar: İstekte <code>"autonomous": true</code> (veya politika içinde <code>"autonomous": true</code>) gönderildiğinde, <code>REVIEW</code> durumu bastırılır ve sistem deterministik bir refleksle <code>ALLOW</code> ya da <code>DENY</code> kararma ulaşır.</p>
+            <p data-lang="en">Embedded systems, robotics, IoT devices, or high-frequency autonomous agent loops cannot stall waiting for human intervention (and offline/air-gapped edge environments have no human in the loop). answerr provides a <strong>parametric autonomous reflex resolution</strong> for these workloads: by specifying <code>"autonomous": true</code>, the <code>REVIEW</code> state is suppressed and deterministically resolved into a binary <code>ALLOW</code> or <code>DENY</code>.</p>
+
+            <div class="callout" style="margin-top:1.25rem;border-left:3px solid var(--accent);padding:1rem 1.25rem;background:rgba(255,176,72,0.06);border-radius:0 8px 8px 0;">
+              <h3 style="font-size:1.1rem;margin:0 0 0.5rem 0;" data-lang="tr">⚙️ Parametrik Çözüm Modları (<code>autonomous_bias</code>)</h3>
+              <h3 style="font-size:1.1rem;margin:0 0 0.5rem 0;" data-lang="en">⚙️ Parametric Resolution Modes (<code>autonomous_bias</code>)</h3>
+              <ul style="margin:0.5rem 0 1rem 1.2rem;line-height:1.7;">
+                <li data-lang="tr"><code>"balanced"</code> (varsayılan): Medyan eşiği (0.50). Noul &ge; 0.50 ise <code>ALLOW</code>, altındaysa <code>DENY</code> kararına çözümlenir.</li>
+                <li data-lang="en"><code>"balanced"</code> (default): Median split (0.50). Resolves to <code>ALLOW</code> if noul &ge; 0.50, otherwise <code>DENY</code>.</li>
+                <li data-lang="tr"><code>"fail_closed"</code>: Güvenlik öncelikli uç sistemler için. Eşik altı veya şüpheli tüm sınır durumları derhal <code>DENY</code> ile kesilir.</li>
+                <li data-lang="en"><code>"fail_closed"</code>: For security-critical edge systems. Resolves any ambiguous boundary condition to <code>DENY</code>.</li>
+                <li data-lang="tr"><code>"permissive"</code>: Görev devamlılığı öncelikli durumlar için. Sınır durumları <code>ALLOW</code> ile yürütülür.</li>
+                <li data-lang="en"><code>"permissive"</code>: For high-availability workflows. Resolves boundary conditions to <code>ALLOW</code>.</li>
+              </ul>
+
+              <h3 style="font-size:1.1rem;margin:0 0 0.5rem 0;" data-lang="tr">🎯 Güven Endeksi ve Yeniden Deneme Filtresi (%45 &ndash; %65 Kritik Geçiş Bandı)</h3>
+              <h3 style="font-size:1.1rem;margin:0 0 0.5rem 0;" data-lang="en">🎯 Confidence Index &amp; Retry Filter (45% &ndash; 65% Boundary Band)</h3>
+              <p data-lang="tr">Otonom modda her kararla birlikte bir <code>confidence_index</code> (0.00 &ndash; 1.00) ve <code>confidence_band</code> (<code>HIGH_CONFIDENCE</code>, <code>MODERATE_CONFIDENCE</code>, <code>MARGINAL_CONFIDENCE</code>) döndürülür. Eğer hesaplanan noul olasılığı <strong>0.42 &le; noul &le; 0.58 (%45 &ndash; %65)</strong> kritik geçiş aralığına denk gelirse, motor <code>"retry_recommended": true</code> bayrağını üretir. Böylece uç sistem, insan onayı beklemeden sensör telemetrisini zenginleştirerek veya kısa bir geri çekilme (exponential backoff) ile sorguyu yeniden deneyebilir.</p>
+              <p data-lang="en">In autonomous mode, each decision emits a <code>confidence_index</code> (0.00 &ndash; 1.00) and <code>confidence_band</code> (<code>HIGH_CONFIDENCE</code>, <code>MODERATE_CONFIDENCE</code>, <code>MARGINAL_CONFIDENCE</code>). When the computed noul probability falls within the critical boundary transition band <strong>0.42 &le; noul &le; 0.58 (45% &ndash; 65%)</strong>, the engine sets <code>"retry_recommended": true</code>. This allows edge clients to enrich telemetry or apply exponential backoff without stalling workflows.</p>
+
+<pre><code>// Örnek: Otonom Karar İsteği (Autonomous Edge Request)
+POST https://api.answerr.me/v1/decision
 {
-  "state": {"tool_name": "execute_shell", "command": "git push", "auth_level": "elevated"},
+  "state": {
+    "tool_name": "execute_shell",
+    "command": "git push origin main",
+    "auth_level": "elevated",
+    "_autonomous": true
+  },
   "autonomous": true,
   "autonomous_bias": "balanced"  // "balanced" | "fail_closed" | "permissive"
 }
 
-// Yanıt gövdesi ek meta verileri:
+// Yanıt: Deterministik Refleks Çözümlemesi
 {
   "verdict": "ALLOW",
+  "label": "GEÇ",
   "autonomous_resolution": true,
   "original_verdict": "REVIEW",
   "confidence_index": 0.542,
   "confidence_band": "MODERATE_CONFIDENCE",
-  "retry_recommended": false
+  "retry_recommended": true,
+  "risk_score": 0.12,
+  "noul": 0.528,
+  "policy_seal": "9f82...sha256"
 }</code></pre>
-              <p data-lang="tr">Eğer karar sınırına çok yakın bir belirsizlik varsa (noul &sim; 0.50), motor <code>retry_recommended: true</code> önerisi ile durumu zenginleştirip tekrar denemenizi tavsiye eder.</p>
-              <p data-lang="en">If the decision lies near the boundary band (noul &sim; 0.50), the engine flags <code>retry_recommended: true</code>, advising the caller to enrich state telemetry before retrying.</p>
             </div>
-
-            <p data-lang="tr">Bekleme yerine webhook kullanabilirsiniz: <code>review.resolved</code> olayı geldiğinde işi sürdürün.</p>
-            <p data-lang="en">Instead of polling, use webhooks: resume the job when the <code>review.resolved</code> event arrives.</p>
           </section>
+
+
 
           <section id="inceleme">
             <h2 data-i18n="dcT6">İnsan incelemesi</h2>
@@ -245,6 +272,8 @@ def guarded(tool_name, args, run, user_role="member", wait_s=300):
 <pre><code>GET  /v1/reviews?status=pending
 GET  /v1/reviews/{id}
 POST /v1/reviews/{id}/resolve   {"action": "approve" | "reject", "note": "…"}</code></pre>
+            <p data-lang="tr">Bekleme yerine webhook kullanabilirsiniz: <code>review.resolved</code> olayı geldiğinde işi sürdürün.</p>
+            <p data-lang="en">Instead of polling, use webhooks: resume the job when the <code>review.resolved</code> event arrives.</p>
           </section>
 
           <section id="golge">

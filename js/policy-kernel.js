@@ -294,7 +294,7 @@
   }
 
   // ------------------------------------------------------------ main
-  function evaluate(stateIn, policyIn, strictIn) {
+  function evaluate(stateIn, policyIn, strictIn, autonomous, autonomousBias) {
     const state = Object.assign({}, stateIn || {});
     const policy = policyIn || null;
     const strict = Boolean(strictIn || (policy && policy.unknown_fallback === 'abstain_review'));
@@ -374,16 +374,76 @@
     else if (ruleBased) noul = verdict === 'ALLOW' ? 1.0 : 0.0;
     else noul = round4(1.0 / (1.0 + Math.exp((risk - RISK_ALLOW_MAX) * 2.0)));
 
-    return {
+    // 6. Autonomous Reflex Resolution (suppress REVIEW for Edge AI and autonomous agents)
+    const autoEnabled = Boolean(
+      autonomous ||
+      (state && (state._autonomous || state.autonomous)) ||
+      (policy && (policy.autonomous || policy.mode === 'autonomous' || policy.resolution_mode === 'autonomous'))
+    );
+    let autonomousResolution = false;
+    let originalVerdict = null;
+    let retryRec = false;
+    let activeReason = best.reason;
+    let finalVerdict = verdict;
+    let finalConfidence = confidence;
+
+    if (autoEnabled && finalVerdict === 'REVIEW') {
+      autonomousResolution = true;
+      originalVerdict = 'REVIEW';
+      const bias = (policy && policy.autonomous_bias) || autonomousBias || 'balanced';
+      if (bias === 'fail_closed') {
+        finalVerdict = 'DENY';
+        finalConfidence = 0.85;
+        activeReason = '[Autonomous Reflex] ' + best.reason + ' (fail_closed policy resolved to DENY)';
+      } else if (bias === 'permissive') {
+        finalVerdict = 'ALLOW';
+        finalConfidence = 0.85;
+        activeReason = '[Autonomous Reflex] ' + best.reason + ' (permissive policy resolved to ALLOW)';
+      } else { // balanced median split
+        const thresh = 0.50;
+        if (noul >= thresh) {
+          finalVerdict = 'ALLOW';
+          finalConfidence = round4(Math.max(0.50, Math.min(1.0, noul)));
+          activeReason = '[Autonomous Reflex] ' + best.reason + ' (noul ' + noul.toFixed(3) + ' >= ' + thresh + '; resolved to ALLOW)';
+        } else {
+          finalVerdict = 'DENY';
+          finalConfidence = round4(Math.max(0.50, Math.min(1.0, 1.0 - noul)));
+          activeReason = '[Autonomous Reflex] ' + best.reason + ' (noul ' + noul.toFixed(3) + ' < ' + thresh + '; resolved to DENY)';
+        }
+      }
+      retryRec = Boolean(0.42 <= noul && noul <= 0.58);
+    }
+
+    const confBand = finalConfidence >= 0.80 ? 'HIGH_CONFIDENCE' : (finalConfidence >= 0.50 ? 'MODERATE_CONFIDENCE' : 'MARGINAL_CONFIDENCE');
+
+    const res = {
       kernel_version: KERNEL_VERSION,
-      verdict, label: LABELS[verdict], rule_id: best.rule_id, reason: best.reason,
-      confidence, risk_score: risk, noul, candidates, tool: toolInfo,
-      recognized_fields: recognized, unrecognized_fields: unrecognized,
-      missing_required_fields: missing, feature_contributions: contributions,
-      ood_detected: ood, strict,
+      verdict: finalVerdict,
+      label: LABELS[finalVerdict],
+      rule_id: best.rule_id,
+      reason: activeReason,
+      confidence: finalConfidence,
+      risk_score: risk,
+      noul,
+      candidates,
+      tool: toolInfo,
+      recognized_fields: recognized,
+      unrecognized_fields: unrecognized,
+      missing_required_fields: missing,
+      feature_contributions: contributions,
+      ood_detected: ood,
+      strict,
       policy_id: (policy && (policy.gate_id || policy.id)) || 'universal_default',
       policy_version: (policy && policy.version) || KERNEL_VERSION
     };
+    if (autoEnabled) {
+      res.autonomous_resolution = autonomousResolution;
+      res.confidence_index = finalConfidence;
+      res.confidence_band = confBand;
+      res.original_verdict = originalVerdict;
+      res.retry_recommended = retryRec;
+    }
+    return res;
   }
 
   // Python's str(float) for the numbers used in reasons (e.g. 1.4, 0.2, -2.3, 0.0)
@@ -398,11 +458,20 @@
     const pol = questionPolarity(text);
     const v = result.verdict;
     const decision = v === 'REVIEW' ? null : (pol === 'deny' ? v === 'DENY' : v === 'ALLOW');
-    return {
+    const effNoul = pol === 'allow' ? result.noul : round4(1.0 - result.noul);
+    const ans = {
       type: 'noul', decision, boolean: decision, verdict: v, label: result.label, status: result.label,
-      question_polarity: pol, noul: pol === 'allow' ? result.noul : round4(1.0 - result.noul),
+      question_polarity: pol, noul: effNoul,
       confidence: result.confidence, matched_rule: result.rule_id, reason: result.reason
     };
+    if (result.autonomous_resolution !== undefined) {
+      ans.autonomous_resolution = result.autonomous_resolution;
+      ans.confidence_index = result.confidence_index !== undefined ? result.confidence_index : result.confidence;
+      ans.confidence_band = result.confidence_band;
+      ans.retry_recommended = result.retry_recommended !== undefined ? result.retry_recommended : false;
+      if (result.original_verdict) ans.original_verdict = result.original_verdict;
+    }
+    return ans;
   }
 
   return {

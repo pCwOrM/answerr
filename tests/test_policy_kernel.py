@@ -90,3 +90,19 @@ def test_autonomous_edge_ai_resolution():
 
     res_allow = K.evaluate(state_mid, autonomous=True, autonomous_bias="permissive")
     assert res_allow["verdict"] == "ALLOW"
+
+    if shutil.which("node"):
+        js_code = """
+        const K = require("./js/policy-kernel.js");
+        const state = {"amount": 5500, "user_role": "analyst"};
+        const auto = K.evaluate(state, null, false, true);
+        const deny = K.evaluate(state, null, false, true, "fail_closed");
+        const allow = K.evaluate(state, null, false, true, "permissive");
+        process.stdout.write(JSON.stringify({auto, deny, allow}));
+        """
+        out = subprocess.run(["node", "-e", js_code], capture_output=True, text=True, check=True).stdout
+        js_data = json.loads(out)
+        assert js_data["auto"]["verdict"] == res_auto["verdict"]
+        assert js_data["auto"]["autonomous_resolution"] is True
+        assert js_data["deny"]["verdict"] == "DENY"
+        assert js_data["allow"]["verdict"] == "ALLOW"
