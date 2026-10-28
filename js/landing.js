@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
       st4Link: "3D Live Portal →",
       papersEyebrow: "Scientific Foundations",
       papersTitle: "Published Papers & Formal Lean 4 Proofs",
-      papersDesc: "The answerr ecosystem is grounded in peer-accessible preprints (arXiv, SSRN) and permanent CERN Zenodo open-science records.",
+      papersDesc: "The answerr ecosystem is grounded in formal proofs and permanent scientific records across arXiv, Elsevier SSRN, and CERN Zenodo.",
       pp1Desc: "The foundational fractal decision map of the werr engine, Euler thresholds, and zero-VRAM microservice decision architecture.",
       pp2Desc: "Formal verification of Mandelbrot boundary dynamics in Lean 4 / Mathlib4 with 0 sorry and 40-core bare-metal gauntlet telemetry.",
       pp3Desc: "Intra-block millisecond decision execution in Ethereum smart contracts, 32-byte slot architecture, and 1000x speedup over ZK-ML.",
