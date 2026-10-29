@@ -93,6 +93,17 @@ def invitation(email: str, inviter: str, company: str, role: str, token: str, la
     _dispatch([_msg(email, subj, body)])
 
 
+def invoice_download_token(payment_id: str) -> str:
+    import hmac, hashlib
+    secret = (AM.cfg().get("password") or "answerr_invoice_secret_2026").encode()
+    return hmac.new(secret, f"answerr_invoice:{payment_id.strip().lower()}".encode(), hashlib.sha256).hexdigest()[:24]
+
+
+def check_invoice_download_token(payment_id: str, token: str) -> bool:
+    import hmac
+    return bool(token) and hmac.compare_digest(invoice_download_token(payment_id), token.strip().lower())
+
+
 def admin_wire_approve_token(payment_id: str) -> str:
     import hmac, hashlib
     secret = (AM.cfg().get("password") or "answerr_wire_secret_key_2026").encode()
@@ -106,8 +117,16 @@ def check_admin_wire_approve_token(payment_id: str, token: str) -> bool:
 def plan_request(account: dict, req: dict, requester: str, payment_id: Optional[str] = None) -> None:
     c = AM.cfg()
     pay_id = payment_id or ""
-    if not pay_id and "havale/EFT proforma " in (req.get("note") or ""):
-        pay_id = req["note"].split("havale/EFT proforma ")[-1].strip()
+    n = req.get("note") or ""
+    if not pay_id and "havale/EFT proforma " in n:
+        if n.strip().startswith("{"):
+            try:
+                import json as _j
+                pay_id = _j.loads(n).get("pay_id", "")
+            except Exception:
+                pass
+        if not pay_id and "havale/EFT proforma " in n:
+            pay_id = n.split("havale/EFT proforma ")[-1].strip()
 
     approve_section = ""
     if pay_id:
@@ -120,8 +139,8 @@ def plan_request(account: dict, req: dict, requester: str, payment_id: Optional[
 
 (Bu bağlantıya tıkladığınızda:
  1. Havale faturası resmi olarak ÖDENDİ olarak onaylanır.
- 2. Müşterinin planı (250.000 karar) 30 Kasım 2026'ya kadar aktif edilir.
- 3. Müşteriye resmi sipariş onayı ve faturası mail olarak teslim edilir.)
+ 2. Müşterinin planı (250.000 karar) aktif edilir.
+ 3. Müşteriye aktif API anahtarı ve ÖDENDİ faturası mail olarak teslim edilir.)
 ======================================================================
 """
 
@@ -144,18 +163,100 @@ Alternatif Konsol Onayı: POST /v1/admin/plan-requests/{rid}/approve ya da konso
         approve_section=approve_section
     )
 
-    note = _msg("pcworm@pcworm.net", f"[answerr HAVALE TALEP] {account.get('company') or account['email']} — {req['plan']} ({req['cycle']})",
-                admin_body, reply_to=requester)
+    note_msg = _msg("pcworm@pcworm.net", f"[answerr HAVALE TALEP] {account.get('company') or account['email']} — {req['plan']} ({req['cycle']})",
+                    admin_body, reply_to=requester)
+
+    # Customer confirmation with Bank Details and Proforma PDF
+    from . import billing, store as S
     lang = account.get("lang") or "tr"
+    plan_name = {"gelistirici": "Geliştirici (Developer)", "pro": "Pro", "kurumsal": "Kurumsal"}.get(req["plan"], req["plan"])
+    cycle_name = "Yıllık (366 Gün / 12 Ay)" if req["cycle"] == "yearly" else "Aylık (31 Gün / 1 Ay)"
+
+    pay_rec = None
+    if pay_id:
+        try:
+            pay_rec = S.get_payment(pay_id)
+        except Exception:
+            pay_rec = None
+
+    tot_display = f"{float(pay_rec.get('total_try', 0)):,.2f} {pay_rec.get('currency', 'USD')}" if pay_rec else "-"
+    inv_no = billing.invoice_number(pay_rec) if pay_rec else f"PRO-{pay_id[:8].upper()}"
+    inv_dl_url = f"https://api.answerr.me/v1/invoice/{pay_id}.pdf?t={invoice_download_token(pay_id)}" if pay_id else ""
+
     if lang == "en":
-        conf = _msg(requester, "answerr — plan request received",
-                    ("Hello,\n\nWe received your request to move to the {} plan ({} billing). We will confirm by e-mail and send "
-                     "the payment details within one working day; the plan becomes active when payment is received.\n").format(req["plan"], req["cycle"]) + SIGNATURE_EN)
+        subj = f"answerr — Proforma Invoice & Bank Transfer Details ({inv_no})"
+        body = f"""Hello,
+
+We have received your request for the answerr {plan_name} ({cycle_name}).
+Your Proforma Commercial Invoice has been generated and is attached to this email.
+
+ORDER & PAYMENT SUMMARY
+----------------------------------------------------------------------
+Plan           : answerr {plan_name} ({cycle_name})
+Total Amount   : {tot_display} (%0 VAT / Teknopark R&D Software Exemption)
+Payment Ref    : {pay_id}
+Proforma No    : {inv_no}
+Invoice Link   : {inv_dl_url}
+
+OFFICIAL CORPORATE BANK ACCOUNTS
+----------------------------------------------------------------------
+Bank Name      : Türk Ekonomi Bankası A.Ş. (TEB)
+Branch         : Adana Toros Şb. (Branch Code: 446)
+SWIFT / BIC    : TEBUTRIS
+Beneficiary    : ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SAN. VE TİC. LTD. ŞTİ.
+TRY (TL) IBAN  : TR92 0003 2000 0000 0070 5754 65
+USD ($) IBAN   : TR83 0003 2000 0000 0088 9467 48
+EUR (€) IBAN   : TR28 0003 2000 0000 0088 9467 68
+Base USDC      : 0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7
+
+* IMPORTANT: Please include your Payment Reference ({pay_id}) in the transfer description.
+
+Once your transfer is received and verified by our finance team, your API key and plan will be activated immediately, and your official PAID Commercial Invoice will be delivered to you by email.
+""" + SIGNATURE_EN
     else:
-        conf = _msg(requester, "answerr — plan talebiniz alındı",
-                    ("Merhaba,\n\n{} planına ({} faturalama) geçiş talebinizi aldık. Bir iş günü içinde e-postayla onaylayıp ödeme "
-                     "bilgilerini gönderiyoruz; plan, ödeme alındığında etkinleşir.\n").format(req["plan"], "yıllık" if req["cycle"] == "yearly" else "aylık") + SIGNATURE_TR)
-    _dispatch([note, conf])
+        subj = f"answerr — Proforma Faturanız ve Havale/EFT Ödeme Bilgileri ({inv_no})"
+        body = f"""Merhaba,
+
+answerr {plan_name} ({cycle_name}) talebiniz alınmıştır.
+Ödemenize ait Proforma Ticari Faturanız düzenlenmiş olup ekte PDF olarak sunulmuştur.
+
+SİPARİŞ VE ÖDEME ÖZETİ
+----------------------------------------------------------------------
+Plan           : answerr {plan_name} ({cycle_name})
+Toplam Tutar   : {tot_display} (%0 KDV — 4691 s. Teknopark İstisnası)
+Ödeme Ref      : {pay_id}
+Proforma No    : {inv_no}
+Fatura Linki   : {inv_dl_url}
+
+RESMİ ŞİRKET BANKA HESAPLARIMIZ
+----------------------------------------------------------------------
+Banka Adı      : Türk Ekonomi Bankası A.Ş. (TEB)
+Şube           : Adana Toros Şb. (Şube Kodu: 446)
+SWIFT Kodu     : TEBUTRIS
+Alıcı (Unvan)  : ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SAN. VE TİC. LTD. ŞTİ.
+TRY (TL) IBAN  : TR92 0003 2000 0000 0070 5754 65
+USD ($) IBAN   : TR83 0003 2000 0000 0088 9467 48
+EUR (€) IBAN   : TR28 0003 2000 0000 0088 9467 68
+Base USDC      : 0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7
+
+* ÖNEMLİ: Havale veya EFT yaparken açıklama kısmına lütfen ödeme referansınızı ({pay_id}) yazınız.
+
+Havaleniz banka hesabımıza ulaştığında ekibimiz tarafından onaylanacak; planınız ve API anahtarınız anında aktif edilerek tarafınıza resmi ÖDENDİ faturanız ile birlikte aktivasyon e-postası iletilecektir.
+""" + SIGNATURE_TR
+
+    conf_msg = _msg(requester, subj, body)
+    conf_msg["Bcc"] = "ask@answerr.me"
+
+    # Attach Proforma Invoice PDF if available
+    if pay_rec:
+        try:
+            pdf_bytes = billing.generate_answerr_invoice_pdf(account, pay_rec)
+            conf_msg.add_attachment(pdf_bytes, maintype="application", subtype="pdf", filename=f"proforma_invoice_{inv_no}.pdf")
+        except Exception as e:
+            AM.log_request({"pdf_attach_error": str(e), "pay_id": pay_id})
+
+    _dispatch([note_msg, conf_msg])
+
 
 def quota_warning(account: dict, pct: int, used: int, quota: int) -> None:
     lang = account.get("lang") or "tr"
@@ -321,3 +422,110 @@ def renewal_reminder(account: dict, expires_at: float) -> None:
             "mevcut dönemin bitiminden başlar, erken yenilemek bir şey kaybettirmez.\n\n{}\n\nYenilemezseniz hesap o tarihte ücretsiz "
             "Keşif planına geçer; kapılarınız, anahtarlarınız ve kayıtlarınız silinmez.\n").format(account["plan"], d, url) + SIGNATURE_TR
     _dispatch([_msg(account["email"], subj, body)])
+
+
+def wire_approved(account: dict, pay: dict, api_key: Optional[str] = None) -> None:
+    c = AM.cfg()
+    from . import billing
+    import json, time
+    lang = account.get("lang") or "tr"
+    plan_name = {"gelistirici": "Geliştirici (Developer)", "pro": "Pro", "kurumsal": "Kurumsal"}.get(pay.get("plan"), str(pay.get("plan") or "-").title())
+    cycle_name = "Yıllık (366 Gün / 12 Ay)" if pay.get("cycle") == "yearly" else "Aylık (31 Gün / 1 Ay)"
+    inv_no = billing.invoice_number(pay)
+    inv_dl_url = f"https://api.answerr.me/v1/invoice/{pay['id']}.pdf?t={invoice_download_token(pay['id'])}"
+    tot_str = f"{float(pay.get('total_try') or 0):,.2f} {pay.get('currency', 'USD')}"
+    p_end = float(pay.get("period_end") or (time.time() + 31 * 86400))
+    until_str = _tr_date(p_end, "%d.%m.%Y")
+    to = (account.get("billing_json") and json.loads(account["billing_json"]).get("invoice_email")) or account.get("email")
+
+    key_section_tr = f"""
+API ANAHTARINIZ VE ENTEGRASYON BİLGİLERİ
+----------------------------------------------------------------------
+API Anahtarı   : {api_key}
+API Gateway    : https://api.answerr.me
+Dokümantasyon  : https://answerr.me/docs
+Konsol Girişi  : https://answerr.me/pro/console/
+
+Örnek Karar Sorgusu (cURL):
+curl -X POST https://api.answerr.me/v1/decide \\
+  -H "Authorization: Bearer {api_key}" \\
+  -H "Content-Type: application/json" \\
+  -d '{{"gate": "default", "subject": "user_123", "action": "checkout", "context": {{"amount": 100}}}}'
+""" if api_key else f"""
+KONSOL VE API ERİŞİMİ
+----------------------------------------------------------------------
+API Gateway    : https://api.answerr.me
+Konsol Girişi  : https://answerr.me/pro/console/
+* API anahtarlarınızı konsolunuzdan dilediğiniz an yönetebilir ve oluşturabilirsiniz.
+"""
+
+    key_section_en = f"""
+YOUR API KEY & INTEGRATION DETAILS
+----------------------------------------------------------------------
+API Key        : {api_key}
+API Gateway    : https://api.answerr.me
+Documentation  : https://answerr.me/docs
+Console Access : https://answerr.me/pro/console/
+
+Example Decision Request (cURL):
+curl -X POST https://api.answerr.me/v1/decide \\
+  -H "Authorization: Bearer {api_key}" \\
+  -H "Content-Type: application/json" \\
+  -d '{{"gate": "default", "subject": "user_123", "action": "checkout", "context": {{"amount": 100}}}}'
+""" if api_key else f"""
+CONSOLE & API ACCESS
+----------------------------------------------------------------------
+API Gateway    : https://api.answerr.me
+Console Access : https://answerr.me/pro/console/
+* You can generate and manage additional API keys from your console anytime.
+"""
+
+    if lang == "en":
+        subj = f"answerr — Payment Approved & API Key Activated ({inv_no})"
+        body = f"""Hello,
+
+Your bank transfer payment has been verified and confirmed.
+Your answerr {plan_name} subscription is now ACTIVE until {until_str}.
+Your official PAID Commercial Invoice has been issued and is attached to this email.
+
+SUBSCRIPTION & PAYMENT DETAILS
+----------------------------------------------------------------------
+Plan           : answerr {plan_name} ({cycle_name})
+Valid Until    : {until_str}
+Total Paid     : {tot_str} (%0 VAT — Teknopark R&D Software Exemption)
+Reference      : {pay.get('payment_id') or pay.get('id')}
+Invoice No     : {inv_no}
+Invoice Link   : {inv_dl_url}
+{key_section_en}
+Thank you for choosing answerr.
+""" + SIGNATURE_EN
+    else:
+        subj = f"answerr — Ödemeniz Onaylandı, Planınız ve API Anahtarınız Aktif Edildi ({inv_no})"
+        body = f"""Merhaba,
+
+Banka havalesi / EFT ödemeniz şirketimiz tarafından teyit edilmiş ve onaylanmıştır.
+answerr {plan_name} lisansınız {until_str} tarihine kadar başarıyla AKTİF edilmiştir.
+Resmi ÖDENDİ mühürlü Ticari Faturanız düzenlenmiş olup ekte PDF olarak sunulmuştur.
+
+ABONELİK VE ÖDEME ÖZETİ
+----------------------------------------------------------------------
+Plan           : answerr {plan_name} ({cycle_name})
+Geçerlilik     : {until_str} tarihine kadar
+Ödenen Tutar   : {tot_str} (%0 KDV — 4691 s. Teknopark İstisnası)
+Ödeme Ref      : {pay.get('payment_id') or pay.get('id')}
+Fatura No      : {inv_no}
+Fatura Linki   : {inv_dl_url}
+{key_section_tr}
+Mali mühürlü yasal e-Arşiv / e-Faturanız Gelir İdaresi Başkanlığı (GİB) portalı üzerinden düzenlenip iletilecektir.
+
+answerr'ı tercih ettiğiniz için teşekkür ederiz.
+""" + SIGNATURE_TR
+
+    m = _msg(to, subj, body)
+    m["Bcc"] = "ask@answerr.me"
+    try:
+        pdf_bytes = billing.generate_answerr_invoice_pdf(account, pay)
+        m.add_attachment(pdf_bytes, maintype="application", subtype="pdf", filename=f"commercial_invoice_{inv_no}.pdf")
+    except Exception as e:
+        AM.log_request({"pdf_attach_error": str(e), "pay_id": pay.get("id")})
+    _dispatch([m])

@@ -635,15 +635,26 @@ def instant_checkout(req: InstantCheckoutReq, request: Request):
         q = billing.quote_try(target_plan, cycle) if curr == "TRY" else billing.quote_usd(target_plan, cycle)
         pay = S.create_payment(acc_id, "plan", target_plan, cycle, q["net"], q.get("vat", "0.00"), q["total"],
                                "bank_wire", email, billing=dict(b_info, **consent), currency=curr)
-        r = S.request_plan(acc_id, target_plan, cycle, "havale/EFT proforma " + pay["id"], email)
+        req_note = json.dumps({"note": f"havale/EFT proforma {pay['id']}", "initial_key": raw_api_key, "pay_id": pay["id"]}, ensure_ascii=False)
+        r = S.request_plan(acc_id, target_plan, cycle, req_note, email)
+        
+        # Mark account pending_wire so decision API cannot be used before approval
+        S.set_account_status(acc_id, "pending_wire")
+        
         mail.plan_request(S.get_account(acc_id), r, email, payment_id=pay["id"])
+        
+        # Do not expose active API key before wire payment is verified
+        base["api_key"] = None
+        base["api_key_status"] = "pending_wire_approval"
+        
+        inv_token = mail.invoice_download_token(pay["id"])
         return dict(base, status="success", plan="kesif", requested_plan=target_plan, payment_id=pay["id"],
                     invoice_no=billing.invoice_number(pay),
-                    invoice_pdf_url="/v1/account/payments/{}/invoice.pdf".format(pay["id"]),
+                    invoice_pdf_url=f"/v1/invoice/{pay['id']}.pdf?t={inv_token}",
                     bank_accounts=P.CATALOG.get("bank_accounts", {}),
-                    message=("Proforma faturanız hazır. Havale/EFT ulaştığında planınız etkinleşir; bu arada Keşif planıyla başlayabilirsiniz."
+                    message=("Proforma faturanız hazır ve e-posta adresinize iletildi. Havale/EFT ödemeniz onaylandığında API anahtarınız aktifleşecek ve e-posta ile tarafınıza iletilecektir."
                              if lang == "tr" else
-                             "Your proforma invoice is ready. The plan activates when the transfer arrives; meanwhile you can start on Explore."))
+                             "Your proforma invoice is ready and sent to your email. Your API key will be activated and emailed once bank wire is verified."))
 
     # card: iyzico needs the full billing address; the console's Plan & billing view collects it and opens the payment page
     return dict(base, status="billing_required", plan="kesif", requested_plan=target_plan, cycle=cycle, next="billing",
@@ -741,14 +752,18 @@ def crypto_checkout(req: CryptoCheckoutReq, request: Request):
 
 @router.get("/v1/account/payments/{payment_id}/invoice.pdf", tags=["Plans & billing"])
 @router.get("/v1/invoice/{payment_id}.pdf", tags=["Plans & billing"])
-def account_payment_invoice_pdf(payment_id: str, request: Request, token: Optional[str] = None):
+def account_payment_invoice_pdf(payment_id: str, request: Request, token: Optional[str] = None, t: Optional[str] = None):
     """PDF for one of the caller's payments (PAID invoice or UNPAID proforma). Needs the account's session or API key
     (Authorization header), an ITouch admin key, or — for plain links opened in a browser — ?token=<session>."""
     p = principal(request)
-    if not p and token and token.startswith("ans_sess_"):
-        sess_rec = S.resolve_session(token)
-        if sess_rec:
-            p = {"account_id": sess_rec["account_id"], "email": sess_rec["email"], "role": sess_rec["role"], "via": "session"}
+    tok = token or t
+    if not p and tok:
+        if tok.startswith("ans_sess_"):
+            sess_rec = S.resolve_session(tok)
+            if sess_rec:
+                p = {"account_id": sess_rec["account_id"], "email": sess_rec["email"], "role": sess_rec["role"], "via": "session"}
+        elif mail.check_invoice_download_token(payment_id, tok):
+            p = {"via": "download_token"}
     is_admin = False
     if not p:
         try:
@@ -757,7 +772,7 @@ def account_payment_invoice_pdf(payment_id: str, request: Request, token: Option
         except S.CommerceError:
             raise S.CommerceError(401, "unauthorized", "Sign in to download this invoice.")
     pay = S.get_payment(pid=payment_id)
-    if not pay or (not is_admin and pay.get("account_id") != p["account_id"]):
+    if not pay or (not is_admin and p.get("via") != "download_token" and pay.get("account_id") != p.get("account_id")):
         raise S.CommerceError(404, "no_payment", "Payment or proforma invoice record not found.")
     acc = S.get_account(pay["account_id"]) if pay.get("account_id") else None
     pdf_bytes = billing.generate_answerr_invoice_pdf(acc, pay)
@@ -989,6 +1004,27 @@ def admin_approve_wire(pay_id: str, t: str):
 
     try:
         out = _mark_paid(pay_id_clean, "approved via 1-click email")
+        p_obj = out.get("payment", {})
+        if p_obj.get("account_id"):
+            S.set_account_status(p_obj["account_id"], "active")
+            initial_key = None
+            try:
+                r_row = S.conn().execute("SELECT note FROM plan_requests WHERE account_id = ? AND note LIKE ? ORDER BY ts DESC LIMIT 1",
+                                         (p_obj["account_id"], f"%{pay_id_clean}%")).fetchone()
+                if r_row and r_row["note"]:
+                    try:
+                        pl = json.loads(r_row["note"])
+                        initial_key = pl.get("initial_key")
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+            if not initial_key:
+                k_row = S.conn().execute("SELECT id FROM api_keys WHERE account_id = ? AND revoked_at IS NULL", (p_obj["account_id"],)).fetchone()
+                if not k_row:
+                    raw_k, _ = S.create_api_key(p_obj["account_id"], "production", "admin_wire_approval")
+                    initial_key = raw_k
+            mail.wire_approved(S.get_account(p_obj["account_id"]), p_obj, api_key=initial_key)
     except Exception as e:
         return HTMLResponse(
             status_code=400,

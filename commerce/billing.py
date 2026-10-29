@@ -435,8 +435,8 @@ def invoice_number(pay: Dict[str, Any]) -> str:
 
 
 def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, Any]) -> bytes:
-    """Generates an official A4 Commercial Invoice PDF (0% KDV under Law No. 4691 & 3065 Temporary Art. 20/1) with PAID or UNPAID stamp for answerr.me."""
-    import io
+    """Generates an official, minimal A4 Commercial Invoice PDF (0% KDV under Law No. 4691 & 3065 Temporary Art. 20/1) with PAID or UNPAID stamp for answerr.me."""
+    import io, json, time
     try:
         from reportlab.lib.pagesizes import A4
         from reportlab.lib import colors
@@ -464,94 +464,99 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
 
     pay_status = str(pay.get("status") or "").lower()
     is_paid = pay_status in ("paid", "verified", "completed", "active")
+    paid_ts = float(pay.get("paid_at") or pay.get("created_at") or time.time())
+    p_end = float(pay.get("period_end") or (paid_ts + 31 * 86400))
+    curr = (pay.get("currency") or "TRY").upper()
+    tot_val = float(pay.get("total_try") or 0)
+    tot_str = f"{tot_val:,.2f} {curr}"
     inv_no = invoice_number(pay)
     c.setTitle(f"Commercial Invoice {inv_no} ({'PAID' if is_paid else 'UNPAID'}) - ITouch Systems / answerr")
 
-    c.setFillColor(colors.HexColor("#0A1230"))
-    c.rect(0, height - 10 * mm, width, 10 * mm, fill=1, stroke=0)
+    # Top accent bar
+    c.setFillColor(colors.HexColor("#0F172A"))
+    c.rect(0, height - 6 * mm, width, 6 * mm, fill=1, stroke=0)
     c.setFillColor(colors.HexColor("#10B981") if is_paid else colors.HexColor("#F59E0B"))
-    c.rect(0, height - 11.2 * mm, width, 1.2 * mm, fill=1, stroke=0)
+    c.rect(0, height - 7.5 * mm, width, 1.5 * mm, fill=1, stroke=0)
 
-    y_top = height - 26 * mm
-    c.setFont(f_bold, 16)
-    c.setFillColor(colors.HexColor("#0A1230"))
-    c.drawString(18 * mm, y_top + 6 * mm, "answerr PRO  |  ITouch Systems")
-    c.setFont(f_reg, 8.5)
-    c.setFillColor(colors.HexColor("#475569"))
-    c.drawString(18 * mm, y_top + 1 * mm, "Deterministic Policy Gate & Reflex Decision Platform (https://answerr.me)")
-
-    c.setFont(f_bold, 13.5)
-    c.setFillColor(colors.HexColor("#0A1230"))
-    c.drawRightString(width - 18 * mm, y_top + 6 * mm, "COMMERCIAL INVOICE" if is_paid else "COMMERCIAL INVOICE (PROFORMA)")
-    c.setFont(f_reg, 7.8)
-    c.setFillColor(colors.HexColor("#475569"))
-    c.drawRightString(width - 18 * mm, y_top + 1 * mm, "TİCARİ FATURA / ÖDEME MAKBUZU (%0 KDV AR-GE)" if is_paid else "TİCARİ FATURA / ÖDEME BEKLEYEN TAHAKKUK")
-
-    badge_w, badge_h = 54 * mm, 6.5 * mm
-    badge_x, badge_y = width - 18 * mm - badge_w, y_top - 6.5 * mm
-    c.setFillColor(colors.HexColor("#ECFDF5") if is_paid else colors.HexColor("#FEF3C7"))
-    c.setStrokeColor(colors.HexColor("#10B981") if is_paid else colors.HexColor("#D97706"))
-    c.roundRect(badge_x, badge_y, badge_w, badge_h, 1.5 * mm, fill=1, stroke=1)
-    c.setFont(f_bold, 8.2)
-    c.setFillColor(colors.HexColor("#047857") if is_paid else colors.HexColor("#B45309"))
-    c.drawCentredString(badge_x + badge_w / 2.0, badge_y + 2 * mm, "STAMP: PAID / ÖDENDİ" if is_paid else "STAMP: UNPAID / ÖDEME BEKLİYOR")
-
-    y_cursor = y_top - 9 * mm
-    c.setStrokeColor(colors.HexColor("#CBD5E1"))
-    c.line(18 * mm, y_cursor, width - 18 * mm, y_cursor)
-
-    y_cursor -= 6 * mm
-    c.setFont(f_bold, 8)
+    # Header
+    y = height - 24 * mm
+    c.setFont(f_bold, 18)
+    c.setFillColor(colors.HexColor("#0F172A"))
+    c.drawString(20 * mm, y + 4 * mm, "answerr")
+    c.setFont(f_reg, 8)
+    c.setFillColor(colors.HexColor("#64748B"))
+    c.drawString(20 * mm, y - 1 * mm, "Deterministic Policy Gate & Reflex Engine")
+    c.setFont(f_reg, 7.5)
     c.setFillColor(colors.HexColor("#0284C7"))
-    c.drawString(18 * mm, y_cursor, "ISSUED BY (SELLER / SATICI KURUM)")
-    c.drawString(width - 84 * mm, y_cursor, "INVOICE DETAILS (FATURA BİLGİLERİ)")
+    c.drawString(20 * mm, y - 5.5 * mm, "https://answerr.me  •  ITouch Systems")
 
-    y_cursor -= 4.5 * mm
+    # Right: Invoice Title & Status Stamp
+    c.setFont(f_bold, 13)
+    c.setFillColor(colors.HexColor("#0F172A"))
+    title = "COMMERCIAL INVOICE" if is_paid else "PROFORMA INVOICE"
+    c.drawRightString(width - 20 * mm, y + 4 * mm, title)
+
+    badge_w, badge_h = 44 * mm, 6.2 * mm
+    badge_x, badge_y = width - 20 * mm - badge_w, y - 5.5 * mm
+    c.setFillColor(colors.HexColor("#ECFDF5") if is_paid else colors.HexColor("#FFFBEB"))
+    c.setStrokeColor(colors.HexColor("#10B981") if is_paid else colors.HexColor("#F59E0B"))
+    c.roundRect(badge_x, badge_y, badge_w, badge_h, 1.5 * mm, fill=1, stroke=1)
+    c.setFont(f_bold, 7.5)
+    c.setFillColor(colors.HexColor("#047857") if is_paid else colors.HexColor("#B45309"))
+    c.drawCentredString(badge_x + badge_w / 2.0, badge_y + 1.8 * mm, "PAID / ÖDENDİ" if is_paid else "UNPAID / ÖDEME BEKLİYOR")
+
+    # Divider
+    y_line = y - 9 * mm
+    c.setStrokeColor(colors.HexColor("#E2E8F0"))
+    c.setLineWidth(1)
+    c.line(20 * mm, y_line, width - 20 * mm, y_line)
+
+    # Two column metadata (Seller Left, Invoice details Right)
+    y_meta = y_line - 7 * mm
+    c.setFont(f_bold, 7.2)
+    c.setFillColor(colors.HexColor("#64748B"))
+    c.drawString(20 * mm, y_meta, "ISSUED BY (SELLER / SATICI)")
+    c.drawString(122 * mm, y_meta, "INVOICE DETAILS (FATURA BİLGİLERİ)")
+
+    # Left Seller details
     c.setFont(f_bold, 8.5)
     c.setFillColor(colors.HexColor("#0F172A"))
-    c.drawString(18 * mm, y_cursor, "ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK")
-    y_cursor -= 4 * mm
-    c.drawString(18 * mm, y_cursor, "SANAYİ VE TİCARET LİMİTED ŞİRKETİ")
+    c.drawString(20 * mm, y_meta - 4.5 * mm, "ITouch Bilişim Sistemleri Ltd. Şti.")
+    c.setFont(f_reg, 7.5)
+    c.setFillColor(colors.HexColor("#475569"))
+    c.drawString(20 * mm, y_meta - 8.5 * mm, "Çukurova Üniversitesi Teknokent No: 4/1-26, Adana / Türkiye")
+    c.drawString(20 * mm, y_meta - 12.5 * mm, "Yüreğir V.D. — VKN: 4690944558   |   MERSİS: 0469094455800001")
+    c.drawString(20 * mm, y_meta - 16.5 * mm, "Email: ask@answerr.me   |   Web: https://answerr.me")
 
-    c.setFont(f_reg, 8)
-    c.setFillColor(colors.HexColor("#334155"))
-    for sl in [
-        "Operating Brand: answerr™ & Werr™ Technology (ITouch Systems)",
-        "Address: Balcalı Mah. Güney Kampüs/5 Sk. No: 4/1 İç Kapı No: 26",
-        "Çukurova Üniversitesi Teknokent, 01330 Sarıçam / Adana, Türkiye",
-        "Tax Office & ID (VKN): Yüreğir V.D. — 4690944558  |  MERSİS: 0469094455800001",
-        "Web: https://answerr.me • https://werr.io  |  Email: ask@answerr.me • billing@werr.io",
-    ]:
-        y_cursor -= 4 * mm
-        c.drawString(18 * mm, y_cursor, sl)
-
-    paid_ts = float(pay.get("paid_at") or pay.get("created_at") or time.time())
-    p_end = float(pay.get("period_end") or (paid_ts + 31 * 86400))
-    curr = pay.get("currency") or "TRY"
-    prov = pay.get("provider") or "iyzico"
-    method_label = (
-        "iyzico 3D Card" if prov == "iyzico"
-        else ("Bank Wire / EFT (TEB)" if prov in ("manual", "bank_wire") else f"On-Chain Crypto ({prov.replace('crypto_', '').upper()})")
-    )
+    # Right Invoice details
+    prov = pay.get("provider") or "bank_wire"
+    method_label = ("iyzico 3D Credit Card" if prov == "iyzico" else ("Bank Wire / EFT (TEB)" if prov in ("manual", "bank_wire") else f"Crypto ({prov.replace('crypto_', '').upper()})"))
+    s_date = time.strftime("%Y-%m-%d", time.gmtime(paid_ts))
+    e_date = time.strftime("%Y-%m-%d", time.gmtime(p_end))
     meta_rows = [
         ("Invoice No:", inv_no),
         ("Payment Ref:", str(pay.get("id") or "-")),
         ("Issue Date:", time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime(paid_ts))),
-        ("Service Period:", f"{time.strftime('%Y-%m-%d', time.gmtime(paid_ts))} to {time.strftime('%Y-%m-%d', time.gmtime(p_end))}"),
+        ("Service Period:", f"{s_date} to {e_date}"),
         ("Payment Method:", method_label),
-        ("Status:", "PAID / ÖDENDİ (%0 KDV)" if is_paid else "UNPAID / ÖDEME BEKLİYOR"),
+        ("Status:", "PAID (%0 VAT / KDV)" if is_paid else "UNPAID / AWAITING WIRE"),
     ]
-    my = y_top - 19.5 * mm
+    my = y_meta - 4.5 * mm
     for k_l, v_l in meta_rows:
-        c.setFont(f_reg, 8)
+        c.setFont(f_reg, 7.5)
         c.setFillColor(colors.HexColor("#64748B"))
-        c.drawString(width - 84 * mm, my, k_l)
-        c.setFont(f_bold, 8)
+        c.drawString(122 * mm, my, k_l)
+        c.setFont(f_bold, 7.5)
         c.setFillColor(colors.HexColor("#047857") if (k_l == "Status:" and is_paid) else (colors.HexColor("#B45309") if k_l == "Status:" else colors.HexColor("#0F172A")))
-        c.drawRightString(width - 18 * mm, my, str(v_l)[:32])
-        my -= 4.3 * mm
+        c.drawRightString(width - 20 * mm, my, str(v_l)[:32])
+        my -= 3.8 * mm
 
-    y_cursor = min(y_cursor, my) - 6 * mm
+    # Buyer section
+    y_buyer = y_line - 32 * mm
+    c.setFillColor(colors.HexColor("#F8FAFC"))
+    c.setStrokeColor(colors.HexColor("#E2E8F0"))
+    c.roundRect(20 * mm, y_buyer - 18 * mm, width - 40 * mm, 18 * mm, 1.5 * mm, fill=1, stroke=1)
+    
     b = json.loads(pay.get("billing_json") or "{}") if isinstance(pay.get("billing_json"), str) else (pay.get("billing") or {})
     if not b and acc:
         try:
@@ -559,72 +564,121 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
         except Exception:
             b = {}
 
-    c.setFillColor(colors.HexColor("#F8FAFC"))
-    c.setStrokeColor(colors.HexColor("#CBD5E1"))
-    c.roundRect(18 * mm, y_cursor - 22 * mm, width - 36 * mm, 24 * mm, 2 * mm, fill=1, stroke=1)
-    c.setFont(f_bold, 8)
-    c.setFillColor(colors.HexColor("#0284C7"))
-    c.drawString(22 * mm, y_cursor - 3.5 * mm, "BILLED TO (BUYER / ALICI BİLGİLERİ)")
-    c.setFont(f_bold, 9)
-    c.setFillColor(colors.HexColor("#0F172A"))
     buyer_name = b.get("legal_name") or (acc or {}).get("company") or (acc or {}).get("email") or "Valued answerr Subscriber"
-    c.drawString(22 * mm, y_cursor - 8.5 * mm, str(buyer_name)[:70])
-    c.setFont(f_reg, 8)
-    c.setFillColor(colors.HexColor("#334155"))
-    c.drawString(22 * mm, y_cursor - 13.5 * mm, f"Tax ID / VKN: {b.get('tax_id') or '-'} ({b.get('tax_office') or '-'})   |   Email: {b.get('invoice_email') or (acc or {}).get('email') or '-'}")
-    c.drawString(22 * mm, y_cursor - 18.5 * mm, f"Address: {b.get('address') or '-'} {b.get('city') or ''} {b.get('country') or ''}"[:90])
+    tax_info = f"Tax ID / VKN: {b.get('tax_id') or '-'} ({b.get('tax_office') or '-'})" if b.get('tax_id') else "Tax ID: Non-Resident / Consumer"
+    buyer_email = b.get("invoice_email") or (acc or {}).get("email") or "-"
+    addr = f"{b.get('address') or '-'} {b.get('city') or ''} {b.get('country') or ''}".strip()
 
-    y_cursor -= 30 * mm
-    c.setFillColor(colors.HexColor("#0A1230"))
-    c.rect(18 * mm, y_cursor - 7 * mm, width - 36 * mm, 7 * mm, fill=1, stroke=0)
-    c.setFont(f_bold, 8)
-    c.setFillColor(colors.white)
-    c.drawString(21 * mm, y_cursor - 4.8 * mm, "DESCRIPTION (YAZILIM HİZMETİ AÇIKLAMASI)")
-    c.drawRightString(width - 21 * mm, y_cursor - 4.8 * mm, "AMOUNT (%0 KDV)")
-
-    row_y = y_cursor - 19 * mm
-    c.setFillColor(colors.white)
-    c.setStrokeColor(colors.HexColor("#CBD5E1"))
-    c.rect(18 * mm, row_y, width - 36 * mm, 12 * mm, fill=1, stroke=1)
-    plan_title = {"gelistirici": "Geliştirici (Developer)", "pro": "Pro", "kurumsal": "Kurumsal (Enterprise)"}.get(pay.get("plan"), pay.get("plan") or "Pro")
-    cycle_title = "Yıllık (366 Gün / 12 Ay)" if pay.get("cycle") == "yearly" else "Aylık (31 Gün / 1 Ay)"
+    c.setFont(f_bold, 7.2)
+    c.setFillColor(colors.HexColor("#0284C7"))
+    c.drawString(24 * mm, y_buyer - 4 * mm, "BILLED TO (BUYER / ALICI)")
     c.setFont(f_bold, 8.5)
     c.setFillColor(colors.HexColor("#0F172A"))
-    c.drawString(21 * mm, row_y + 7 * mm, f"answerr PRO SaaS & Decision API Subscription — {plan_title} Plan ({cycle_title})")
+    c.drawString(24 * mm, y_buyer - 8.5 * mm, str(buyer_name)[:65])
     c.setFont(f_reg, 7.5)
     c.setFillColor(colors.HexColor("#475569"))
-    c.drawString(21 * mm, row_y + 2.5 * mm, "4691 s. TGB Kanunu ve 3065 s. KDV Kanunu Geçici 20/1 md. (Teknopark Ar-Ge Yazılım İstisnası — %0 KDV)")
-    tot_str = f"{float(pay.get('total_try') or 0):,.2f} {curr}"
-    c.setFont(f_bold, 9)
-    c.setFillColor(colors.HexColor("#15803D") if is_paid else colors.HexColor("#B45309"))
-    c.drawRightString(width - 21 * mm, row_y + 4.8 * mm, tot_str)
+    c.drawString(24 * mm, y_buyer - 12.5 * mm, f"{tax_info}   |   Email: {buyer_email}")
+    c.drawString(24 * mm, y_buyer - 16 * mm, f"Address: {addr[:80]}")
 
-    tot_y = row_y - 22 * mm
-    c.setFillColor(colors.HexColor("#F8FAFC"))
-    c.setStrokeColor(colors.HexColor("#CBD5E1"))
-    c.roundRect(18 * mm, tot_y, width - 36 * mm, 17 * mm, 2 * mm, fill=1, stroke=1)
-    c.setFont(f_bold, 7.8)
-    c.setFillColor(colors.HexColor("#0284C7"))
-    c.drawString(21 * mm, tot_y + 12 * mm, "TAX EXEMPTION & PAYMENT VERIFICATION (%0 KDV MUAFİYET VE ÖDEME KAYDI)")
-    c.setFont(f_reg, 7.5)
-    c.setFillColor(colors.HexColor("#334155"))
-    c.drawString(21 * mm, tot_y + 7.2 * mm, f"Net: {tot_str}  |  KDV / VAT (0% — 4691 & 3065 Geçici 20/1 Teknopark İstisnası): 0.00 {curr}  |  {'Total Paid' if is_paid else 'Amount Due'}: {tot_str}")
-    c.setFont(f_mono, 7.1)
-    c.drawString(21 * mm, tot_y + 2.5 * mm, f"Reference / TXID: {pay.get('payment_id') or pay.get('id')} ({pay.get('card_last4') or prov}) — {'VERIFIED PAID' if is_paid else 'UNPAID / AWAITING SETTLEMENT'}")
-
-    bank_y = tot_y - 26 * mm
-    c.setFillColor(colors.HexColor("#FFFBEB") if not is_paid else colors.HexColor("#F8FAFC"))
-    c.setStrokeColor(colors.HexColor("#F59E0B") if not is_paid else colors.HexColor("#CBD5E1"))
-    c.roundRect(18 * mm, bank_y, width - 36 * mm, 22 * mm, 2 * mm, fill=1, stroke=1)
-    c.setFont(f_bold, 7.8)
-    c.setFillColor(colors.HexColor("#B45309") if not is_paid else colors.HexColor("#0284C7"))
-    c.drawString(21 * mm, bank_y + 17 * mm, "OFFICIAL CORPORATE BANK ACCOUNTS (TEB — TÜRK EKONOMİ BANKASI A.Ş. / ADANA TOROS ŞB. 446 | SWIFT: TEBUTRIS)")
-    c.setFont(f_reg, 7.2)
+    # Line Items Table
+    y_table = y_buyer - 25 * mm
     c.setFillColor(colors.HexColor("#0F172A"))
-    c.drawString(21 * mm, bank_y + 12.2 * mm, "Beneficiary (SWIFT): ITOUCH BILISIM SISTEMLERI LTD. STI.   |   Alıcı (Yurtiçi): ITOUCH BİLİŞİM SİSTEMLERİ LTD. ŞTİ.")
-    c.setFont(f_mono, 7.2)
-    c.drawString(21 * mm, bank_y + 7.4 * mm, "TRY (TL) IBAN : TR92 0003 2000 0000 0070 5754 65   |   USD IBAN : TR83 0003 2000 0000 0088 9467 48")
-    c.drawString(21 * mm, bank_y + 2.8 * mm, "EUR IBAN      : TR28 0003 2000 0000 0088 9467 68   |   EVM USDC : 0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7")
+    c.rect(20 * mm, y_table - 6.5 * mm, width - 40 * mm, 6.5 * mm, fill=1, stroke=0)
+    c.setFont(f_bold, 7.2)
+    c.setFillColor(colors.white)
+    c.drawString(24 * mm, y_table - 4.5 * mm, "DESCRIPTION")
+    c.drawString(108 * mm, y_table - 4.5 * mm, "PERIOD / TERM")
+    c.drawRightString(148 * mm, y_table - 4.5 * mm, "RATE")
+    c.drawRightString(width - 24 * mm, y_table - 4.5 * mm, "AMOUNT (%0 KDV)")
+
+    # Table Item Box
+    y_row = y_table - 20 * mm
+    c.setFillColor(colors.white)
+    c.setStrokeColor(colors.HexColor("#E2E8F0"))
+    c.rect(20 * mm, y_row, width - 40 * mm, 13.5 * mm, fill=1, stroke=1)
+
+    plan_title = {"gelistirici": "Geliştirici (Developer) Plan", "pro": "Pro Plan", "kurumsal": "Kurumsal (Enterprise) Plan"}.get(pay.get("plan"), str(pay.get("plan") or "Pro").title())
+    cycle_title = "Yıllık (366 Gün / 12 Ay)" if pay.get("cycle") == "yearly" else "Aylık (31 Gün / 1 Ay)"
+
+    c.setFont(f_bold, 8.5)
+    c.setFillColor(colors.HexColor("#0F172A"))
+    c.drawString(24 * mm, y_row + 8 * mm, f"answerr PRO API Subscription — {plan_title}")
+    c.setFont(f_reg, 7)
+    c.setFillColor(colors.HexColor("#64748B"))
+    c.drawString(24 * mm, y_row + 3.5 * mm, "Teknopark Ar-Ge Yazılım İstisnası (4691 s. TGB & 3065 s. KDV K. Geçici 20/1) — %0 KDV")
+
+    c.setFont(f_reg, 7.8)
+    c.setFillColor(colors.HexColor("#334155"))
+    c.drawString(108 * mm, y_row + 6 * mm, cycle_title)
+    c.drawRightString(148 * mm, y_row + 6 * mm, tot_str)
+
+    c.setFont(f_bold, 8.8)
+    c.setFillColor(colors.HexColor("#047857") if is_paid else colors.HexColor("#B45309"))
+    c.drawRightString(width - 24 * mm, y_row + 6 * mm, tot_str)
+
+    # Totals Summary (right side)
+    y_tot = y_row - 6 * mm
+    c.setFont(f_reg, 7.5)
+    c.setFillColor(colors.HexColor("#64748B"))
+    c.drawString(110 * mm, y_tot - 4 * mm, "Subtotal / Ara Toplam:")
+    c.setFont(f_bold, 7.5)
+    c.setFillColor(colors.HexColor("#0F172A"))
+    c.drawRightString(width - 24 * mm, y_tot - 4 * mm, tot_str)
+
+    c.setFont(f_reg, 7.5)
+    c.setFillColor(colors.HexColor("#64748B"))
+    c.drawString(110 * mm, y_tot - 8 * mm, "VAT / KDV (%0 Teknopark İstisnası):")
+    c.setFont(f_bold, 7.5)
+    c.setFillColor(colors.HexColor("#0F172A"))
+    c.drawRightString(width - 24 * mm, y_tot - 8 * mm, f"0.00 {curr}")
+
+    c.setStrokeColor(colors.HexColor("#E2E8F0"))
+    c.setLineWidth(0.8)
+    c.line(110 * mm, y_tot - 10.5 * mm, width - 24 * mm, y_tot - 10.5 * mm)
+
+    c.setFont(f_bold, 8.8)
+    c.setFillColor(colors.HexColor("#047857") if is_paid else colors.HexColor("#0F172A"))
+    tot_label = "Total Paid / Ödenen Toplam:" if is_paid else "Amount Due / Ödenecek Tutar:"
+    c.drawString(110 * mm, y_tot - 15 * mm, tot_label)
+    c.drawRightString(width - 24 * mm, y_tot - 15 * mm, tot_str)
+
+    # Bottom Payment / Receipt Box
+    y_box = y_tot - 46 * mm
+    if not is_paid:
+        # Bank wire box
+        c.setFillColor(colors.HexColor("#FFFBEB"))
+        c.setStrokeColor(colors.HexColor("#F59E0B"))
+        c.roundRect(20 * mm, y_box, width - 40 * mm, 26 * mm, 2 * mm, fill=1, stroke=1)
+        c.setFont(f_bold, 7.5)
+        c.setFillColor(colors.HexColor("#B45309"))
+        c.drawString(24 * mm, y_box + 21 * mm, "OFFICIAL CORPORATE BANK ACCOUNTS (TEB — TÜRK EKONOMİ BANKASI / SWIFT: TEBUTRIS)")
+        c.setFont(f_reg, 7.2)
+        c.setFillColor(colors.HexColor("#0F172A"))
+        c.drawString(24 * mm, y_box + 16.5 * mm, "Beneficiary (Alıcı): ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SAN. VE TİC. LTD. ŞTİ.")
+        c.setFont(f_mono, 7.2)
+        c.drawString(24 * mm, y_box + 12 * mm, "TRY IBAN : TR92 0003 2000 0000 0070 5754 65   |   USD IBAN : TR83 0003 2000 0000 0088 9467 48")
+        c.drawString(24 * mm, y_box + 7.5 * mm, "EUR IBAN : TR28 0003 2000 0000 0088 9467 68   |   Base USDC: 0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7")
+        c.setFont(f_reg, 7.2)
+        c.setFillColor(colors.HexColor("#B45309"))
+        c.drawString(24 * mm, y_box + 3 * mm, f"* Lütfen havale/EFT açıklama kısmına referans numaranızı yazınız: {pay.get('id')}")
+    else:
+        # Paid verification stamp
+        c.setFillColor(colors.HexColor("#ECFDF5"))
+        c.setStrokeColor(colors.HexColor("#10B981"))
+        c.roundRect(20 * mm, y_box + 5 * mm, width - 40 * mm, 21 * mm, 2 * mm, fill=1, stroke=1)
+        c.setFont(f_bold, 8)
+        c.setFillColor(colors.HexColor("#047857"))
+        c.drawString(24 * mm, y_box + 15 * mm, "PAYMENT VERIFIED & RECORDED / ÖDEME TEYİT EDİLDİ")
+        c.setFont(f_reg, 7.4)
+        c.setFillColor(colors.HexColor("#065F46"))
+        c.drawString(24 * mm, y_box + 10.5 * mm, f"Ödeme Kaydı: {pay.get('payment_id') or pay.get('id')} ({method_label}) — Teyit: {time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime(paid_ts))}")
+        c.drawString(24 * mm, y_box + 6 * mm, "Bu ticari fatura resmi B2B hizmet teslim belgesidir. 4691 sayılı Kanun kapsamında %0 KDV istisnalıdır.")
+        c.drawString(24 * mm, y_box + 2 * mm, "Mali mühürlü resmi e-Arşiv / e-Faturanız Gelir İdaresi Başkanlığı (GİB) portalı üzerinden düzenlenmektedir.")
+
+    # Footer
+    c.setFont(f_reg, 6.8)
+    c.setFillColor(colors.HexColor("#94A3B8"))
+    c.drawCentredString(width / 2.0, 10 * mm, "ITouch Bilişim Sistemleri Ltd. Şti.  •  Balcalı Mah. Çukurova Üniv. Teknokent No: 4/1-26 Sarıçam / Adana  •  ask@answerr.me  •  https://answerr.me")
 
     c.showPage()
     c.save()

@@ -372,7 +372,7 @@ def resolve_api_key(raw: str) -> Optional[Dict[str, Any]]:
     val = None
     if r and r["status"] != "closed":
         val = {"account_id": r["account_id"], "key_id": r["id"], "prefix": r["prefix"], "role": "admin", "via": "api_key",
-               "suspended": r["status"] == "suspended"}
+               "suspended": r["status"] in ("suspended", "pending_wire", "pending_payment")}
         if not r["last_used_at"] or t - r["last_used_at"] > 300:
             try:
                 conn().execute("UPDATE api_keys SET last_used_at = ? WHERE id = ?", (t, r["id"]))
@@ -383,6 +383,13 @@ def resolve_api_key(raw: str) -> Optional[Dict[str, Any]]:
             _key_cache.clear()
         _key_cache[h] = (t + KEY_CACHE_TTL, val)
     return val
+
+
+def set_account_status(account_id: str, status: str) -> None:
+    with tx() as c:
+        c.execute("UPDATE accounts SET status = ? WHERE id = ?", (status, account_id))
+    with _key_cache_lock:
+        _key_cache.clear()
 
 
 # ----------------------------------------------------------------------------- accounts
@@ -515,6 +522,8 @@ def quota_check(account_id: str) -> Dict[str, Any]:
         raise CommerceError(401, "no_account", "Account not found.")
     if acc["status"] == "suspended":
         raise CommerceError(403, "account_suspended", "This account is suspended; contact ask@answerr.me.")
+    if acc["status"] in ("pending_wire", "pending_payment"):
+        raise CommerceError(402, "payment_required", "Banka havalesi henüz onaylanmadı. Havale onaylandıktan sonra API kararları aktifleşecektir.")
     plan_id = effective_plan(acc)
     plan = P.get(plan_id)
     used = usage_now(account_id)
@@ -985,7 +994,7 @@ def complete_payment(pid: str, payment_id: str, fraud_status: int, card_last4: O
                                               and acc["plan_expires_at"] > t) else t
             start, end = base, base + PAYMENT_PERIOD_DAYS.get(pay["cycle"], 31) * 86400
             c.execute("UPDATE accounts SET plan = ?, billing_cycle = ?, plan_started_at = COALESCE(?, plan_started_at), "
-                      "plan_expires_at = ?, status = CASE WHEN status = 'suspended' THEN 'active' ELSE status END WHERE id = ?",
+                      "plan_expires_at = ?, status = 'active' WHERE id = ?",
                       (pay["plan"], pay["cycle"], t if base == t else None, end, pay["account_id"]))
             c.execute("UPDATE plan_requests SET status = 'approved', handled_at = ?, handled_by = 'iyzico' "
                       "WHERE account_id = ? AND status = 'pending' AND plan = ?", (t, pay["account_id"], pay["plan"]))
