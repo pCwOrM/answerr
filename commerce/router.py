@@ -17,7 +17,8 @@ import time
 from typing import Any, Callable, Dict, List, Optional
 
 from fastapi import APIRouter, Request
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import JSONResponse, Response, HTMLResponse
+import html as _html
 from pydantic import BaseModel, Field
 
 import access_mailer as AM
@@ -635,7 +636,7 @@ def instant_checkout(req: InstantCheckoutReq, request: Request):
         pay = S.create_payment(acc_id, "plan", target_plan, cycle, q["net"], q.get("vat", "0.00"), q["total"],
                                "bank_wire", email, billing=dict(b_info, **consent), currency=curr)
         r = S.request_plan(acc_id, target_plan, cycle, "havale/EFT proforma " + pay["id"], email)
-        mail.plan_request(S.get_account(acc_id), r, email)
+        mail.plan_request(S.get_account(acc_id), r, email, payment_id=pay["id"])
         return dict(base, status="success", plan="kesif", requested_plan=target_plan, payment_id=pay["id"],
                     invoice_no=billing.invoice_number(pay),
                     invoice_pdf_url="/v1/account/payments/{}/invoice.pdf".format(pay["id"]),
@@ -966,6 +967,91 @@ def a_approve(request_id: str, request: Request):
     days = S.PAYMENT_PERIOD_DAYS.get(r["cycle"], 31) if r["plan"] in P.PAID_PLANS else None
     return {"status": "success", "account": S.set_plan(r["account_id"], r["plan"], r["cycle"], who, request_id=request_id,
                                                        expires_at=(time.time() + days * 86400) if days else None)}
+
+
+
+@router.get("/v1/commerce/admin-approve-wire", response_class=HTMLResponse, tags=["Admin"])
+def admin_approve_wire(pay_id: str, t: str):
+    pay_id_clean = (pay_id or "").strip()
+    token_clean = (t or "").strip()
+    if not pay_id_clean or not token_clean or not mail.check_admin_wire_approve_token(pay_id_clean, token_clean):
+        return HTMLResponse(
+            status_code=403,
+            content="""<!DOCTYPE html>
+<html>
+<head><title>Yetkisiz Onay - answerr Admin</title><meta charset='utf-8'></head>
+<body style='background:#07090e;color:#f87171;font-family:sans-serif;padding:60px 20px;text-align:center;'>
+  <h2 style='font-size:24px;'>⛔ Yetkisiz veya Geçersiz Onay Bağlantısı</h2>
+  <p style='color:#94a3b8;font-size:15px;max-width:500px;margin:15px auto;'>Bu onay bağlantısının imza anahtarı geçersiz, süresi dolmuş veya manipüle edilmiş.</p>
+</body>
+</html>"""
+        )
+
+    try:
+        out = _mark_paid(pay_id_clean, "approved via 1-click email")
+    except Exception as e:
+        return HTMLResponse(
+            status_code=400,
+            content=f"""<!DOCTYPE html>
+<html>
+<head><title>Hata - answerr Admin</title><meta charset='utf-8'></head>
+<body style='background:#07090e;color:#f87171;font-family:sans-serif;padding:60px 20px;text-align:center;'>
+  <h2 style='font-size:24px;'>⚠️ Onay İşlemi Başarısız</h2>
+  <p style='color:#94a3b8;font-size:15px;max-width:500px;margin:15px auto;'>{_html.escape(str(e))}</p>
+</body>
+</html>"""
+        )
+
+    p = out.get("payment", {})
+    b = json.loads(p.get("billing_json") or "{}")
+    inv = billing.invoice_number(p)
+    email = b.get("email") or p.get("created_by") or "-"
+    plan = str(p.get("plan") or "-").upper()
+    tot = f"{p.get('total_try', 0)} ₺"
+    pdf_url = f"https://api.answerr.me/v1/account/payments/{pay_id_clean}/invoice.pdf"
+
+    html_content = f"""<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Havale Onayı — answerr Admin</title>
+  <style>
+    body {{ background: #07090e; color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }}
+    .card {{ background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; max-width: 600px; width: 100%; padding: 36px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); }}
+    .badge {{ display: inline-block; padding: 6px 14px; border-radius: 9999px; font-size: 13px; font-weight: 700; text-transform: uppercase; background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid #22c55e; margin-bottom: 20px; }}
+    h1 {{ font-size: 24px; margin: 0 0 10px; font-weight: 800; color: #fff; }}
+    p.sub {{ color: #94a3b8; font-size: 14px; margin: 0 0 24px; line-height: 1.5; }}
+    .box {{ background: #090d16; border: 1px solid #1e293b; border-radius: 10px; padding: 18px; margin-bottom: 20px; }}
+    .row {{ display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }}
+    .row:last-child {{ margin-bottom: 0; }}
+    .label {{ color: #64748b; font-weight: 500; }}
+    .val {{ color: #f8fafc; font-weight: 600; font-family: monospace; }}
+    .btn {{ display: inline-block; padding: 12px 22px; border-radius: 8px; background: #2563eb; color: #fff; text-decoration: none; font-weight: 600; font-size: 14px; }}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">BAŞARIYLA ONAYLANDI & AKTİF EDİLDİ</div>
+    <h1>answerr Havalesi Onaylandı</h1>
+    <p class="sub">Havale ödemesi teyit edildi, fatura resmi olarak <strong>ÖDENDİ</strong> olarak mühürlendi ve müşterinin 250.000 kararlık lisansı hesabına tanımlandı.</p>
+    
+    <div class="box">
+      <div class="row"><span class="label">Resmi Fatura No:</span><span class="val">{inv}</span></div>
+      <div class="row"><span class="label">Müşteri E-Posta:</span><span class="val">{email}</span></div>
+      <div class="row"><span class="label">Aktif Plan:</span><span class="val">{plan}</span></div>
+      <div class="row"><span class="label">Tahsil Edilen Tutar:</span><span class="val">{tot}</span></div>
+      <div class="row"><span class="label">Hediye Dönem:</span><span class="val" style="color:#22c55e;">29-31 Ekim Ücretsiz Tanımlandı</span></div>
+    </div>
+
+    <div style="display:flex; gap:12px; margin-top:24px;">
+      <a href="{pdf_url}" target="_blank" class="btn">📄 Onaylı Fatura PDF'ini Aç</a>
+      <a href="https://answerr.me/pro/console/" class="btn" style="background:#1e293b; color:#94a3b8;">Konsola Git</a>
+    </div>
+  </div>
+</body>
+</html>"""
+    return HTMLResponse(content=html_content)
 
 
 def _mark_paid(payment_id: str, reference: str) -> Dict[str, Any]:

@@ -93,25 +93,69 @@ def invitation(email: str, inviter: str, company: str, role: str, token: str, la
     _dispatch([_msg(email, subj, body)])
 
 
-def plan_request(account: dict, req: dict, requester: str) -> None:
+def admin_wire_approve_token(payment_id: str) -> str:
+    import hmac, hashlib
+    secret = (AM.cfg().get("password") or "answerr_wire_secret_key_2026").encode()
+    return hmac.new(secret, f"answerr_wire_approve:{payment_id.strip().lower()}".encode(), hashlib.sha256).hexdigest()[:32]
+
+
+def check_admin_wire_approve_token(payment_id: str, token: str) -> bool:
+    import hmac
+    return bool(token) and hmac.compare_digest(admin_wire_approve_token(payment_id), token.strip().lower())
+
+def plan_request(account: dict, req: dict, requester: str, payment_id: Optional[str] = None) -> None:
     c = AM.cfg()
-    note = _msg(c["notify_to"], "[answerr] Plan talebi — {} → {} ({})".format(account.get("company") or account["email"], req["plan"], req["cycle"]),
-                "Hesap   : {id}\nE-posta : {email}\nŞirket  : {company}\nMevcut  : {cur}\nTalep   : {plan} / {cycle}\nNot     : {note}\n"
-                "Talep eden: {who}\n\nOnay: POST /v1/admin/plan-requests/{rid}/approve (yönetici anahtarı) ya da konsol › Yönetim.\n".format(
-                    id=account["id"], email=account["email"], company=account.get("company") or "-", cur=account.get("plan"),
-                    plan=req["plan"], cycle=req["cycle"], note=req.get("note") or "-", who=requester, rid=req["id"]),
-                reply_to=requester)
+    pay_id = payment_id or ""
+    if not pay_id and "havale/EFT proforma " in (req.get("note") or ""):
+        pay_id = req["note"].split("havale/EFT proforma ")[-1].strip()
+
+    approve_section = ""
+    if pay_id:
+        approve_tok = admin_wire_approve_token(pay_id)
+        approve_url = f"https://api.answerr.me/v1/commerce/admin-approve-wire?pay_id={pay_id}&t={approve_tok}"
+        approve_section = f"""
+======================================================================
+👉 HAVALE HESABA GELDİĞİNDE TEK TIKLA ONAYLAYIP PLANI AKTİFLEŞTİRMEK İÇİN:
+{approve_url}
+
+(Bu bağlantıya tıkladığınızda:
+ 1. Havale faturası resmi olarak ÖDENDİ olarak onaylanır.
+ 2. Müşterinin planı (250.000 karar) 30 Kasım 2026'ya kadar aktif edilir.
+ 3. Müşteriye resmi sipariş onayı ve faturası mail olarak teslim edilir.)
+======================================================================
+"""
+
+    admin_body = """Yeni answerr Banka Havalesi / Plan Talebi Alındı:
+
+Hesap        : {id}
+E-posta      : {email}
+Şirket       : {company}
+Mevcut Plan  : {cur}
+Talep Edilen : {plan} / {cycle}
+Ödeme ID     : {pay_id}
+Proforma PDF : https://api.answerr.me/v1/account/payments/{pay_id}/invoice.pdf
+Not          : {note}
+Talep eden   : {who}
+{approve_section}
+Alternatif Konsol Onayı: POST /v1/admin/plan-requests/{rid}/approve ya da konsol › Yönetim.
+""".format(
+        id=account["id"], email=account["email"], company=account.get("company") or "-", cur=account.get("plan"),
+        plan=req["plan"], cycle=req["cycle"], pay_id=pay_id or "-", note=req.get("note") or "-", who=requester, rid=req["id"],
+        approve_section=approve_section
+    )
+
+    note = _msg("pcworm@pcworm.net", f"[answerr HAVALE TALEP] {account.get('company') or account['email']} — {req['plan']} ({req['cycle']})",
+                admin_body, reply_to=requester)
     lang = account.get("lang") or "tr"
     if lang == "en":
         conf = _msg(requester, "answerr — plan request received",
-                    "Hello,\n\nWe received your request to move to the {} plan ({} billing). We will confirm by e-mail and send "
-                    "the payment details within one working day; the plan becomes active when payment is received.\n".format(req["plan"], req["cycle"]) + SIGNATURE_EN)
+                    ("Hello,\n\nWe received your request to move to the {} plan ({} billing). We will confirm by e-mail and send "
+                     "the payment details within one working day; the plan becomes active when payment is received.\n").format(req["plan"], req["cycle"]) + SIGNATURE_EN)
     else:
         conf = _msg(requester, "answerr — plan talebiniz alındı",
-                    "Merhaba,\n\n{} planına ({} faturalama) geçiş talebinizi aldık. Bir iş günü içinde e-postayla onaylayıp ödeme "
-                    "bilgilerini gönderiyoruz; plan, ödeme alındığında etkinleşir.\n".format(req["plan"], "yıllık" if req["cycle"] == "yearly" else "aylık") + SIGNATURE_TR)
+                    ("Merhaba,\n\n{} planına ({} faturalama) geçiş talebinizi aldık. Bir iş günü içinde e-postayla onaylayıp ödeme "
+                     "bilgilerini gönderiyoruz; plan, ödeme alındığında etkinleşir.\n").format(req["plan"], "yıllık" if req["cycle"] == "yearly" else "aylık") + SIGNATURE_TR)
     _dispatch([note, conf])
-
 
 def quota_warning(account: dict, pct: int, used: int, quota: int) -> None:
     lang = account.get("lang") or "tr"
@@ -245,6 +289,7 @@ def order_confirmation(to: str, account: Optional[dict], pay: dict, billing: dic
         "Konsol: {}".format(console_url()),
     ]) + SIGNATURE_TR
     m = _msg(to, "answerr — sipariş onayı ve ödemeniz ({})".format(pay["id"]), body)
+    m["Bcc"] = "ask@answerr.me"
     for slug, name in LEGAL_TEXTS:
         try:
             data = open(os.path.join(LEGAL_DIR, slug + ".txt"), encoding="utf-8").read()
