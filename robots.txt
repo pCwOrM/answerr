@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /archive/
+Disallow: /pro/console/admin.html
 
 Sitemap: https://answerr.me/sitemap.xml

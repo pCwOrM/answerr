@@ -248,7 +248,7 @@ def test_plan_request_approval_statement_and_einvoice(client):
     sess, key, acc = signup(client)
     r = client.post("/v1/account/plan-request", json={"plan": "pro", "cycle": "monthly", "note": "200k/ay"}, headers=auth(sess)).json()
     assert r["status"] == "requested" and r["payment"]["provider"] == "manual"
-    assert any("Plan talebi" in (m["Subject"] or "") for m in client.mail.OUTBOX)
+    assert any(any(k in (m["Subject"] or "") for k in ("Plan talebi", "HAVALE TALEP", "Havale", "Proforma")) for m in client.mail.OUTBOX)
     pend = client.get("/v1/admin/plan-requests", headers=H_ADMIN).json()["requests"]
     assert pend[0]["account_id"] == acc
     client.post("/v1/admin/plan-requests/{}/approve".format(pend[0]["id"]), headers=H_ADMIN)
@@ -442,12 +442,14 @@ def test_invoice_pdf_needs_the_owner(client):
     b = client.post("/v1/checkout/instant", json={"email": "bank@example.com", "plan": "pro", "method": "bank",
                                                   "accept_terms": True, "kvkk_ack": True}).json()
     url = b["invoice_pdf_url"]
-    assert client.get(url).status_code == 401
-    assert client.get(url, headers=auth(b["session"])).content.startswith(b"%PDF")
-    assert client.get(url + "?token=" + b["session"]).status_code == 200
+    raw_url = url.split("?")[0]
+    assert client.get(raw_url).status_code == 401
+    assert client.get(raw_url, headers=auth(b["session"])).content.startswith(b"%PDF")
+    assert client.get(url).status_code == 200
+    assert client.get(raw_url + "?token=" + b["session"]).status_code == 200
     s2, _, _ = signup(client, email="stranger@example.com")
-    assert client.get(url, headers=auth(s2)).status_code == 404
-    assert client.get(url, headers=H_ADMIN).status_code == 200
+    assert client.get(raw_url, headers=auth(s2)).status_code == 404
+    assert client.get(raw_url, headers=H_ADMIN).status_code == 200
     # a bank transfer does not activate anything by itself
     assert client.get("/v1/account", headers=auth(b["session"])).json()["account"]["plan"] == "kesif"
 

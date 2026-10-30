@@ -53,6 +53,9 @@ jobs:
       - name: Site chrome (one menu for every page) is up to date
         run: python scripts/build_site_chrome.py --check
 
+      - name: Sitemap is up to date
+        run: python scripts/build_sitemap.py --check
+
       - name: Kernel, parity and API tests
         env:
           ANSWERR_WERR_PATH: ${{ github.workspace }}/_werr

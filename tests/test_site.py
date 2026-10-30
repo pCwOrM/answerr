@@ -60,3 +60,15 @@ def test_root_index_promoted_and_archives_kept_off_pages():
     assert os.path.exists(os.path.join(ROOT, "archive", "site", "2026-10-13-v0.6", "index.html"))
     assert os.path.exists(os.path.join(ROOT, "archive", "site", "research-portal", "portal.html"))
     assert os.path.exists(os.path.join(ROOT, "archive", "site", "docs-v1.0.html"))
+
+
+def test_sitemap_is_up_to_date_and_valid():
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "build_sitemap.py"), "--check"], capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+
+
+def test_robots_txt_valid():
+    robots = open(os.path.join(ROOT, "robots.txt"), encoding="utf-8").read()
+    assert "Sitemap: https://answerr.me/sitemap.xml" in robots
+    assert "Disallow: /archive/" in robots
+

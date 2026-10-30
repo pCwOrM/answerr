@@ -224,6 +224,7 @@ LEGAL_HEAD = """<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title} — answerr</title>
   <meta name="description" content="{desc}">
+  <link rel="canonical" href="https://answerr.me/pro/legal/{slug}.html">
   <meta name="theme-color" content="#05060A">
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
@@ -307,6 +308,7 @@ def legal_pages():
         )
         page = LEGAL_HEAD.format(
             title=html.escape(m["title"]), desc=html.escape(m.get("description", m["title"])),
+            slug=slug,
             version_label='<span data-lang="tr">SÜRÜM {0}</span><span data-lang="en">VERSION {0}</span>'.format(CFG["legal_version"]), nav=nav("legal", "../"), foot=footer("../"), side=side,
             status_tr=html.escape(CFG["legal_status_tr"]), status_en=html.escape(CFG["legal_status_en"]),
             body=legal_body(slug, body), asset_v=ASSET_V)
