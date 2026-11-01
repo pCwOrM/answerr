@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout answerr
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Checkout werr (research engine used by the API)
         uses: actions/checkout@v4
