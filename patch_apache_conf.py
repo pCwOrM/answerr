@@ -7,32 +7,29 @@ CONF_PATH = '/etc/apache2/sites-available/mechsrv-ssl.conf'
 with open(CONF_PATH, 'r', encoding='latin-1') as f:
     content = f.read()
 
-# 1. Update ServerAlias if needed
-if 'api.answerr.me' not in content:
+# 1. Ensure api.answerr.me is primary ServerName
+if 'ServerName api.answerr.me' not in content:
     content = re.sub(
-        r'(ServerAlias\s+mechsrv\.itouch\.fi\s+www\.mechsrv\.itouch\.fi)',
-        r'\1 api.answerr.me',
+        r'ServerName\s+\S+',
+        'ServerName api.answerr.me',
         content,
         count=1
     )
 
 # 2. Update existing Answerr block with security enhancements if present
 if '# --- ANSWERR REFLEX DECISION ENGINE REST API (PORT 8560) ---' in content:
-    # Add ProxyPreserveHost and ProxyTimeout if not already added
     if 'ProxyPreserveHost On' not in content:
         content = content.replace(
             '# --- ANSWERR REFLEX DECISION ENGINE REST API (PORT 8560) ---',
             '# --- ANSWERR REFLEX DECISION ENGINE REST API (PORT 8560) ---\n    ProxyPreserveHost On\n    ProxyTimeout 15'
         )
 
-    # Add security headers to Location blocks
     if 'Referrer-Policy' not in content:
         content = content.replace(
             'Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Client-Version"',
             'Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Client-Version"\n        Header always set X-Content-Type-Options "nosniff"\n        Header always set X-Frame-Options "SAMEORIGIN"\n        Header always set Referrer-Policy "strict-origin-when-cross-origin"'
         )
 else:
-    # Fresh block insertion
     proxy_block = '''
     # --- ANSWERR REFLEX DECISION ENGINE REST API (PORT 8560) ---
     ProxyPreserveHost On
@@ -72,4 +69,4 @@ else:
 with open(CONF_PATH, 'w', encoding='latin-1') as f:
     f.write(content)
 
-print("[OK] mechsrv-ssl.conf patched with Apache security headers & timeouts successfully!")
+print("[OK] answerr Apache reverse proxy configured successfully!")

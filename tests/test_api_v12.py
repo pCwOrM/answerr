@@ -122,7 +122,7 @@ def test_forwarded_for_spoofing_is_ignored(client):
     ip = client.mod.client_ip
     # direct peer that is not a proxy: headers ignored
     assert ip(req("203.0.113.9", "1.2.3.4", "1.2.3.4")) == "203.0.113.9"
-    # real chain observed on mechsrv: IIS appends client:port, Apache appends 10.0.2.2
+    # real chain observed on production API: IIS appends client:port, Apache appends 10.0.2.2
     assert ip(req("127.0.0.1", "160.79.106.133:49152, 10.0.2.2")) == "160.79.106.133"
     # client-written XFF on the left is never used
     assert ip(req("127.0.0.1", "203.0.113.77, 160.79.106.143:49152, 10.0.2.2")) == "160.79.106.143"

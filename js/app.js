@@ -2,7 +2,7 @@
  * app.js - Main Application Orchestrator for answerr (answerr.me)
  * Manages chat lifecycle, dual-cognitive pipeline execution (System 1 + System 2),
  * live telemetry HUD rendering with Smart If-Statement code & Seed Dump,
- * Google reCAPTCHA v3 & mechsrv telemetry integration, multi-language (TR / EN) switching.
+ * Google reCAPTCHA v3 & answerr telemetry integration, multi-language (TR / EN) switching.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Telemetry Dispatcher (Dual-target to mechsrv.itouch.fi & api.answerr.me)
+  // Telemetry Dispatcher (api.answerr.me)
   async function dispatchWebTelemetry(werrResult, prompt, stateData) {
     try {
       console.log("[answerr-telemetry] Initiating telemetry dispatch for prompt:", prompt);
