@@ -3,6 +3,12 @@
   'use strict';
   const D = {
     tr: {
+      pageTitleIndex: 'answerr Pro · Karar Gözlemevi',
+      pageTitleStudio: 'answerr Pro · Derleyici',
+      pageTitleResearch: 'Araştırma · answerr Pro',
+      pageTitlePricing: 'answerr Pro · Fiyatlar',
+      pageTitleDocs: 'answerr · Geliştirici belgeleri',
+      pageTitleStatus: 'answerr · Hizmet durumu',
       hudRight: 'ÇALIŞMA ANINDA MODEL YOK · HER KARARIN İZİ VAR',
       hudOnline: 'API ÇEVRİMİÇİ', hudOffline: 'API’YE ULAŞILAMADI · TARAYICIDAKİ ÇEKİRDEK KULLANILIYOR', hudKernel: 'çekirdek',
       navHow: 'Nasıl çalışır', navConsole: 'Kara Kutu', navStudio: 'Derleyici', navDocs: 'Geliştiriciler', navPricing: 'Fiyatlar', navEcosystem: 'Ekosistem', navResearch: 'Araştırma', navVision: 'Werr Evreni', navApi: 'API belgeleri', navAccess: 'Erken erişim',
@@ -106,6 +112,12 @@
 
     },
     en: {
+      pageTitleIndex: 'answerr Pro · Decision Observatory',
+      pageTitleStudio: 'answerr Pro · Policy Compiler',
+      pageTitleResearch: 'Research Archive · answerr Pro',
+      pageTitlePricing: 'answerr Pro · Pricing',
+      pageTitleDocs: 'answerr · Developer Docs',
+      pageTitleStatus: 'answerr · Service Status',
       hudRight: 'NO MODEL AT DECISION TIME · EVERY DECISION HAS A TRACE',
       hudOnline: 'API ONLINE', hudOffline: 'API UNREACHABLE · USING THE IN-BROWSER KERNEL', hudKernel: 'kernel',
       navHow: 'How it works', navConsole: 'Black Box', navStudio: 'Compiler', navDocs: 'Developers', navPricing: 'Pricing', navEcosystem: 'Ecosystem', navResearch: 'Research', navVision: 'Werr Universe', navApi: 'API docs', navAccess: 'Early access',
@@ -212,26 +224,95 @@
 
   class ProI18n {
     constructor() {
-      let saved = null;
-      try { saved = localStorage.getItem('answerr_pro_lang') || localStorage.getItem('answerr_lang'); } catch (e) { saved = null; }
-      const nav = (navigator.language || 'tr').toLowerCase();
-      this.lang = saved === 'en' || saved === 'tr' ? saved : (nav.startsWith('tr') ? 'tr' : 'en');
+      this.lang = this.detectLanguage();
     }
-    extend(dict) { Object.keys(dict).forEach(l => { D[l] = Object.assign(D[l] || {}, dict[l]); }); }
+    detectLanguage() {
+      // 1. Explicit URL parameter: ?lang=tr or ?lang=en
+      try {
+        if (typeof location !== 'undefined' && location.search) {
+          const p = new URLSearchParams(location.search).get('lang');
+          if (p === 'tr' || p === 'en') return p;
+        }
+      } catch (e) {}
+
+      // 2. Explicit user selection saved in localStorage
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const saved = localStorage.getItem('answerr_pro_lang') || localStorage.getItem('answerr_lang');
+          if (saved === 'tr' || saved === 'en') return saved;
+        }
+      } catch (e) {}
+
+      // 3. User browser language check: Turkish browser -> tr
+      try {
+        if (typeof navigator !== 'undefined') {
+          const nav = (navigator.language || '').toLowerCase();
+          const navs = Array.isArray(navigator.languages) ? navigator.languages.map(l => (l || '').toLowerCase()) : [];
+          if (nav.startsWith('tr') || navs.some(l => l.startsWith('tr'))) {
+            return 'tr';
+          }
+        }
+      } catch (e) {}
+
+      // 4. User location check: Turkey timezone / locale -> tr
+      try {
+        if (typeof Intl !== 'undefined' && Intl.DateTimeFormat) {
+          const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
+          if (tz.includes('istanbul') || tz === 'turkey' || tz.includes('ankara')) {
+            return 'tr';
+          }
+        }
+      } catch (e) {}
+
+      // 5. Otherwise default to English
+      return 'en';
+    }
+    extend(dict) {
+      Object.keys(dict).forEach(l => { D[l] = Object.assign(D[l] || {}, dict[l]); });
+      this.apply();
+    }
     t(key) { return (D[this.lang] && D[this.lang][key]) || D.tr[key] || key; }
     setLanguage(l) {
       if (l !== 'tr' && l !== 'en') return;
       this.lang = l;
       try {
-        localStorage.setItem('answerr_pro_lang', l);
-        localStorage.setItem('answerr_lang', l);
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('answerr_pro_lang', l);
+          localStorage.setItem('answerr_lang', l);
+        }
       } catch (e) { /* private mode */ }
       this.apply();
-      window.dispatchEvent(new CustomEvent('proLanguageChanged', { detail: { lang: l } }));
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('proLanguageChanged', { detail: { lang: l } }));
+      }
     }
     apply() {
+      if (typeof document === 'undefined') return;
       document.documentElement.lang = this.lang;
+
+      // Translate document.title
+      const titleEl = document.querySelector('title');
+      if (titleEl) {
+        const k = titleEl.getAttribute('data-i18n');
+        if (k && this.t(k) && this.t(k) !== k) {
+          document.title = this.t(k);
+        } else {
+          const p = (location.pathname || '').toLowerCase();
+          let key = 'pageTitleIndex';
+          if (p.includes('studio')) key = 'pageTitleStudio';
+          else if (p.includes('research')) key = 'pageTitleResearch';
+          else if (p.includes('pricing')) key = 'pageTitlePricing';
+          else if (p.includes('docs')) key = 'pageTitleDocs';
+          else if (p.includes('status')) key = 'pageTitleStatus';
+          else if (document.title.includes('Karar Gözlemevi') || document.title.includes('Decision Observatory')) key = 'pageTitleIndex';
+          
+          const val = this.t(key);
+          if (val) document.title = val;
+        }
+      }
+
       document.querySelectorAll('[data-i18n]').forEach(el => {
+        if (el.tagName === 'TITLE') return;
         const k = el.getAttribute('data-i18n');
         const v = this.t(k);
         if (v && v !== k) {
@@ -250,13 +331,21 @@
     }
     init() {
       this.apply();
-      document.querySelectorAll('.lang-switch-btn').forEach(btn => btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.setLanguage(this.lang === 'tr' ? 'en' : 'tr');
-      }));
+      document.querySelectorAll('.lang-switch-btn').forEach(btn => {
+        if (!btn.__boundLangSwitch) {
+          btn.__boundLangSwitch = true;
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.setLanguage(this.lang === 'tr' ? 'en' : 'tr');
+          });
+        }
+      });
     }
   }
 
   window.ProI18n = new ProI18n();
-  document.addEventListener('DOMContentLoaded', () => window.ProI18n.init());
+  window.ProI18n.init();
+  if (typeof document !== 'undefined' && document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.ProI18n.init());
+  }
 })();
