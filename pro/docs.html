@@ -174,16 +174,28 @@ console.log(d.verdict, d.trace.rule_id, d.decision_id);</code></pre>
             <h2 data-i18n="dcT4">Kapılar ve derleyici</h2>
             <p data-lang="tr">Üç yerleşik kapı vardır: <code>agent_mcp_guard</code>, <code>fintech_payment_tr</code>, <code>api_zero_trust_waf</code>. Kendi kapınızı yazmak için politikayı Türkçe ya da İngilizce yazın, derleyin, testleri ve soruları inceleyin, sonra kaydedin. Derleyici hiçbir şeyi kendiliğinden kaydetmez.</p>
             <p data-lang="en">Three built-in gates exist: <code>agent_mcp_guard</code>, <code>fintech_payment_tr</code>, <code>api_zero_trust_waf</code>. To write your own, describe the policy in Turkish or English, compile it, review the tests and questions, then register it. The compiler never registers anything on its own.</p>
-<pre><code># 1) derle / compile (kaydetmez / registers nothing)
+<pre data-lang="tr"><code># 1) derle (kaydetmez)
 curl -s https://api.answerr.me/v1/policies/compile -H "Content-Type: application/json" \
   -d '{"gate_id": "acme_payments", "prompt": "5.000 doları aşan ödemeyi insana gönder. Başarısız deneme sayısı 3’ten fazlaysa reddet."}' \
   | jq .policy_spec &gt; acme_payments.json
 
-# 2) kaydet / register (API key)
+# 2) kaydet (API anahtarı)
 curl -s https://api.answerr.me/v1/gates -H "Authorization: Bearer $ANSWERR_API_KEY" \
   -H "Content-Type: application/json" -d @acme_payments.json
 
-# 3) kullan / use
+# 3) karar al / kullan
+curl -s https://api.answerr.me/v1/gates/acme_payments/decide -H "Authorization: Bearer $ANSWERR_API_KEY" \
+  -H "Content-Type: application/json" -d '{"state": {"amount": 9200, "failed_attempts": 0}}'</code></pre>
+<pre data-lang="en"><code># 1) compile (does not register)
+curl -s https://api.answerr.me/v1/policies/compile -H "Content-Type: application/json" \
+  -d '{"gate_id": "acme_payments", "prompt": "Route payments over $5,000 to human review. Deny if failed attempts exceed 3."}' \
+  | jq .policy_spec &gt; acme_payments.json
+
+# 2) register (API key)
+curl -s https://api.answerr.me/v1/gates -H "Authorization: Bearer $ANSWERR_API_KEY" \
+  -H "Content-Type: application/json" -d @acme_payments.json
+
+# 3) evaluate / decide
 curl -s https://api.answerr.me/v1/gates/acme_payments/decide -H "Authorization: Bearer $ANSWERR_API_KEY" \
   -H "Content-Type: application/json" -d '{"state": {"amount": 9200, "failed_attempts": 0}}'</code></pre>
             <p data-lang="tr">Her kayıtlı kapının bir <strong>mührü</strong> (kanonik JSON'un SHA-256 özeti) vardır; her karar hangi mühürle verildiğini söyler. Plan başına özel kapı sayısı: Keşif 1, Geliştirici 10, Pro ve üstü 200.</p>
@@ -243,7 +255,7 @@ def guarded(tool_name, args, run, user_role="member", wait_s=300):
               <p data-lang="tr">Otonom modda her kararla birlikte bir <code>confidence_index</code> (0.00 &ndash; 1.00) ve <code>confidence_band</code> (<code>HIGH_CONFIDENCE</code>, <code>MODERATE_CONFIDENCE</code>, <code>MARGINAL_CONFIDENCE</code>) döndürülür. Eğer hesaplanan noul olasılığı <strong>0.42 &le; noul &le; 0.58 (%45 &ndash; %65)</strong> kritik geçiş aralığına denk gelirse, motor <code>"retry_recommended": true</code> bayrağını üretir. Böylece uç sistem, insan onayı beklemeden sensör telemetrisini zenginleştirerek veya kısa bir geri çekilme (exponential backoff) ile sorguyu yeniden deneyebilir.</p>
               <p data-lang="en">In autonomous mode, each decision emits a <code>confidence_index</code> (0.00 &ndash; 1.00) and <code>confidence_band</code> (<code>HIGH_CONFIDENCE</code>, <code>MODERATE_CONFIDENCE</code>, <code>MARGINAL_CONFIDENCE</code>). When the computed noul probability falls within the critical boundary transition band <strong>0.42 &le; noul &le; 0.58 (45% &ndash; 65%)</strong>, the engine sets <code>"retry_recommended": true</code>. This allows edge clients to enrich telemetry or apply exponential backoff without stalling workflows.</p>
 
-<pre><code>// Örnek: Otonom Karar İsteği (Autonomous Edge Request)
+<pre data-lang="tr"><code>// Örnek: Otonom Karar İsteği (Autonomous Edge Request)
 POST https://api.answerr.me/v1/decision
 {
   "state": {
@@ -260,6 +272,32 @@ POST https://api.answerr.me/v1/decision
 {
   "verdict": "ALLOW",
   "label": "GEÇ",
+  "autonomous_resolution": true,
+  "original_verdict": "REVIEW",
+  "confidence_index": 0.542,
+  "confidence_band": "MODERATE_CONFIDENCE",
+  "retry_recommended": true,
+  "risk_score": 0.12,
+  "noul": 0.528,
+  "policy_seal": "9f82...sha256"
+}</code></pre>
+<pre data-lang="en"><code>// Example: Autonomous Edge Decision Request
+POST https://api.answerr.me/v1/decision
+{
+  "state": {
+    "tool_name": "execute_shell",
+    "command": "git push origin main",
+    "auth_level": "elevated",
+    "_autonomous": true
+  },
+  "autonomous": true,
+  "autonomous_bias": "balanced"  // "balanced" | "fail_closed" | "permissive"
+}
+
+// Response: Deterministic Reflex Resolution
+{
+  "verdict": "ALLOW",
+  "label": "ALLOW",
   "autonomous_resolution": true,
   "original_verdict": "REVIEW",
   "confidence_index": 0.542,
@@ -397,7 +435,7 @@ GET /v1/account/usage?days=30</code></pre>
             <p data-lang="tr">Politikalar doğal dilde yazılır veya <a href="studio.html">answerr Studio</a> görsel editöründe tasarlanır. <code>POST /v1/policies/compile</code> uç noktası bunu optimize edilmiş AST ve doğrulanmış kanonik JSON politikasına dönüştürür:</p>
             <p data-lang="en">Write policies in natural language or compose them in the <a href="studio.html">answerr Studio</a> visual editor. The <code>POST /v1/policies/compile</code> endpoint transforms them into canonical JSON AST:</p>
 
-<pre><code>// 1. Doğal Dilde Politika Derleme (Compile Endpoint)
+<pre data-lang="tr"><code>// 1. Doğal Dilde Politika Derleme (Compile Endpoint)
 POST https://api.answerr.me/v1/policies/compile
 Authorization: Bearer ans_live_...
 Content-Type: application/json
@@ -414,6 +452,23 @@ POST https://api.answerr.me/v1/gates/genclik_transfer_kurali/decide
   "state": {"transfer_tutari": 75000, "kullanıcı_yasi": 16, "kyc_onay": true}
 }
 // Sonuç: {"verdict": "DENY", "trace": {"rule_id": "rule_1", "reason": "transfer_tutari > 50000"}}</code></pre>
+<pre data-lang="en"><code>// 1. Natural Language Policy Compilation (Compile Endpoint)
+POST https://api.answerr.me/v1/policies/compile
+Authorization: Bearer ans_live_...
+Content-Type: application/json
+
+{
+  "text": "If transfer_amount > 50000 and user_age < 18 then DENY. If kyc_verified == false then REVIEW. Otherwise ALLOW.",
+  "language": "en",
+  "gate_id": "youth_transfer_rule"
+}
+
+// 2. Register Gate & Direct Decision Evaluation
+POST https://api.answerr.me/v1/gates/youth_transfer_rule/decide
+{
+  "state": {"transfer_amount": 75000, "user_age": 16, "kyc_verified": true}
+}
+// Result: {"verdict": "DENY", "trace": {"rule_id": "rule_1", "reason": "transfer_amount > 50000"}}</code></pre>
           </section>
         </div>
       </div>
