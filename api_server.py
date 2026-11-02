@@ -1459,6 +1459,7 @@ def delete_gate(gate_id: str, request: Request):
 def compile_policy(req: PolicyCompileRequest, request: Request):
     """Natural language -> draft policy. Returns the rules with the sentence each came from,
     open questions, generated tests and executed checks. Nothing is registered."""
+    t0 = time.perf_counter()
     gate_id = (req.gate_id or "draft_policy").strip().lower()
     if not GATE_ID_RE.match(gate_id):
         gate_id = "draft_policy"
@@ -1468,6 +1469,7 @@ def compile_policy(req: PolicyCompileRequest, request: Request):
                                          sample_state=req.sample_state)
     out["security"] = _security(request)
     out["compiled_policy"] = out["policy_spec"]  # older clients
+    out["compile_time_ms"] = round((time.perf_counter() - t0) * 1000, 3)
     return out
 
 

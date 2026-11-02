@@ -106,6 +106,7 @@ def test_compile_does_not_register_and_matches_schema(client):
     fields = {r["field"] for r in b["policy_spec"]["hard_rules"]}
     assert {"tool_name", "amount_usd", "failed_attempts"} <= fields
     assert b["registered"] is False and b["tests_passed"] == b["tests_total"]
+    assert "compile_time_ms" in b and b["compile_time_ms"] >= 0
     assert all(c["passed"] for c in b["checks"])
     assert "studio_draft" not in client.mod.GATE_STORE.gates
     d = client.post("/v1/decide", json={"policy": b["policy_spec"], "state": sample, "questions": q()}).json()

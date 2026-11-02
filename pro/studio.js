@@ -56,7 +56,15 @@
       return;
     }
     last = res.data;
-    msg.textContent = A().t('stDone') + ' · ' + A().fmtNum(res.ms, 0) + ' ms';
+    if (res.data && res.data.compile_time_ms != null) {
+      const srvMs = A().fmtNum(res.data.compile_time_ms, 2);
+      const netMs = A().fmtNum(res.ms, 0);
+      const kLbl = A().t('stKernelMs') || 'Çekirdek';
+      const nLbl = A().t('stNetMs') || 'Ağ';
+      msg.textContent = `${A().t('stDone')} · ${kLbl}: ${srvMs} ms (${nLbl}: ${netMs} ms)`;
+    } else {
+      msg.textContent = A().t('stDone') + ' · ' + A().fmtNum(res.ms, 0) + ' ms';
+    }
     render();
   }
 
@@ -149,9 +157,12 @@
     }
     const d = res.data;
     const m = A().VERDICT[d.verdict];
+    const srvLat = (d && d.latency_ms != null)
+      ? ` · ${A().t('kkSrvMs')} ${A().fmtNum(d.latency_ms, 2)} ms`
+      : '';
     out.hidden = false;
     out.innerHTML = `<b>${A().esc(A().t('stTryOut'))}</b> <span class="${m.cls}">${A().esc(A().t(m.key))}</span> · ${A().esc(d.trace.rule_id)}<br>` +
-      `<span class="muted">${A().esc(d.trace.reason)}</span><br><span class="muted">${A().esc(src)}</span>`;
+      `<span class="muted">${A().esc(d.trace.reason)}</span><br><span class="muted">${A().esc(src)}${srvLat}</span>`;
   }
 
   function download() {

@@ -284,9 +284,11 @@
     const ans = (d.answers && (d.answers.allow || Object.values(d.answers)[0])) || {};
     document.getElementById('sConf').textContent = v === 'REVIEW' ? '—' : Number(ans.confidence || 0).toFixed(2);
     document.getElementById('sRule').textContent = tr.rule_id || '—';
-    document.getElementById('sLat').textContent = A().fmtNum(last.source === 'api' ? last.ms : (d.latency_ms || 0), last.source === 'api' ? 0 : 2) + ' ms';
-    document.getElementById('sSource').textContent = last.source === 'api'
-      ? A().t('kkSrcApi') + ' · ' + A().t('kkSrvMs') + ' ' + A().fmtNum(d.latency_ms, 2) + ' ms'
+    const isApi = last.source === 'api';
+    const kerMs = d.latency_ms != null ? d.latency_ms : (isApi ? null : 0);
+    document.getElementById('sLat').textContent = A().fmtNum(kerMs != null ? kerMs : last.ms, kerMs != null ? 2 : 0) + ' ms';
+    document.getElementById('sSource').textContent = isApi
+      ? `${A().t('kkSrcApi')} ${A().fmtNum(last.ms, 0)} ms · ${A().t('kkSrvMs')} ${A().fmtNum(d.latency_ms, 2)} ms`
       : A().t('kkSrcLocal');
 
     const cands = tr.candidates || [];
