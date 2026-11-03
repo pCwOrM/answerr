@@ -986,7 +986,7 @@ def a_approve(request_id: str, request: Request):
 
 
 @router.get("/v1/commerce/admin-approve-wire", response_class=HTMLResponse, tags=["Admin"])
-def admin_approve_wire(pay_id: str, t: str):
+def admin_approve_wire(pay_id: str, t: str, resend: Optional[str] = None):
     pay_id_clean = (pay_id or "").strip()
     token_clean = (t or "").strip()
     if not pay_id_clean or not token_clean or not mail.check_admin_wire_approve_token(pay_id_clean, token_clean):
@@ -1002,9 +1002,14 @@ def admin_approve_wire(pay_id: str, t: str):
 </html>"""
         )
 
+    is_resend = (resend == "1" or str(resend).lower() == "true")
+    resent_mail = False
+
     try:
         out = _mark_paid(pay_id_clean, "approved via 1-click email")
         p_obj = out.get("payment", {})
+        is_first = bool(out.get("first"))
+
         if p_obj.get("account_id"):
             S.set_account_status(p_obj["account_id"], "active")
             initial_key = None
@@ -1024,7 +1029,12 @@ def admin_approve_wire(pay_id: str, t: str):
                 if not k_row:
                     raw_k, _ = S.create_api_key(p_obj["account_id"], "production", "admin_wire_approval")
                     initial_key = raw_k
-            mail.wire_approved(S.get_account(p_obj["account_id"]), p_obj, api_key=initial_key)
+
+            # Only send customer email on FIRST approval OR if explicitly requested via resend button!
+            if is_first or is_resend:
+                mail.wire_approved(S.get_account(p_obj["account_id"]), p_obj, api_key=initial_key)
+                if is_resend and not is_first:
+                    resent_mail = True
     except Exception as e:
         return HTMLResponse(
             status_code=400,
@@ -1053,6 +1063,31 @@ def admin_approve_wire(pay_id: str, t: str):
 
     p_end = float(p.get("period_end") or (time.time() + 31 * 86400))
     until_str = time.strftime("%d.%m.%Y", time.gmtime(p_end))
+    paid_ts = float(p.get("paid_at") or time.time())
+    paid_at_str = time.strftime("%d.%m.%Y %H:%M UTC", time.gmtime(paid_ts))
+
+    if is_first:
+        badge_style = "background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid #22c55e;"
+        badge_title = "BAŞARIYLA ONAYLANDI & AKTİF EDİLDİ"
+        headline = "answerr Havalesi Onaylandı"
+        sub_desc = "Havale ödemesi teyit edildi, fatura resmi olarak <strong>ÖDENDİ</strong> olarak mühürlendi ve müşterinin lisansı hesabına tanımlandı. <strong>Aktivasyon e-postası ve onaylı fatura müşteriye iletildi.</strong>"
+        status_row_val = '<span style="color:#22c55e;">İlk Onay Yapıldı (Mail Gönderildi)</span>'
+        resend_btn_html = ""
+    elif resent_mail:
+        badge_style = "background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid #22c55e;"
+        badge_title = "MAİL BAŞARIYLA TEKRAR GÖNDERİLDİ"
+        headline = "Aktivasyon Maili Yeniden İletildi"
+        sub_desc = f"Müşteriye (<strong>{email}</strong>) aktivasyon e-postası, API anahtarı ve onaylı ticari fatura PDF'i başarıyla tekrar gönderildi."
+        status_row_val = '<span style="color:#22c55e;">Mail Yeniden İletildi</span>'
+        resend_btn_html = ""
+    else:
+        badge_style = "background: rgba(59, 130, 246, 0.12); color: #60a5fa; border: 1px solid #3b82f6;"
+        badge_title = "BU ÖDEME ZATEN ONAYLANMIŞTI"
+        headline = "Havale Zaten Onaylanmış"
+        sub_desc = f"Bu havale ödemesi daha önce (<strong>{paid_at_str}</strong>) teyit edilmiş ve lisans aktifleştirilmiştir. <strong>Mükerrer işlem yapılmadı ve müşteriye tekrar e-posta gönderilmedi.</strong>"
+        status_row_val = f'<span style="color:#60a5fa;">Daha Önce Onaylandı ({paid_at_str})</span>'
+        resend_link = f"/v1/commerce/admin-approve-wire?pay_id={pay_id_clean}&t={token_clean}&resend=1"
+        resend_btn_html = f'<a href="{resend_link}" class="btn" style="background:#090d16; color:#cbd5e1; border:1px solid #334155; font-size:13px;" onclick="return confirm(\'Müşteriye aktivasyon mailini ve onaylı faturayı tekrar göndermek istiyor musunuz?\');">✉️ Müşteriye Maili Tekrar Gönder</a>'
 
     html_content = f"""<!DOCTYPE html>
 <html lang="tr">
@@ -1063,7 +1098,7 @@ def admin_approve_wire(pay_id: str, t: str):
   <style>
     body {{ background: #07090e; color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }}
     .card {{ background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; max-width: 600px; width: 100%; padding: 36px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); }}
-    .badge {{ display: inline-block; padding: 6px 14px; border-radius: 9999px; font-size: 13px; font-weight: 700; text-transform: uppercase; background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid #22c55e; margin-bottom: 20px; }}
+    .badge {{ display: inline-block; padding: 6px 14px; border-radius: 9999px; font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; }}
     h1 {{ font-size: 24px; margin: 0 0 10px; font-weight: 800; color: #fff; }}
     p.sub {{ color: #94a3b8; font-size: 14px; margin: 0 0 24px; line-height: 1.5; }}
     .box {{ background: #090d16; border: 1px solid #1e293b; border-radius: 10px; padding: 18px; margin-bottom: 20px; }}
@@ -1076,21 +1111,23 @@ def admin_approve_wire(pay_id: str, t: str):
 </head>
 <body>
   <div class="card">
-    <div class="badge">BAŞARIYLA ONAYLANDI & AKTİF EDİLDİ</div>
-    <h1>answerr Havalesi Onaylandı</h1>
-    <p class="sub">Havale ödemesi teyit edildi, fatura resmi olarak <strong>ÖDENDİ</strong> olarak mühürlendi ve müşterinin 250.000 kararlık lisansı hesabına tanımlandı.</p>
+    <div class="badge" style="{badge_style}">{badge_title}</div>
+    <h1>{headline}</h1>
+    <p class="sub">{sub_desc}</p>
     
     <div class="box">
       <div class="row"><span class="label">Resmi Fatura No:</span><span class="val">{inv}</span></div>
       <div class="row"><span class="label">Müşteri E-Posta:</span><span class="val">{email}</span></div>
       <div class="row"><span class="label">Aktif Plan:</span><span class="val">{plan}</span></div>
       <div class="row"><span class="label">Tahsil Edilen Tutar:</span><span class="val">{tot}</span></div>
+      <div class="row"><span class="label">İşlem Durumu:</span><span class="val">{status_row_val}</span></div>
       <div class="row"><span class="label">Lisans Geçerliliği:</span><span class="val" style="color:#22c55e;">{until_str} Tarihine Kadar Aktif</span></div>
     </div>
 
-    <div style="display:flex; gap:12px; margin-top:24px;">
+    <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:24px;">
       <a href="{pdf_url}" target="_blank" class="btn">📄 Onaylı Fatura PDF'ini Aç</a>
-      <a href="https://answerr.me/pro/console/" class="btn" style="background:#1e293b; color:#94a3b8;">Konsola Git</a>
+      <a href="https://answerr.me/pro/console/" class="btn" style="background:#1e293b; color:#94a3b8; border:1px solid #334155;">Konsola Git</a>
+      {resend_btn_html}
     </div>
   </div>
 </body>

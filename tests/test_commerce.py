@@ -535,3 +535,19 @@ def test_admin_wire_approval_invoice_signed_url_and_email_templates(client):
     assert pdf_res.status_code == 200, f"Expected 200 OK without login, got {pdf_res.status_code} {pdf_res.text}"
     assert pdf_res.headers["content-type"] == "application/pdf"
     assert pdf_res.content.startswith(b"%PDF-1.4")
+
+    # 5. Second click scenario: Idempotency & Duplicate Email Prevention
+    mail_count_before = len(mail.OUTBOX)
+    r_second = client.get(f"/v1/commerce/admin-approve-wire?pay_id={pay_id}&t={token}")
+    assert r_second.status_code == 200
+    html_second = r_second.text
+    assert "BU ÖDEME ZATEN ONAYLANMIŞTI" in html_second
+    assert "Mükerrer işlem yapılmadı" in html_second
+    assert len(mail.OUTBOX) == mail_count_before, "Duplicate email was sent on 2nd click!"
+
+    # 6. Intentional Resend scenario (&resend=1)
+    r_resend = client.get(f"/v1/commerce/admin-approve-wire?pay_id={pay_id}&t={token}&resend=1")
+    assert r_resend.status_code == 200
+    html_resend = r_resend.text
+    assert "MAİL BAŞARIYLA TEKRAR GÖNDERİLDİ" in html_resend
+    assert len(mail.OUTBOX) == mail_count_before + 1, "Resend email was not sent!"
