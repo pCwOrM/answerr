@@ -1043,8 +1043,16 @@ def admin_approve_wire(pay_id: str, t: str):
     inv = billing.invoice_number(p)
     email = b.get("email") or p.get("created_by") or "-"
     plan = str(p.get("plan") or "-").upper()
-    tot = f"{p.get('total_try', 0)} ₺"
-    pdf_url = f"https://api.answerr.me/v1/account/payments/{pay_id_clean}/invoice.pdf"
+    cur = (p.get("currency") or "USD").upper()
+    amt = float(p.get("total_try") or p.get("total") or 0)
+    tot = f"{amt:,.2f} {cur}"
+
+    # Signed invoice download URL (no session login required to view the PDF)
+    inv_dl_token = mail.invoice_download_token(pay_id_clean)
+    pdf_url = f"https://api.answerr.me/v1/invoice/{pay_id_clean}.pdf?t={inv_dl_token}"
+
+    p_end = float(p.get("period_end") or (time.time() + 31 * 86400))
+    until_str = time.strftime("%d.%m.%Y", time.gmtime(p_end))
 
     html_content = f"""<!DOCTYPE html>
 <html lang="tr">
@@ -1077,7 +1085,7 @@ def admin_approve_wire(pay_id: str, t: str):
       <div class="row"><span class="label">Müşteri E-Posta:</span><span class="val">{email}</span></div>
       <div class="row"><span class="label">Aktif Plan:</span><span class="val">{plan}</span></div>
       <div class="row"><span class="label">Tahsil Edilen Tutar:</span><span class="val">{tot}</span></div>
-      <div class="row"><span class="label">Hediye Dönem:</span><span class="val" style="color:#22c55e;">29-31 Ekim Ücretsiz Tanımlandı</span></div>
+      <div class="row"><span class="label">Lisans Geçerliliği:</span><span class="val" style="color:#22c55e;">{until_str} Tarihine Kadar Aktif</span></div>
     </div>
 
     <div style="display:flex; gap:12px; margin-top:24px;">

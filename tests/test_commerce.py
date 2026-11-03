@@ -492,3 +492,46 @@ def test_csv_export_neutralises_formulas_and_mail_headers_survive_newlines(clien
     decide(client, key, external_id="=HYPERLINK(\"http://x\")")
     csv_txt = client.get("/v1/account/decisions.csv", headers=auth(s)).text
     assert "'=HYPERLINK" in csv_txt
+
+
+def test_admin_wire_approval_invoice_signed_url_and_email_templates(client):
+    from commerce import mail, store as S
+    # 1. Reply-to check
+    m = mail._msg("customer@example.com", "Test Subject", "Hello Plaintext", reply_to=None)
+    assert m["Reply-To"] == "ask@answerr.me"
+    assert "pcworm@pcworm.net" not in (m["Reply-To"] or "")
+
+    # 2. AnswerrEmailMessage transparent unwrap
+    m_rich = mail._msg("customer@example.com", "Rich Subject", "Hello Plaintext", html="<h1>Hello HTML</h1>")
+    assert m_rich.is_multipart()
+    assert m_rich.get_content().strip() == "Hello Plaintext"
+
+    # 3. Create a real account and test wire payment and hit /v1/commerce/admin-approve-wire
+    s, key, acc_id = signup(client, email="corp_wire@example.com", company="Corp Client")
+    pay_id = "pay_test_" + str(int(time.time()))
+    S.conn().execute(
+        """INSERT INTO payments (id, account_id, kind, plan, cycle, net_try, vat_try, total_try, currency, provider, conversation_id, status, created_at, billing_json)
+           VALUES (?, ?, 'plan', 'pro', 'monthly', '99.00', '0.00', '99.00', 'USD', 'bank_wire', ?, 'initiated', ?, ?)""",
+        (pay_id, acc_id, "conv_" + pay_id, time.time(), json.dumps({"email": "corp_wire@example.com", "legal_name": "Corp Client"}))
+    )
+    S.conn().commit()
+
+    token = mail.admin_wire_approve_token(pay_id)
+    r = client.get(f"/v1/commerce/admin-approve-wire?pay_id={pay_id}&t={token}")
+    assert r.status_code == 200, r.text
+    html_page = r.text
+    assert "BAŞARIYLA ONAYLANDI" in html_page
+    assert "99.00 USD" in html_page
+    assert "29-31 Ekim" not in html_page
+
+    # 4. Extract PDF link from the approval page HTML and verify public signed download without session auth
+    match = re.search(r'href="([^"]+invoice[^"]+)"', html_page)
+    assert match, "No invoice link found in admin approval page!"
+    pdf_url = match.group(1)
+    assert "?t=" in pdf_url or "?token=" in pdf_url
+
+    rel_url = pdf_url.replace("https://api.answerr.me", "")
+    pdf_res = client.get(rel_url)  # NO Authorization header!
+    assert pdf_res.status_code == 200, f"Expected 200 OK without login, got {pdf_res.status_code} {pdf_res.text}"
+    assert pdf_res.headers["content-type"] == "application/pdf"
+    assert pdf_res.content.startswith(b"%PDF-1.4")

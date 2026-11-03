@@ -5,7 +5,7 @@ Configuration (environment):
   SMTP_HOST (mail.answerr.me) SMTP_PORT (465) SMTP_USER (ask@answerr.me) SMTP_PASSWORD
   MAIL_FROM_NAME   display name, default "answerr · Werr Technology"
   MAIL_NOTIFY_TO   where requests are delivered, default ask@answerr.me
-  MAIL_REPLY_TO    Reply-To for the confirmation, default "Volkan Dagli <ask@answerr.me>, pcworm@pcworm.net"
+  MAIL_REPLY_TO    Reply-To for the confirmation, default "answerr Support <ask@answerr.me>"
   ANSWERR_ACCESS_LOG  JSONL log of requests, default /var/lib/answerr/access_requests.jsonl
 Nothing is sent when SMTP_PASSWORD is empty; the request is still logged.
 """
@@ -35,7 +35,7 @@ def cfg() -> Dict[str, Any]:
         "password": os.environ.get("SMTP_PASSWORD", ""),
         "from_name": os.environ.get("MAIL_FROM_NAME", "answerr · Werr Technology"),
         "notify_to": os.environ.get("MAIL_NOTIFY_TO", "ask@answerr.me"),
-        "reply_to": os.environ.get("MAIL_REPLY_TO", "Volkan Dagli <ask@answerr.me>, pcworm@pcworm.net"),
+        "reply_to": os.environ.get("MAIL_REPLY_TO", "answerr Support <ask@answerr.me>"),
         "log": os.environ.get("ANSWERR_ACCESS_LOG", "/var/lib/answerr/access_requests.jsonl"),
     }
 

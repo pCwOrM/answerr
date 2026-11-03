@@ -21,15 +21,32 @@ def console_url() -> str:
     return os.environ.get(CONSOLE_URL_ENV, "https://answerr.me/pro/console/").rstrip("/") + "/"
 
 
-def _msg(to: str, subject: str, body: str, reply_to: Optional[str] = None) -> EmailMessage:
+class AnswerrEmailMessage(EmailMessage):
+    """EmailMessage subclass that transparently unwraps multipart/alternative when get_content()
+    is called in test harnesses or existing consumers."""
+    def get_content(self, *args, **kwargs):
+        if self.is_multipart():
+            part = self.get_body(preferencelist=("plain", "html"))
+            if part:
+                return part.get_content(*args, **kwargs)
+        return super().get_content(*args, **kwargs)
+
+
+def _msg(to: str, subject: str, body: str, reply_to: Optional[str] = None, html: Optional[str] = None) -> EmailMessage:
     c = AM.cfg()
-    m = EmailMessage()
+    m = AnswerrEmailMessage()
     m["From"] = formataddr((c["from_name"], c["user"]))
     m["To"] = to
-    m["Reply-To"] = reply_to or c["reply_to"]
+    # Customer reply-to: strictly ask@answerr.me unless explicitly customized
+    clean_reply = reply_to or "ask@answerr.me"
+    if "pcworm@pcworm.net" in clean_reply and reply_to is None:
+        clean_reply = "ask@answerr.me"
+    m["Reply-To"] = clean_reply
     m["Subject"] = " ".join(str(subject).split())[:200]     # customer-supplied names must not break the header
     m["Message-ID"] = make_msgid(domain="answerr.me")
     m.set_content(body)
+    if html:
+        m.add_alternative(html, subtype="html")
     return m
 
 
@@ -144,6 +161,8 @@ def plan_request(account: dict, req: dict, requester: str, payment_id: Optional[
 ======================================================================
 """
 
+    proforma_dl_url = f"https://api.answerr.me/v1/invoice/{pay_id}.pdf?t={invoice_download_token(pay_id)}" if pay_id else "-"
+
     admin_body = """Yeni answerr Banka Havalesi / Plan Talebi Alındı:
 
 Hesap        : {id}
@@ -152,14 +171,14 @@ E-posta      : {email}
 Mevcut Plan  : {cur}
 Talep Edilen : {plan} / {cycle}
 Ödeme ID     : {pay_id}
-Proforma PDF : https://api.answerr.me/v1/account/payments/{pay_id}/invoice.pdf
+Proforma PDF : {proforma_url}
 Not          : {note}
 Talep eden   : {who}
 {approve_section}
 Alternatif Konsol Onayı: POST /v1/admin/plan-requests/{rid}/approve ya da konsol › Yönetim.
 """.format(
         id=account["id"], email=account["email"], company=account.get("company") or "-", cur=account.get("plan"),
-        plan=req["plan"], cycle=req["cycle"], pay_id=pay_id or "-", note=req.get("note") or "-", who=requester, rid=req["id"],
+        plan=req["plan"], cycle=req["cycle"], pay_id=pay_id or "-", proforma_url=proforma_dl_url, note=req.get("note") or "-", who=requester, rid=req["id"],
         approve_section=approve_section
     )
 
@@ -254,7 +273,17 @@ Base USDC      : 0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7
 Havaleniz banka hesabımıza ulaştığında ekibimiz tarafından onaylanacak; planınız ve API anahtarınız anında aktif edilerek tarafınıza resmi ÖDENDİ faturanız ile birlikte aktivasyon e-postası iletilecektir.
 """ + SIGNATURE_TR
 
-    conf_msg = _msg(requester, subj, body)
+    from . import mail_templates
+    req_html = mail_templates.render_plan_request_html(
+        lang=lang,
+        plan_name=plan_name,
+        cycle_name=cycle_name,
+        tot_str=tot_display,
+        inv_no=inv_no,
+        inv_dl_url=inv_dl_url,
+        pay_id=pay_id or "-",
+    )
+    conf_msg = _msg(requester, subj, body, html=req_html)
     conf_msg["Bcc"] = "ask@answerr.me"
 
     # Attach Proforma Invoice PDF if available
@@ -434,11 +463,13 @@ def renewal_reminder(account: dict, expires_at: float) -> None:
     _dispatch([_msg(account["email"], subj, body)])
 
 
-def wire_approved(account: dict, pay: dict, api_key: Optional[str] = None) -> None:
+def wire_approved(account: Optional[dict], pay: dict, api_key: Optional[str] = None) -> None:
     c = AM.cfg()
     from . import billing
     import json, time
-    lang = account.get("lang") or "tr"
+    account = account or {}
+    b = json.loads(pay.get("billing_json") or "{}") if isinstance(pay.get("billing_json"), str) else (pay.get("billing") or {})
+    lang = account.get("lang") or b.get("lang") or ("tr" if pay.get("currency") == "TRY" else "en")
     if lang == "en":
         plan_name = {"gelistirici": "Developer", "pro": "Pro", "kurumsal": "Enterprise"}.get(pay.get("plan"), str(pay.get("plan") or "-").title())
         cycle_name = "Yearly (12 Months)" if pay.get("cycle") == "yearly" else "Monthly (1 Month)"
@@ -450,7 +481,7 @@ def wire_approved(account: dict, pay: dict, api_key: Optional[str] = None) -> No
     tot_str = f"{float(pay.get('total_try') or 0):,.2f} {pay.get('currency', 'USD')}"
     p_end = float(pay.get("period_end") or (time.time() + 31 * 86400))
     until_str = _tr_date(p_end, "%d.%m.%Y")
-    to = (account.get("billing_json") and json.loads(account["billing_json"]).get("invoice_email")) or account.get("email")
+    to = (account.get("billing_json") and json.loads(account["billing_json"]).get("invoice_email")) or account.get("email") or b.get("email") or b.get("invoice_email") or pay.get("created_by") or "ask@answerr.me"
 
     key_section_tr = f"""
 API ANAHTARINIZ VE ENTEGRASYON BİLGİLERİ
@@ -535,7 +566,19 @@ Mali mühürlü yasal e-Arşiv / e-Faturanız Gelir İdaresi Başkanlığı (Gİ
 answerr'ı tercih ettiğiniz için teşekkür ederiz.
 """ + SIGNATURE_TR
 
-    m = _msg(to, subj, body)
+    from . import mail_templates
+    wire_html = mail_templates.render_wire_approved_html(
+        lang=lang,
+        plan_name=plan_name,
+        cycle_name=cycle_name,
+        until_str=until_str,
+        tot_str=tot_str,
+        inv_no=inv_no,
+        inv_dl_url=inv_dl_url,
+        pay_id=pay.get("payment_id") or pay.get("id"),
+        api_key=api_key,
+    )
+    m = _msg(to, subj, body, html=wire_html)
     m["Bcc"] = "ask@answerr.me"
     try:
         pdf_bytes = billing.generate_answerr_invoice_pdf(account, pay)

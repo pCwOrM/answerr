@@ -587,8 +587,8 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
     c.setFont(f_bold, 7.2)
     c.setFillColor(colors.white)
     c.drawString(24 * mm, y_table - 4.5 * mm, "DESCRIPTION")
-    c.drawString(108 * mm, y_table - 4.5 * mm, "PERIOD / TERM")
-    c.drawRightString(148 * mm, y_table - 4.5 * mm, "RATE")
+    c.drawString(98 * mm, y_table - 4.5 * mm, "PERIOD / TERM")
+    c.drawRightString(146 * mm, y_table - 4.5 * mm, "RATE")
     c.drawRightString(width - 24 * mm, y_table - 4.5 * mm, "AMOUNT (%0 KDV)")
 
     # Table Item Box
@@ -597,20 +597,27 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
     c.setStrokeColor(colors.HexColor("#E2E8F0"))
     c.rect(20 * mm, y_row, width - 40 * mm, 13.5 * mm, fill=1, stroke=1)
 
-    plan_title = {"gelistirici": "Geliştirici (Developer) Plan", "pro": "Pro Plan", "kurumsal": "Kurumsal (Enterprise) Plan"}.get(pay.get("plan"), str(pay.get("plan") or "Pro").title())
-    cycle_title = "Yıllık (366 Gün / 12 Ay)" if pay.get("cycle") == "yearly" else "Aylık (31 Gün / 1 Ay)"
+    is_intl = (curr != "TRY" or (acc or {}).get("lang") == "en")
+    if is_intl:
+        plan_title = {"gelistirici": "Developer Plan", "pro": "Pro Plan", "kurumsal": "Enterprise Plan"}.get(pay.get("plan"), str(pay.get("plan") or "Pro").title() + " Plan")
+        cycle_title = "Yearly (12 Mos / 366 Days)" if pay.get("cycle") == "yearly" else "Monthly (1 Mo / 31 Days)"
+        sub_desc = "Teknopark R&D Software Exemption (Law No. 4691 & 3065) — 0% VAT"
+    else:
+        plan_title = {"gelistirici": "Geliştirici Planı", "pro": "Pro Plan", "kurumsal": "Kurumsal Plan"}.get(pay.get("plan"), str(pay.get("plan") or "Pro").title() + " Plan")
+        cycle_title = "Yıllık (366 Gün / 12 Ay)" if pay.get("cycle") == "yearly" else "Aylık (31 Gün / 1 Ay)"
+        sub_desc = "Teknopark Ar-Ge Yazılım İstisnası (4691 s. TGB & 3065 s. KDV K. Geçici 20/1) — %0 KDV"
 
     c.setFont(f_bold, 8.5)
     c.setFillColor(colors.HexColor("#0F172A"))
     c.drawString(24 * mm, y_row + 8 * mm, f"answerr PRO API Subscription — {plan_title}")
     c.setFont(f_reg, 7)
     c.setFillColor(colors.HexColor("#64748B"))
-    c.drawString(24 * mm, y_row + 3.5 * mm, "Teknopark Ar-Ge Yazılım İstisnası (4691 s. TGB & 3065 s. KDV K. Geçici 20/1) — %0 KDV")
+    c.drawString(24 * mm, y_row + 3.5 * mm, sub_desc)
 
-    c.setFont(f_reg, 7.8)
+    c.setFont(f_reg, 7.5)
     c.setFillColor(colors.HexColor("#334155"))
-    c.drawString(108 * mm, y_row + 6 * mm, cycle_title)
-    c.drawRightString(148 * mm, y_row + 6 * mm, tot_str)
+    c.drawString(98 * mm, y_row + 6 * mm, cycle_title)
+    c.drawRightString(146 * mm, y_row + 6 * mm, tot_str)
 
     c.setFont(f_bold, 8.8)
     c.setFillColor(colors.HexColor("#047857") if is_paid else colors.HexColor("#B45309"))
@@ -673,17 +680,21 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
         c.roundRect(20 * mm, y_box + 5 * mm, width - 40 * mm, 21 * mm, 2 * mm, fill=1, stroke=1)
         c.setFont(f_bold, 8)
         c.setFillColor(colors.HexColor("#047857"))
-        c.drawString(24 * mm, y_box + 15 * mm, "PAYMENT VERIFIED & RECORDED / ÖDEME TEYİT EDİLDİ")
+        c.drawString(24 * mm, y_box + 15 * mm, "PAYMENT VERIFIED & RECORDED / ÖDEME TEYİT EDİLDİ" if not is_intl else "PAYMENT VERIFIED & RECORDED")
         c.setFont(f_reg, 7.4)
         c.setFillColor(colors.HexColor("#065F46"))
-        c.drawString(24 * mm, y_box + 10.5 * mm, f"Ödeme Kaydı: {pay.get('payment_id') or pay.get('id')} ({method_label}) — Teyit: {time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime(paid_ts))}")
-        c.drawString(24 * mm, y_box + 6 * mm, "Bu ticari fatura resmi B2B hizmet teslim belgesidir. 4691 sayılı Kanun kapsamında %0 KDV istisnalıdır.")
-        c.drawString(24 * mm, y_box + 2 * mm, "Mali mühürlü resmi e-Arşiv / e-Faturanız Gelir İdaresi Başkanlığı (GİB) portalı üzerinden düzenlenmektedir.")
+        c.drawString(24 * mm, y_box + 10.5 * mm, f"Payment Ref: {pay.get('payment_id') or pay.get('id')} ({method_label}) — Confirmed: {time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime(paid_ts))}")
+        if is_intl:
+            c.drawString(24 * mm, y_box + 6 * mm, "Official commercial B2B software license delivery invoice. 0% VAT pursuant to Tech Park R&D Software Exemption.")
+            c.drawString(24 * mm, y_box + 2 * mm, "Corporate verified receipt. Electronic fiscal record registered with Tax Authority (GIB) portal.")
+        else:
+            c.drawString(24 * mm, y_box + 6 * mm, "Bu ticari fatura resmi B2B hizmet teslim belgesidir. 4691 sayılı Kanun kapsamında %0 KDV istisnalıdır.")
+            c.drawString(24 * mm, y_box + 2 * mm, "Mali mühürlü resmi e-Arşiv / e-Faturanız Gelir İdaresi Başkanlığı (GİB) portalı üzerinden düzenlenmektedir.")
 
     # Footer
     c.setFont(f_reg, 6.8)
     c.setFillColor(colors.HexColor("#94A3B8"))
-    c.drawCentredString(width / 2.0, 10 * mm, "ITouch Bilişim Sistemleri Ltd. Şti. (ITouch Systems)  •  Çukurova Univ. Technopark No: 4/1-26 Adana / Turkey  •  ask@answerr.me  •  https://answerr.me")
+    c.drawCentredString(width / 2.0, 10 * mm, "ITouch Bilisim Sistemleri Ltd. Sti. (ITouch Systems)  •  Cukurova Univ. Technopark No: 4/1-26 Adana / Turkey  •  ask@answerr.me  •  https://answerr.me")
 
     c.showPage()
     c.save()
