@@ -330,7 +330,7 @@ class WerrEngine {
   }
 
   /**
-   * Fast 2D Mandelbrot escape evaluation over resolution x resolution patch.
+   * Fast 2D polynomial escape evaluation over resolution x resolution patch.
    */
   computeMandelbrotPatch(cx, cy, zoom, res, maxIter) {
     const scale = 2.0 / zoom;

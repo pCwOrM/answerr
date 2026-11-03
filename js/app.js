@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     tr: {
       heroTitle: "<span class=\"brand-text-answe\">answe</span><span class=\"brand-text-r1\">r</span><span class=\"brand-text-r2\">r</span>",
       heroMotto: "\"Doğal diyalog gerektiğinde <strong>answerr</strong>, mikrosaniyelik refleks gerektiğinde <strong>werr</strong>.\"",
-      heroSubtitle: "Sıfır gecikmeli, 0-Byte VRAM fraktal omurilik karar çalışma alanı. Durum verinizi girin; Mandelbrot dinamikleriyle deterministik, tipli ve anlık karar üretin.",
+      heroSubtitle: "Sıfır gecikmeli, 0-Byte VRAM prosedürel karar çalışma alanı. Durum verinizi girin; polinom kaçış ve prosedürel sınır dinamikleriyle deterministik, tipli ve anlık karar üretin.",
       tagSpeed: "⚡ < 0.5 ms Refleks",
       tagZeroMem: "💾 0-Byte VRAM",
       tagHallucination: "🛡️ Sıfır Halüsinasyon",
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
       keylessBadge: "werr Sistem-1",
       keylessBadgeTag: "(Keyless)",
       step1: "1/3 Durum matrisi ve tipli soru ayrıştırılıyor (System-2 State)...",
-      step2: "2/3 werr: Mandelbrot ∂M kaçış dinamiği hesaplanıyor (< 0.5ms)...",
+      step2: "2/3 werr: Polinom kaçış ve sınır dinamiği (∂M) hesaplanıyor (< 0.5ms)...",
       step3: "3/3 Sistem-1 telemetrisi ve karar doğrulanıyor...",
       hudTitle: "⚡ werr Sistem-1 Omurilik Refleksi",
       hudLatency: "ms",
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
       keylessBadge: "werr System-1",
       keylessBadgeTag: "(Keyless)",
       step1: "1/3 Compiling input into state vector...",
-      step2: "2/3 werr: Evaluating Mandelbrot escape dynamics (< 0.5ms)...",
+      step2: "2/3 werr: Evaluating polynomial escape dynamics (< 0.5ms)...",
       step3: "3/3 Synthesizing System-1 telemetry and actions...",
       hudTitle: "⚡ werr System-1 Spinal Reflex",
       hudLatency: "ms",
@@ -756,7 +756,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const content = `================================================================================
      ANSWERR (ADAPTIVE NON-TENSOR SIGNAL WAVE & ERROR REFLEX RESONATOR)
-                 24-BYTE MANDELBROT SEED TELEMETRY DUMP
+                 24-BYTE PROCEDURAL SEED TELEMETRY DUMP
 ================================================================================
 Timestamp               : ${dateStr}
 Inference Architecture  : werr Zero-Memory Fractal System-One Reflex (∂M Boundary)

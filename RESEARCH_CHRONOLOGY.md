@@ -86,7 +86,7 @@
 **answerr** is a next-generation **Dual-Cognition AI platform** that bridges the divide between human conversational reasoning and deterministic, zero-latency software execution:
 
 1. **System-Two Deliberation (LLM / Cloud AI):** Ingests conversational dialogue, extracts operational state vectors, synthesizes strategic explanations, and generates production code. Integrates seamlessly with Google Gemini 2.5 Flash and OpenAI-compatible pipelines.
-2. **System-One Reflex Arc ([werr](https://github.com/pCwOrM/werr)):** Derives instant, strongly-typed decisions (`noul`, `choice`, `score`) in **$< 0.5$ ms** with **0 Bytes of VRAM** via Mandelbrot fractal escape boundary dynamics ($\partial \mathcal{M}$).
+2. **System-One Reflex Arc ([werr](https://github.com/pCwOrM/werr)):** Derives instant, strongly-typed decisions (`noul`, `choice`, `score`) in **$< 0.5$ ms** with **0 Bytes of VRAM** via procedural boundary and polynomial escape dynamics ($\partial \mathcal{M}$).
 3. **On-Chain EVM Decision Oracle ([werracle](https://github.com/pCwOrM/werracle)):** Extends System-One reflex decisions to Web3 smart contracts in a single 32-byte storage slot (~20k gas) for intra-block flash-loan defense and dynamic fee governance.
 4. **Bio-Synthetic Neuromorphic Connectome ([WerrSoma](https://github.com/Lexovian/WerrSoma)):** Integrates the complete Princeton FlyWire *Drosophila* whole-brain connectome (158,262 biological neurons, 3.99M synapses) with `werr`. Enables sub-4ms sensory-motor flight reflex loops, homeostatic bioprotection, and zero-VRAM neuromorphic agency ([DOI: 10.5281/zenodo.23072929](https://doi.org/10.5281/zenodo.23072929), Concept: [10.5281/zenodo.22996625](https://doi.org/10.5281/zenodo.22996625), [Live 3D Portal](https://werrsoma.answerr.me/)).
 5. **Procedural Fractal Pedagogy ([WerreduR](https://github.com/jesmaat/WerreduR)):** Powers client-side intelligent tutoring systems and real-time student cognitive scaffolding via zero-storage Mandelbrot boundary reflexes and 1PL Rasch-validated productive disequilibrium ([DOI: 10.5281/zenodo.23128224 v4.0](https://doi.org/10.5281/zenodo.23128224), Concept: [10.5281/zenodo.22999420](https://doi.org/10.5281/zenodo.22999420), [Live Simulator](https://pcworm.github.io/WerreduR/), Target: Q1 AIED Journal, TÜRKPATENT Priority: TR 2026/016285).
@@ -118,7 +118,7 @@ Instead of forcing heavy 70B+ parameter neural networks to spend thousands of mi
                        │    0-Byte VRAM • < 0.5 ms Kernel Exec    │
                        └────────────────────┬─────────────────────┘
                                             │
-                     Evaluates Mandelbrot Boundary Escape Dynamics (∂M)
+                     Evaluates Procedural Boundary & Polynomial Escape Dynamics (∂M)
                      - noul: Strongly-Typed Boolean (ALLOWED / DENIED)
                      - choice: Discrete Route Partition (Q1 ~ Q4)
                      - score: Continuous Severity / Priority Rank
@@ -230,7 +230,7 @@ Tested on the official [nekuda-ai/WindTunnel](https://github.com/nekuda-ai/WindT
 * **Tasks Solved:** **49 / 49 (100.0%)**
 * **Decision Latency:** **3.35 ms median** (~955× faster than Jev + Mercury 2.5's 3,200 ms; ~2,500× faster than GPT-6 Astra)
 * **Model / API Cost:** **$0.0000** (vs $0.1230 for GPT-6 Astra and $0.1850 for Claude 3.7 Sonnet)
-* **Memory / VRAM:** **0 Bytes** (pure procedural Mandelbrot escape dynamics)
+* **Memory / VRAM:** **0 Bytes** (pure procedural boundary and polynomial escape dynamics)
 * **Air-Gap & Privacy:** **100% Local / Zero Cloud Data Leakage**
 * **Official Issue Submission:** [nekuda-ai/WindTunnel#25](https://github.com/nekuda-ai/WindTunnel/issues/25)
 

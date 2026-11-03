@@ -802,7 +802,7 @@ class WerrParamsSpec(BaseModel):
     cadence_alpha: Optional[float] = Field(None, ge=0.0, le=1.0, description="Resonance blending weight (alpha)")
     temp_choice: Optional[float] = Field(None, ge=0.05, le=10.0, description="Softmax temperature for 4-quadrant choice")
     resolution: Optional[int] = Field(None, ge=8, le=128, description="Manifold sampling resolution")
-    max_iter: Optional[int] = Field(None, ge=8, le=256, description="Mandelbrot escape iteration ceiling")
+    max_iter: Optional[int] = Field(None, ge=8, le=256, description="Polynomial escape iteration ceiling")
     cx: Optional[float] = Field(None, ge=-5.0, le=5.0, description="24B seed real coordinate (c_x)")
     cy: Optional[float] = Field(None, ge=-5.0, le=5.0, description="24B seed imaginary coordinate (c_y)")
     zoom: Optional[float] = Field(None, ge=0.01, le=1000000.0, description="24B seed magnification factor (zoom)")
@@ -908,8 +908,8 @@ WERR_PRESETS: Dict[str, Dict[str, Any]] = {
         "id": "universal_cusp",
         "title_tr": "Saf Fraktal · Evrensel Cusp ([0,0,0] · Sıfır Sözlük)",
         "title_en": "Pure Fractal · Universal Cusp ([0,0,0] · Zero Ontology)",
-        "purpose_tr": "Alan sözlüklerini kapatarak yalnızca 16B durum vektörünün 24-bayt Mandelbrot sınırındaki (∂M) saf geometrik yörüngesini çalıştırır.",
-        "purpose_en": "Locks domain ontologies off and evaluates pure 16D state projection on the 24-byte Mandelbrot boundary (∂M).",
+        "purpose_tr": "Alan sözlüklerini kapatarak yalnızca 16B durum vektörünün 24-bayt prosedürel sınır üzerindeki (∂M) polinom kaçış yörüngesini çalıştırır.",
+        "purpose_en": "Locks domain ontologies off and evaluates pure 16D state projection via procedural boundary dynamics (∂M).",
         "cx": -0.7436438870371587,
         "cy": 0.1318259042053119,
         "zoom": 50.0,
@@ -1393,7 +1393,7 @@ def get_werr_parameters():
             "cadence_alpha": {"type": "float", "default": 0.50, "min": 0.0, "max": 1.0, "description": "Resonance blending weight (α)"},
             "temp_choice": {"type": "float", "default": 1.25, "min": 0.05, "max": 10.0, "description": "4-quadrant choice softmax temperature (τ)"},
             "resolution": {"type": "int", "default": 36, "min": 8, "max": 128, "description": "Manifold sampling resolution (N)"},
-            "max_iter": {"type": "int", "default": 36, "min": 8, "max": 256, "description": "Mandelbrot escape iteration ceiling (K)"},
+            "max_iter": {"type": "int", "default": 36, "min": 8, "max": 256, "description": "Polynomial escape iteration ceiling (K)"},
         },
     }
 

@@ -209,7 +209,7 @@ def run_tests():
                 if seal:
                     print(f"      Seal: {seal[:24]}...")
                 if entropy is not None:
-                    print(f"      Fractal Escape Entropy: {entropy:.4f}")
+                    print(f"      Polynomial Escape Entropy: {entropy:.4f}")
                 if "autonomous_resolution" in res.get("trace", {}):
                     t = res["trace"]
                     print(f"      Autonomous Reflex: resolved={t.get('autonomous_resolution')}, confidence={t.get('confidence_index')}, band={t.get('confidence_band')}")

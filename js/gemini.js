@@ -642,7 +642,7 @@ Keep the tone concise, scientific, and professional.`;
 
       logic = isTurkish
         ? `werr motoru 24 baytlık $(c_x, c_y)$ tohumunu Mandelbrot sınırında modüle etti. Kaçış dinamiği (${wevvResult.latencyMs} ms) ve kuadran enerjisi hesaplanarak ${ans.decision ? 'pozitif kararlılık/aksiyon alanı doğrulandı' : 'hata/güvenlik toleransı aşılarak negatif karar üretildi'}.`
-        : `The werr engine perturbed the 24-byte boundary seed along dM. Escape dynamics (${wevvResult.latencyMs} ms) indicated ${ans.decision ? 'positive action manifold confirmed' : 'divergence crossing safety tolerance'}.`;
+        : `The werr engine perturbed the 24-byte boundary seed along dM. Polynomial escape dynamics (${wevvResult.latencyMs} ms) indicated ${ans.decision ? 'positive action manifold confirmed' : 'divergence crossing safety tolerance'}.`;
 
     } else if (ans.type === 'choice') {
       const selectedChoice = ans.label || ans.choice;
@@ -691,7 +691,7 @@ Keep the tone concise, scientific, and professional.`;
 
     const text = isTurkish
       ? `${verdict}\n\n**Sistem-1 Fraktal Refleksi:** ${logic}\n\n**Önerilen Operasyonel Aksiyon:** ${action}\n\n*(🛡️ werr Sıfır-Halüsinasyon Garantisi: Karar, Mandelbrot fraktal kaçış geometrisi üzerinden deterministik olarak üretilmiştir.)*`
-      : `${verdict}\n\n**System-1 Fractal Reflex:** ${logic}\n\n**Recommended Operational Action:** ${action}\n\n*(🛡️ werr Zero-Hallucination Guarantee: Decision derived deterministically via Mandelbrot fractal escape geometry.)*`;
+      : `${verdict}\n\n**System-1 Fractal Reflex:** ${logic}\n\n**Recommended Operational Action:** ${action}\n\n*(🛡️ werr Zero-Hallucination Guarantee: Decision derived deterministically via procedural boundary and polynomial escape dynamics.)*`;
 
     return {
       success: true,
