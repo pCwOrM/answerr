@@ -694,7 +694,7 @@ app.add_middleware(
                    "http://127.0.0.1:8000", "http://127.0.0.1:5500"],
     allow_origin_regex=r"https://([a-z0-9-]+\.)?(answerr\.me|werr\.io|werracle\.io|werracle\.com)",
     allow_credentials=False,
-    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS", "HEAD"],
     allow_headers=["Content-Type", "Authorization", "Accept", "X-Requested-With", "X-API-Key", "X-Recaptcha-Token", "X-Admin-Key"],
     expose_headers=["X-RateLimit-Limit", "X-RateLimit-Remaining", "Retry-After", "X-Answerr-Verdict", "X-Answerr-Policy-Seal",
                     "X-Answerr-Decision-Id", "X-Answerr-Quota-Remaining", "Content-Disposition"],
@@ -1341,8 +1341,8 @@ def get_root():
     }
 
 
-@app.get("/v1/health", tags=["Health"])
-@app.get("/health", tags=["Health"])
+@app.api_route("/v1/health", methods=["GET", "HEAD"], tags=["Health"])
+@app.api_route("/health", methods=["GET", "HEAD"], tags=["Health"])
 def get_health():
     t0 = time.perf_counter()
     PK.evaluate({"tool_name": "read_status", "user_role": "member"}, BUILTIN_GATES["agent_mcp_guard"])
