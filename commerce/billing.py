@@ -521,11 +521,11 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
     # Left Seller details
     c.setFont(f_bold, 8.5)
     c.setFillColor(colors.HexColor("#0F172A"))
-    c.drawString(20 * mm, y_meta - 4.5 * mm, "ITouch Bilişim Sistemleri Ltd. Şti.")
+    c.drawString(20 * mm, y_meta - 4.5 * mm, "ITouch Bilişim Sistemleri Ltd. Şti. (ITouch Systems)")
     c.setFont(f_reg, 7.5)
     c.setFillColor(colors.HexColor("#475569"))
-    c.drawString(20 * mm, y_meta - 8.5 * mm, "Çukurova Üniversitesi Teknokent No: 4/1-26, Adana / Türkiye")
-    c.drawString(20 * mm, y_meta - 12.5 * mm, "Yüreğir V.D. — VKN: 4690944558   |   MERSİS: 0469094455800001")
+    c.drawString(20 * mm, y_meta - 8.5 * mm, "Cukurova University Technopark No: 4/1-26, Adana / Turkey")
+    c.drawString(20 * mm, y_meta - 12.5 * mm, "Yuregir Tax Office — Tax ID: 4690944558   |   MERSIS: 0469094455800001")
     c.drawString(20 * mm, y_meta - 16.5 * mm, "Email: ask@answerr.me   |   Web: https://answerr.me")
 
     # Right Invoice details
@@ -643,24 +643,29 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
     c.drawRightString(width - 24 * mm, y_tot - 15 * mm, tot_str)
 
     # Bottom Payment / Receipt Box
-    y_box = y_tot - 46 * mm
+    y_box = y_tot - 48 * mm
     if not is_paid:
-        # Bank wire box
+        # Bank wire box (international SWIFT & wire compliant, Latin ASCII safe)
+        box_h = 29 * mm
         c.setFillColor(colors.HexColor("#FFFBEB"))
         c.setStrokeColor(colors.HexColor("#F59E0B"))
-        c.roundRect(20 * mm, y_box, width - 40 * mm, 26 * mm, 2 * mm, fill=1, stroke=1)
+        c.roundRect(20 * mm, y_box, width - 40 * mm, box_h, 2 * mm, fill=1, stroke=1)
         c.setFont(f_bold, 7.5)
         c.setFillColor(colors.HexColor("#B45309"))
-        c.drawString(24 * mm, y_box + 21 * mm, "OFFICIAL CORPORATE BANK ACCOUNTS (TEB — TÜRK EKONOMİ BANKASI / SWIFT: TEBUTRIS)")
-        c.setFont(f_reg, 7.2)
+        c.drawString(24 * mm, y_box + 23.5 * mm, "OFFICIAL CORPORATE BANK ACCOUNTS (TEB — TURK EKONOMI BANKASI / SWIFT: TEBUTRIS)")
+        c.setFont(f_bold, 7.0)
         c.setFillColor(colors.HexColor("#0F172A"))
-        c.drawString(24 * mm, y_box + 16.5 * mm, "Beneficiary (Alıcı): ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SAN. VE TİC. LTD. ŞTİ.")
-        c.setFont(f_mono, 7.2)
-        c.drawString(24 * mm, y_box + 12 * mm, "TRY IBAN : TR92 0003 2000 0000 0070 5754 65   |   USD IBAN : TR83 0003 2000 0000 0088 9467 48")
-        c.drawString(24 * mm, y_box + 7.5 * mm, "EUR IBAN : TR28 0003 2000 0000 0088 9467 68   |   Base USDC: 0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7")
-        c.setFont(f_reg, 7.2)
+        c.drawString(24 * mm, y_box + 19.2 * mm, "Beneficiary (Official Title): ITOUCH BILISIM SISTEMLERI MUHENDISLIK DANISMANLIK SAN. VE TIC. LTD. STI.")
+        c.setFont(f_reg, 6.7)
+        c.setFillColor(colors.HexColor("#475569"))
+        c.drawString(24 * mm, y_box + 15.2 * mm, "Short Name (SWIFT Tag 59): ITOUCH BILISIM SISTEMLERI LTD. STI.   |   City / Country: Adana / Turkey")
+        c.setFont(f_mono, 7.0)
+        c.setFillColor(colors.HexColor("#0F172A"))
+        c.drawString(24 * mm, y_box + 10.8 * mm, "USD IBAN : TR83 0003 2000 0000 0088 9467 48   |   EUR IBAN : TR28 0003 2000 0000 0088 9467 68")
+        c.drawString(24 * mm, y_box + 6.5 * mm, "TRY IBAN : TR92 0003 2000 0000 0070 5754 65   |   Base USDC: 0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7")
+        c.setFont(f_reg, 7.0)
         c.setFillColor(colors.HexColor("#B45309"))
-        c.drawString(24 * mm, y_box + 3 * mm, f"* Lütfen havale/EFT açıklama kısmına referans numaranızı yazınız: {pay.get('id')}")
+        c.drawString(24 * mm, y_box + 2.0 * mm, f"* Payment Reference (Mandatory for Wire / Havale / SWIFT): {pay.get('id')}")
     else:
         # Paid verification stamp
         c.setFillColor(colors.HexColor("#ECFDF5"))
@@ -678,7 +683,7 @@ def generate_answerr_invoice_pdf(acc: Optional[Dict[str, Any]], pay: Dict[str, A
     # Footer
     c.setFont(f_reg, 6.8)
     c.setFillColor(colors.HexColor("#94A3B8"))
-    c.drawCentredString(width / 2.0, 10 * mm, "ITouch Bilişim Sistemleri Ltd. Şti.  •  Balcalı Mah. Çukurova Üniv. Teknokent No: 4/1-26 Sarıçam / Adana  •  ask@answerr.me  •  https://answerr.me")
+    c.drawCentredString(width / 2.0, 10 * mm, "ITouch Bilişim Sistemleri Ltd. Şti. (ITouch Systems)  •  Çukurova Univ. Technopark No: 4/1-26 Adana / Turkey  •  ask@answerr.me  •  https://answerr.me")
 
     c.showPage()
     c.save()

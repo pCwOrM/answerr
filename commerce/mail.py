@@ -169,8 +169,12 @@ Alternatif Konsol Onayı: POST /v1/admin/plan-requests/{rid}/approve ya da konso
     # Customer confirmation with Bank Details and Proforma PDF
     from . import billing, store as S
     lang = account.get("lang") or "tr"
-    plan_name = {"gelistirici": "Geliştirici (Developer)", "pro": "Pro", "kurumsal": "Kurumsal"}.get(req["plan"], req["plan"])
-    cycle_name = "Yıllık (366 Gün / 12 Ay)" if req["cycle"] == "yearly" else "Aylık (31 Gün / 1 Ay)"
+    if lang == "en":
+        plan_name = {"gelistirici": "Developer", "pro": "Pro", "kurumsal": "Enterprise"}.get(req["plan"], str(req["plan"]).title())
+        cycle_name = "Yearly (12 Months / 17% Discount)" if req["cycle"] == "yearly" else "Monthly (1 Month)"
+    else:
+        plan_name = {"gelistirici": "Geliştirici (Developer)", "pro": "Pro", "kurumsal": "Kurumsal"}.get(req["plan"], req["plan"])
+        cycle_name = "Yıllık (366 Gün / 12 Ay)" if req["cycle"] == "yearly" else "Aylık (31 Gün / 1 Ay)"
 
     pay_rec = None
     if pay_id:
@@ -198,18 +202,21 @@ Payment Ref    : {pay_id}
 Proforma No    : {inv_no}
 Invoice Link   : {inv_dl_url}
 
-OFFICIAL CORPORATE BANK ACCOUNTS
+OFFICIAL CORPORATE BANK ACCOUNTS (INTERNATIONAL WIRE / SWIFT)
 ----------------------------------------------------------------------
-Bank Name      : Türk Ekonomi Bankası A.Ş. (TEB)
-Branch         : Adana Toros Şb. (Branch Code: 446)
+Bank Name      : Turk Ekonomi Bankasi A.S. (TEB)
+Branch         : Adana Toros Branch (Branch Code: 446)
 SWIFT / BIC    : TEBUTRIS
-Beneficiary    : ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SAN. VE TİC. LTD. ŞTİ.
-TRY (TL) IBAN  : TR92 0003 2000 0000 0070 5754 65
+Beneficiary    : ITOUCH BILISIM SISTEMLERI MUHENDISLIK DANISMANLIK SAN. VE TIC. LTD. STI.
+Short Title    : ITOUCH BILISIM SISTEMLERI LTD. STI.
+Country / City : Turkey / Adana
 USD ($) IBAN   : TR83 0003 2000 0000 0088 9467 48
 EUR (€) IBAN   : TR28 0003 2000 0000 0088 9467 68
+TRY (TL) IBAN  : TR92 0003 2000 0000 0070 5754 65
 Base USDC      : 0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7
 
 * IMPORTANT: Please include your Payment Reference ({pay_id}) in the transfer description.
+* SWIFT Guidance: For international wire transfers, please use the Latin ASCII beneficiary name (ITOUCH BILISIM SISTEMLERI LTD. STI.) to ensure instant straight-through processing without character-set rejection by correspondent banks.
 
 Once your transfer is received and verified by our finance team, your API key and plan will be activated immediately, and your official PAID Commercial Invoice will be delivered to you by email.
 """ + SIGNATURE_EN
@@ -228,18 +235,21 @@ Toplam Tutar   : {tot_display} (%0 KDV — 4691 s. Teknopark İstisnası)
 Proforma No    : {inv_no}
 Fatura Linki   : {inv_dl_url}
 
-RESMİ ŞİRKET BANKA HESAPLARIMIZ
+RESMİ ŞİRKET BANKA HESAPLARIMIZ (HAVALE / EFT / SWIFT)
 ----------------------------------------------------------------------
 Banka Adı      : Türk Ekonomi Bankası A.Ş. (TEB)
 Şube           : Adana Toros Şb. (Şube Kodu: 446)
-SWIFT Kodu     : TEBUTRIS
+SWIFT / BIC    : TEBUTRIS
 Alıcı (Unvan)  : ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SAN. VE TİC. LTD. ŞTİ.
+SWIFT Alıcı Adı: ITOUCH BILISIM SISTEMLERI MUHENDISLIK DANISMANLIK SAN. VE TIC. LTD. STI.
+Kısa Unvan     : ITOUCH BILISIM SISTEMLERI LTD. STI.
 TRY (TL) IBAN  : TR92 0003 2000 0000 0070 5754 65
 USD ($) IBAN   : TR83 0003 2000 0000 0088 9467 48
 EUR (€) IBAN   : TR28 0003 2000 0000 0088 9467 68
 Base USDC      : 0x4945ef6e124eea2176ddf050b33db42b0ae8c7f7
 
 * ÖNEMLİ: Havale veya EFT yaparken açıklama kısmına lütfen ödeme referansınızı ({pay_id}) yazınız.
+* SWIFT / Döviz Notu: Yurt dışından veya döviz hesabından transfer yaparken SWIFT sistemlerinin karakter kısıtlaması nedeniyle lütfen Türkçe karaktersiz SWIFT Alıcı Adını (ITOUCH BILISIM SISTEMLERI LTD. STI.) kullanınız.
 
 Havaleniz banka hesabımıza ulaştığında ekibimiz tarafından onaylanacak; planınız ve API anahtarınız anında aktif edilerek tarafınıza resmi ÖDENDİ faturanız ile birlikte aktivasyon e-postası iletilecektir.
 """ + SIGNATURE_TR
@@ -429,8 +439,12 @@ def wire_approved(account: dict, pay: dict, api_key: Optional[str] = None) -> No
     from . import billing
     import json, time
     lang = account.get("lang") or "tr"
-    plan_name = {"gelistirici": "Geliştirici (Developer)", "pro": "Pro", "kurumsal": "Kurumsal"}.get(pay.get("plan"), str(pay.get("plan") or "-").title())
-    cycle_name = "Yıllık (366 Gün / 12 Ay)" if pay.get("cycle") == "yearly" else "Aylık (31 Gün / 1 Ay)"
+    if lang == "en":
+        plan_name = {"gelistirici": "Developer", "pro": "Pro", "kurumsal": "Enterprise"}.get(pay.get("plan"), str(pay.get("plan") or "-").title())
+        cycle_name = "Yearly (12 Months)" if pay.get("cycle") == "yearly" else "Monthly (1 Month)"
+    else:
+        plan_name = {"gelistirici": "Geliştirici (Developer)", "pro": "Pro", "kurumsal": "Kurumsal"}.get(pay.get("plan"), str(pay.get("plan") or "-").title())
+        cycle_name = "Yıllık (366 Gün / 12 Ay)" if pay.get("cycle") == "yearly" else "Aylık (31 Gün / 1 Ay)"
     inv_no = billing.invoice_number(pay)
     inv_dl_url = f"https://api.answerr.me/v1/invoice/{pay['id']}.pdf?t={invoice_download_token(pay['id'])}"
     tot_str = f"{float(pay.get('total_try') or 0):,.2f} {pay.get('currency', 'USD')}"

@@ -145,10 +145,15 @@
   "trc20_deposit_address": "TLMhaDJTVYBHBSGJ9nCQGLvqnYFPsBgLJu",
   "base_usdc_contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
   "bank_accounts": {
-    "bank_name": "TEB (Türk Ekonomi Bankası A.Ş.) — Adana Toros Şubesi (446)",
-    "beneficiary": "ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ",
+    "bank_name": "Turk Ekonomi Bankasi A.S. (TEB) — Adana Toros Branch (446)",
+    "bank_name_tr": "TEB (Türk Ekonomi Bankası A.Ş.) — Adana Toros Şubesi (446)",
+    "beneficiary": "ITOUCH BILISIM SISTEMLERI MUHENDISLIK DANISMANLIK SANAYI VE TICARET LIMITED SIRKETI",
+    "beneficiary_short": "ITOUCH BILISIM SISTEMLERI LTD. STI.",
+    "beneficiary_tr": "ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ",
     "swift_bic": "TEBUTRIS",
     "customer_no": "23764109",
+    "country": "Turkey",
+    "city": "Adana",
     "iban_try": "TR92 0003 2000 0000 0070 5754 65",
     "iban_usd": "TR83 0003 2000 0000 0088 9467 48",
     "iban_eur": "TR28 0003 2000 0000 0088 9467 68"
