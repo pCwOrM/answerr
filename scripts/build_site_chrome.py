@@ -222,9 +222,21 @@ LEGAL_HEAD = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{title} — answerr</title>
+  <title>{title} · answerr Pro Yasal Sözleşmeler & Koşullar</title>
   <meta name="description" content="{desc}">
   <link rel="canonical" href="https://answerr.me/pro/legal/{slug}.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="answerr Pro">
+  <meta property="og:url" content="https://answerr.me/pro/legal/{slug}.html">
+  <meta property="og:title" content="{title} · answerr Pro">
+  <meta property="og:description" content="{desc}">
+  <meta property="og:image" content="https://answerr.me/assets/rendered_answerr_werr_twin_ecosystem.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{title} · answerr Pro">
+  <meta name="twitter:description" content="{desc}">
+  <meta name="twitter:image" content="https://answerr.me/assets/rendered_answerr_werr_twin_ecosystem.png">
   <meta name="theme-color" content="#05060A">
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">

@@ -3,14 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WERR Reflex Snake | 0-Storage Procedural Neural Synthesis Canlı Testi</title>
-  <meta name="description" content="Mandelbrot fraktal karar motoru ile sıfır ağırlık (0.00 KB) ve 0.08ms gecikmeyle çalışan Yılan Oyunu canlı test ve telemetri sayfası.">
-
+  <title>WERR Reflex Snake · 0-Storage Procedural Neural Synthesis Canlı Testi</title>
+  <meta name="description" content="Polinom kaçış dinamiği ile sıfır model ağırlığı (0.00 KB) ve 0.08ms mikrosaniye gecikmeyle çalışan Yılan Oyunu canlı refleks telemetrisi.">
+  <link rel="canonical" href="https://answerr.me/demos/snake.html">
   <!-- OpenGraph / Twitter Cards -->
-  <meta property="og:title" content="WERR Reflex Snake | 0-Storage Neural Decision Engine">
-  <meta property="og:description" content="Yılan oyununda kontrolü insandan 0-Ağırlıklı Yapay Zekaya devrettik! 0.00 KB model, 0.08 ms anlık tepki.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/pCwOrM/fractal-neural-synthesis/master/demos/terminal_snake_showcase.gif">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="answerr Pro · WERR Reflex">
+  <meta property="og:url" content="https://answerr.me/demos/snake.html">
+  <meta property="og:title" content="WERR Reflex Snake · 0-Storage Neural Decision Engine">
+  <meta property="og:description" content="0-Depolama Yapay Zeka Refleksi: 0.00 KB model ağırlığı, 0.08 ms mikrosaniyelik deterministik tepki süresi.">
+  <meta property="og:image" content="https://answerr.me/assets/rendered_answerr_werr_twin_ecosystem.png">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WERR Reflex Snake · 0-Storage Neural Decision Engine">
+  <meta name="twitter:description" content="0-Depolama Yapay Zeka Refleksi: 0.00 KB model ağırlığı, 0.08 ms mikrosaniyelik deterministik tepki süresi.">
+  <meta name="twitter:image" content="https://answerr.me/assets/rendered_answerr_werr_twin_ecosystem.png">
 
   <style>
     :root {
@@ -32,12 +38,19 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
     body {
       background: #090d16 radial-gradient(circle at 50% 0%, #162238 0%, #090d16 70%);
       color: var(--text-main);
       font-family: var(--font-sans);
       min-height: 100vh;
       padding: 24px 16px 60px;
+      overflow-x: hidden;
+      max-width: 100vw;
     }
 
     .container {
@@ -376,6 +389,10 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      display: block;
+      -webkit-overflow-scrolling: touch;
     }
 
     table {

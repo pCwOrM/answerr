@@ -3,12 +3,13 @@
   'use strict';
   const D = {
     tr: {
-      pageTitleIndex: 'answerr Pro · Karar Gözlemevi',
-      pageTitleStudio: 'answerr Pro · Derleyici',
-      pageTitleResearch: 'Araştırma · answerr Pro',
-      pageTitlePricing: 'answerr Pro · Fiyatlar',
-      pageTitleDocs: 'answerr · Geliştirici belgeleri',
-      pageTitleStatus: 'answerr · Hizmet durumu',
+      pageTitleIndex: 'answerr Pro · Deterministik Karar Kapısı & Sıfır Gecikmeli Refleks Motoru',
+      pageTitleStudio: 'answerr Studio · Doğal Dilden Deterministik Kural Derleyicisi',
+      pageTitleResearch: 'answerr Research · Formel Kanıtlar, Lean 4 & Prosedürel Dinamikler',
+      pageTitlePricing: 'answerr Pricing · Şeffaf Fiyatlandırma — Yalnızca Karar Başına, GPU Yok',
+      pageTitleDocs: 'answerr Docs · Geliştirici Belgeleri, API Referansı & Entegrasyon Rehberi',
+      pageTitleStatus: 'answerr Status · Canlı Sistem Durumu & API Uptime Telemetrisi',
+      pageTitleConsole: 'answerr Console · API Anahtarları, Karar Telemetrisi & Canlı İzleme',
       hudRight: 'ÇALIŞMA ANINDA MODEL YOK · HER KARARIN İZİ VAR',
       hudOnline: 'API ÇEVRİMİÇİ', hudOffline: 'API’YE ULAŞILAMADI · TARAYICIDAKİ ÇEKİRDEK KULLANILIYOR', hudKernel: 'çekirdek',
       navHow: 'Nasıl çalışır', navConsole: 'Kara Kutu', navStudio: 'Derleyici', navDocs: 'Geliştiriciler', navPricing: 'Fiyatlar', navEcosystem: 'Ekosistem', navResearch: 'Araştırma', navVision: 'Werr Evreni', navApi: 'API belgeleri', navAccess: 'Erken erişim',
@@ -112,12 +113,13 @@
 
     },
     en: {
-      pageTitleIndex: 'answerr Pro · Decision Observatory',
-      pageTitleStudio: 'answerr Pro · Policy Compiler',
-      pageTitleResearch: 'Research Archive · answerr Pro',
-      pageTitlePricing: 'answerr Pro · Pricing',
-      pageTitleDocs: 'answerr · Developer Docs',
-      pageTitleStatus: 'answerr · Service Status',
+      pageTitleIndex: 'answerr Pro · Deterministic Decision Gate & Zero-Latency Reflex Engine',
+      pageTitleStudio: 'answerr Studio · Natural Language to Deterministic Policy Compiler',
+      pageTitleResearch: 'answerr Research · Formal Proofs, Lean 4 & Procedural Dynamics',
+      pageTitlePricing: 'answerr Pricing · Transparent Pricing — Pay per Decision, No GPU Fees',
+      pageTitleDocs: 'answerr Docs · Developer Docs, API Reference & Integration Guide',
+      pageTitleStatus: 'answerr Status · Live System Status & API Uptime Telemetry',
+      pageTitleConsole: 'answerr Console · API Keys, Decision Telemetry & Live Governance',
       hudRight: 'NO MODEL AT DECISION TIME · EVERY DECISION HAS A TRACE',
       hudOnline: 'API ONLINE', hudOffline: 'API UNREACHABLE · USING THE IN-BROWSER KERNEL', hudKernel: 'kernel',
       navHow: 'How it works', navConsole: 'Black Box', navStudio: 'Compiler', navDocs: 'Developers', navPricing: 'Pricing', navEcosystem: 'Ecosystem', navResearch: 'Research', navVision: 'Werr Universe', navApi: 'API docs', navAccess: 'Early access',
@@ -304,7 +306,8 @@
           else if (p.includes('pricing')) key = 'pageTitlePricing';
           else if (p.includes('docs')) key = 'pageTitleDocs';
           else if (p.includes('status')) key = 'pageTitleStatus';
-          else if (document.title.includes('Karar Gözlemevi') || document.title.includes('Decision Observatory')) key = 'pageTitleIndex';
+          else if (p.includes('console')) key = 'pageTitleConsole';
+          else if (document.title.includes('Karar Gözlemevi') || document.title.includes('Decision Observatory') || document.title.includes('Deterministik') || document.title.includes('Deterministic')) key = 'pageTitleIndex';
           
           const val = this.t(key);
           if (val) document.title = val;
