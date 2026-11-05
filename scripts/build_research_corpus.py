@@ -1,6 +1,6 @@
 """
 Builds the cumulative research corpus on pro/research.html from the table in README.md
-("Associated Formal Verification & Scientific Corpus").
+("Associated Formal Verification, World Records & Scientific Corpus").
 
 README.md stays the single source of truth: add a row there, run
 
@@ -40,14 +40,23 @@ def _plain(s: str) -> str:
 
 def corpus_rows():
     text = ""
+    markers = (
+        "Associated Formal Verification, World Records & Scientific Corpus",
+        "Associated Formal Verification & Scientific Corpus",
+    )
+    found_marker = ""
     for target in (README, os.path.join(ROOT, "RESEARCH_CHRONOLOGY.md")):
         if os.path.isfile(target):
             with open(target, encoding="utf-8") as f:
                 content = f.read()
-                if "Associated Formal Verification & Scientific Corpus" in content:
-                    text = content
+                for m in markers:
+                    if m in content:
+                        text = content
+                        found_marker = m
+                        break
+                if text:
                     break
-    i = text.find("Associated Formal Verification & Scientific Corpus")
+    i = text.find(found_marker) if found_marker else -1
     if i < 0:
         print("corpus table not found; keeping the table already on the page")
         sys.exit(0)
@@ -55,9 +64,11 @@ def corpus_rows():
     for line in text[i:].splitlines()[1:]:
         if line.startswith("---") and rows:
             break
-        if not line.startswith("|") or line.startswith("| :---") or line.startswith("| Pillar"):
+        if not line.startswith("|") or line.startswith("| :---") or line.startswith("| Pillar") or line.startswith("| # |"):
             continue
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) >= 7:
+            cells = [f"{cells[0]} · {cells[1]}", cells[2], cells[4], cells[3], cells[5], cells[6]]
         rows.append(cells)
     return rows
 
@@ -67,8 +78,8 @@ def render(rows) -> str:
         ("rsThWork", "Çalışma"),
         ("rsThTopic", "Konu"),
         ("rsThLatestDoi", "Son sürüm DOI"),
-        ("rsThConceptDoi", "Kavram DOI"),
-        ("rsThStatus", "arXiv / doğrulama / durum"),
+        ("rsThConceptDoi", "Çatı (Kavram) DOI"),
+        ("rsThStatus", "arXiv / SSRN / Doğrulama"),
         ("rsThRepo", "Depo"),
     ]
     th = "".join('<th scope="col" data-i18n="{}">{}</th>'.format(k, h) for k, h in head)
@@ -78,7 +89,7 @@ def render(rows) -> str:
         body.append("<tr>" + "".join("<td>{}</td>".format(md_inline(c)) for c in cells) + "</tr>")
     return (START + "\n<div class=\"scroll-x\"><table class=\"tests corpus\"><caption class=\"sr-only\" data-i18n=\"rsCorpus\">Kümülatif külliyat</caption>"
             "<thead><tr>" + th + "</tr></thead><tbody>\n" + "\n".join(body) + "\n</tbody></table></div>\n"
-            "<p class=\"small-mono\" style=\"margin-top:10px\" data-i18n=\"rsCorpusCap\">Kaynak: README.md · {} kayıt · sıralama README ile aynı</p>\n".format(len(rows)) + END)
+            "<p class=\"small-mono\" style=\"margin-top:10px\" data-i18n=\"rsCorpusCap\">Kaynak: README.md · {} kayıt · Çatı DOI (Concept DOI) standartlı</p>\n".format(len(rows)) + END)
 
 
 def main():
@@ -90,7 +101,7 @@ def main():
         page = page[:page.index(START)] + block + page[page.index(END) + len(END):]
     else:
         sys.exit("CORPUS markers not found in pro/research.html")
-    with open(PAGE, "w", encoding="utf-8") as f:
+    with open(PAGE, "w", encoding="utf-8", newline="\n") as f:
         f.write(page)
     print("corpus rows:", len(rows))
 

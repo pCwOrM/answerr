@@ -32,7 +32,7 @@ jobs:
         # The website needs only HTML/CSS/JS, assets and policies/; backend code, deploy scripts and internal docs
         # stay in the repository and are not served from answerr.me.
         run: |
-          rm -rf archive deploy server tests scripts site commerce docs __pycache__
+          rm -rf _archive archive deploy server tests scripts site commerce docs __pycache__
           rm -f ./*.py ./*.sh ./*.service requirements.txt pyproject.toml package.json
 
       - name: Upload artifact
