@@ -223,10 +223,13 @@ LEGAL_HEAD = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{title} · answerr Pro Yasal Sözleşmeler & Koşullar</title>
+  <title>{title} · answerr Pro Yasal Sözleşmeler</title>
   <meta name="description" content="{desc}">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://answerr.me/pro/legal/{slug}.html">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="tr_TR">
+  <meta property="og:locale:alternate" content="en_US">
   <meta property="og:site_name" content="answerr Pro">
   <meta property="og:url" content="https://answerr.me/pro/legal/{slug}.html">
   <meta property="og:title" content="{title} · answerr Pro">
@@ -234,10 +237,14 @@ LEGAL_HEAD = """<!DOCTYPE html>
   <meta property="og:image" content="https://answerr.me/assets/rendered_answerr_werr_twin_ecosystem.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="answerr Pro deterministik karar kapısı mimarisi">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@pCwOrM">
+  <meta name="twitter:creator" content="@pCwOrM">
   <meta name="twitter:title" content="{title} · answerr Pro">
   <meta name="twitter:description" content="{desc}">
   <meta name="twitter:image" content="https://answerr.me/assets/rendered_answerr_werr_twin_ecosystem.png">
+  <meta name="twitter:image:alt" content="answerr Pro deterministik karar kapısı mimarisi">
   <meta name="theme-color" content="#05060A">
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
@@ -249,6 +256,7 @@ LEGAL_HEAD = """<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../pro.css?v={asset_v}">
+  <script type="application/ld+json">{jsonld}</script>
 </head>
 <body>
   <a class="sr-only" href="#main">İçeriğe geç</a>
@@ -294,8 +302,11 @@ def legal_body(slug: str, tr_body: str) -> str:
     if not os.path.exists(en_path):
         return md(fill(tr_body))
     en_body = open(en_path, encoding="utf-8").read().partition("\n---\n")[2]
+    en_html = md(fill(en_body))
+    # Keep strictly one <h1> per document for clean SEO heading hierarchy while preserving styling.
+    en_html = re.sub(r"<h1([^>]*)>", r'<h2 class="legal-h1"\1>', en_html).replace("</h1>", "</h2>")
     return ('<div data-lang="tr" lang="tr">\n' + md(fill(tr_body)) + '\n</div>\n<div data-lang="en" lang="en">\n'
-            + md(fill(en_body)) + '\n</div>')
+            + en_html + '\n</div>')
 
 
 def legal_pages():
@@ -319,12 +330,36 @@ def legal_pages():
             )
             for _, s, mm, _ in docs
         )
+        legal_url = f"https://answerr.me/pro/legal/{slug}.html"
+        ld = json.dumps({
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "WebPage",
+                    "@id": legal_url + "#webpage",
+                    "url": legal_url,
+                    "name": f"{m['title']} · answerr Pro",
+                    "description": m.get("description", m["title"]),
+                    "inLanguage": ["tr", "en"],
+                    "isPartOf": {"@id": "https://answerr.me/#website"},
+                    "breadcrumb": {"@id": legal_url + "#breadcrumb"},
+                },
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": legal_url + "#breadcrumb",
+                    "itemListElement": [
+                        {"@type": "ListItem", "position": 1, "name": "answerr Pro", "item": "https://answerr.me/"},
+                        {"@type": "ListItem", "position": 2, "name": m["title"], "item": legal_url},
+                    ],
+                },
+            ],
+        }, ensure_ascii=False)
         page = LEGAL_HEAD.format(
             title=html.escape(m["title"]), desc=html.escape(m.get("description", m["title"])),
             slug=slug,
             version_label='<span data-lang="tr">SÜRÜM {0}</span><span data-lang="en">VERSION {0}</span>'.format(CFG["legal_version"]), nav=nav("legal", "../"), foot=footer("../"), side=side,
             status_tr=html.escape(CFG["legal_status_tr"]), status_en=html.escape(CFG["legal_status_en"]),
-            body=legal_body(slug, body), asset_v=ASSET_V)
+            body=legal_body(slug, body), asset_v=ASSET_V, jsonld=ld)
         out["legal/{}.html".format(slug)] = page
     return out
 

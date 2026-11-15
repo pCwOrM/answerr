@@ -1,5 +1,5 @@
 title: İptal ve İade
-description: answerr planlarında iptal, plan düşürme ve iade koşulları.
+description: answerr Pro abonelik planlarında iptal, dönem sonu plan düşürme, cayma hakkı ve ücret iadesi koşullarına ilişkin resmi prosedürler.
 order: 6
 ---
 # İptal ve İade

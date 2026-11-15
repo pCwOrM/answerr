@@ -1,5 +1,5 @@
 title: Çerez Politikası
-description: answerr.me'nin kullandığı çerezler ve tarayıcı depolaması.
+description: answerr.me ve answerr Pro konsolunun kullandığı zorunlu çerezler, yerel tarayıcı depolama anahtarları, dil tercihleri ve oturum güvenliği ilkeleri.
 order: 7
 ---
 # Çerez Politikası

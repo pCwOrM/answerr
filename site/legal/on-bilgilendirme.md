@@ -1,5 +1,5 @@
 title: Ön Bilgilendirme Formu
-description: Mesafeli Sözleşmeler Yönetmeliği m.5 uyarınca answerr ücretli planları için ön bilgilendirme.
+description: Mesafeli Sözleşmeler Yönetmeliği madde 5 uyarınca answerr Pro ücretli abonelik paketleri, ödeme yöntemleri ve cayma hakkı ön bilgilendirme formu.
 order: 4
 ---
 # Ön Bilgilendirme Formu

@@ -625,7 +625,7 @@ html[lang="en"] [data-lang="tr"], html[lang="tr"] [data-lang="en"] { display: no
 .legal-side a { display: block; padding: 8px 12px; color: var(--text-2); text-decoration: none; border-left: 2px solid transparent; font-size: 14px; }
 .legal-side a[aria-current="page"], .legal-side a:hover { color: var(--amber); border-left-color: var(--amber); }
 .legal-body { max-width: 820px; color: var(--text-2); }
-.legal-body h1 { font-size: clamp(32px, 4vw, 44px); margin: 10px 0 18px; color: var(--text); }
+.legal-body h1, .legal-body .legal-h1 { font-size: clamp(32px, 4vw, 44px); margin: 10px 0 18px; color: var(--text); }
 .legal-body h2 { font-size: 22px; margin: 36px 0 10px; color: var(--text); }
 .legal-body h3 { font-size: 18px; margin: 24px 0 8px; color: var(--text); }
 .legal-body p, .legal-body li { font-size: 15.5px; line-height: 1.75; }

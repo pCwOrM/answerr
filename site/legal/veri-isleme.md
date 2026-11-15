@@ -1,5 +1,5 @@
 title: Veri İşleme Sözleşmesi
-description: Müşteri (veri sorumlusu) ile ITouch (veri işleyen) arasındaki veri işleme koşulları.
+description: Veri sorumlusu müşteri ile veri işleyen ITouch Bilgi Teknolojileri arasındaki GDPR ve KVKK uyumlu Veri İşleme Sözleşmesi (DPA) hükümleri.
 order: 8
 ---
 # Veri İşleme Sözleşmesi (DPA)

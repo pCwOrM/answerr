@@ -1,5 +1,5 @@
 title: Kullanım Şartları
-description: answerr karar API'si, konsolu ve web sitesinin kullanım şartları.
+description: answerr Pro deterministik karar API'si, kural derleyicisi, geliştirici konsolu ve web platformunun resmi kullanım şartları ve sorumluluk sınırları.
 order: 1
 ---
 # Kullanım Şartları

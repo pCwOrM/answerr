@@ -1,5 +1,5 @@
 title: KVKK Aydınlatma Metni
-description: 6698 sayılı Kişisel Verilerin Korunması Kanunu m.10 kapsamında aydınlatma metni.
+description: 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) madde 10 kapsamında ITouch Bilgi Teknolojileri veri sorumlusu aydınlatma metni ve haklarınız.
 order: 2
 ---
 # KVKK Aydınlatma Metni

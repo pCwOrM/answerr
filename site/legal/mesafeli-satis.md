@@ -1,5 +1,5 @@
 title: Mesafeli Satış Sözleşmesi
-description: answerr ücretli planları için mesafeli satış sözleşmesi.
+description: answerr Pro ücretli API ve kurumsal plan abonelikleri için 6502 sayılı Kanun uyumlu mesafeli satış sözleşmesi hükümleri ve tarafların yükümlülükleri.
 order: 5
 ---
 # Mesafeli Satış Sözleşmesi

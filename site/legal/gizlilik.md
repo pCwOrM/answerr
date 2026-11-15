@@ -1,5 +1,5 @@
 title: Gizlilik Politikası
-description: answerr'in hangi veriyi neden tuttuğu, ne kadar sakladığı ve nasıl koruduğu.
+description: answerr Pro gizlilik politikası: toplanan hesap ve API telemetri verileri, saklama süreleri, şifreleme standartları ve veri güvenliği önlemleri.
 order: 3
 ---
 # Gizlilik Politikası
