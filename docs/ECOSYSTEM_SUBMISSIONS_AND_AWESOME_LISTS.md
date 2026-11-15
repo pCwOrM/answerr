@@ -63,6 +63,6 @@ We'd love to hear your feedback!
 We launched answerr.me, an open-source AI platform utilizing procedural fractal dynamics for sub-millisecond System-1 reflex decisions paired with deliberative reasoning.
 
 Try the live workspace: https://answerr.me
-Live API health: https://api.answerr.me:4431/v1/health
+Live API health: https://api.answerr.me/v1/health
 GitHub: https://github.com/pCwOrM/answerr
 ```

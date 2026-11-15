@@ -63,7 +63,7 @@
   <a href="https://github.com/pCwOrM/WERRobotics"><img src="https://img.shields.io/badge/WERRobotics-Arduino%20%26%20Edge%20AI-ff9100.svg?style=for-the-badge&logo=arduino&logoColor=white" alt="WERRobotics Edge AI"></a>
   <a href="https://github.com/yh-yao/awesome-edge-ai-agents"><img src="https://img.shields.io/badge/Awesome-Edge%20AI%20Agents-blue.svg?style=for-the-badge" alt="Awesome Edge AI Agents"></a>
   <a href="https://awesomejev.com"><img src="https://img.shields.io/badge/Awesome-Jev-blueviolet.svg?style=for-the-badge" alt="Awesome Jev"></a>
-  <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Live%20Production-c084fc.svg?style=for-the-badge" alt="REST API"></a>
+  <a href="https://api.answerr.me/v1/health"><img src="https://img.shields.io/badge/REST%20API-Live%20Production-c084fc.svg?style=for-the-badge" alt="REST API"></a>
   <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI Workflow"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/License-BSL%201.1-red.svg?style=for-the-badge" alt="License: BSL 1.1"></a>
   <a href="https://education.github.com/globalcampus/exchange"><img src="https://img.shields.io/badge/GitHub%20Education-Community%20Exchange-2ea44f.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Education: Community Exchange"></a>
@@ -261,11 +261,11 @@ Tested on Matt Mastracci's [mmastrac/jevenator2](https://github.com/mmastrac/jev
 ## 🌐 Live Production REST API (Zero-VRAM Reflex)
 
 answerr provides a high-throughput, sub-millisecond REST API hosted on production infrastructure:
-* **API Base URL:** `https://api.answerr.me:4431`
+* **API Base URL:** `https://api.answerr.me`
 
 ### 1. Health & Telemetry Benchmark
 ```bash
-curl -k https://api.answerr.me:4431/v1/health
+curl -k https://api.answerr.me/v1/health
 ```
 Response:
 ```json
@@ -281,7 +281,7 @@ Response:
 
 ### 2. Instant Reflex Decision (`/v1/decide`)
 ```bash
-curl -k -X POST https://api.answerr.me:4431/v1/decide \
+curl -k -X POST https://api.answerr.me/v1/decide \
   -H "Content-Type: application/json" \
   -d '{
     "question": "Allow privileged admin operation?",
@@ -314,7 +314,7 @@ Response:
 Dedicated endpoint for JevBench-compatible benchmark runners, Tau-Bench agents, and any framework using the `labels` list format:
 
 ```bash
-curl -X POST https://api.answerr.me:4431/v1/systemone \
+curl -X POST https://api.answerr.me/v1/systemone \
   -H "Content-Type: application/json" \
   -d '{
     "task": "security-gate",
@@ -363,7 +363,7 @@ Drop answerr directly into LangChain, LlamaIndex, or the official OpenAI Python 
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api.answerr.me:4431/v1",
+    base_url="https://api.answerr.me/v1",
     api_key="none"  # Keyless production mode
 )
 
@@ -725,7 +725,7 @@ answerr is an independent, patented open-source mathematical AI research project
   <a href="https://github.com/pCwOrM/WERRobotics"><img src="https://img.shields.io/badge/WERRobotics-Arduino%20%26%20Edge%20AI-ff9100.svg?style=for-the-badge&logo=arduino&logoColor=white" alt="WERRobotics Edge AI"></a>
   <a href="https://github.com/yh-yao/awesome-edge-ai-agents"><img src="https://img.shields.io/badge/Awesome-Edge%20AI%20Agents-blue.svg?style=for-the-badge" alt="Awesome Edge AI Agents"></a>
   <a href="https://awesomejev.com"><img src="https://img.shields.io/badge/Awesome-Jev-blueviolet.svg?style=for-the-badge" alt="Awesome Jev"></a>
-  <a href="https://api.answerr.me:4431/v1/health"><img src="https://img.shields.io/badge/REST%20API-Canl%C4%B1%20%C3%9Cretim-c084fc.svg?style=for-the-badge" alt="REST API"></a>
+  <a href="https://api.answerr.me/v1/health"><img src="https://img.shields.io/badge/REST%20API-Canl%C4%B1%20%C3%9Cretim-c084fc.svg?style=for-the-badge" alt="REST API"></a>
   <a href="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml"><img src="https://github.com/pCwOrM/answerr/actions/workflows/ci.yml/badge.svg" alt="CI İş Akışı"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/Lisans-BSL%201.1-red.svg?style=for-the-badge" alt="Lisans: BSL 1.1"></a>
   <a href="https://education.github.com/globalcampus/exchange"><img src="https://img.shields.io/badge/GitHub%20Education-Community%20Exchange-2ea44f.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Education: Community Exchange"></a>
@@ -920,11 +920,11 @@ Matt Mastracci'nin [mmastrac/jevenator2](https://github.com/mmastrac/jevenator2)
 ## 🌐 Canlı Üretim REST API'si (Sıfır VRAM Refleksi)
 
 answerr, üretim altyapısında barındırılan yüksek verimli ve mikrosaniye gecikmeli bir REST API sunar:
-* **API Temel URL:** `https://api.answerr.me:4431`
+* **API Temel URL:** `https://api.answerr.me`
 
 ### 1. Sistem Sağlığı ve Telemetri Testi
 ```bash
-curl -k https://api.answerr.me:4431/v1/health
+curl -k https://api.answerr.me/v1/health
 ```
 Yanıt:
 ```json
@@ -940,7 +940,7 @@ Yanıt:
 
 ### 2. Anlık Refleks Kararı (`/v1/decide`)
 ```bash
-curl -k -X POST https://api.answerr.me:4431/v1/decide \
+curl -k -X POST https://api.answerr.me/v1/decide \
   -H "Content-Type: application/json" \
   -d '{
     "question": "Ayrıcalıklı yönetici işlemine izin verilsin mi?",
@@ -973,7 +973,7 @@ Yanıt:
 JevBench uyumlu kıyaslama araçları, Tau-Bench ajanları ve `labels` listesi kullanan tüm harici test çerçeveleri için özel uç nokta:
 
 ```bash
-curl -X POST https://api.answerr.me:4431/v1/systemone \
+curl -X POST https://api.answerr.me/v1/systemone \
   -H "Content-Type: application/json" \
   -d '{
     "task": "security-gate",
@@ -1021,7 +1021,7 @@ answerr'ı doğrudan LangChain, LlamaIndex veya resmi OpenAI Python kütüphanel
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api.answerr.me:4431/v1",
+    base_url="https://api.answerr.me/v1",
     api_key="none"  # Anahtarsız üretim modu
 )
 
