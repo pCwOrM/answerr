@@ -99,6 +99,7 @@ def footer(r: str) -> str:
         col("fcEcosystem", "Ekosistem ve araştırma", [
             ("https://radar.werracle.com/", "fRadarApi", "Werracle Radar API ↗"),
             ("https://werracle.com", "fWerracleCom", "werracle.com ↗"),
+            ("https://werracle.io", "fWerracleIo", "werracle.io · Web3 ↗"),
             ("https://werr.io", "fWerrIo", "werr.io · Motor ↗"),
             ("research.html", "navResearch", "Araştırma"),
             ("https://pcworm.github.io/fractal-neural-synthesis/", "fPortalExt", "Araştırma portalı ↗"),

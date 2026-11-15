@@ -258,7 +258,7 @@ def guarded(tool_name, args, run, user_role="member", wait_s=300):
               <p data-lang="en">In autonomous mode, each decision emits a <code>confidence_index</code> (0.00 &ndash; 1.00) and <code>confidence_band</code> (<code>HIGH_CONFIDENCE</code>, <code>MODERATE_CONFIDENCE</code>, <code>MARGINAL_CONFIDENCE</code>). When the computed noul probability falls within the critical boundary transition band <strong>0.42 &le; noul &le; 0.58 (45% &ndash; 65%)</strong>, the engine sets <code>"retry_recommended": true</code>. This allows edge clients to enrich telemetry or apply exponential backoff without stalling workflows.</p>
 
 <pre data-lang="tr"><code>// Örnek: Otonom Karar İsteği (Autonomous Edge Request)
-POST https://api.answerr.me/v1/decision
+POST https://api.answerr.me/v1/gates/agent_mcp_guard/decide
 {
   "state": {
     "tool_name": "execute_shell",
@@ -284,7 +284,7 @@ POST https://api.answerr.me/v1/decision
   "policy_seal": "9f82...sha256"
 }</code></pre>
 <pre data-lang="en"><code>// Example: Autonomous Edge Decision Request
-POST https://api.answerr.me/v1/decision
+POST https://api.answerr.me/v1/gates/agent_mcp_guard/decide
 {
   "state": {
     "tool_name": "execute_shell",
@@ -485,7 +485,7 @@ POST https://api.answerr.me/v1/gates/youth_transfer_rule/decide
         <p class="small-mono" data-i18n="footOrg">ITouch Bilişim Sistemleri · Çukurova Üniversitesi Teknokent</p></div>
       <div><h2 class="foot-h" data-i18n="fcProduct">Ürün</h2><ul><li><a href="index.html#kara-kutu" data-i18n="navConsole">Kara Kutu</a></li><li><a href="studio.html" data-i18n="navStudio">Derleyici</a></li><li><a href="pricing.html" data-i18n="navPricing">Fiyatlar</a></li><li><a href="console/" data-i18n="navLogin">Konsol</a></li><li><a href="status.html" data-i18n="fStatus">Hizmet durumu</a></li><li><a href="index.html#erisim" data-i18n="fPilot">Tasarım ortaklığı</a></li></ul></div>
       <div><h2 class="foot-h" data-i18n="fcDev">Geliştiriciler</h2><ul><li><a href="docs.html" data-i18n="fDocs">Belgeler</a></li><li><a href="https://api.answerr.me/v1/docs" rel="noopener" data-i18n="fApiRef">API referansı</a></li><li><a href="docs.html#webhooks" data-i18n="fWebhooks">Webhook'lar</a></li><li><a href="https://github.com/pCwOrM/answerr" rel="noopener">GitHub · answerr</a></li><li><a href="https://github.com/pCwOrM/werr" rel="noopener" data-i18n="fWerrRepo">werr Çekirdeği (GitHub)</a></li><li><a href="../chat.html" data-i18n="fClassic">Klasik konsol</a></li></ul></div>
-      <div><h2 class="foot-h" data-i18n="fcEcosystem">Ekosistem ve araştırma</h2><ul><li><a href="https://radar.werracle.com/" rel="noopener" data-i18n="fRadarApi">Werracle Radar API ↗</a></li><li><a href="https://werracle.com" rel="noopener" data-i18n="fWerracleCom">werracle.com ↗</a></li><li><a href="https://werr.io" rel="noopener" data-i18n="fWerrIo">werr.io · Motor ↗</a></li><li><a href="research.html" data-i18n="navResearch">Araştırma</a></li><li><a href="https://pcworm.github.io/fractal-neural-synthesis/" rel="noopener" data-i18n="fPortalExt">Araştırma portalı ↗</a></li><li><a href="mailto:ask@answerr.me">ask@answerr.me</a></li></ul></div>
+      <div><h2 class="foot-h" data-i18n="fcEcosystem">Ekosistem ve araştırma</h2><ul><li><a href="https://radar.werracle.com/" rel="noopener" data-i18n="fRadarApi">Werracle Radar API ↗</a></li><li><a href="https://werracle.com" rel="noopener" data-i18n="fWerracleCom">werracle.com ↗</a></li><li><a href="https://werracle.io" rel="noopener" data-i18n="fWerracleIo">werracle.io · Web3 ↗</a></li><li><a href="https://werr.io" rel="noopener" data-i18n="fWerrIo">werr.io · Motor ↗</a></li><li><a href="research.html" data-i18n="navResearch">Araştırma</a></li><li><a href="https://pcworm.github.io/fractal-neural-synthesis/" rel="noopener" data-i18n="fPortalExt">Araştırma portalı ↗</a></li><li><a href="mailto:ask@answerr.me">ask@answerr.me</a></li></ul></div>
       <div><h2 class="foot-h" data-i18n="fcCompany">Kurumsal ve yasal</h2><ul><li><a href="https://itouch.com.tr" rel="noopener" data-i18n="fCompanyShort">ITouch Bilişim Sistemleri</a></li><li><a href="legal/kullanim-sartlari.html" data-i18n="lgTerms">Kullanım şartları</a></li><li><a href="legal/gizlilik.html" data-i18n="lgPrivacy">Gizlilik politikası</a></li><li><a href="legal/kvkk-aydinlatma.html" data-i18n="lgKvkk">KVKK aydınlatma metni</a></li><li><a href="legal/mesafeli-satis.html" data-i18n="lgSales">Mesafeli satış & iade</a></li><li><a href="legal/cerez.html" data-i18n="lgCookies">Çerez politikası</a></li></ul></div>
     </div>
     <div class="wrap foot-legal">
