@@ -1,0 +1,6 @@
+Contact: mailto:security@answerr.me
+Contact: mailto:info@werracle.com
+Expires: 2027-11-15T00:00:00.000Z
+Preferred-Languages: en, tr
+Canonical: https://answerr.me/.well-known/security.txt
+Policy: https://github.com/pCwOrM/answerr/blob/main/SECURITY.md

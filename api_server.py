@@ -1987,7 +1987,7 @@ def _answerr_public_openapi():
     if app.openapi_schema:
         return app.openapi_schema
     schema = _answerr_full_openapi()
-    schema["paths"] = {k: v for k, v in schema.get("paths", {}).items() if not k.startswith("/v1/admin")}
+    schema["paths"] = {k: v for k, v in schema.get("paths", {}).items() if not k.startswith("/v1/admin") and "admin" not in k}
     app.openapi_schema = schema
     return schema
 
