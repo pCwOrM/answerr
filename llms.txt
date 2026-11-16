@@ -21,4 +21,4 @@
 - [werr Core Research](https://werr.io/)
 - [Werracle Protocol](https://werracle.io/)
 - [Werracle Enterprise](https://werracle.com/)
-- [Werracle MEV Radar](https://radar.werracle.com/)
+- [Werracle MEV Radar & Anti-Liquidation Shield API](https://radar.werracle.com/) ($0 Explorer · $99 Developer · $199 Pro · $499 Institutional)
