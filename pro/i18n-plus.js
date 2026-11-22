@@ -398,7 +398,7 @@
       "fWerrIo": "werr.io · Engine",
       "fWerracleIo": "werracle.io · Web3",
       "fWerracleCom": "werracle.com · Enterprise",
-      "footOrg": "ITouch Systems · Cukurova University Science Park",
+      "footOrg": "ITouch Systems · Cukurova University Technopark",
       "fCompanyShort": "ITouch Systems",
       "prSisterTitle": "Sister Commercial B2B Service — Werracle Risk Radar DaaS (radar.werracle.com)",
       "prSisterDesc": "Real-time multi-chain DeFi liquidation surveillance, Anti-Liquidation Shield pre-signing API, 12-chain open-race & live solver feeds, and MetaMorpho vault stress-testing ($0 Open Access · 99 USDC Developer · 199 USDC Pro · 499 USDC Curator VIP).",
