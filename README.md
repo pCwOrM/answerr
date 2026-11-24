@@ -30,6 +30,22 @@
 
 </div>
 
+<p align="center">
+  <img src="assets/demo.gif" alt="ANSWERR Dual-Cognition API Live Demo" width="820" />
+</p>
+
+## ⚡ 30-Second Quick Start
+
+```bash
+git clone https://github.com/pCwOrM/answerr.git && cd answerr
+python -c "from fastapi.testclient import TestClient; from api_server import app; c = TestClient(app); print(c.get('/health').status_code, c.get('/health').json())"
+```
+
+**Observed Output:**
+```text
+200 {'status': 'healthy', 'api_version': '1.3.1', 'kernel_version': '1.0.0', 'werr_version': '0.5.2', 'builtin_gates': 3, 'kernel_latency_ms': 0.223}
+```
+
 ---
 
 ## 🏛️ The Paradigm
