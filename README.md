@@ -168,7 +168,7 @@ If you cite or replicate this research in scientific publications, please use th
 
 ```bibtex
 @software{dagli2026answerr,
-  author       = {Dağlı, Volkan and Dağlı, Zerrin and Dağlı, Dağhan},
+  author       = {Dagli, Volkan and Dagli, Zerrin and Dagli, Daghan},
   title        = {{answerr: Zero-Latency Reflex AI and Dual-Cognition Decision Workspace}},
   month        = oct,
   year         = 2026,
@@ -257,8 +257,8 @@ All monographs, formal Lean 4 specifications, and empirical datasets across the 
 * **Open-Science, Educational & Evaluation Use:** The Licensed Work is free to run, inspect, benchmark, test, fork, and replicate for all non-commercial academic research, personal evaluations, and testing under the **Business Source License 1.1 (BSL 1.1)**.
 * **Commercial Operations & Production Licensing:** Any commercial production use, hosted SaaS deployment, or commercial integration requires a written Commercial License from the Licensor:
   * **Licensor:** `ITOUCH BİLİŞİM SİSTEMLERİ MÜHENDİSLİK DANIŞMANLIK SANAYİ VE TİCARET LİMİTED ŞİRKETİ` (`ITouch Systems` · Cukurova University Technopark, Adana, Türkiye).
-  * **Scientific Co-Authors & Inventors:** Volkan Dağlı (*Anadolu University*), Dr. Zerrin Dağlı (*Mersin University — Academic Advisor, Co-Author & Co-Inventor*), Dağhan Dağlı (*Toros University — Co-Author & Co-Inventor*).
-  * **Chain of Title & Assignment:** The scientific co-authors have irrevocably assigned administrative and IP management authority to Volkan Dağlı, who has transferred exclusive global commercial licensing and operational rights to ITouch Systems.
+  * **Scientific Co-Authors & Inventors:** Volkan Dagli (*Anadolu University*), Dr. Zerrin Dagli (*Mersin University — Academic Advisor, Co-Author & Co-Inventor*), Daghan Dagli (*Toros University — Co-Author & Co-Inventor*).
+  * **Chain of Title & Assignment:** The scientific co-authors have irrevocably assigned administrative and IP management authority to Volkan Dagli, who has transferred exclusive global commercial licensing and operational rights to ITouch Systems.
   * **Trademarks:** `WERR™`, `Werracle™`, `answerr™`, and `WerrSoma™` are trademarks owned exclusively by ITouch Systems.
   * **Patent Applications:** TÜRKPATENT **TR 2026/016285** & **TR 2026/016633**.
   * **Inquiries:** `ask@answerr.me` · `info@itouch.com.tr`
