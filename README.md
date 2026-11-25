@@ -1,8 +1,12 @@
 <div align="center">
 
 # ANSWERR
-### Zero-Latency Reflex AI & Dual-Cognition Decision Workspace
+### Zero-Latency Reflex AI & Constant-Storage (24-Byte) Dual-Cognition Workspace
 
+[![arXiv](https://img.shields.io/badge/arXiv-2611.32393_%7C_2609.25498_%7C_2610.14263-b31b1b.svg?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2611.32393)
+[![alphaXiv: 2611.32393](https://img.shields.io/badge/alphaXiv-2611.32393_(Poster%20v2)-6d28d9.svg)](https://www.alphaxiv.org/abs/2611.32393)
+[![Elsevier SSRN](https://img.shields.io/badge/SSRN-7659198_(v4.0)_%7C_7641538_%7C_7626279-005a9c.svg?logo=elsevier&logoColor=white)](https://papers.ssrn.com/abstract=7659198)
+[![Hugging Face: WERR Lab](https://img.shields.io/badge/Hugging_Face-WERR_Lab-FFD21E.svg?logo=huggingface&logoColor=black)](https://huggingface.co/werr-lab)
 [![License: BSL 1.1](https://img.shields.io/badge/License-BSL_1.1-0ea5e9.svg)](LICENSE)
 [![Production: answerr.me](https://img.shields.io/badge/Production-answerr.me-38bdf8.svg)](https://answerr.me)
 [![Engine: WERR](https://img.shields.io/badge/Engine-WERR_Reflex-10b981.svg)](https://github.com/pCwOrM/werr)
@@ -10,13 +14,11 @@
 [![FastAPI Runtime](https://img.shields.io/badge/API-FastAPI_0.110+-6366f1.svg)](api/)
 [![WebMCP Benchmark](https://img.shields.io/badge/WebMCP-100%25_Accuracy_(49%2F49)-emerald.svg)](https://github.com/nekuda-ai/WindTunnel/issues/25)
 [![Concept DOI](https://img.shields.io/badge/Concept_DOI-10.5281%2Fzenodo.22867425-024dad.svg)](https://doi.org/10.5281/zenodo.22867425)
-[![arXiv](https://img.shields.io/badge/arXiv-2609.25498_%7C_2610.14263-b91c1c.svg)](https://arxiv.org/abs/2609.25498)
-[![Elsevier SSRN](https://img.shields.io/badge/SSRN-7659198_%7C_7641538_%7C_7626279-002f6c.svg)](https://papers.ssrn.com/abstract=7659198)
 [![Awesome Jev](https://img.shields.io/badge/Awesome_Jev-Listed_(%2369)-8b5cf6.svg)](https://github.com/hellogumbo/awesome-jev/issues/69)
 [![Base Mainnet: WERR](https://img.shields.io/badge/Base_Mainnet-Werrium_(%24WERR)_burnForReflex-0052ff.svg)](https://basescan.org/address/0xFfa2c95b68B76af00FBD84295cBA5e5268a996d2)
 
 <p align="center">
-  <b>A unified dual-cognition decision framework that translates high-level natural language intent (System-2) into zero-memory, deterministic WERR procedural reflexes (System-1)—delivering sub-microsecond execution latency and zero runtime hallucination.</b>
+  <b>A unified dual-cognition decision framework that translates high-level natural language intent (System-2) into constant-storage (24-byte), deterministic WERR procedural reflexes (System-1)—delivering sub-microsecond execution latency and zero runtime hallucination.</b>
 </p>
 
 [Quickstart](#-quickstart--local-api) •
