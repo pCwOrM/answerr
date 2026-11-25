@@ -46,6 +46,14 @@ python -c "from fastapi.testclient import TestClient; from api_server import app
 200 {'status': 'healthy', 'api_version': '1.3.1', 'kernel_version': '1.0.0', 'werr_version': '0.5.2', 'builtin_gates': 3, 'kernel_latency_ms': 0.223}
 ```
 
+## 🧠 Codebase Knowledge Graph & Call-Flow
+
+<p align="center">
+  <img src="assets/architecture_graph.svg" alt="ANSWERR Codebase Knowledge Graph" width="860" />
+</p>
+
+> Explore the interactive AST dependency graph ([`docs/architecture/graph.html`](docs/architecture/graph.html)) or the Mermaid call-flow explorer ([`docs/architecture/callflow.html`](docs/architecture/callflow.html)), generated deterministically via `graphify`.
+
 ---
 
 ## 🏛️ The Paradigm
